@@ -59,7 +59,7 @@ class LocalStore {
     final existing = guest;
     if (existing != null) return existing;
     final r = Random.secure();
-    final id = 'guest_${DateTime.now().millisecondsSinceEpoch}_${r.nextInt(1 << 32).toRadixString(16)}';
+    final id = 'guest_${DateTime.now().millisecondsSinceEpoch}_${r.nextInt(0x7fffffff).toRadixString(16)}';
     final g = GuestProfile(id: id, name: name, createdAt: DateTime.now());
     await _prefs.setString(_kGuest, jsonEncode(g.toJson()));
     return g;

@@ -225,7 +225,11 @@ class _PrimaryButtonState extends State<PrimaryButton> {
                     Text(widget.label, style: AppText.button.copyWith(color: Colors.white)),
                     if (widget.showArrow) ...[
                       const SizedBox(width: 5),
-                      SvgPicture.asset('assets/svg/arrow_right.svg', width: 14, height: 14),
+                      // points the reading direction (flips for Urdu/Arabic)
+                      Transform.flip(
+                        flipX: Directionality.of(context) == TextDirection.rtl,
+                        child: SvgPicture.asset('assets/svg/arrow_right.svg', width: 14, height: 14),
+                      ),
                     ],
                   ],
                 ),

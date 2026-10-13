@@ -3,7 +3,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../services/local_store.dart';
 import '../../utils/app_theme.dart';
+import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glow_background.dart';
 
@@ -41,6 +43,21 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _save();
+  }
+
+  void _save() =>
+      LocalStore.instance.saveAnswer('dailyGoalHours', _hours == _hours.roundToDouble() ? _hours.toInt() : _hours);
+
+  void _set(double h) {
+    if (h == _hours) return;
+    setState(() => _hours = h);
+    _save();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final dark = context.isDark;
@@ -50,9 +67,9 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
       dotsIndex: 0,
       blobs: _blobs,
       starsAsset: 'assets/svg/ob7_stars.svg',
-      button: PrimaryButton(label: 'Continue', onPressed: widget.onNext),
+      button: PrimaryButton(label: context.l10n.continueLabel, onPressed: widget.onNext),
       footerExtra: Text(
-        'Free to start · No credit card needed',
+        context.l10n.freeToStart,
         style: TextStyle(
           fontFamily: AppText.fontFamily,
           fontSize: 12,
@@ -68,7 +85,7 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Set your daily\nscreen-time goal',
+              context.l10n.ob7Title,
               textAlign: TextAlign.center,
               style: AppText.h1.copyWith(color: c.textPrimary, height: 32.5 / 30),
             ),
@@ -78,7 +95,7 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  "You can change this any time. We'll nudge you as you get close.",
+                  context.l10n.ob7Subtitle,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: AppText.fontFamily,
@@ -96,9 +113,7 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
                 dragging: _dragging,
                 onDragStart: () => setState(() => _dragging = true),
                 onDragEnd: () => setState(() => _dragging = false),
-                onChanged: (h) {
-                  if (h != _hours) setState(() => _hours = h);
-                },
+                onChanged: _set,
               ),
             ),
             const SizedBox(height: 6),
@@ -109,9 +124,9 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
                   if (i > 0) const SizedBox(width: 12),
                   Expanded(
                     child: _HourChip(
-                      label: '${_chips[i].toInt()}h',
+                      label: context.l10n.ob7Hours('${_chips[i].toInt()}'),
                       selected: _hours == _chips[i],
-                      onTap: () => setState(() => _hours = _chips[i]),
+                      onTap: () => _set(_chips[i]),
                     ),
                   ),
                 ],
@@ -174,11 +189,11 @@ class _GoalDial extends StatelessWidget {
     final c = context.colors;
     final dark = context.isDark;
     final whole = hours == hours.roundToDouble();
-    final label = whole ? '${hours.toInt()}h' : '${hours.toStringAsFixed(1)}h';
+    final label = context.l10n.ob7Hours(whole ? '${hours.toInt()}' : hours.toStringAsFixed(1));
     final numberSize = whole ? 52.0 : 44.0;
     return Semantics(
       slider: true,
-      label: 'Daily screen-time goal',
+      label: context.l10n.ob7DialLabel,
       value: label,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -199,10 +214,7 @@ class _GoalDial extends StatelessWidget {
             builder: (context, value, child) {
               final sweep = value * degPerHour;
               final a = (startDeg + sweep) * math.pi / 180;
-              final handle = Offset(
-                size / 2 + handleRadius * math.sin(a),
-                size / 2 - handleRadius * math.cos(a),
-              );
+              final handle = Offset(size / 2 + handleRadius * math.sin(a), size / 2 - handleRadius * math.cos(a));
               return Stack(
                 clipBehavior: Clip.none,
                 alignment: Alignment.center,
@@ -231,22 +243,28 @@ class _GoalDial extends StatelessWidget {
                       opacity: a,
                       child: ScaleTransition(scale: Tween(begin: 0.85, end: 1.0).animate(a), child: child),
                     ),
-                    child: Text(
-                      label,
+                    child: SizedBox(
                       key: ValueKey(label),
-                      style: TextStyle(
-                        fontFamily: AppText.fontFamily,
-                        fontSize: numberSize,
-                        fontWeight: FontWeight.w700,
-                        height: 52 / numberSize,
-                        color: dark ? _numberDark : c.textPrimary,
+                      width: 104,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          label,
+                          style: TextStyle(
+                            fontFamily: AppText.fontFamily,
+                            fontSize: numberSize,
+                            fontWeight: FontWeight.w700,
+                            height: 52 / numberSize,
+                            color: dark ? _numberDark : c.textPrimary,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'per day',
+                  context.l10n.ob7PerDay,
                   style: TextStyle(
                     fontFamily: AppText.fontFamily,
                     fontSize: 13,
@@ -304,8 +322,7 @@ class _RingPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_RingPainter old) =>
-      old.sweepDeg != sweepDeg || old.startDeg != startDeg || old.track != track;
+  bool shouldRepaint(_RingPainter old) => old.sweepDeg != sweepDeg || old.startDeg != startDeg || old.track != track;
 }
 
 /// 14px violet dot that marks (and drags) the end of the goal arc.
@@ -346,7 +363,7 @@ class _HourChip extends StatelessWidget {
     return Semantics(
       button: true,
       selected: selected,
-      label: '$label per day',
+      label: context.l10n.ob7HoursPerDay(label),
       child: GestureDetector(
         onTap: onTap,
         child: AnimatedScale(
@@ -385,7 +402,10 @@ class _HourChip extends StatelessWidget {
                 height: 22.5 / 15,
                 color: selected ? Colors.white : (dark ? const Color(0xFF6A6390) : c.textMuted),
               ),
-              child: Text(label),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: FittedBox(fit: BoxFit.scaleDown, child: Text(label, maxLines: 1)),
+              ),
             ),
           ),
         ),
@@ -414,19 +434,17 @@ class _InfoNote extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 1),
+            padding: const EdgeInsetsDirectional.only(top: 1),
             child: SizedBox(
               width: 14,
               height: 14,
-              child: Center(
-                child: SvgPicture.asset('assets/svg/ob7_info.svg', width: 13.6667, height: 13.6667),
-              ),
+              child: Center(child: SvgPicture.asset('assets/svg/ob7_info.svg', width: 13.6667, height: 13.6667)),
             ),
           ),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
-              'The average person spends 4h+ on their phone\ndaily. Setting a goal is the first step to reclaiming\nyour time.',
+              context.l10n.ob7InfoNote,
               style: TextStyle(
                 fontFamily: AppText.fontFamily,
                 fontSize: 11,

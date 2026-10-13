@@ -12,6 +12,30 @@ flutter run
 Only package: `flutter_svg`. The Nunito font is bundled in `assets/fonts`, so it works offline.
 App name is "Pausey" on Android, iOS and web, and the launcher icons use the Pausey logo.
 
+## Sign-in (Firebase)
+
+Login screens: Welcome → Sign up / Log in / Forgot password → Home. Options: Apple, Google,
+email + password, and **Continue as guest**.
+
+- **Guest** works with no setup. The guest profile and onboarding answers are saved on the phone
+  with `shared_preferences` (`lib/services/local_store.dart`). Signing out as guest deletes them.
+- **Google, Apple, email** use Firebase Auth (`lib/services/auth_service.dart`). Until Firebase is set
+  up, those buttons show "Sign-in isn't set up yet". To turn them on:
+  1. `dart pub global activate flutterfire_cli` then `flutterfire configure` in this folder
+     (creates `firebase_options.dart`, `google-services.json`, `GoogleService-Info.plist`).
+  2. In Firebase console → Authentication → Sign-in method, enable **Email/Password**, **Google**, **Apple**.
+  3. Android Google sign-in: add your SHA-1 (`cd android && ./gradlew signingReport`) in Firebase project settings.
+  4. iOS Apple sign-in: in Xcode add the **Sign in with Apple** capability; set up Apple in Firebase
+     (Services ID + key) for Android/web.
+
+## Language
+
+The app follows the phone's language: English, Urdu, Arabic, Hindi, Spanish, French, German
+(Urdu and Arabic right-to-left). Other phone languages fall back to English. The globe button on the
+Welcome and Home screens lets the user pick a language (saved on the phone).
+
+Text lives in `tool/l10n/*.py` tables. After editing: `python3 tool/l10n/build_arb.py && flutter gen-l10n`.
+
 ## Themes
 
 - `lib/utils/app_theme.dart` — **both themes live here**:

@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/app_theme.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glow_background.dart';
+import '../../utils/l10n.dart';
 import 'widgets/ob3_svg_light_mapper.dart';
 
 /// Figma: OnBoarding 4 — "Track Your Progress" (727:41995).
@@ -31,12 +32,13 @@ class Onboarding4Screen extends StatelessWidget {
       dotsIndex: 0,
       blobs: _blobs,
       starsAsset: 'assets/svg/ob4_stars.svg',
-      button: PrimaryButton(label: 'Continue', onPressed: onNext),
+      button: PrimaryButton(label: context.l10n.continueLabel, onPressed: onNext),
       // Figma gap button→caption is 18; the scaffold adds 12.
       footerExtra: Padding(
         padding: const EdgeInsets.only(top: 6),
         child: Text(
-          'Free to start · No credit card needed',
+          context.l10n.freeToStart,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: AppText.fontFamily,
             fontSize: 12,
@@ -53,24 +55,21 @@ class Onboarding4Screen extends StatelessWidget {
             const SizedBox(height: 8),
             const _Illustration(),
             Text(
-              'Track Your Progress',
+              context.l10n.ob4Title,
               textAlign: TextAlign.center,
-              maxLines: 1,
-              softWrap: false,
-              overflow: TextOverflow.visible,
               style: AppText.h1.copyWith(color: c.textPrimary),
             ),
             const SizedBox(height: 12),
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 295),
               child: Text(
-                'Monitor screen time, focus hours, goals, and productivity with beautiful analytics.',
+                context.l10n.ob4Body,
                 textAlign: TextAlign.center,
                 style: AppText.body.copyWith(color: c.textSecondary),
               ),
             ),
             const SizedBox(height: 18),
-            const SizedBox(
+            SizedBox(
               width: double.infinity,
               child: IntrinsicHeight(
                 child: Row(
@@ -80,37 +79,37 @@ class Onboarding4Screen extends StatelessWidget {
                       child: _FeatureTile(
                         color: AppPalette.blue,
                         icon: 'assets/svg/ob4_icon_weekly.svg',
-                        title: 'Weekly',
-                        subtitle: 'reports',
+                        title: context.l10n.ob4Weekly,
+                        subtitle: context.l10n.ob4WeeklySub,
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: _FeatureTile(
                         color: AppPalette.teal,
                         icon: 'assets/svg/ob4_icon_goals.svg',
                         iconSize: 14.5,
-                        title: 'Goals',
-                        subtitle: 'tracker',
+                        title: context.l10n.ob4Goals,
+                        subtitle: context.l10n.ob4GoalsSub,
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: _FeatureTile(
                         color: AppPalette.violet,
                         icon: 'assets/svg/ob4_icon_insights.svg',
-                        title: 'Insights',
-                        subtitle: 'AI coach',
+                        title: context.l10n.ob4Insights,
+                        subtitle: context.l10n.ob4InsightsSub,
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: _FeatureTile(
                         color: AppPalette.gold,
                         icon: 'assets/svg/ob4_icon_streaks.svg',
                         iconSize: 14.5,
-                        title: 'Streaks',
-                        subtitle: '& badges',
+                        title: context.l10n.ob4Streaks,
+                        subtitle: context.l10n.ob4StreaksSub,
                       ),
                     ),
                   ],
@@ -232,24 +231,29 @@ class _FeatureTile extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          Text(
-            title,
-            maxLines: 1,
-            softWrap: false,
-            style: TextStyle(
-              fontFamily: AppText.fontFamily,
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-              height: 1,
-              letterSpacing: -0.11,
-              color: dark ? const Color(0xD1FFFFFF) : c.textPrimary,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              title,
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontFamily: AppText.fontFamily,
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                height: 1,
+                letterSpacing: -0.11,
+                color: dark ? const Color(0xD1FFFFFF) : c.textPrimary,
+              ),
             ),
           ),
           const SizedBox(height: 5),
           Text(
             subtitle,
-            maxLines: 1,
-            softWrap: false,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontFamily: AppText.fontFamily,
               fontSize: 9,

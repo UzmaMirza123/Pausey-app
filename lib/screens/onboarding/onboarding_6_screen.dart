@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../services/local_store.dart';
 import '../../utils/app_theme.dart';
+import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glow_background.dart';
 
@@ -26,8 +28,10 @@ const _blobs = [
 ];
 
 class _Occupation {
-  const _Occupation(this.label, this.icon);
-  final String label;
+  const _Occupation(this.id, this.icon);
+
+  /// English label, stored as the answer.
+  final String id;
   final String icon;
 }
 
@@ -45,7 +49,7 @@ class Onboarding6Screen extends StatefulWidget {
 class _Onboarding6ScreenState extends State<Onboarding6Screen> {
   static const _options = [
     _Occupation('Software Development', 'assets/svg/ob6_code.svg'),
-    _Occupation('CEO/ Founder', 'assets/svg/ob6_briefcase.svg'),
+    _Occupation('CEO / Founder', 'assets/svg/ob6_briefcase.svg'),
     _Occupation('Remote Worker', 'assets/svg/ob6_wifi.svg'),
     _Occupation('Finance / Ops / Consulting', 'assets/svg/ob6_chart.svg'),
     _Occupation('Art / Content', 'assets/svg/ob6_pen.svg'),
@@ -60,6 +64,30 @@ class _Onboarding6ScreenState extends State<Onboarding6Screen> {
   /// (in the design: "Art / Content").
   int? _active = 4;
 
+  static List<String> _labels(AppLocalizations l) => [
+    l.ob6Software,
+    l.ob6Founder,
+    l.ob6Remote,
+    l.ob6Finance,
+    l.ob6Art,
+    l.ob6Education,
+    l.ob6Others,
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _save();
+  }
+
+  void _save() {
+    final ids = [
+      for (var i = 0; i < _options.length; i++)
+        if (_checked.contains(i)) _options[i].id,
+    ];
+    LocalStore.instance.saveAnswer('occupation', ids);
+  }
+
   void _toggle(int i) {
     setState(() {
       if (_checked.remove(i)) {
@@ -69,20 +97,24 @@ class _Onboarding6ScreenState extends State<Onboarding6Screen> {
         _active = i;
       }
     });
+    _save();
   }
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final dark = context.isDark;
+    final l = context.l10n;
+    final labels = _labels(l);
     return OnboardingScaffold(
       onSkip: widget.onSkip,
       dotsIndex: 0,
       blobs: _blobs,
       starsAsset: 'assets/svg/ob6_stars.svg',
-      button: PrimaryButton(label: 'Continue', onPressed: widget.onNext),
+      button: PrimaryButton(label: l.continueLabel, onPressed: widget.onNext),
       footerExtra: Text(
-        'Free to start · No credit card needed',
+        l.freeToStart,
+        textAlign: TextAlign.center,
         style: TextStyle(
           fontFamily: AppText.fontFamily,
           fontSize: 12,
@@ -98,13 +130,13 @@ class _Onboarding6ScreenState extends State<Onboarding6Screen> {
           children: [
             const SizedBox(height: 24),
             Text(
-              'What is your\noccupation?',
+              l.ob6Title,
               textAlign: TextAlign.center,
               style: AppText.h1.copyWith(color: c.textPrimary, height: 32.5 / 30),
             ),
             const SizedBox(height: 7.8),
             Text(
-              "We'll personalize your focus plan based on your\nwork style.",
+              l.ob6Subtitle,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: AppText.fontFamily,
@@ -119,6 +151,7 @@ class _Onboarding6ScreenState extends State<Onboarding6Screen> {
               if (i > 0) const SizedBox(height: 12),
               _OccupationRow(
                 option: _options[i],
+                label: labels[i],
                 checked: _checked.contains(i),
                 active: _active == i,
                 onTap: () => _toggle(i),
@@ -136,9 +169,16 @@ class _Onboarding6ScreenState extends State<Onboarding6Screen> {
 
 /// Option row: round icon tile, label and a check circle on the right.
 class _OccupationRow extends StatelessWidget {
-  const _OccupationRow({required this.option, required this.checked, required this.active, required this.onTap});
+  const _OccupationRow({
+    required this.option,
+    required this.label,
+    required this.checked,
+    required this.active,
+    required this.onTap,
+  });
 
   final _Occupation option;
+  final String label;
   final bool checked;
   final bool active;
   final VoidCallback onTap;
@@ -150,7 +190,7 @@ class _OccupationRow extends StatelessWidget {
     return Semantics(
       button: true,
       checked: checked,
-      label: option.label,
+      label: label,
       excludeSemantics: true,
       child: Material(
         type: MaterialType.transparency,
@@ -202,7 +242,7 @@ class _OccupationRow extends StatelessWidget {
                       // white 88% on dark / on the active gradient; ink on light rows
                       color: active || dark ? const Color(0xE0FFFFFF) : context.colors.textPrimary,
                     ),
-                    child: Text(option.label),
+                    child: Text(label, maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.start),
                   ),
                 ),
                 _CheckCircle(checked: checked, active: active),
@@ -276,14 +316,17 @@ class _PrivacyNote extends StatelessWidget {
       children: [
         SvgPicture.asset('assets/svg/ob6_lock.svg', width: 12, height: 12),
         const SizedBox(width: 6),
-        const Text(
-          'Your data never leaves your device.',
-          style: TextStyle(
-            fontFamily: AppText.fontFamily,
-            fontSize: 11,
-            fontWeight: FontWeight.w400,
-            height: 14.67 / 11,
-            color: _noteColor,
+        Flexible(
+          child: Text(
+            context.l10n.dataStaysOnDevice,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontFamily: AppText.fontFamily,
+              fontSize: 11,
+              fontWeight: FontWeight.w400,
+              height: 14.67 / 11,
+              color: _noteColor,
+            ),
           ),
         ),
       ],

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../utils/app_theme.dart';
+import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
 import 'widgets/select_apps_sheet.dart';
 
@@ -26,13 +27,15 @@ class Onboarding2Screen extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.colors;
     final dark = context.isDark;
+    final l = context.l10n;
     return OnboardingScaffold(
       onSkip: onSkip,
       dotsIndex: 0,
       starsAsset: 'assets/svg/ob2_stars.svg',
-      button: PrimaryButton(label: 'Select Apps', onPressed: () => _selectApps(context)),
+      button: PrimaryButton(label: l.ob2SelectApps, onPressed: () => _selectApps(context)),
       footerExtra: Text(
-        'Free to start · No credit card needed',
+        l.freeToStart,
+        textAlign: TextAlign.center,
         style: TextStyle(
           fontFamily: AppText.fontFamily,
           fontSize: 12,
@@ -52,7 +55,7 @@ class Onboarding2Screen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Lock Distracting Apps',
+                  l.ob2Title,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: AppText.fontFamily,
@@ -65,7 +68,7 @@ class Onboarding2Screen extends StatelessWidget {
                 ),
                 const SizedBox(height: 7),
                 Text(
-                  'Block social media, games, and other distractions\nwith powerful app locking tools.',
+                  l.ob2Body,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: AppText.fontFamily,
@@ -79,8 +82,8 @@ class Onboarding2Screen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
                 _FeatureRow(
@@ -88,26 +91,26 @@ class Onboarding2Screen extends StatelessWidget {
                   iconWidth: 16,
                   iconHeight: 16,
                   tint: _green,
-                  darkFill: Color(0xFF0D2419),
-                  text: 'One-tap block for any app on your\nphone',
+                  darkFill: const Color(0xFF0D2419),
+                  text: l.ob2Feature1,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 _FeatureRow(
                   icon: 'assets/svg/ob2_clock.svg',
                   iconWidth: 15.33,
                   iconHeight: 15.33,
                   tint: _sky,
-                  darkFill: Color(0xFF0A1628),
-                  text: 'Schedule lock times and focus windows',
+                  darkFill: const Color(0xFF0A1628),
+                  text: l.ob2Feature2,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 _FeatureRow(
                   icon: 'assets/svg/ob2_padlock.svg',
                   iconWidth: 14,
                   iconHeight: 15.33,
                   tint: AppPalette.violet,
-                  darkFill: Color(0xFF1A1238),
-                  text: 'Password-protect blocks so you stay\ncommitted',
+                  darkFill: const Color(0xFF1A1238),
+                  text: l.ob2Feature3,
                 ),
               ],
             ),

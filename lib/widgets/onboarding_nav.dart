@@ -115,7 +115,7 @@ class _BackCircleButtonState extends State<BackCircleButton> {
               ],
             ),
             child: Transform.rotate(
-              angle: math.pi,
+              angle: Directionality.of(context) == TextDirection.rtl ? 0 : math.pi,
               child: SvgPicture.asset(
                 'assets/svg/arrow_right.svg',
                 width: 16,

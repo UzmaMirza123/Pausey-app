@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/app_theme.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glow_background.dart';
+import '../../utils/l10n.dart';
 import 'widgets/ob3_timer_ring.dart';
 
 /// Figma: OnBoarding 3 — "Stay Focused Every Day" (727:41202).
@@ -39,12 +40,13 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
       dotsIndex: 0,
       blobs: _blobs,
       starsAsset: 'assets/svg/ob3_stars.svg',
-      button: PrimaryButton(label: 'Continue', onPressed: widget.onNext),
+      button: PrimaryButton(label: context.l10n.continueLabel, onPressed: widget.onNext),
       // Figma gap button→caption is 18; the scaffold adds 12.
       footerExtra: Padding(
         padding: const EdgeInsets.only(top: 6),
         child: Text(
-          'Free to start · No credit card needed',
+          context.l10n.freeToStart,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: AppText.fontFamily,
             fontSize: 12,
@@ -79,7 +81,7 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
             ),
             const SizedBox(height: 4),
             Text(
-              'Stay Focused Every\nDay',
+              context.l10n.ob3Title,
               textAlign: TextAlign.center,
               style: AppText.h1.copyWith(color: c.textPrimary),
             ),
@@ -87,7 +89,7 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 295),
               child: Text(
-                'Use Pomodoro and Deep Focus\nsessions to boost productivity and\nachieve more.',
+                context.l10n.ob3Body,
                 textAlign: TextAlign.center,
                 style: AppText.body.copyWith(color: c.textSecondary),
               ),
@@ -104,8 +106,8 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
                         color: AppPalette.violet,
                         icon: 'assets/svg/ob3_icon_pomodoro.svg',
                         iconSize: const Size(12.6667, 15.3333),
-                        title: 'Pomodoro',
-                        subtitle: '25 min sessions',
+                        title: context.l10n.ob3Pomodoro,
+                        subtitle: context.l10n.ob3PomodoroSub(25),
                         onTap: () => setState(() => _deep = false),
                       ),
                     ),
@@ -115,8 +117,8 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
                         color: AppPalette.blue,
                         icon: 'assets/svg/ob3_icon_deep_focus.svg',
                         iconSize: const Size(14.3339, 15.3364),
-                        title: 'Deep Focus',
-                        subtitle: '90 min flow',
+                        title: context.l10n.ob3DeepFocus,
+                        subtitle: context.l10n.ob3DeepFocusSub(90),
                         onTap: () => setState(() => _deep = true),
                       ),
                     ),
@@ -125,7 +127,7 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
               ),
             ),
             const SizedBox(height: 10),
-            const SizedBox(
+            SizedBox(
               width: double.infinity,
               child: IntrinsicHeight(
                 child: Row(
@@ -137,27 +139,27 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
                         icon: 'assets/svg/ob3_icon_flame.svg',
                         iconSize: Size(14, 14),
                         value: '+40%',
-                        caption: 'productivity boost',
+                        caption: context.l10n.ob3StatBoost,
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: _StatTile(
                         color: AppPalette.teal,
                         icon: 'assets/svg/ob3_icon_trend.svg',
                         iconSize: Size(13.6667, 7.83333),
-                        value: '7-day',
-                        caption: 'streak building',
+                        value: context.l10n.ob3StatStreakValue(7),
+                        caption: context.l10n.ob3StatStreak,
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: _StatTile(
                         color: AppPalette.blue,
                         icon: 'assets/svg/ob3_icon_target.svg',
                         iconSize: Size(13.6667, 13.6667),
                         value: '94%',
-                        caption: 'goal completion',
+                        caption: context.l10n.ob3StatGoal,
                       ),
                     ),
                   ],
@@ -236,6 +238,8 @@ class _ModeTileState extends State<_ModeTile> {
                 const SizedBox(height: 7),
                 Text(
                   widget.title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontFamily: AppText.fontFamily,
                     fontSize: 13,
@@ -248,6 +252,8 @@ class _ModeTileState extends State<_ModeTile> {
                 const SizedBox(height: 2),
                 Text(
                   widget.subtitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontFamily: AppText.fontFamily,
                     fontSize: 11,
@@ -265,7 +271,13 @@ class _ModeTileState extends State<_ModeTile> {
 }
 
 class _StatTile extends StatelessWidget {
-  const _StatTile({required this.color, required this.icon, required this.iconSize, required this.value, required this.caption});
+  const _StatTile({
+    required this.color,
+    required this.icon,
+    required this.iconSize,
+    required this.value,
+    required this.caption,
+  });
 
   final Color color;
   final String icon;
@@ -295,23 +307,26 @@ class _StatTile extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 2.5),
-          Text(
-            value,
-            style: TextStyle(
-              fontFamily: AppText.fontFamily,
-              fontSize: 13,
-              fontWeight: FontWeight.w800,
-              height: 1,
-              letterSpacing: -0.26,
-              color: dark ? const Color(0xD9FFFFFF) : c.textPrimary,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              value,
+              maxLines: 1,
+              style: TextStyle(
+                fontFamily: AppText.fontFamily,
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+                height: 1,
+                letterSpacing: -0.26,
+                color: dark ? const Color(0xD9FFFFFF) : c.textPrimary,
+              ),
             ),
           ),
           const SizedBox(height: 2.5),
           Text(
             caption,
-            maxLines: 1,
-            softWrap: false,
-            overflow: TextOverflow.visible,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: AppText.fontFamily,

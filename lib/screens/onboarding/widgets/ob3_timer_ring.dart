@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../utils/app_theme.dart';
+import '../../../utils/l10n.dart';
 import 'ob3_svg_light_mapper.dart';
 
 /// 320×320 focus-timer hero (Figma 727:41249). The dial, arc and side cards are
@@ -197,7 +198,7 @@ class _PlayButton extends StatelessWidget {
         : context.colors.textPrimary.withValues(alpha: 0.8);
     return Semantics(
       button: true,
-      label: running ? 'Pause timer' : 'Start timer',
+      label: running ? context.l10n.ob3PauseTimer : context.l10n.ob3StartTimer,
       child: GestureDetector(
         onTap: onTap,
         behavior: HitTestBehavior.opaque,

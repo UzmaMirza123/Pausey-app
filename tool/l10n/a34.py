@@ -1,0 +1,30 @@
+# Onboarding 3 + 4 strings (agent a34). Columns: en, ur, ar, hi, es, fr, de
+S = {
+ "ob3Title": ["Stay Focused Every Day", "ہر دن توجہ برقرار رکھیں", "حافظ على تركيزك كل يوم", "हर दिन फ़ोकस बनाए रखें", "Mantén el foco cada día", "Restez concentré chaque jour", "Bleib jeden Tag fokussiert"],
+ "ob3Body": ["Use Pomodoro and Deep Focus sessions to boost productivity and achieve more.", "پیداواری صلاحیت بڑھانے اور زیادہ حاصل کرنے کے لیے پومودورو اور ڈیپ فوکس سیشنز استعمال کریں۔", "استخدم جلسات بومودورو والتركيز العميق لتعزيز إنتاجيتك وتحقيق المزيد.", "उत्पादकता बढ़ाने और ज़्यादा हासिल करने के लिए पोमोडोरो और डीप फ़ोकस सेशन का उपयोग करें।", "Usa sesiones Pomodoro y Enfoque profundo para ser más productivo y lograr más.", "Utilisez les sessions Pomodoro et Concentration profonde pour être plus productif.", "Nutze Pomodoro- und Deep-Focus-Sitzungen, um produktiver zu sein und mehr zu erreichen."],
+ "ob3Pomodoro": ["Pomodoro", "پومودورو", "بومودورو", "पोमोडोरो", "Pomodoro", "Pomodoro", "Pomodoro"],
+ "ob3PomodoroSub": ["{min} min sessions", "{min} منٹ کے سیشن", "جلسات {min} دقيقة", "{min} मिनट के सेशन", "Sesiones de {min} min", "Sessions de {min} min", "{min}-Min.-Sitzungen"],
+ "ob3DeepFocus": ["Deep Focus", "ڈیپ فوکس", "تركيز عميق", "डीप फ़ोकस", "Enfoque profundo", "Concentration", "Deep Focus"],
+ "ob3DeepFocusSub": ["{min} min flow", "{min} منٹ کا فلو", "تدفق {min} دقيقة", "{min} मिनट का फ़्लो", "Flujo de {min} min", "Flow de {min} min", "{min} Min. Flow"],
+ "ob3StatBoost": ["productivity boost", "پیداواری اضافہ", "زيادة الإنتاجية", "उत्पादकता वृद्धि", "más productividad", "productivité en plus", "mehr Produktivität"],
+ "ob3StatStreakValue": ["{days}-day", "{days} دن", "{days} أيام", "{days} दिन", "{days} días", "{days} jours", "{days} Tage"],
+ "ob3StatStreak": ["streak building", "اسٹریک بنائیں", "بناء السلسلة", "स्ट्रीक बनाएं", "racha en marcha", "série en cours", "Serie aufbauen"],
+ "ob3StatGoal": ["goal completion", "اہداف کی تکمیل", "إنجاز الأهداف", "लक्ष्य पूरे", "metas cumplidas", "objectifs atteints", "Ziele erreicht"],
+ "ob3StartTimer": ["Start timer", "ٹائمر شروع کریں", "بدء المؤقت", "टाइमर शुरू करें", "Iniciar temporizador", "Démarrer le minuteur", "Timer starten"],
+ "ob3PauseTimer": ["Pause timer", "ٹائمر روکیں", "إيقاف المؤقت مؤقتًا", "टाइमर रोकें", "Pausar temporizador", "Mettre en pause", "Timer pausieren"],
+ "ob4Title": ["Track Your Progress", "اپنی پیش رفت دیکھیں", "تابع تقدمك", "अपनी प्रगति ट्रैक करें", "Sigue tu progreso", "Suivez vos progrès", "Verfolge deinen Fortschritt"],
+ "ob4Body": ["Monitor screen time, focus hours, goals, and productivity with beautiful analytics.", "خوبصورت تجزیات کے ساتھ اسکرین ٹائم، فوکس کے گھنٹے، اہداف اور پیداواری صلاحیت پر نظر رکھیں۔", "راقب وقت الشاشة وساعات التركيز والأهداف والإنتاجية بتحليلات جميلة.", "सुंदर एनालिटिक्स के साथ स्क्रीन टाइम, फ़ोकस घंटे, लक्ष्य और उत्पादकता पर नज़र रखें।", "Controla tu tiempo de pantalla, horas de enfoque, metas y productividad con estadísticas preciosas.", "Suivez temps d'écran, heures de concentration, objectifs et productivité avec de belles statistiques.", "Behalte Bildschirmzeit, Fokusstunden, Ziele und Produktivität mit schönen Statistiken im Blick."],
+ "ob4Weekly": ["Weekly", "ہفتہ وار", "أسبوعية", "साप्ताहिक", "Semanal", "Hebdo", "Wöchentlich"],
+ "ob4WeeklySub": ["reports", "رپورٹس", "تقارير", "रिपोर्ट", "informes", "rapports", "Berichte"],
+ "ob4Goals": ["Goals", "اہداف", "الأهداف", "लक्ष्य", "Metas", "Objectifs", "Ziele"],
+ "ob4GoalsSub": ["tracker", "ٹریکر", "متتبع", "ट्रैकर", "seguimiento", "suivi", "Tracker"],
+ "ob4Insights": ["Insights", "بصیرت", "رؤى", "इनसाइट्स", "Análisis", "Analyses", "Einblicke"],
+ "ob4InsightsSub": ["AI coach", "AI کوچ", "مدرب ذكي", "AI कोच", "coach IA", "coach IA", "KI-Coach"],
+ "ob4Streaks": ["Streaks", "اسٹریکس", "السلاسل", "स्ट्रीक्स", "Rachas", "Séries", "Serien"],
+ "ob4StreaksSub": ["& badges", "اور بیجز", "والشارات", "और बैज", "e insignias", "et badges", "& Abzeichen"],
+}
+META = {
+ "ob3PomodoroSub": {"placeholders": {"min": {"type": "int"}}},
+ "ob3DeepFocusSub": {"placeholders": {"min": {"type": "int"}}},
+ "ob3StatStreakValue": {"placeholders": {"days": {"type": "int"}}},
+}

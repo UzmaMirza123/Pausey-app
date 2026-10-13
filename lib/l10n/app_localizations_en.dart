@@ -10,6 +10,427 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get ob1Title => 'Reduce Screen Addiction';
+
+  @override
+  String get ob1Body =>
+      'Take control of your digital habits and spend less time on distracting apps.';
+
+  @override
+  String get ob1StatAvg => 'Avg daily screen time';
+
+  @override
+  String get ob1StatSocial => 'Spent on social media';
+
+  @override
+  String get ob2SelectApps => 'Select Apps';
+
+  @override
+  String get ob2Title => 'Lock Distracting Apps';
+
+  @override
+  String get ob2Body =>
+      'Block social media, games, and other distractions with powerful app locking tools.';
+
+  @override
+  String get ob2Feature1 => 'One-tap block for any app on your phone';
+
+  @override
+  String get ob2Feature2 => 'Schedule lock times and focus windows';
+
+  @override
+  String get ob2Feature3 => 'Password-protect blocks so you stay committed';
+
+  @override
+  String get sheetTitle => 'Select Apps';
+
+  @override
+  String get sheetTotalLocked => 'Total Locked';
+
+  @override
+  String get sheetAppsSelected => 'apps selected';
+
+  @override
+  String get sheetTimeSaved => 'Time Saved';
+
+  @override
+  String get sheetPerDayAvg => 'per day avg';
+
+  @override
+  String sheetHoursValue(String h) {
+    return '${h}h';
+  }
+
+  @override
+  String get sheetSearchHint => 'Search apps...';
+
+  @override
+  String get sheetCatAll => 'All';
+
+  @override
+  String get sheetCatSocial => 'Social';
+
+  @override
+  String get sheetCatEntertainment => 'Entertainment';
+
+  @override
+  String get sheetCatGames => 'Games';
+
+  @override
+  String get sheetAppsHeader => 'APPS';
+
+  @override
+  String sheetSelectedCount(int count) {
+    return '$count selected';
+  }
+
+  @override
+  String get sheetNoApps => 'No apps found';
+
+  @override
+  String get sheetLockSchedule => 'LOCK SCHEDULE';
+
+  @override
+  String get sheetAddCustomSemantic => 'Add a custom lock schedule';
+
+  @override
+  String get sheetCustomBadge => '+ Custom';
+
+  @override
+  String get sheetSchedMorning => 'Morning';
+
+  @override
+  String get sheetSchedWork => 'Work';
+
+  @override
+  String get sheetSchedEvening => 'Evening';
+
+  @override
+  String get sheetEveryDay => 'Every day';
+
+  @override
+  String get sheetWeekdays => 'Weekdays';
+
+  @override
+  String get sheetWeekends => 'Weekends';
+
+  @override
+  String get sheetUnlockMethod => 'UNLOCK METHOD';
+
+  @override
+  String get sheetPin => 'PIN Code';
+
+  @override
+  String get sheetPinSub => '4-digit PIN';
+
+  @override
+  String get sheetFaceId => 'Face ID';
+
+  @override
+  String get sheetFaceIdSub => 'Biometric';
+
+  @override
+  String get sheetTouchId => 'Touch ID';
+
+  @override
+  String get sheetTouchIdSub => 'Fingerprint';
+
+  @override
+  String get sheetFooter => 'You can always change this later';
+
+  @override
+  String get sheetConfirmLock => 'Confirm Lock';
+
+  @override
+  String sheetRemove(String name) {
+    return 'Remove $name';
+  }
+
+  @override
+  String get sheetCustomTitle => 'Custom schedule';
+
+  @override
+  String get sheetCustomBody =>
+      'Your selected apps stay locked during this time.';
+
+  @override
+  String get sheetNameLabel => 'NAME';
+
+  @override
+  String get sheetNameHint => 'e.g. Study time';
+
+  @override
+  String get sheetStarts => 'Starts';
+
+  @override
+  String get sheetEnds => 'Ends';
+
+  @override
+  String get sheetSameTime => 'Start and end are the same';
+
+  @override
+  String sheetLockedFor(String duration) {
+    return 'Locked for $duration';
+  }
+
+  @override
+  String sheetLockedForOvernight(String duration) {
+    return 'Locked for $duration (overnight)';
+  }
+
+  @override
+  String sheetDurH(int h) {
+    return '${h}h';
+  }
+
+  @override
+  String sheetDurM(int m) {
+    return '${m}m';
+  }
+
+  @override
+  String sheetDurHM(int h, int m) {
+    return '${h}h ${m}m';
+  }
+
+  @override
+  String get sheetLockStartsAt => 'LOCK STARTS AT';
+
+  @override
+  String get sheetLockEndsAt => 'LOCK ENDS AT';
+
+  @override
+  String get sheetRepeatOn => 'REPEAT ON';
+
+  @override
+  String get sheetAddSchedule => 'Add schedule';
+
+  @override
+  String get sheetCustomDefaultName => 'Custom';
+
+  @override
+  String sheetChangeTime(String label, String time) {
+    return '$label $time. Change time';
+  }
+
+  @override
+  String get ob3Title => 'Stay Focused Every Day';
+
+  @override
+  String get ob3Body =>
+      'Use Pomodoro and Deep Focus sessions to boost productivity and achieve more.';
+
+  @override
+  String get ob3Pomodoro => 'Pomodoro';
+
+  @override
+  String ob3PomodoroSub(int min) {
+    return '$min min sessions';
+  }
+
+  @override
+  String get ob3DeepFocus => 'Deep Focus';
+
+  @override
+  String ob3DeepFocusSub(int min) {
+    return '$min min flow';
+  }
+
+  @override
+  String get ob3StatBoost => 'productivity boost';
+
+  @override
+  String ob3StatStreakValue(int days) {
+    return '$days-day';
+  }
+
+  @override
+  String get ob3StatStreak => 'streak building';
+
+  @override
+  String get ob3StatGoal => 'goal completion';
+
+  @override
+  String get ob3StartTimer => 'Start timer';
+
+  @override
+  String get ob3PauseTimer => 'Pause timer';
+
+  @override
+  String get ob4Title => 'Track Your Progress';
+
+  @override
+  String get ob4Body =>
+      'Monitor screen time, focus hours, goals, and productivity with beautiful analytics.';
+
+  @override
+  String get ob4Weekly => 'Weekly';
+
+  @override
+  String get ob4WeeklySub => 'reports';
+
+  @override
+  String get ob4Goals => 'Goals';
+
+  @override
+  String get ob4GoalsSub => 'tracker';
+
+  @override
+  String get ob4Insights => 'Insights';
+
+  @override
+  String get ob4InsightsSub => 'AI coach';
+
+  @override
+  String get ob4Streaks => 'Streaks';
+
+  @override
+  String get ob4StreaksSub => '& badges';
+
+  @override
+  String get ob5Title => 'What is your daily average Screen Time?';
+
+  @override
+  String get ob5Subtitle => 'On your phone only. Your best guess is okay.';
+
+  @override
+  String get ob5More7 => 'More than 7 hours';
+
+  @override
+  String get ob5H5to7 => '5-7 hours';
+
+  @override
+  String get ob5H4to5 => '4-5 hours';
+
+  @override
+  String get ob5H3to4 => '3-4 hours';
+
+  @override
+  String get ob5H1to3 => '1-3 hours';
+
+  @override
+  String get ob5Under1 => 'Under 1 hour';
+
+  @override
+  String get ob6Title => 'What is your occupation?';
+
+  @override
+  String get ob6Subtitle =>
+      'We\'ll personalize your focus plan based on your work style.';
+
+  @override
+  String get ob6Software => 'Software Development';
+
+  @override
+  String get ob6Founder => 'CEO / Founder';
+
+  @override
+  String get ob6Remote => 'Remote Worker';
+
+  @override
+  String get ob6Finance => 'Finance / Ops / Consulting';
+
+  @override
+  String get ob6Art => 'Art / Content';
+
+  @override
+  String get ob6Education => 'Education';
+
+  @override
+  String get ob6Others => 'Others';
+
+  @override
+  String get ob7Title => 'Set your daily screen-time goal';
+
+  @override
+  String get ob7Subtitle =>
+      'You can change this any time. We\'ll nudge you as you get close.';
+
+  @override
+  String ob7Hours(String hours) {
+    return '${hours}h';
+  }
+
+  @override
+  String get ob7PerDay => 'per day';
+
+  @override
+  String ob7HoursPerDay(String hours) {
+    return '$hours per day';
+  }
+
+  @override
+  String get ob7DialLabel => 'Daily screen-time goal';
+
+  @override
+  String get ob7InfoNote =>
+      'The average person spends 4h+ on their phone daily. Setting a goal is the first step to reclaiming your time.';
+
+  @override
+  String get ob8Title => 'Enable Essential Permissions';
+
+  @override
+  String get ob8Subtitle =>
+      'Grant access to unlock the full Pausey experience.';
+
+  @override
+  String get ob8UsageTitle => 'Usage Access';
+
+  @override
+  String get ob8UsageSub => 'Monitor app usage and enforce focus sessions.';
+
+  @override
+  String get ob8NotifTitle => 'Notifications';
+
+  @override
+  String get ob8NotifSub => 'Timely reminders & progress alerts.';
+
+  @override
+  String get ob8TrackTitle => 'Track App Usage';
+
+  @override
+  String get ob8TrackSub => 'Daily and weekly breakdowns.';
+
+  @override
+  String get ob9Title => 'You\'re all set!';
+
+  @override
+  String get ob9Subtitle => 'Your focus environment is ready to go.';
+
+  @override
+  String get ob9Enter => 'Enter Pausey';
+
+  @override
+  String get ob9Replay => 'Replay Onboarding';
+
+  @override
+  String get ob9ScreenTime => 'Screen Time';
+
+  @override
+  String get ob9AppsLocked => 'Apps Locked';
+
+  @override
+  String get ob9Permissions => 'Permissions';
+
+  @override
+  String get ob9FocusMode => 'Focus Mode';
+
+  @override
+  String get ob9AllOk => 'All OK';
+
+  @override
+  String get ob9On => 'ON';
+
+  @override
+  String get ob9Done => 'DONE';
+
+  @override
+  String get ob9StreakTitle => 'Day 1 streak starts now';
+
+  @override
+  String get ob9StreakSub => 'Complete a session to keep it going';
+
+  @override
   String get appName => 'Pausey';
 
   @override

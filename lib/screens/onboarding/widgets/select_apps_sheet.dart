@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart' show DateFormat, NumberFormat;
 
+import '../../../services/local_store.dart';
 import '../../../utils/app_theme.dart';
+import '../../../utils/l10n.dart';
 
 /// What the user picked in the "Select Apps" sheet.
 class SelectAppsResult {
@@ -152,28 +155,62 @@ class _Schedule {
   /// Made by the user with "Custom" (can be removed).
   final bool custom;
 
-  String get label {
-    final time = '${_fmtTime(start)} – ${_fmtTime(end)}';
-    return custom ? '$time · ${_fmtDays(days)}' : time;
+  String label(BuildContext context) {
+    final time = '${_fmtTime(context, start)} – ${_fmtTime(context, end)}';
+    return custom ? '$time · ${_fmtDays(context, days)}' : time;
   }
+
+  /// Shown name: built-in windows are translated, custom ones are the user's text.
+  String displayName(AppLocalizations l) => switch (name) {
+        'Morning' when !custom => l.sheetSchedMorning,
+        'Work' when !custom => l.sheetSchedWork,
+        'Evening' when !custom => l.sheetSchedEvening,
+        _ => name,
+      };
 }
 
-String _fmtTime(TimeOfDay t) {
-  final h = t.hourOfPeriod == 0 ? 12 : t.hourOfPeriod;
-  final ampm = t.period == DayPeriod.am ? 'AM' : 'PM';
-  return t.minute == 0 ? '$h $ampm' : '$h:${t.minute.toString().padLeft(2, '0')} $ampm';
+String _locale(BuildContext context) => Localizations.localeOf(context).toString();
+
+String _fmtTime(BuildContext context, TimeOfDay t) {
+  final d = DateTime(2024, 1, 1, t.hour, t.minute);
+  final loc = _locale(context);
+  return (t.minute == 0 ? DateFormat.j(loc) : DateFormat.jm(loc)).format(d);
 }
 
-const _dayLetters = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-const _dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+/// 1 = Monday … 7 = Sunday. 1 Jan 2024 was a Monday.
+DateTime _weekday(int i) => DateTime(2024, 1, i);
 
-String _fmtDays(Set<int> d) {
-  if (d.length == 7) return 'Every day';
-  if (d.length == 5 && d.containsAll({1, 2, 3, 4, 5})) return 'Weekdays';
-  if (d.length == 2 && d.containsAll({6, 7})) return 'Weekends';
+String _dayName(BuildContext context, int i) => DateFormat.E(_locale(context)).format(_weekday(i));
+
+String _dayLetter(BuildContext context, int i) => DateFormat.EEEEE(_locale(context)).format(_weekday(i));
+
+String _fmtDays(BuildContext context, Set<int> d) {
+  final l = context.l10n;
+  if (d.length == 7) return l.sheetEveryDay;
+  if (d.length == 5 && d.containsAll({1, 2, 3, 4, 5})) return l.sheetWeekdays;
+  if (d.length == 2 && d.containsAll({6, 7})) return l.sheetWeekends;
   final sorted = d.toList()..sort();
-  return sorted.map((i) => _dayNames[i - 1]).join(', ');
+  return sorted.map((i) => _dayName(context, i)).join(', ');
 }
+
+String _categoryLabel(AppLocalizations l, String id) => switch (id) {
+      'Social' => l.sheetCatSocial,
+      'Entertainment' => l.sheetCatEntertainment,
+      'Games' => l.sheetCatGames,
+      _ => l.sheetCatAll,
+    };
+
+String _methodTitle(AppLocalizations l, String id) => switch (id) {
+      'Face ID' => l.sheetFaceId,
+      'Touch ID' => l.sheetTouchId,
+      _ => l.sheetPin,
+    };
+
+String _methodSub(AppLocalizations l, String id) => switch (id) {
+      'Face ID' => l.sheetFaceIdSub,
+      'Touch ID' => l.sheetTouchIdSub,
+      _ => l.sheetPinSub,
+    };
 
 const _defaultSchedules = [
   _Schedule('Morning', TimeOfDay(hour: 6, minute: 0), TimeOfDay(hour: 9, minute: 0)),
@@ -181,10 +218,11 @@ const _defaultSchedules = [
   _Schedule('Evening', TimeOfDay(hour: 20, minute: 0), TimeOfDay(hour: 23, minute: 0)),
 ];
 
+// (id, unused, icon, w, h) — ids stay English; titles come from l10n.
 const _methods = [
-  ('PIN Code', '4-digit PIN', 'assets/svg/sheet_pin.svg', 20.0, 20.0),
-  ('Face ID', 'Biometric', 'assets/svg/sheet_face.svg', 20.0, 20.0),
-  ('Touch ID', 'Fingerprint', 'assets/svg/sheet_fingerprint.svg', 18.6, 18.67),
+  ('PIN Code', '', 'assets/svg/sheet_pin.svg', 20.0, 20.0),
+  ('Face ID', '', 'assets/svg/sheet_face.svg', 20.0, 20.0),
+  ('Touch ID', '', 'assets/svg/sheet_fingerprint.svg', 18.6, 18.67),
 ];
 
 // ---------------------------------------------------------------------------
@@ -242,6 +280,10 @@ class _SelectAppsSheetState extends State<SelectAppsSheet> {
       });
 
   void _finish({bool skipped = false}) {
+    final store = LocalStore.instance;
+    store.saveAnswer('lockedApps', skipped ? <String>[] : _selectedApps.toList());
+    store.saveAnswer('schedules', skipped ? <String>[] : _activeSchedules.toList());
+    store.saveAnswer('unlockMethod', _method);
     Navigator.of(context).pop(SelectAppsResult(
       apps: skipped ? const {} : Set.of(_selectedApps),
       schedules: skipped ? const {} : Set.of(_activeSchedules),
@@ -253,6 +295,7 @@ class _SelectAppsSheetState extends State<SelectAppsSheet> {
   @override
   Widget build(BuildContext context) {
     final s = _SheetColors(context);
+    final l = context.l10n;
     final media = MediaQuery.of(context);
     // About 1.07 h saved per locked app — "3.2h" for the 3 apps in the design.
     final saved = _selectedApps.length * 3.2 / 3;
@@ -344,10 +387,10 @@ class _SelectAppsSheetState extends State<SelectAppsSheet> {
                                       child: _StatCard(
                                         icon: 'assets/svg/sheet_lock_stat.svg',
                                         iconSize: const Size(12.5, 13.67),
-                                        label: 'Total Locked',
+                                        label: l.sheetTotalLocked,
                                         value: '${_selectedApps.length}',
                                         valueColor: s.title,
-                                        caption: 'apps selected',
+                                        caption: l.sheetAppsSelected,
                                         border: AppPalette.accent.withValues(alpha: 0.21),
                                         gradient: s.dark
                                             ? const [Color(0xFF1A1040), Color(0xFF221556)]
@@ -359,10 +402,10 @@ class _SelectAppsSheetState extends State<SelectAppsSheet> {
                                       child: _StatCard(
                                         icon: 'assets/svg/sheet_clock_stat.svg',
                                         iconSize: const Size(13.67, 13.67),
-                                        label: 'Time Saved',
-                                        value: '${saved.toStringAsFixed(1)}h',
+                                        label: l.sheetTimeSaved,
+                                        value: l.sheetHoursValue(NumberFormat('0.0', _locale(context)).format(saved)),
                                         valueColor: _green,
-                                        caption: 'per day avg',
+                                        caption: l.sheetPerDayAvg,
                                         border: _green.withValues(alpha: 0.19),
                                         gradient: s.dark
                                             ? const [Color(0xFF0E1E2A), Color(0xFF0C2030)]
@@ -386,18 +429,18 @@ class _SelectAppsSheetState extends State<SelectAppsSheet> {
                                 children: [
                                   for (final cat in _categories) ...[
                                     if (cat != _categories.first) const SizedBox(width: 8),
-                                    _Chip(label: cat, selected: cat == _category, onTap: () => setState(() => _category = cat)),
+                                    _Chip(label: _categoryLabel(l, cat), selected: cat == _category, onTap: () => setState(() => _category = cat)),
                                   ],
                                 ],
                               ),
                             ),
                             const SizedBox(height: 16),
                             _SectionHeader(
-                              label: 'APPS',
+                              label: l.sheetAppsHeader,
                               trailing: _Badge(
                                 icon: 'assets/svg/sheet_lock_small.svg',
                                 gap: 6,
-                                text: '${_selectedApps.length} selected',
+                                text: l.sheetSelectedCount(_selectedApps.length),
                                 color: AppPalette.violet,
                                 fill: AppPalette.accent.withValues(alpha: 0.1),
                                 border: AppPalette.accent.withValues(alpha: 0.25),
@@ -416,7 +459,7 @@ class _SelectAppsSheetState extends State<SelectAppsSheet> {
                                     ? Padding(
                                         padding: const EdgeInsets.symmetric(vertical: 18),
                                         child: Text(
-                                          'No apps found',
+                                          l.sheetNoApps,
                                           textAlign: TextAlign.center,
                                           style: _t(13, FontWeight.w500, s.itemOff, height: 18.57),
                                         ),
@@ -437,16 +480,16 @@ class _SelectAppsSheetState extends State<SelectAppsSheet> {
                             ),
                             const SizedBox(height: 20),
                             _SectionHeader(
-                              label: 'LOCK SCHEDULE',
+                              label: l.sheetLockSchedule,
                               padTop: 0,
                               padBottom: 0,
                               trailing: _TapScale(
                                 onTap: _addCustomSchedule,
-                                semanticLabel: 'Add a custom lock schedule',
+                                semanticLabel: l.sheetAddCustomSemantic,
                                 child: _Badge(
                                   icon: 'assets/svg/sheet_calendar.svg',
                                   gap: 4,
-                                  text: '+ Custom',
+                                  text: l.sheetCustomBadge,
                                   color: _amber,
                                   fill: _amber.withValues(alpha: 0.08),
                                   border: _amber.withValues(alpha: 0.21),
@@ -465,8 +508,8 @@ class _SelectAppsSheetState extends State<SelectAppsSheet> {
                                     _AppearIn(
                                       key: ValueKey(sch.name),
                                       child: _ScheduleRow(
-                                        name: sch.name,
-                                        time: sch.label,
+                                        name: sch.displayName(l),
+                                        time: sch.label(context),
                                         active: _activeSchedules.contains(sch.name),
                                         onTap: () => _toggleSchedule(sch.name),
                                         onRemove: sch.custom ? () => _removeSchedule(sch) : null,
@@ -479,7 +522,7 @@ class _SelectAppsSheetState extends State<SelectAppsSheet> {
                             const SizedBox(height: 20),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: Text('UNLOCK METHOD', style: _t(11, FontWeight.w700, s.section, height: 14.67, ls: 1.1)),
+                              child: Text(l.sheetUnlockMethod, style: _t(11, FontWeight.w700, s.section, height: 14.67, ls: 1.1)),
                             ),
                             const SizedBox(height: 8),
                             Padding(
@@ -490,8 +533,8 @@ class _SelectAppsSheetState extends State<SelectAppsSheet> {
                                     if (m != _methods.first) const SizedBox(width: 12),
                                     Expanded(
                                       child: _MethodCard(
-                                        title: m.$1,
-                                        subtitle: m.$2,
+                                        title: _methodTitle(l, m.$1),
+                                        subtitle: _methodSub(l, m.$1),
                                         icon: m.$3,
                                         iconSize: Size(m.$4, m.$5),
                                         selected: _method == m.$1,
@@ -514,10 +557,10 @@ class _SelectAppsSheetState extends State<SelectAppsSheet> {
                         children: [
                           const _SheetDots(count: 5, index: 0),
                           const SizedBox(height: 20),
-                          _ConfirmButton(onPressed: _finish),
+                          _ConfirmButton(onPressed: _finish, label: l.sheetConfirmLock),
                           const SizedBox(height: 12),
                           Text(
-                            'You can always change this later',
+                            l.sheetFooter,
                             textAlign: TextAlign.center,
                             style: _t(11, FontWeight.w400, s.footer, height: 14.67),
                           ),
@@ -548,13 +591,14 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = _SheetColors(context);
+    final l = context.l10n;
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Row(
         children: [
           Semantics(
             button: true,
-            label: 'Back',
+            label: l.back,
             child: InkResponse(
               onTap: onBack,
               radius: 22,
@@ -567,13 +611,17 @@ class _Header extends StatelessWidget {
                   color: s.backFill,
                   border: Border.all(color: s.backBorder),
                 ),
-                child: SvgPicture.asset('assets/svg/sheet_back.svg', width: 15, height: 15),
+                child: Directionality.of(context) == TextDirection.rtl
+                    ? Transform.flip(flipX: true, child: SvgPicture.asset('assets/svg/sheet_back.svg', width: 15, height: 15))
+                    : SvgPicture.asset('assets/svg/sheet_back.svg', width: 15, height: 15),
               ),
             ),
           ),
           const SizedBox(width: 12),
-          Text('Select Apps', style: _t(15, FontWeight.w700, s.title, height: 22.5)),
-          const Spacer(),
+          Expanded(
+            child: Text(l.sheetTitle,
+                maxLines: 1, overflow: TextOverflow.ellipsis, style: _t(15, FontWeight.w700, s.title, height: 22.5)),
+          ),
           TextButton(
             onPressed: onSkip,
             style: TextButton.styleFrom(
@@ -581,7 +629,7 @@ class _Header extends StatelessWidget {
               minimumSize: Size.zero,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
-            child: Text('Skip', style: _t(13, FontWeight.w500, s.skip, height: 18.57)),
+            child: Text(l.skip, style: _t(13, FontWeight.w500, s.skip, height: 18.57)),
           ),
         ],
       ),
@@ -631,7 +679,10 @@ class _StatCard extends StatelessWidget {
                 child: Center(child: SvgPicture.asset(icon, width: iconSize.width, height: iconSize.height)),
               ),
               const SizedBox(width: 8),
-              Text(label, style: _t(11, FontWeight.w600, s.statLabel, height: 16.5)),
+              Expanded(
+                child: Text(label,
+                    maxLines: 1, overflow: TextOverflow.ellipsis, style: _t(11, FontWeight.w600, s.statLabel, height: 16.5)),
+              ),
             ],
           ),
           const SizedBox(height: 4),
@@ -644,7 +695,7 @@ class _StatCard extends StatelessWidget {
                 child: child,
               ),
             ),
-            layoutBuilder: (current, previous) => Stack(alignment: Alignment.centerLeft, children: [...previous, ?current]),
+            layoutBuilder: (current, previous) => Stack(alignment: AlignmentDirectional.centerStart, children: [...previous, ?current]),
             child: Text(
               value,
               key: ValueKey(value),
@@ -652,7 +703,7 @@ class _StatCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          Text(caption, style: _t(10, FontWeight.w500, s.statCaption, height: 15)),
+          Text(caption, maxLines: 2, overflow: TextOverflow.ellipsis, style: _t(10, FontWeight.w500, s.statCaption, height: 15)),
         ],
       ),
     );
@@ -692,7 +743,7 @@ class _SearchField extends StatelessWidget {
               decoration: InputDecoration(
                 isCollapsed: true,
                 border: InputBorder.none,
-                hintText: 'Search apps...',
+                hintText: context.l10n.sheetSearchHint,
                 hintStyle: _t(13, FontWeight.w400, s.hint, height: 18.57),
               ),
             ),
@@ -751,8 +802,11 @@ class _SectionHeader extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(20, padTop, 20, padBottom),
       child: Row(
         children: [
-          Text(label, style: _t(11, FontWeight.w700, s.section, height: 14.67, ls: 1.1)),
-          const Spacer(),
+          Expanded(
+            child: Text(label,
+                maxLines: 1, overflow: TextOverflow.ellipsis, style: _t(11, FontWeight.w700, s.section, height: 14.67, ls: 1.1)),
+          ),
+          const SizedBox(width: 8),
           trailing,
         ],
       ),
@@ -885,7 +939,7 @@ class _AppRow extends StatelessWidget {
                     child: Text(app.name),
                   ),
                   const SizedBox(height: 2),
-                  Text(app.category, style: _t(11, FontWeight.w400, s.sub, height: 14.67)),
+                  Text(_categoryLabel(context.l10n, app.category), style: _t(11, FontWeight.w400, s.sub, height: 14.67)),
                 ],
               ),
             ),
@@ -944,17 +998,17 @@ class _ScheduleRow extends StatelessWidget {
                   AnimatedDefaultTextStyle(
                     duration: const Duration(milliseconds: 200),
                     style: _t(13, FontWeight.w600, active ? s.itemOn : s.itemOff, height: 18.57),
-                    child: Text(name),
+                    child: Text(name, maxLines: 1, overflow: TextOverflow.ellipsis),
                   ),
                   const SizedBox(height: 2),
-                  Text(time, style: _t(11, FontWeight.w400, active ? s.subOn : s.sub, height: 14.67)),
+                  Text(time, maxLines: 2, overflow: TextOverflow.ellipsis, style: _t(11, FontWeight.w400, active ? s.subOn : s.sub, height: 14.67)),
                 ],
               ),
             ),
             if (onRemove != null) ...[
               Semantics(
                 button: true,
-                label: 'Remove $name',
+                label: context.l10n.sheetRemove(name),
                 child: InkResponse(
                   onTap: onRemove,
                   radius: 18,
@@ -999,7 +1053,7 @@ class _Toggle extends StatelessWidget {
       child: AnimatedAlign(
         duration: const Duration(milliseconds: 220),
         curve: Curves.easeOutBack,
-        alignment: on ? Alignment.centerRight : Alignment.centerLeft,
+        alignment: on ? AlignmentDirectional.centerEnd : AlignmentDirectional.centerStart,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 220),
           width: 20,
@@ -1053,6 +1107,7 @@ class _MethodCard extends StatelessWidget {
                 : null,
             border: Border.all(color: selected ? AppPalette.accent.withValues(alpha: 0.33) : s.cardBorder),
           ),
+          padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Column(
             children: [
               const SizedBox(height: 15),
@@ -1077,10 +1132,14 @@ class _MethodCard extends StatelessWidget {
               AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 200),
                 style: _t(13, FontWeight.w700, selected ? s.itemOn : s.itemOff, height: 19.5),
-                child: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis),
+                child: FittedBox(fit: BoxFit.scaleDown, child: Text(title, maxLines: 1)),
               ),
               const SizedBox(height: 9),
-              Text(subtitle, style: _t(10, FontWeight.w400, selected ? s.subOn : s.sub, height: 15)),
+              Text(subtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: _t(10, FontWeight.w400, selected ? s.subOn : s.sub, height: 15)),
               const SizedBox(height: 8),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 220),
@@ -1132,7 +1191,7 @@ class _SheetDots extends StatelessWidget {
 
 /// Full-width violet gradient pill: "Confirm Lock" + arrow in a 28px circle.
 class _ConfirmButton extends StatefulWidget {
-  const _ConfirmButton({required this.onPressed, this.label = 'Confirm Lock'});
+  const _ConfirmButton({required this.onPressed, required this.label});
 
   final VoidCallback onPressed;
   final String label;
@@ -1170,14 +1229,19 @@ class _ConfirmButtonState extends State<_ConfirmButton> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(widget.label, style: AppText.button.copyWith(color: Colors.white, letterSpacing: 0)),
+                Flexible(
+                  child: Text(widget.label,
+                      maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.button.copyWith(color: Colors.white, letterSpacing: 0)),
+                ),
                 const SizedBox(width: 8),
                 Container(
                   width: 28,
                   height: 28,
                   alignment: Alignment.center,
                   decoration: const BoxDecoration(shape: BoxShape.circle, color: Color(0x33FFFFFF)),
-                  child: SvgPicture.asset('assets/svg/sheet_arrow.svg', width: 15, height: 15),
+                  child: Directionality.of(context) == TextDirection.rtl
+                      ? Transform.flip(flipX: true, child: SvgPicture.asset('assets/svg/sheet_arrow.svg', width: 15, height: 15))
+                      : SvgPicture.asset('assets/svg/sheet_arrow.svg', width: 15, height: 15),
                 ),
               ],
             ),
@@ -1294,13 +1358,13 @@ class _CustomScheduleSheetState extends State<_CustomScheduleSheet> {
     return (b - a + 24 * 60) % (24 * 60);
   }
 
-  String get _durationText {
+  String _durationText(AppLocalizations l) {
     final m = _minutes;
-    if (m == 0) return 'Start and end are the same';
+    if (m == 0) return l.sheetSameTime;
     final h = m ~/ 60, r = m % 60;
-    final d = h == 0 ? '${r}m' : (r == 0 ? '${h}h' : '${h}h ${r}m');
+    final d = h == 0 ? l.sheetDurM(r) : (r == 0 ? l.sheetDurH(h) : l.sheetDurHM(h, r));
     final overnight = (_end.hour * 60 + _end.minute) <= (_start.hour * 60 + _start.minute);
-    return 'Locked for $d${overnight ? ' (overnight)' : ''}';
+    return overnight ? l.sheetLockedForOvernight(d) : l.sheetLockedFor(d);
   }
 
   bool get _valid => _minutes > 0 && _days.isNotEmpty;
@@ -1310,7 +1374,7 @@ class _CustomScheduleSheetState extends State<_CustomScheduleSheet> {
     final picked = await showTimePicker(
       context: context,
       initialTime: start ? _start : _end,
-      helpText: start ? 'LOCK STARTS AT' : 'LOCK ENDS AT',
+      helpText: start ? context.l10n.sheetLockStartsAt : context.l10n.sheetLockEndsAt,
       builder: (ctx, child) {
         final base = Theme.of(ctx);
         return Theme(
@@ -1346,7 +1410,7 @@ class _CustomScheduleSheetState extends State<_CustomScheduleSheet> {
   }
 
   void _save() {
-    var name = _name.text.trim().isEmpty ? 'Custom' : _name.text.trim();
+    var name = _name.text.trim().isEmpty ? context.l10n.sheetCustomDefaultName : _name.text.trim();
     final base = name;
     var n = 2;
     while (widget.takenNames.contains(name)) {
@@ -1359,7 +1423,9 @@ class _CustomScheduleSheetState extends State<_CustomScheduleSheet> {
   @override
   Widget build(BuildContext context) {
     final s = _SheetColors(context);
+    final l = context.l10n;
     final media = MediaQuery.of(context);
+    final durationText = _durationText(l);
     return Padding(
       padding: EdgeInsets.only(bottom: media.viewInsets.bottom),
       child: Container(
@@ -1384,11 +1450,11 @@ class _CustomScheduleSheetState extends State<_CustomScheduleSheet> {
                   ),
                 ),
                 const SizedBox(height: 18),
-                Text('Custom schedule', style: _t(20, FontWeight.w800, s.title, height: 26)),
+                Text(l.sheetCustomTitle, style: _t(20, FontWeight.w800, s.title, height: 26)),
                 const SizedBox(height: 4),
-                Text('Your selected apps stay locked during this time.', style: _t(13, FontWeight.w400, s.itemOff, height: 18)),
+                Text(l.sheetCustomBody, style: _t(13, FontWeight.w400, s.itemOff, height: 18)),
                 const SizedBox(height: 18),
-                _label(s, 'NAME'),
+                _label(s, l.sheetNameLabel),
                 const SizedBox(height: 8),
                 TextField(
                   controller: _name,
@@ -1396,7 +1462,7 @@ class _CustomScheduleSheetState extends State<_CustomScheduleSheet> {
                   maxLength: 20,
                   style: _t(14, FontWeight.w600, s.itemOn),
                   decoration: InputDecoration(
-                    hintText: 'e.g. Study time',
+                    hintText: l.sheetNameHint,
                     hintStyle: _t(14, FontWeight.w400, s.hint),
                     counterText: '',
                     filled: true,
@@ -1412,22 +1478,22 @@ class _CustomScheduleSheetState extends State<_CustomScheduleSheet> {
                 const SizedBox(height: 16),
                 Row(
                   children: [
-                    Expanded(child: _TimeTile(label: 'Starts', time: _start, onTap: () => _pick(true))),
+                    Expanded(child: _TimeTile(label: l.sheetStarts, time: _start, onTap: () => _pick(true))),
                     const SizedBox(width: 12),
-                    Expanded(child: _TimeTile(label: 'Ends', time: _end, onTap: () => _pick(false))),
+                    Expanded(child: _TimeTile(label: l.sheetEnds, time: _end, onTap: () => _pick(false))),
                   ],
                 ),
                 const SizedBox(height: 8),
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 200),
                   child: Text(
-                    _durationText,
-                    key: ValueKey(_durationText),
+                    durationText,
+                    key: ValueKey(durationText),
                     style: _t(12, FontWeight.w600, _minutes == 0 ? const Color(0xFFFF6B6B) : _amber, height: 16),
                   ),
                 ),
                 const SizedBox(height: 16),
-                _label(s, 'REPEAT ON'),
+                _label(s, l.sheetRepeatOn),
                 const SizedBox(height: 8),
                 Row(
                   children: [
@@ -1435,8 +1501,8 @@ class _CustomScheduleSheetState extends State<_CustomScheduleSheet> {
                       if (i > 1) const SizedBox(width: 6),
                       Expanded(
                         child: _DayChip(
-                          letter: _dayLetters[i - 1],
-                          name: _dayNames[i - 1],
+                          letter: _dayLetter(context, i),
+                          name: _dayName(context, i),
                           on: _days.contains(i),
                           onTap: () => setState(() => _days.contains(i) ? _days.remove(i) : _days.add(i)),
                         ),
@@ -1450,7 +1516,7 @@ class _CustomScheduleSheetState extends State<_CustomScheduleSheet> {
                   opacity: _valid ? 1 : 0.45,
                   child: IgnorePointer(
                     ignoring: !_valid,
-                    child: _ConfirmButton(onPressed: _save, label: 'Add schedule'),
+                    child: _ConfirmButton(onPressed: _save, label: l.sheetAddSchedule),
                   ),
                 ),
               ],
@@ -1476,7 +1542,7 @@ class _TimeTile extends StatelessWidget {
     final s = _SheetColors(context);
     return Semantics(
       button: true,
-      label: '$label ${_fmtTime(time)}. Change time',
+      label: context.l10n.sheetChangeTime(label, _fmtTime(context, time)),
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(
@@ -1500,8 +1566,9 @@ class _TimeTile extends StatelessWidget {
                       AnimatedSwitcher(
                         duration: const Duration(milliseconds: 200),
                         child: Text(
-                          _fmtTime(time),
+                          _fmtTime(context, time),
                           key: ValueKey(time),
+                          maxLines: 1,
                           style: _t(20, FontWeight.w800, s.itemOn, height: 24).copyWith(
                             fontFeatures: const [FontFeature.tabularFigures()],
                           ),
@@ -1549,7 +1616,7 @@ class _DayChip extends StatelessWidget {
             border: Border.all(color: on ? Colors.transparent : s.cardBorder),
             boxShadow: on ? [BoxShadow(color: AppPalette.accent.withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 3))] : null,
           ),
-          child: Text(letter, style: _t(13, FontWeight.w800, on ? Colors.white : s.itemOff)),
+          child: Text(letter, maxLines: 1, style: _t(13, FontWeight.w800, on ? Colors.white : s.itemOff)),
         ),
       ),
     );

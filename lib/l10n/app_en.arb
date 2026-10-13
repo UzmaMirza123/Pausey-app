@@ -1,5 +1,237 @@
 {
   "@@locale": "en",
+  "ob1Title": "Reduce Screen Addiction",
+  "ob1Body": "Take control of your digital habits and spend less time on distracting apps.",
+  "ob1StatAvg": "Avg daily screen time",
+  "ob1StatSocial": "Spent on social media",
+  "ob2SelectApps": "Select Apps",
+  "ob2Title": "Lock Distracting Apps",
+  "ob2Body": "Block social media, games, and other distractions with powerful app locking tools.",
+  "ob2Feature1": "One-tap block for any app on your phone",
+  "ob2Feature2": "Schedule lock times and focus windows",
+  "ob2Feature3": "Password-protect blocks so you stay committed",
+  "sheetTitle": "Select Apps",
+  "sheetTotalLocked": "Total Locked",
+  "sheetAppsSelected": "apps selected",
+  "sheetTimeSaved": "Time Saved",
+  "sheetPerDayAvg": "per day avg",
+  "sheetHoursValue": "{h}h",
+  "@sheetHoursValue": {
+    "placeholders": {
+      "h": {
+        "type": "String"
+      }
+    }
+  },
+  "sheetSearchHint": "Search apps...",
+  "sheetCatAll": "All",
+  "sheetCatSocial": "Social",
+  "sheetCatEntertainment": "Entertainment",
+  "sheetCatGames": "Games",
+  "sheetAppsHeader": "APPS",
+  "sheetSelectedCount": "{count} selected",
+  "@sheetSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "sheetNoApps": "No apps found",
+  "sheetLockSchedule": "LOCK SCHEDULE",
+  "sheetAddCustomSemantic": "Add a custom lock schedule",
+  "sheetCustomBadge": "+ Custom",
+  "sheetSchedMorning": "Morning",
+  "sheetSchedWork": "Work",
+  "sheetSchedEvening": "Evening",
+  "sheetEveryDay": "Every day",
+  "sheetWeekdays": "Weekdays",
+  "sheetWeekends": "Weekends",
+  "sheetUnlockMethod": "UNLOCK METHOD",
+  "sheetPin": "PIN Code",
+  "sheetPinSub": "4-digit PIN",
+  "sheetFaceId": "Face ID",
+  "sheetFaceIdSub": "Biometric",
+  "sheetTouchId": "Touch ID",
+  "sheetTouchIdSub": "Fingerprint",
+  "sheetFooter": "You can always change this later",
+  "sheetConfirmLock": "Confirm Lock",
+  "sheetRemove": "Remove {name}",
+  "@sheetRemove": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "sheetCustomTitle": "Custom schedule",
+  "sheetCustomBody": "Your selected apps stay locked during this time.",
+  "sheetNameLabel": "NAME",
+  "sheetNameHint": "e.g. Study time",
+  "sheetStarts": "Starts",
+  "sheetEnds": "Ends",
+  "sheetSameTime": "Start and end are the same",
+  "sheetLockedFor": "Locked for {duration}",
+  "@sheetLockedFor": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "sheetLockedForOvernight": "Locked for {duration} (overnight)",
+  "@sheetLockedForOvernight": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "sheetDurH": "{h}h",
+  "@sheetDurH": {
+    "placeholders": {
+      "h": {
+        "type": "int"
+      }
+    }
+  },
+  "sheetDurM": "{m}m",
+  "@sheetDurM": {
+    "placeholders": {
+      "m": {
+        "type": "int"
+      }
+    }
+  },
+  "sheetDurHM": "{h}h {m}m",
+  "@sheetDurHM": {
+    "placeholders": {
+      "h": {
+        "type": "int"
+      },
+      "m": {
+        "type": "int"
+      }
+    }
+  },
+  "sheetLockStartsAt": "LOCK STARTS AT",
+  "sheetLockEndsAt": "LOCK ENDS AT",
+  "sheetRepeatOn": "REPEAT ON",
+  "sheetAddSchedule": "Add schedule",
+  "sheetCustomDefaultName": "Custom",
+  "sheetChangeTime": "{label} {time}. Change time",
+  "@sheetChangeTime": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "ob3Title": "Stay Focused Every Day",
+  "ob3Body": "Use Pomodoro and Deep Focus sessions to boost productivity and achieve more.",
+  "ob3Pomodoro": "Pomodoro",
+  "ob3PomodoroSub": "{min} min sessions",
+  "@ob3PomodoroSub": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "ob3DeepFocus": "Deep Focus",
+  "ob3DeepFocusSub": "{min} min flow",
+  "@ob3DeepFocusSub": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "ob3StatBoost": "productivity boost",
+  "ob3StatStreakValue": "{days}-day",
+  "@ob3StatStreakValue": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "ob3StatStreak": "streak building",
+  "ob3StatGoal": "goal completion",
+  "ob3StartTimer": "Start timer",
+  "ob3PauseTimer": "Pause timer",
+  "ob4Title": "Track Your Progress",
+  "ob4Body": "Monitor screen time, focus hours, goals, and productivity with beautiful analytics.",
+  "ob4Weekly": "Weekly",
+  "ob4WeeklySub": "reports",
+  "ob4Goals": "Goals",
+  "ob4GoalsSub": "tracker",
+  "ob4Insights": "Insights",
+  "ob4InsightsSub": "AI coach",
+  "ob4Streaks": "Streaks",
+  "ob4StreaksSub": "& badges",
+  "ob5Title": "What is your daily average Screen Time?",
+  "ob5Subtitle": "On your phone only. Your best guess is okay.",
+  "ob5More7": "More than 7 hours",
+  "ob5H5to7": "5-7 hours",
+  "ob5H4to5": "4-5 hours",
+  "ob5H3to4": "3-4 hours",
+  "ob5H1to3": "1-3 hours",
+  "ob5Under1": "Under 1 hour",
+  "ob6Title": "What is your occupation?",
+  "ob6Subtitle": "We'll personalize your focus plan based on your work style.",
+  "ob6Software": "Software Development",
+  "ob6Founder": "CEO / Founder",
+  "ob6Remote": "Remote Worker",
+  "ob6Finance": "Finance / Ops / Consulting",
+  "ob6Art": "Art / Content",
+  "ob6Education": "Education",
+  "ob6Others": "Others",
+  "ob7Title": "Set your daily screen-time goal",
+  "ob7Subtitle": "You can change this any time. We'll nudge you as you get close.",
+  "ob7Hours": "{hours}h",
+  "@ob7Hours": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "ob7PerDay": "per day",
+  "ob7HoursPerDay": "{hours} per day",
+  "@ob7HoursPerDay": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "ob7DialLabel": "Daily screen-time goal",
+  "ob7InfoNote": "The average person spends 4h+ on their phone daily. Setting a goal is the first step to reclaiming your time.",
+  "ob8Title": "Enable Essential Permissions",
+  "ob8Subtitle": "Grant access to unlock the full Pausey experience.",
+  "ob8UsageTitle": "Usage Access",
+  "ob8UsageSub": "Monitor app usage and enforce focus sessions.",
+  "ob8NotifTitle": "Notifications",
+  "ob8NotifSub": "Timely reminders & progress alerts.",
+  "ob8TrackTitle": "Track App Usage",
+  "ob8TrackSub": "Daily and weekly breakdowns.",
+  "ob9Title": "You're all set!",
+  "ob9Subtitle": "Your focus environment is ready to go.",
+  "ob9Enter": "Enter Pausey",
+  "ob9Replay": "Replay Onboarding",
+  "ob9ScreenTime": "Screen Time",
+  "ob9AppsLocked": "Apps Locked",
+  "ob9Permissions": "Permissions",
+  "ob9FocusMode": "Focus Mode",
+  "ob9AllOk": "All OK",
+  "ob9On": "ON",
+  "ob9Done": "DONE",
+  "ob9StreakTitle": "Day 1 streak starts now",
+  "ob9StreakSub": "Complete a session to keep it going",
   "appName": "Pausey",
   "tagline": "Take back your time",
   "versionLabel": "Version 2.0 · App Store Edition",

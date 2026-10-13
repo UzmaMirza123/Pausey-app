@@ -1,0 +1,20 @@
+# Onboarding 5 (screen time) + 6 (occupation). Columns: en, ur, ar, hi, es, fr, de
+S = {
+ "ob5Title": ["What is your daily average Screen Time?", "آپ کا روزانہ اوسط اسکرین ٹائم کتنا ہے؟", "ما متوسط وقت الشاشة اليومي لديك؟", "आपका रोज़ का औसत स्क्रीन टाइम कितना है?", "¿Cuál es tu tiempo de pantalla diario promedio?", "Quel est votre temps d'écran quotidien moyen ?", "Wie hoch ist deine tägliche Bildschirmzeit?"],
+ "ob5Subtitle": ["On your phone only. Your best guess is okay.", "صرف آپ کے فون پر۔ اندازہ بھی ٹھیک ہے۔", "على هاتفك فقط. تقديرك التقريبي يكفي.", "सिर्फ़ आपके फ़ोन पर। अंदाज़ा भी ठीक है।", "Solo en tu teléfono. Una estimación está bien.", "Sur votre téléphone uniquement. Une estimation suffit.", "Nur auf deinem Handy. Eine Schätzung reicht."],
+ "ob5More7": ["More than 7 hours", "7 گھنٹے سے زیادہ", "أكثر من 7 ساعات", "7 घंटे से ज़्यादा", "Más de 7 horas", "Plus de 7 heures", "Mehr als 7 Stunden"],
+ "ob5H5to7": ["5-7 hours", "5-7 گھنٹے", "5-7 ساعات", "5-7 घंटे", "5-7 horas", "5-7 heures", "5-7 Stunden"],
+ "ob5H4to5": ["4-5 hours", "4-5 گھنٹے", "4-5 ساعات", "4-5 घंटे", "4-5 horas", "4-5 heures", "4-5 Stunden"],
+ "ob5H3to4": ["3-4 hours", "3-4 گھنٹے", "3-4 ساعات", "3-4 घंटे", "3-4 horas", "3-4 heures", "3-4 Stunden"],
+ "ob5H1to3": ["1-3 hours", "1-3 گھنٹے", "1-3 ساعات", "1-3 घंटे", "1-3 horas", "1-3 heures", "1-3 Stunden"],
+ "ob5Under1": ["Under 1 hour", "1 گھنٹے سے کم", "أقل من ساعة", "1 घंटे से कम", "Menos de 1 hora", "Moins d'1 heure", "Unter 1 Stunde"],
+ "ob6Title": ["What is your occupation?", "آپ کا پیشہ کیا ہے؟", "ما هي مهنتك؟", "आपका पेशा क्या है?", "¿A qué te dedicas?", "Quelle est votre profession ?", "Was ist dein Beruf?"],
+ "ob6Subtitle": ["We'll personalize your focus plan based on your work style.", "ہم آپ کے کام کے انداز کے مطابق فوکس پلان بنائیں گے۔", "سنخصص خطة تركيزك حسب أسلوب عملك.", "हम आपके काम के अंदाज़ के हिसाब से फ़ोकस प्लान बनाएंगे।", "Personalizaremos tu plan de enfoque según tu forma de trabajar.", "Nous adapterons votre plan de concentration à votre façon de travailler.", "Wir passen deinen Fokusplan an deinen Arbeitsstil an."],
+ "ob6Software": ["Software Development", "سافٹ ویئر ڈیولپمنٹ", "تطوير البرمجيات", "सॉफ़्टवेयर डेवलपमेंट", "Desarrollo de software", "Développement logiciel", "Softwareentwicklung"],
+ "ob6Founder": ["CEO / Founder", "سی ای او / بانی", "رئيس تنفيذي / مؤسس", "सीईओ / संस्थापक", "CEO / Fundador", "PDG / Fondateur", "CEO / Gründer"],
+ "ob6Remote": ["Remote Worker", "ریموٹ ورکر", "عامل عن بُعد", "रिमोट वर्कर", "Trabajo remoto", "Télétravailleur", "Remote-Arbeit"],
+ "ob6Finance": ["Finance / Ops / Consulting", "فنانس / آپریشنز / کنسلٹنگ", "مالية / عمليات / استشارات", "फ़ाइनेंस / ऑप्स / कंसल्टिंग", "Finanzas / Operaciones / Consultoría", "Finance / Ops / Conseil", "Finanzen / Betrieb / Beratung"],
+ "ob6Art": ["Art / Content", "آرٹ / کانٹینٹ", "فن / محتوى", "कला / कंटेंट", "Arte / Contenido", "Art / Contenu", "Kunst / Content"],
+ "ob6Education": ["Education", "تعلیم", "التعليم", "शिक्षा", "Educación", "Éducation", "Bildung"],
+ "ob6Others": ["Others", "دیگر", "أخرى", "अन्य", "Otros", "Autres", "Sonstiges"],
+}

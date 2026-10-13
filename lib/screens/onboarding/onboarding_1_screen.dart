@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../utils/app_theme.dart';
+import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
 
 /// Figma: OnBoarding 1 — "Reduce Screen Addiction" (727:41056).
@@ -16,11 +17,12 @@ class Onboarding1Screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
+    final l = context.l10n;
     return OnboardingScaffold(
       onSkip: onSkip,
       dotsIndex: 0,
       starsAsset: 'assets/svg/ob1_stars.svg',
-      button: PrimaryButton(label: 'Continue', onPressed: onNext),
+      button: PrimaryButton(label: l.continueLabel, onPressed: onNext),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
         child: Column(
@@ -28,26 +30,26 @@ class Onboarding1Screen extends StatelessWidget {
             const SizedBox(height: 24),
             const _Illustration(),
             const SizedBox(height: 6),
-            Text('Reduce Screen\nAddiction', textAlign: TextAlign.center, style: AppText.h1.copyWith(color: c.textPrimary)),
+            Text(l.ob1Title, textAlign: TextAlign.center, style: AppText.h1.copyWith(color: c.textPrimary)),
             const SizedBox(height: 13),
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 295),
               child: Text(
-                'Take control of your digital habits and spend less time on distracting apps.',
+                l.ob1Body,
                 textAlign: TextAlign.center,
                 style: AppText.body.copyWith(color: c.textSecondary),
               ),
             ),
             const SizedBox(height: 22),
-            const SizedBox(
+            SizedBox(
               width: double.infinity,
               child: IntrinsicHeight(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(child: _StatCard(value: '4h 12m', caption: 'Avg daily screen time', color: AppPalette.coral)),
-                    SizedBox(width: 8),
-                    Expanded(child: _StatCard(value: '73%', caption: 'Spent on social\nmedia', color: AppPalette.gold)),
+                    Expanded(child: _StatCard(value: '4h 12m', caption: l.ob1StatAvg, color: AppPalette.coral)),
+                    const SizedBox(width: 8),
+                    Expanded(child: _StatCard(value: '73%', caption: l.ob1StatSocial, color: AppPalette.gold)),
                   ],
                 ),
               ),
@@ -122,7 +124,7 @@ class _StatCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(value, style: AppText.stat.copyWith(color: color)),
+          FittedBox(fit: BoxFit.scaleDown, child: Text(value, style: AppText.stat.copyWith(color: color))),
           const SizedBox(height: 2),
           Text(caption, textAlign: TextAlign.center, style: AppText.caption.copyWith(color: context.colors.textMuted)),
         ],

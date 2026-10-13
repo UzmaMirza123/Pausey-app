@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../services/local_store.dart';
 import '../../utils/app_theme.dart';
+import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glow_background.dart';
 
@@ -21,21 +23,40 @@ class Onboarding8Screen extends StatefulWidget {
 }
 
 class _Permission {
-  const _Permission(this.title, this.subtitle, this.icon, this.color);
-  final String title;
-  final String subtitle;
+  const _Permission(this.id, this.title, this.subtitle, this.icon, this.color);
+  final String id;
+  final String Function(AppLocalizations) title;
+  final String Function(AppLocalizations) subtitle;
   final IconData icon; // TODO(figma): replace with the row's SVG asset.
   final Color color;
 }
 
 class _Onboarding8ScreenState extends State<Onboarding8Screen> {
   static const _items = [
-    _Permission('Usage Access', 'Monitor app usage and enforce focus sessions.', Icons.query_stats_rounded, AppPalette.blue),
-    _Permission('Notifications', 'Timely reminders & progress alerts.', Icons.notifications_none_rounded, AppPalette.violet),
-    _Permission('Track App Usage', 'Daily and weekly breakdowns.', Icons.timelapse_rounded, AppPalette.teal),
+    _Permission('usage', _usageTitle, _usageSub, Icons.query_stats_rounded, AppPalette.blue),
+    _Permission('notifications', _notifTitle, _notifSub, Icons.notifications_none_rounded, AppPalette.violet),
+    _Permission('tracking', _trackTitle, _trackSub, Icons.timelapse_rounded, AppPalette.teal),
   ];
 
+  static String _usageTitle(AppLocalizations l) => l.ob8UsageTitle;
+  static String _usageSub(AppLocalizations l) => l.ob8UsageSub;
+  static String _notifTitle(AppLocalizations l) => l.ob8NotifTitle;
+  static String _notifSub(AppLocalizations l) => l.ob8NotifSub;
+  static String _trackTitle(AppLocalizations l) => l.ob8TrackTitle;
+  static String _trackSub(AppLocalizations l) => l.ob8TrackSub;
+
   final Set<int> _granted = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _save();
+  }
+
+  void _save() => LocalStore.instance.saveAnswer('permissions', [
+    for (var i = 0; i < _items.length; i++)
+      if (_granted.contains(i)) _items[i].id,
+  ]);
 
   /// TODO(permissions): call the real OS permission request here
   /// (e.g. Usage Access settings intent, notification permission).
@@ -44,10 +65,14 @@ class _Onboarding8ScreenState extends State<Onboarding8Screen> {
   Future<void> _toggle(int i) async {
     if (_granted.contains(i)) {
       setState(() => _granted.remove(i));
+      _save();
       return;
     }
     final ok = await _requestPermission(i);
-    if (ok && mounted) setState(() => _granted.add(i));
+    if (ok && mounted) {
+      setState(() => _granted.add(i));
+      _save();
+    }
   }
 
   @override
@@ -63,11 +88,11 @@ class _Onboarding8ScreenState extends State<Onboarding8Screen> {
         Blob(left: -50, bottom: 80, size: 200, color: AppPalette.violet, opacity: 0.09, blur: 35),
       ],
       starsAsset: 'assets/svg/ob7_stars.svg', // TODO(figma): ob8's own star field (727:41516)
-      button: PrimaryButton(label: 'Continue', onPressed: widget.onNext),
+      button: PrimaryButton(label: context.l10n.continueLabel, onPressed: widget.onNext),
       footerExtra: Padding(
         padding: const EdgeInsets.only(top: 6),
         child: Text(
-          'Free to start · No credit card needed',
+          context.l10n.freeToStart,
           style: TextStyle(
             fontFamily: AppText.fontFamily,
             fontSize: 12,
@@ -85,7 +110,7 @@ class _Onboarding8ScreenState extends State<Onboarding8Screen> {
             _ShieldBadge(allGranted: _granted.length == _items.length),
             const SizedBox(height: 21),
             Text(
-              'Enable Essential\nPermissions',
+              context.l10n.ob8Title,
               textAlign: TextAlign.center,
               style: AppText.h1.copyWith(color: c.textPrimary, fontSize: 28, height: 32.5 / 28),
             ),
@@ -93,7 +118,7 @@ class _Onboarding8ScreenState extends State<Onboarding8Screen> {
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 300),
               child: Text(
-                'Grant access to unlock the full Pausey experience.',
+                context.l10n.ob8Subtitle,
                 textAlign: TextAlign.center,
                 style: AppText.body.copyWith(color: c.textSecondary, fontSize: 14, height: 21.5 / 14),
               ),
@@ -110,7 +135,13 @@ class _Onboarding8ScreenState extends State<Onboarding8Screen> {
                 // TODO(figma): 12px lock icon 727:41606
                 Icon(Icons.lock_outline_rounded, size: 12, color: c.textMuted),
                 const SizedBox(width: 6),
-                Text('Your data never leaves your device.', style: AppText.caption.copyWith(fontSize: 11, color: c.textMuted)),
+                Flexible(
+                  child: Text(
+                    context.l10n.dataStaysOnDevice,
+                    textAlign: TextAlign.center,
+                    style: AppText.caption.copyWith(fontSize: 11, color: c.textMuted),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 8),
@@ -149,7 +180,9 @@ class _ShieldBadge extends StatelessWidget {
                   colors: [AppPalette.blue.withValues(alpha: 0.22), AppPalette.violet.withValues(alpha: 0.14)],
                 ),
                 border: Border.all(color: AppPalette.blue.withValues(alpha: 0.3)),
-                boxShadow: [BoxShadow(color: AppPalette.blue.withValues(alpha: 0.25), blurRadius: 24, offset: const Offset(0, 6))],
+                boxShadow: [
+                  BoxShadow(color: AppPalette.blue.withValues(alpha: 0.25), blurRadius: 24, offset: const Offset(0, 6)),
+                ],
               ),
               // TODO(figma): 40px shield icon 727:41563
               child: const Icon(Icons.shield_outlined, size: 40, color: AppPalette.blue),
@@ -192,10 +225,12 @@ class _PermissionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
+    final title = item.title(context.l10n);
+    final subtitle = item.subtitle(context.l10n);
     return Semantics(
       button: true,
       toggled: granted,
-      label: '${item.title}. ${item.subtitle}',
+      label: '$title. $subtitle',
       child: SizedBox(
         width: double.infinity,
         child: GlassCard(
@@ -222,9 +257,24 @@ class _PermissionRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(item.title, style: AppText.option.copyWith(fontSize: 14, height: 19 / 14, fontWeight: FontWeight.w700, color: c.textPrimary)),
+                    Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppText.option.copyWith(
+                        fontSize: 14,
+                        height: 19 / 14,
+                        fontWeight: FontWeight.w700,
+                        color: c.textPrimary,
+                      ),
+                    ),
                     const SizedBox(height: 1),
-                    Text(item.subtitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.caption.copyWith(fontSize: 11, height: 15 / 11, color: c.textMuted)),
+                    Text(
+                      subtitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppText.caption.copyWith(fontSize: 11, height: 15 / 11, color: c.textMuted),
+                    ),
                   ],
                 ),
               ),
@@ -244,7 +294,10 @@ class _PermissionRow extends StatelessWidget {
                         key: const ValueKey('off'),
                         width: 22,
                         height: 22,
-                        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: c.glassBorder, width: 2)),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: c.glassBorder, width: 2),
+                        ),
                       ),
               ),
             ],
