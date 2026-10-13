@@ -5,6 +5,7 @@ import '../utils/app_theme.dart';
 import '../utils/theme_controller.dart';
 import 'glow_background.dart';
 import 'onboarding_nav.dart';
+import '../utils/l10n.dart';
 
 /// Header row on every onboarding screen: theme switch (sun/moon) and "Skip",
 /// both on the right.
@@ -33,7 +34,7 @@ class OnboardingHeader extends StatelessWidget {
                 minimumSize: Size.zero,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
-              child: Text('Skip', style: AppText.link.copyWith(color: c.textMuted)),
+              child: Text(context.l10n.skip, style: AppText.link.copyWith(color: c.textMuted)),
             ),
           ],
         ],
@@ -89,7 +90,7 @@ class ThemeToggleButton extends StatelessWidget {
     final c = context.colors;
     return Semantics(
       button: true,
-      label: context.isDark ? 'Switch to light mode' : 'Switch to dark mode',
+      label: context.isDark ? context.l10n.switchToLight : context.l10n.switchToDark,
       child: InkResponse(
         onTap: ThemeController.instance.toggle,
         radius: 20,

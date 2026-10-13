@@ -4,6 +4,7 @@ import '../utils/app_theme.dart';
 import '../widgets/common.dart';
 import '../widgets/glow_background.dart';
 import '../widgets/pausey_logo.dart';
+import '../utils/l10n.dart';
 
 /// Splash: the Pausey logo builds itself (stem rises, ring draws, pause button
 /// pops with a ripple), the name rises in letter by letter, then the app moves on.
@@ -141,7 +142,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  'Take back your time',
+                                  context.l10n.tagline,
                                   style: AppText.body.copyWith(color: c.textSecondary, fontSize: 14, height: 20 / 14),
                                 ),
                               ],
@@ -162,7 +163,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     child: FadeTransition(
                       opacity: CurvedAnimation(parent: _intro, curve: const Interval(0.7, 1)),
                       child: Text(
-                        'Version 2.0 · App Store Edition',
+                        context.l10n.versionLabel,
                         textAlign: TextAlign.center,
                         style: AppText.tiny.copyWith(color: c.textMuted.withValues(alpha: context.isDark ? 0.22 : 0.45)),
                       ),

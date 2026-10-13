@@ -3,13 +3,24 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'screens/auth/auth_welcome_screen.dart';
+import 'screens/home/home_screen.dart';
 import 'screens/onboarding/onboarding_flow.dart';
 import 'screens/splash_screen.dart';
+import 'services/auth_service.dart';
+import 'services/local_store.dart';
 import 'utils/app_theme.dart';
+import 'utils/l10n.dart';
 import 'utils/theme_controller.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await LocalStore.init();
+  ThemeController.instance.load();
+  LocaleController.instance.load();
+  await AuthService.instance.init();
   runApp(const PauseyApp());
 }
 
@@ -21,20 +32,31 @@ class PauseyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<ThemeMode>(
-      valueListenable: ThemeController.instance,
-      builder: (context, mode, _) {
+    return ListenableBuilder(
+      listenable: Listenable.merge([ThemeController.instance, LocaleController.instance]),
+      builder: (context, _) {
+        final mode = ThemeController.instance.value;
         final dark = mode == ThemeMode.dark;
         SystemChrome.setSystemUIOverlayStyle(
           (dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark)
               .copyWith(statusBarColor: Colors.transparent, systemNavigationBarColor: Colors.transparent),
         );
         return MaterialApp(
-          title: 'Pausey',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
           themeMode: mode,
+          // Follows the phone's language unless the user picked one.
+          locale: LocaleController.instance.value,
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          localeListResolutionCallback: (device, supported) => LocaleController.resolve(device, supported),
+          onGenerateTitle: (context) => context.l10n.appName,
           builder: (context, child) => _TabletScale(child: child!),
           home: home ?? const _Root(),
         );
@@ -76,7 +98,8 @@ class _TabletScale extends StatelessWidget {
   }
 }
 
-/// Splash first, then the onboarding flow.
+/// Splash → onboarding (first launch) → sign-in → home.
+/// A saved guest or account skips straight to home.
 class _Root extends StatefulWidget {
   const _Root();
 
@@ -84,27 +107,45 @@ class _Root extends StatefulWidget {
   State<_Root> createState() => _RootState();
 }
 
+enum _Stage { splash, onboarding, app }
+
 class _RootState extends State<_Root> {
-  bool _splashDone = false;
+  _Stage _stage = _Stage.splash;
+
+  void _afterSplash() => setState(() {
+        final signedIn = AuthService.instance.value is! SignedOut;
+        _stage = (signedIn || LocalStore.instance.onboardingDone) ? _Stage.app : _Stage.onboarding;
+      });
+
+  Future<void> _afterOnboarding() async {
+    await LocalStore.instance.setOnboardingDone();
+    if (mounted) setState(() => _stage = _Stage.app);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final Widget child = switch (_stage) {
+      _Stage.splash => SplashScreen(onFinished: _afterSplash),
+      _Stage.onboarding => OnboardingFlow(onFinished: _afterOnboarding),
+      _Stage.app => ValueListenableBuilder<Session>(
+          valueListenable: AuthService.instance,
+          builder: (context, session, _) => AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+            child: session is SignedOut
+                ? const AuthWelcomeScreen(key: ValueKey('auth'))
+                : HomeScreen(key: ValueKey(session.runtimeType)),
+          ),
+        ),
+    };
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 700),
       switchInCurve: Curves.easeOutCubic,
       switchOutCurve: Curves.easeInCubic,
-      // splash zooms gently away while onboarding fades in
       transitionBuilder: (child, a) => FadeTransition(
         opacity: a,
         child: ScaleTransition(scale: Tween(begin: 1.06, end: 1.0).animate(a), child: child),
       ),
-      child: _splashDone
-          ? OnboardingFlow(
-              onFinished: () => ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Onboarding complete — connect your home screen here.')),
-              ),
-            )
-          : SplashScreen(onFinished: () => setState(() => _splashDone = true)),
+      child: KeyedSubtree(key: ValueKey(_stage), child: child),
     );
   }
 }

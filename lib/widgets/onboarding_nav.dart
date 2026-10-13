@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../utils/app_theme.dart';
+import '../utils/l10n.dart';
 
 /// Tells an onboarding page where it sits in the flow. The flow wraps every
 /// page in one of these so the shared footer can animate and go back.
@@ -92,7 +93,7 @@ class _BackCircleButtonState extends State<BackCircleButton> {
     final dark = context.isDark;
     return Semantics(
       button: true,
-      label: 'Back',
+      label: context.l10n.back,
       child: GestureDetector(
         onTapDown: (_) => setState(() => _down = true),
         onTapCancel: () => setState(() => _down = false),
