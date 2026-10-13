@@ -431,6 +431,151 @@ class AppLocalizationsUr extends AppLocalizations {
   String get ob9StreakSub => 'اسے جاری رکھنے کے لیے ایک سیشن مکمل کریں';
 
   @override
+  String get blockTitle => 'ایپ لاک';
+
+  @override
+  String blockSubtitle(int locked, int total) {
+    return '$total میں سے $locked ایپس لاک ہیں';
+  }
+
+  @override
+  String get blockAddApp => 'ایپ شامل کریں';
+
+  @override
+  String blockLockedChip(int n) {
+    return '$n لاک';
+  }
+
+  @override
+  String blockUnlockedChip(int n) {
+    return '$n اَن لاک';
+  }
+
+  @override
+  String blockScheduledChip(int n) {
+    return '$n شیڈول';
+  }
+
+  @override
+  String get blockFaceIdTitle => 'فیس آئی ڈی تحفظ';
+
+  @override
+  String get blockFaceIdSub => 'کسی بھی ایپ کو کھولنے کے لیے فیس آئی ڈی';
+
+  @override
+  String get blockFaceIdUnavailable => 'اس ڈیوائس پر بایومیٹرک دستیاب نہیں';
+
+  @override
+  String get blockFaceIdReason => 'تحفظ آن کرنے کے لیے تصدیق کریں';
+
+  @override
+  String get blockFaceIdFailed => 'تصدیق نہیں ہو سکی — تحفظ بند ہے';
+
+  @override
+  String get blockScheduleTitle => 'شیڈول لاک';
+
+  @override
+  String get blockStart => 'شروع';
+
+  @override
+  String get blockEnd => 'اختتام';
+
+  @override
+  String get blockNeedOneDay => 'کم از کم ایک دن منتخب رکھیں';
+
+  @override
+  String get blockManagedApps => 'منظم ایپس';
+
+  @override
+  String get blockLockAll => 'سب لاک کریں';
+
+  @override
+  String get blockAllLocked => 'تمام ایپس لاک ہیں';
+
+  @override
+  String get blockSched => 'شیڈول';
+
+  @override
+  String get blockOnlySchedule => 'صرف شیڈول کے دوران لاک';
+
+  @override
+  String get blockOnlyScheduleSub => 'ورنہ سارا دن لاک رہے گی';
+
+  @override
+  String get blockLockedLabel => 'لاک';
+
+  @override
+  String get blockRemove => 'فہرست سے ہٹائیں';
+
+  @override
+  String blockRemoved(String app) {
+    return '$app ہٹا دی گئی';
+  }
+
+  @override
+  String get blockUndo => 'واپس';
+
+  @override
+  String get blockAppsUpdated => 'ایپس اپ ڈیٹ ہو گئیں';
+
+  @override
+  String get blockCatSocial => 'سوشل';
+
+  @override
+  String get blockCatVideo => 'ویڈیو';
+
+  @override
+  String get blockCatGames => 'گیمز';
+
+  @override
+  String get blockCatShopping => 'شاپنگ';
+
+  @override
+  String get blockCatCommunity => 'کمیونٹی';
+
+  @override
+  String get blockCatOther => 'دیگر';
+
+  @override
+  String get blockEmptyBadge => 'کچھ بلاک نہیں';
+
+  @override
+  String get blockEmptyTitle => 'ابھی کوئی ایپ شامل نہیں';
+
+  @override
+  String get blockEmptyMsg =>
+      'وہ ایپس شامل کریں جو سب سے زیادہ توجہ ہٹاتی ہیں، Pausey انہیں لاک کر دے گا۔';
+
+  @override
+  String get blockEmergencyTitle => 'ایمرجنسی اوور رائیڈ';
+
+  @override
+  String blockEmergencySub(int n) {
+    return 'تمام ایپس عارضی طور پر کھولیں · آج $n باقی';
+  }
+
+  @override
+  String get blockEmergencyOff => 'سیٹنگز میں بند ہے';
+
+  @override
+  String get blockEmergencyUse => 'استعمال';
+
+  @override
+  String get blockEmergencyConfirmTitle => 'ایمرجنسی اوور رائیڈ استعمال کریں؟';
+
+  @override
+  String blockEmergencyConfirmMsg(int n) {
+    return 'یہ آج کے باقی $n میں سے ایک استعمال کرے گا۔ صرف ضرورت پر استعمال کریں۔';
+  }
+
+  @override
+  String get blockEmergencyUsed =>
+      'اوور رائیڈ استعمال ہو گیا — ایپس ابھی کھلی ہیں';
+
+  @override
+  String get blockEmergencyNone => 'آج کوئی اوور رائیڈ باقی نہیں';
+
+  @override
   String get appName => 'Pausey';
 
   @override
@@ -657,6 +802,1332 @@ class AppLocalizationsUr extends AppLocalizations {
   String get cancel => 'منسوخ';
 
   @override
+  String get focusModePomodoro => 'پومودورو';
+
+  @override
+  String get focusModeDeep => 'گہری توجہ';
+
+  @override
+  String get focusModeCustom => 'اپنی مرضی';
+
+  @override
+  String get focusRemaining => 'باقی';
+
+  @override
+  String get focusBreakLabel => 'وقفہ';
+
+  @override
+  String get focusReadyLabel => 'تیار';
+
+  @override
+  String get focusInSession => 'سیشن جاری';
+
+  @override
+  String get focusPausedState => 'رکا ہوا';
+
+  @override
+  String get focusOnBreak => 'وقفے پر';
+
+  @override
+  String get focusIdleState => 'شروع کرنے کے لیے پلے دبائیں';
+
+  @override
+  String get focusSessionsDone => 'مکمل سیشن';
+
+  @override
+  String get focusProgress => 'پیش رفت';
+
+  @override
+  String get focusBreakAfter => 'بعد میں وقفہ';
+
+  @override
+  String get focusFocusedToday => 'آج کی توجہ';
+
+  @override
+  String focusAppsBlocked(int count) {
+    return '$count ایپس بلاک';
+  }
+
+  @override
+  String get focusAppsBlockedSub =>
+      'اس سیشن کے لیے توجہ ہٹانے والی چیزیں بند ہیں۔';
+
+  @override
+  String get focusNoApps => 'کوئی ایپ بلاک نہیں';
+
+  @override
+  String get focusNoAppsSub => 'توجہ کے دوران بند کرنے کے لیے ایپس چنیں۔';
+
+  @override
+  String get focusEdit => 'ترمیم';
+
+  @override
+  String get focusAdd => 'شامل کریں';
+
+  @override
+  String get focusAmbient => 'پس منظر کی آواز';
+
+  @override
+  String get focusSoundOff => 'بند';
+
+  @override
+  String get focusSoundRain => 'بارش';
+
+  @override
+  String get focusSoundForest => 'جنگل';
+
+  @override
+  String get focusSoundWaves => 'سمندری لہریں';
+
+  @override
+  String get focusSoundWhite => 'وائٹ نوائز';
+
+  @override
+  String get focusVolume => 'آواز';
+
+  @override
+  String get focusStart => 'شروع';
+
+  @override
+  String get focusPause => 'روکیں';
+
+  @override
+  String get focusResume => 'جاری رکھیں';
+
+  @override
+  String get focusStop => 'ختم کریں';
+
+  @override
+  String get focusRestart => 'دوبارہ شروع';
+
+  @override
+  String get focusSkipBreak => 'وقفہ چھوڑیں';
+
+  @override
+  String get focusDurations => 'سیشن کا دورانیہ';
+
+  @override
+  String focusMinutesN(int n) {
+    return '$n منٹ';
+  }
+
+  @override
+  String get focusBreakLength => 'وقفہ';
+
+  @override
+  String get focusCustomTitle => 'اپنی مرضی کا دورانیہ';
+
+  @override
+  String get focusSet => 'سیٹ کریں';
+
+  @override
+  String get focusStopTitle => 'سیشن جلد ختم کریں؟';
+
+  @override
+  String get focusStopBody => 'اب تک کا وقت محفوظ ہو جائے گا۔';
+
+  @override
+  String get focusEndSession => 'سیشن ختم';
+
+  @override
+  String get focusKeepGoing => 'جاری رکھیں';
+
+  @override
+  String get focusTooShort => 'ایک منٹ سے کم — محفوظ نہیں ہوا۔';
+
+  @override
+  String get focusBreakOver => 'وقفہ ختم — اگلے کے لیے تیار؟';
+
+  @override
+  String get focusBusy => 'موڈ بدلنے کے لیے موجودہ سیشن ختم کریں۔';
+
+  @override
+  String get focusFirstHint => 'آپ کا پہلا سیشن یہیں سے — پلے دبائیں۔';
+
+  @override
+  String get focusCompleteA => 'سیشن';
+
+  @override
+  String get focusCompleteB => 'مکمل!';
+
+  @override
+  String get focusEndedTitle => 'سیشن ختم';
+
+  @override
+  String focusCompleteMsg(String mode) {
+    return 'زبردست! آپ نے اپنا $mode سیشن بغیر کسی خلل کے مکمل کیا۔';
+  }
+
+  @override
+  String get focusEndedMsg => 'ہر منٹ اہم ہے۔ اگلی بار پورا سیشن آزمائیں۔';
+
+  @override
+  String get focusDurationLabel => 'توجہ کا دورانیہ';
+
+  @override
+  String get focusMinUnit => 'منٹ';
+
+  @override
+  String get focusDayStreak => 'دن کا سلسلہ';
+
+  @override
+  String get focusAppsLabel => 'بلاک ایپس';
+
+  @override
+  String get focusTodayGoal => 'آج کا ہدف';
+
+  @override
+  String focusPctCompleted(int pct) {
+    return '$pct% مکمل';
+  }
+
+  @override
+  String focusPlusPct(int pct) {
+    return '+$pct% اس سیشن سے';
+  }
+
+  @override
+  String get focusMomentum => 'رفتار برقرار رکھیں!';
+
+  @override
+  String get focusQuote1 =>
+      'مستقل مزاجی شدت سے بہتر ہے۔ ہر سیشن مہارت میں اضافہ کرتا ہے۔';
+
+  @override
+  String get focusQuote2 => 'چھوٹے مرکوز وقفے بڑے نتائج دیتے ہیں۔';
+
+  @override
+  String get focusQuote3 => 'آپ نے اسکرول نہیں کیا — کچھ بنایا۔ پھر کریں۔';
+
+  @override
+  String get focusStartNext => 'اگلا سیشن شروع کریں';
+
+  @override
+  String get focusBackHome => 'ڈیش بورڈ پر واپس';
+
+  @override
+  String get goalsTitle => 'میرے اہداف';
+
+  @override
+  String goalsSubtitle(int active, int done) {
+    return '$active فعال · $done مکمل';
+  }
+
+  @override
+  String get goalsAdd => 'ہدف شامل کریں';
+
+  @override
+  String get goalsCompleted => 'مکمل';
+
+  @override
+  String get goalsActive => 'فعال';
+
+  @override
+  String get goalsStreak => 'اسٹریک';
+
+  @override
+  String get goalsOverall => 'مجموعی تکمیل';
+
+  @override
+  String goalsWeeklyHit(int hit, int total) {
+    return '$total میں سے $hit ہفتہ وار اہداف پورے';
+  }
+
+  @override
+  String goalsVsLastWeek(String delta) {
+    return '$delta پچھلے ہفتے سے';
+  }
+
+  @override
+  String get goalsFilterAll => 'سب';
+
+  @override
+  String get goalsDone => 'مکمل';
+
+  @override
+  String get goalsCatFocus => 'فوکس';
+
+  @override
+  String get goalsCatDiscipline => 'نظم و ضبط';
+
+  @override
+  String get goalsCatWellness => 'صحت';
+
+  @override
+  String goalsTitleFocusHours(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'روزانہ فوکس: $n گھنٹے',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String goalsTitleFocusDur(String duration) {
+    return 'روزانہ فوکس: $duration';
+  }
+
+  @override
+  String get goalsTitleBlock => 'سوشل ایپس بلاک کریں';
+
+  @override
+  String goalsTitleSessions(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'روزانہ $n پومودورو',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String goalsTitleScreen(String duration) {
+    return '$duration سے کم اسکرین ٹائم';
+  }
+
+  @override
+  String get goalsTitlePhoneFree => 'فون سے آزاد وقت';
+
+  @override
+  String goalsDescFocus(String duration) {
+    return 'ہر روز $duration گہرا فوکس حاصل کریں';
+  }
+
+  @override
+  String goalsDescBlock(int n) {
+    return 'لاک کی گئی ایپس ہفتے میں $n دن بند رکھیں';
+  }
+
+  @override
+  String goalsDescSessions(int n) {
+    return 'روزانہ کم از کم $n فوکس سیشن مکمل کریں';
+  }
+
+  @override
+  String goalsDescScreen(String duration) {
+    return 'روزانہ فون کا استعمال $duration سے کم رکھیں';
+  }
+
+  @override
+  String goalsDescPhoneFree(int n) {
+    return 'ہفتے میں $n دن فون سے دور رہیں — ہر دن نشان لگائیں';
+  }
+
+  @override
+  String goalsProgressDays(int done, int total) {
+    return '$done / $total دن';
+  }
+
+  @override
+  String goalsProgressSessions(int done, int total) {
+    return '$done / $total سیشن';
+  }
+
+  @override
+  String goalsStreakShort(int n) {
+    return '$n دن';
+  }
+
+  @override
+  String goalsStreakN(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n دن کی اسٹریک',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get goalsCheckIn => 'آج مکمل نشان لگائیں';
+
+  @override
+  String get goalsCheckedIn => 'آج مکمل';
+
+  @override
+  String get goalsCheckedSnack => 'زبردست! آج مکمل نشان زد ہو گیا۔';
+
+  @override
+  String get goalsUncheckedSnack => 'آج کا نشان ہٹا دیا گیا۔';
+
+  @override
+  String get goalsCreateNew => 'نیا ہدف بنائیں';
+
+  @override
+  String get goalsEmptyBadge => 'شروع کریں';
+
+  @override
+  String get goalsEmptyTitle => 'ابھی کوئی ہدف نہیں';
+
+  @override
+  String get goalsEmptyMsg =>
+      'ایک چھوٹا روزانہ ہدف بنائیں، Pausey اسے آپ کے لیے ٹریک کرے گا۔';
+
+  @override
+  String get goalsFilterEmpty => 'اس فلٹر میں کوئی ہدف نہیں۔';
+
+  @override
+  String get goalsNewGoal => 'نیا ہدف';
+
+  @override
+  String get goalsEditGoal => 'ہدف میں ترمیم';
+
+  @override
+  String get goalsType => 'ہدف کی قسم';
+
+  @override
+  String get goalsTypeFocus => 'فوکس ٹائم';
+
+  @override
+  String get goalsTypeSessions => 'فوکس سیشن';
+
+  @override
+  String get goalsTypeBlock => 'ایپس بلاک';
+
+  @override
+  String get goalsTypePhoneFree => 'فون سے آزاد دن';
+
+  @override
+  String get goalsTypeScreen => 'اسکرین ٹائم حد';
+
+  @override
+  String get goalsCategory => 'زمرہ';
+
+  @override
+  String get goalsTarget => 'ہدف';
+
+  @override
+  String get goalsPerDay => 'روزانہ';
+
+  @override
+  String get goalsPerWeek => 'دن فی ہفتہ';
+
+  @override
+  String get goalsMaxPerDay => 'زیادہ سے زیادہ روزانہ';
+
+  @override
+  String get goalsTitleOptional => 'عنوان (اختیاری)';
+
+  @override
+  String get goalsSave => 'ہدف محفوظ کریں';
+
+  @override
+  String get goalsCreate => 'ہدف بنائیں';
+
+  @override
+  String get goalsSavedSnack => 'ہدف محفوظ ہو گیا';
+
+  @override
+  String get goalsCreatedSnack => 'ہدف بن گیا';
+
+  @override
+  String get goalsEdit => 'ترمیم';
+
+  @override
+  String get goalsDelete => 'ہدف حذف کریں';
+
+  @override
+  String get goalsDeleteQ => 'یہ ہدف حذف کریں؟';
+
+  @override
+  String get goalsDeleteMsg =>
+      'اس کے نشانات بھی ہٹ جائیں گے۔ یہ واپس نہیں ہو سکتا۔';
+
+  @override
+  String get goalsDeletedSnack => 'ہدف حذف ہو گیا';
+
+  @override
+  String get goalsComplete => 'مکمل';
+
+  @override
+  String get goalsDaysActive => 'فعال دن';
+
+  @override
+  String get goalsTotalTime => 'کل وقت';
+
+  @override
+  String get goalsSessionsLabel => 'سیشن';
+
+  @override
+  String get goals7Day => '7 دن کی تکمیل';
+
+  @override
+  String get goals7DaysAgo => '7 دن پہلے';
+
+  @override
+  String get goalsToday => 'آج';
+
+  @override
+  String goalsTodayDate(String date) {
+    return 'آج، $date';
+  }
+
+  @override
+  String goalsYesterdayDate(String date) {
+    return 'کل، $date';
+  }
+
+  @override
+  String get goalsMilestones => 'سنگ میل';
+
+  @override
+  String get goalsMsFirst => 'پہلا دن مکمل';
+
+  @override
+  String get goalsMs3 => '3 دن کی اسٹریک';
+
+  @override
+  String get goalsMsHalf => 'ہفتہ وار ہدف کا 50%';
+
+  @override
+  String get goalsMs5 => '5 دن کی اسٹریک';
+
+  @override
+  String get goalsMsWeek => 'پورا ہفتہ مکمل';
+
+  @override
+  String get goalsMsLocked => 'ابھی نہیں';
+
+  @override
+  String get goalsHistory => 'سرگرمی کی تاریخ';
+
+  @override
+  String get goalsShowLess => 'کم دکھائیں';
+
+  @override
+  String get goalsStartSession => 'فوکس سیشن شروع کریں';
+
+  @override
+  String get goalsManageApps => 'بلاک ایپس منظم کریں';
+
+  @override
+  String get goalsBlockHint =>
+      'جب لاک شیڈول آن ہو اور ایپس بند ہوں تو خود بخود گنتی ہوتی ہے۔';
+
+  @override
+  String goalsScreenToday(String used) {
+    return 'آج اسکرین ٹائم: $used';
+  }
+
+  @override
+  String get goalsNotFound => 'یہ ہدف اب موجود نہیں۔';
+
+  @override
+  String get goalsMore => 'مزید اختیارات';
+
+  @override
+  String goalsFreeLimit(int n) {
+    return 'مفت پلان: زیادہ سے زیادہ $n اہداف';
+  }
+
+  @override
+  String get homeGoodMorning => 'صبح بخیر';
+
+  @override
+  String get homeGoodAfternoon => 'سہ پہر بخیر';
+
+  @override
+  String get homeGoodEvening => 'شام بخیر';
+
+  @override
+  String get homeFriend => 'دوست';
+
+  @override
+  String get homeTodayFocus => 'آج کا فوکس';
+
+  @override
+  String homeVsYesterday(String pct) {
+    return 'کل کے مقابلے میں $pct%';
+  }
+
+  @override
+  String get homeStartToday => 'آج ابھی فوکس نہیں';
+
+  @override
+  String get homeDayStreak => 'دن کا تسلسل';
+
+  @override
+  String get homeTodayGoal => 'آج کا ہدف';
+
+  @override
+  String homePctCompleted(int pct) {
+    return '$pct% مکمل';
+  }
+
+  @override
+  String get homeOnTrack => 'درست راہ پر!';
+
+  @override
+  String get homeKeepGoing => 'جاری رکھیں';
+
+  @override
+  String get homeGoalMet => 'ہدف پورا!';
+
+  @override
+  String get homeScreenTimeTitle => 'اسکرین ٹائم';
+
+  @override
+  String get homeToday => 'آج';
+
+  @override
+  String homeVsAvg(String pct) {
+    return 'اوسط سے $pct%';
+  }
+
+  @override
+  String get homeQuickStart => 'فوری فوکس سیشن شروع کریں';
+
+  @override
+  String get homeManage => 'منظم کریں';
+
+  @override
+  String get homeNoApps =>
+      'وہ ایپس چنیں جو سب سے زیادہ توجہ ہٹاتی ہیں اور انہیں یہاں لاک کریں۔';
+
+  @override
+  String get homeAddApps => 'ایپس شامل کریں';
+
+  @override
+  String homeAppLocked(String app) {
+    return '$app لاک ہو گئی';
+  }
+
+  @override
+  String homeAppUnlocked(String app) {
+    return '$app اَن لاک ہو گئی';
+  }
+
+  @override
+  String homeLockApp(String app) {
+    return '$app لاک یا اَن لاک کریں';
+  }
+
+  @override
+  String get homeUpgradeTitle => 'پریمیم میں اپ گریڈ کریں';
+
+  @override
+  String get homeUpgradeBody => 'لامحدود بلاکس، اہداف اور تفصیلی تجزیہ۔';
+
+  @override
+  String get homeTryFree => 'مفت آزمائیں';
+
+  @override
+  String get homePro => 'PRO';
+
+  @override
+  String get homeProActive => 'Pausey Pro فعال ہے';
+
+  @override
+  String get homeProActiveBody => 'تمام فیچرز کھل گئے۔ تعاون کا شکریہ!';
+
+  @override
+  String get homeNotifications => 'اطلاعات';
+
+  @override
+  String get homeNoNotifications => 'کوئی نئی اطلاع نہیں۔';
+
+  @override
+  String get homePushLabel => 'پش اطلاعات';
+
+  @override
+  String get homeFocusReminder => 'روزانہ فوکس یاد دہانی';
+
+  @override
+  String get homeStreakAlerts => 'تسلسل کی یاد دہانی';
+
+  @override
+  String get homePwTitle => 'Pausey Pro کھولیں';
+
+  @override
+  String get homePwSubtitle =>
+      'اپنی توجہ واپس پائیں اور فون کی لت پر قابو پائیں۔';
+
+  @override
+  String get homePwMonthly => 'ماہانہ';
+
+  @override
+  String get homePwBilledMonthly => 'ہر ماہ بل';
+
+  @override
+  String get homePwYearly => 'سالانہ';
+
+  @override
+  String get homePwPopular => 'سب سے مقبول';
+
+  @override
+  String homePwSave(int pct) {
+    return '$pct% بچت';
+  }
+
+  @override
+  String homePwBilledYearly(String price) {
+    return '$price سالانہ بل';
+  }
+
+  @override
+  String get homePwLifetime => 'تاحیات';
+
+  @override
+  String get homePwBestValue => 'بہترین قیمت';
+
+  @override
+  String get homePwPayOnce => 'ایک بار ادائیگی، ہمیشہ کے لیے';
+
+  @override
+  String get homePwPerMonth => '/ ماہ';
+
+  @override
+  String get homePwOnce => 'ایک بار';
+
+  @override
+  String get homePwStartTrial => '7 دن کی مفت آزمائش شروع کریں';
+
+  @override
+  String get homePwBuyLifetime => 'تاحیات رسائی حاصل کریں';
+
+  @override
+  String get homePwNoCharge => 'آج کوئی چارج نہیں · کبھی بھی منسوخ کریں';
+
+  @override
+  String get homePwOneTime => 'ایک بار ادائیگی · کوئی سبسکرپشن نہیں';
+
+  @override
+  String get homePwFree => 'مفت';
+
+  @override
+  String get homePwProCol => 'Pro';
+
+  @override
+  String get homePwFeatBlocking => 'لامحدود ایپ بلاکنگ';
+
+  @override
+  String get homePwFeatSessions => 'تمام فوکس موڈز';
+
+  @override
+  String get homePwFeatGoals => 'لامحدود اہداف';
+
+  @override
+  String get homePwFeatAnalytics => 'جدید تجزیہ';
+
+  @override
+  String get homePwFeatStreak => 'تسلسل کی حفاظت';
+
+  @override
+  String get homePwFeatSchedule => 'فوکس شیڈولنگ';
+
+  @override
+  String get homePwFeatFaceId => 'فیس آئی ڈی ایپ لاک';
+
+  @override
+  String get homePwFeatNotif => 'سمارٹ اطلاعات';
+
+  @override
+  String homePwMax(int n) {
+    return 'زیادہ سے زیادہ $n';
+  }
+
+  @override
+  String get homePwSecure => 'محفوظ ادائیگی';
+
+  @override
+  String get homePwCancelAnytime => 'کبھی بھی منسوخ کریں';
+
+  @override
+  String get homePwPrivacyFirst => 'پرائیویسی اوّل';
+
+  @override
+  String get homePwRestore => 'خریداری بحال کریں';
+
+  @override
+  String get homePwTerms => 'شرائطِ خدمت';
+
+  @override
+  String get homePwPrivacyPolicy => 'پرائیویسی پالیسی';
+
+  @override
+  String get homePwWelcome => 'Pausey Pro میں خوش آمدید!';
+
+  @override
+  String get homePwNothingToRestore => 'کوئی پچھلی خریداری نہیں ملی۔';
+
+  @override
+  String get homePwRestored => 'آپ کی Pro رسائی فعال ہے۔';
+
+  @override
+  String get homePwLinkSoon => 'یہ صفحہ جلد ہماری ویب سائٹ پر کھلے گا۔';
+
+  @override
+  String get homePwYouArePro => 'آپ Pro ہیں — لطف اٹھائیں!';
+
+  @override
+  String get homePwClose => 'بند کریں';
+
+  @override
+  String get insightsAnalytics => 'تجزیات';
+
+  @override
+  String get insightsScreenTime => 'اسکرین ٹائم';
+
+  @override
+  String get insightsToday => 'آج';
+
+  @override
+  String get insightsWeek => 'ہفتہ';
+
+  @override
+  String get insightsMonth => 'مہینہ';
+
+  @override
+  String get insightsProductivity => 'پیداواری اسکور';
+
+  @override
+  String insightsPts(String delta) {
+    return '$delta پوائنٹس';
+  }
+
+  @override
+  String get insightsVsLastWeek => 'پچھلے ہفتے کے مقابلے';
+
+  @override
+  String get insightsVsLastMonth => 'پچھلے مہینے کے مقابلے';
+
+  @override
+  String insightsScoreDays(int n) {
+    return '$n دن کا اسکور';
+  }
+
+  @override
+  String get insightsFocusHours => 'فوکس کے گھنٹے';
+
+  @override
+  String get insightsThisWeek => 'اس ہفتے';
+
+  @override
+  String get insightsThisMonth => 'اس مہینے';
+
+  @override
+  String insightsGoalOf(String done, String goal) {
+    return '$done / $goal ہدف';
+  }
+
+  @override
+  String get insightsFocusScore => 'فوکس اسکور';
+
+  @override
+  String get insightsGoals => 'اہداف';
+
+  @override
+  String get insightsConsistency => 'تسلسل';
+
+  @override
+  String get insightsWeeklyFocus => 'ہفتہ وار فوکس گھنٹے';
+
+  @override
+  String insightsDailyFocus(int n) {
+    return 'روزانہ فوکس، پچھلے $n دن';
+  }
+
+  @override
+  String insightsBestDay(String day, String time) {
+    return 'بہترین دن: $day · $time';
+  }
+
+  @override
+  String insightsAvgDay(String time) {
+    return 'اوسط $time / دن';
+  }
+
+  @override
+  String get insightsMonthlyTrends => 'ماہانہ رجحانات';
+
+  @override
+  String get insightsActual => 'اصل';
+
+  @override
+  String get insightsGoal => 'ہدف';
+
+  @override
+  String insightsWk(int n) {
+    return 'ہفتہ $n';
+  }
+
+  @override
+  String insightsWeekBeat(int n, String time) {
+    return 'ہفتہ $n نے ہدف سے $time زیادہ کیا';
+  }
+
+  @override
+  String insightsWeekShort(int n, String time) {
+    return 'بہترین ہفتہ $n تھا، ہدف سے $time کم';
+  }
+
+  @override
+  String get insightsGoalCompletion => 'اہداف کی تکمیل';
+
+  @override
+  String insightsDaysOf(int done, int total) {
+    return '$done/$total دن';
+  }
+
+  @override
+  String get insightsNoGoals =>
+      'ابھی کوئی ہدف نہیں۔ یہاں پیش رفت دیکھنے کے لیے ایک شامل کریں۔';
+
+  @override
+  String get insightsManageGoals => 'منظم کریں';
+
+  @override
+  String insightsGoalFocus(String hours) {
+    return 'روزانہ فوکس: $hours گھنٹے';
+  }
+
+  @override
+  String get insightsGoalBlock => 'سوشل ایپس بلاک کریں';
+
+  @override
+  String insightsGoalPomo(int n) {
+    return 'روزانہ $n پومودورو';
+  }
+
+  @override
+  String insightsGoalScreen(String time) {
+    return '$time سے کم اسکرین ٹائم';
+  }
+
+  @override
+  String get insightsGoalPhoneFree => 'فون کے بغیر وقت';
+
+  @override
+  String get insightsEmptyBadge => 'ابھی کوئی سیشن نہیں';
+
+  @override
+  String get insightsEmptyTitle => 'آپ کا جائزہ ایک سیشن سے شروع ہوتا ہے';
+
+  @override
+  String get insightsEmptyBody =>
+      'ایک فوکس سیشن مکمل کریں، آپ کے اسکور، چارٹ اور اہداف کی پیش رفت یہاں نظر آئے گی۔';
+
+  @override
+  String get insightsEmptyCta => 'فوکس سیشن شروع کریں';
+
+  @override
+  String get insightsDailyUsage => 'روزانہ استعمال';
+
+  @override
+  String get insightsFocusTime => 'فوکس ٹائم';
+
+  @override
+  String get insightsVsAvg => 'اوسط کے مقابلے';
+
+  @override
+  String get insightsUsageByDay => 'دن کے حساب سے استعمال';
+
+  @override
+  String get insightsUsageByWeek => 'ہفتے کے حساب سے استعمال';
+
+  @override
+  String get insightsUsage => 'استعمال';
+
+  @override
+  String insightsTrend(int n) {
+    return '$n دن کا رجحان';
+  }
+
+  @override
+  String get insightsImproving => 'بہتری';
+
+  @override
+  String get insightsRising => 'بڑھ رہا ہے';
+
+  @override
+  String insightsDaysAgo(int n) {
+    return '$n دن پہلے';
+  }
+
+  @override
+  String get insightsMostUsed => 'سب سے زیادہ استعمال ہونے والی ایپس';
+
+  @override
+  String get insightsAllApps => 'تمام ایپس';
+
+  @override
+  String get insightsBreakdown => 'استعمال کی تفصیل';
+
+  @override
+  String get insightsTotal => 'کل';
+
+  @override
+  String get insightsNoUsage => 'اس مدت میں کوئی اسکرین ٹائم ریکارڈ نہیں۔';
+
+  @override
+  String get insightsLockApp => 'یہ ایپ لاک کریں';
+
+  @override
+  String insightsLocked(String app) {
+    return '$app اب لاک ہے';
+  }
+
+  @override
+  String get insightsCatSocial => 'سوشل';
+
+  @override
+  String get insightsCatVideo => 'ویڈیو';
+
+  @override
+  String get insightsCatGames => 'گیمز';
+
+  @override
+  String get insightsCatShopping => 'شاپنگ';
+
+  @override
+  String get insightsCatCommunity => 'کمیونٹی';
+
+  @override
+  String get insightsCatOther => 'دیگر';
+
+  @override
+  String get profileSettings => 'ترتیبات';
+
+  @override
+  String get profileGuestName => 'مہمان';
+
+  @override
+  String get profileGuestBadge => 'مہمان · اسی فون پر محفوظ';
+
+  @override
+  String get profileEditName => 'نام تبدیل کریں';
+
+  @override
+  String get profileNameHint => 'آپ کا نام';
+
+  @override
+  String get profileSave => 'محفوظ کریں';
+
+  @override
+  String profileMemberSince(String date) {
+    return '$date سے ممبر';
+  }
+
+  @override
+  String get profileProActive => 'پرو · فعال';
+
+  @override
+  String get profileFree => 'مفت پلان';
+
+  @override
+  String get profileUpgrade => 'اپ گریڈ';
+
+  @override
+  String get profileBadges => 'بیجز';
+
+  @override
+  String get profileNoBadges => 'بیجز کے لیے فوکس سیشن مکمل کریں';
+
+  @override
+  String get profileFocusTime => 'فوکس وقت';
+
+  @override
+  String get profileGoalsDone => 'مکمل اہداف';
+
+  @override
+  String get profileDayStreak => 'دن کا تسلسل';
+
+  @override
+  String get profileAppsBlocked => 'بلاک ایپس';
+
+  @override
+  String get profileFocusActivity => 'فوکس سرگرمی';
+
+  @override
+  String get profileLast4Weeks => 'پچھلے 4 ہفتے';
+
+  @override
+  String get profileRecentActivity => 'حالیہ سرگرمی';
+
+  @override
+  String get profileSessionDone => 'فوکس سیشن مکمل';
+
+  @override
+  String get profileSessionStopped => 'سیشن جلدی ختم ہوا';
+
+  @override
+  String get profileModePomodoro => 'پومودورو';
+
+  @override
+  String get profileModeDeep => 'گہرا کام';
+
+  @override
+  String get profileModeCustom => 'اپنی مرضی';
+
+  @override
+  String get profileJustNow => 'ابھی';
+
+  @override
+  String profileAgoMinutes(int n) {
+    return '$n منٹ پہلے';
+  }
+
+  @override
+  String profileAgoHours(int n) {
+    return '$n گھنٹے پہلے';
+  }
+
+  @override
+  String get profileYesterday => 'کل';
+
+  @override
+  String get profileEmptyTitle => 'ابھی کوئی فوکس سیشن نہیں';
+
+  @override
+  String get profileEmptyBody =>
+      'اپنا پہلا سیشن شروع کریں — آپ کی سرگرمی، تسلسل اور بیجز یہاں نظر آئیں گے۔';
+
+  @override
+  String get profileStartFocus => 'فوکس شروع کریں';
+
+  @override
+  String get profileMyGoals => 'میرے اہداف';
+
+  @override
+  String get profileStreaks => 'تسلسل اور بیجز';
+
+  @override
+  String get profileSubscription => 'سبسکرپشن';
+
+  @override
+  String get profileSignOutTitle => 'سائن آؤٹ کریں؟';
+
+  @override
+  String get profileSignOutBody => 'آپ کسی بھی وقت دوبارہ لاگ اِن کر سکتے ہیں۔';
+
+  @override
+  String get profileSecNotifications => 'اطلاعات';
+
+  @override
+  String get profileSecAppearance => 'ظاہری شکل';
+
+  @override
+  String get profileSecFocus => 'فوکس اور بلاکنگ';
+
+  @override
+  String get profileSecPrivacy => 'رازداری اور سیکیورٹی';
+
+  @override
+  String get profileSecAccount => 'اکاؤنٹ';
+
+  @override
+  String get profilePush => 'پش اطلاعات';
+
+  @override
+  String get profilePushSub => 'فوکس یاد دہانیاں اور الرٹس';
+
+  @override
+  String get profileReminder => 'فوکس شروع کرنے کی یاد دہانی';
+
+  @override
+  String profileReminderSub(String time) {
+    return 'روزانہ $time بجے';
+  }
+
+  @override
+  String get profileStreakAlerts => 'تسلسل الرٹس';
+
+  @override
+  String get profileStreakAlertsSub => 'تسلسل ٹوٹنے سے پہلے';
+
+  @override
+  String get profileGoalMilestones => 'اہداف کے سنگ میل';
+
+  @override
+  String get profileGoalMilestonesSub => 'جب آپ ہدف پورا کریں';
+
+  @override
+  String get profileDarkMode => 'ڈارک موڈ';
+
+  @override
+  String get profileOn => 'آن';
+
+  @override
+  String get profileOff => 'آف';
+
+  @override
+  String get profileTextSize => 'متن کا سائز';
+
+  @override
+  String get profileTextSmall => 'چھوٹا';
+
+  @override
+  String get profileTextMedium => 'درمیانہ';
+
+  @override
+  String get profileTextLarge => 'بڑا';
+
+  @override
+  String get profileTextHuge => 'بہت بڑا';
+
+  @override
+  String get profilePomodoroLen => 'پومودورو کا دورانیہ';
+
+  @override
+  String get profileBreakLen => 'وقفے کا دورانیہ';
+
+  @override
+  String profileMinutes(int n) {
+    return '$n منٹ';
+  }
+
+  @override
+  String get profileFaceIdUnlock => 'اَن لاک کے لیے فیس آئی ڈی';
+
+  @override
+  String get profileFaceIdUnlockSub => 'ایپ اَن لاک سے پہلے تصدیق';
+
+  @override
+  String get profileBypass => 'ہنگامی رسائی';
+
+  @override
+  String profileBypassSub(int n) {
+    return 'روزانہ $n اَن لاک';
+  }
+
+  @override
+  String get profileAppLock => 'فیس آئی ڈی سے Pausey لاک کریں';
+
+  @override
+  String get profileAppLockSub => 'ایپ کھولتے وقت پوچھیں';
+
+  @override
+  String get profileHideUsage => 'استعمال کا ڈیٹا چھپائیں';
+
+  @override
+  String get profileHideUsageSub => 'اسکرین ٹائم نمبر چھپائیں';
+
+  @override
+  String get profileClearData => 'سرگرمی کا ڈیٹا صاف کریں';
+
+  @override
+  String get profileClearDataSub => 'سیشنز اور اہداف کی تاریخ ہٹاتا ہے';
+
+  @override
+  String get profileClearTitle => 'سرگرمی کا ڈیٹا صاف کریں؟';
+
+  @override
+  String get profileClearBody =>
+      'اس فون سے تمام فوکس سیشنز اور اہداف کے ریکارڈ حذف ہو جائیں گے۔ یہ واپس نہیں ہو سکتا۔';
+
+  @override
+  String get profileClear => 'صاف کریں';
+
+  @override
+  String get profileCleared => 'سرگرمی کا ڈیٹا صاف ہو گیا';
+
+  @override
+  String get profileExport => 'میرا ڈیٹا ایکسپورٹ کریں';
+
+  @override
+  String get profileExportSub => 'JSON کے طور پر کاپی کریں';
+
+  @override
+  String get profileExported => 'آپ کا ڈیٹا کلپ بورڈ پر کاپی ہو گیا';
+
+  @override
+  String get profileStreaksTitle => 'تسلسل';
+
+  @override
+  String get profileShare => 'شیئر کریں';
+
+  @override
+  String profileShareText(int n) {
+    return 'میں Pausey کے ساتھ $n دن سے مسلسل فوکس کر رہا ہوں!';
+  }
+
+  @override
+  String get profileCopied => 'کلپ بورڈ پر کاپی ہو گیا';
+
+  @override
+  String profileNextMilestone(int n) {
+    return 'جاری رکھیں – اگلے سنگ میل تک $n دن!';
+  }
+
+  @override
+  String get profileAllMilestones => 'تمام سنگ میل مکمل۔ زبردست!';
+
+  @override
+  String get profileStartStreak =>
+      'تسلسل شروع کرنے کے لیے آج ایک فوکس سیشن مکمل کریں۔';
+
+  @override
+  String get profileBest => 'بہترین';
+
+  @override
+  String get profileThisWeek => 'اس ہفتے';
+
+  @override
+  String profileDaysCompleted(int n) {
+    return '$n/7 دن مکمل';
+  }
+
+  @override
+  String get profileCompleted => 'مکمل';
+
+  @override
+  String get profilePartial => 'جزوی';
+
+  @override
+  String get profileMissed => 'چھوٹ گیا';
+
+  @override
+  String get profilePrevMonth => 'پچھلا مہینہ';
+
+  @override
+  String get profileNextMonth => 'اگلا مہینہ';
+
+  @override
+  String get profileMilestones => 'تسلسل کے سنگ میل';
+
+  @override
+  String get profileAchievements => 'کامیابیاں';
+
+  @override
+  String get profileAchOnFire => 'جوش میں';
+
+  @override
+  String get profileAchIronWill => 'فولادی عزم';
+
+  @override
+  String get profileAchFocusMaster => 'فوکس ماسٹر';
+
+  @override
+  String get profileAchMonk => 'ڈیجیٹل راہب';
+
+  @override
+  String get profileAchLegend => 'لیجنڈری';
+
+  @override
+  String get profileAchSpeed => 'تیز رفتار';
+
+  @override
+  String profileAchStreakDesc(int n) {
+    return '$n دن کا تسلسل';
+  }
+
+  @override
+  String profileAchSessionsDesc(int n) {
+    return '$n سیشن مکمل';
+  }
+
+  @override
+  String profileAchHoursDesc(int n) {
+    return 'کل $n گھنٹے فوکس';
+  }
+
+  @override
+  String profileAchDayDesc(int n) {
+    return 'ایک دن میں $n سیشن';
+  }
+
+  @override
   String get navHome => 'ہوم';
 
   @override
@@ -693,4 +2164,217 @@ class AppLocalizationsUr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get statesTitle => 'حالتیں';
+
+  @override
+  String get statesSubtitle => 'دوستانہ خرابی، خالی اور لوڈنگ اسکرینز';
+
+  @override
+  String get statesNoInternet => 'انٹرنیٹ نہیں';
+
+  @override
+  String get statesConnectionLost => 'رابطہ منقطع';
+
+  @override
+  String get statesOfflineTitle => 'آپ آف لائن ہیں';
+
+  @override
+  String get statesOfflineMsg =>
+      'Pausey ابھی سرور تک نہیں پہنچ پا رہا۔ اپنا Wi-Fi یا موبائل ڈیٹا چیک کریں اور دوبارہ کوشش کریں – آپ کا مقامی ڈیٹا محفوظ ہے۔';
+
+  @override
+  String get statesTryAgain => 'دوبارہ کوشش کریں';
+
+  @override
+  String get statesOpenSettings => 'سیٹنگز کھولیں';
+
+  @override
+  String get statesOfflineMode => 'آف لائن موڈ فعال';
+
+  @override
+  String get statesLimited => 'محدود';
+
+  @override
+  String get statesAvailable => 'دستیاب';
+
+  @override
+  String get statesUnavailable => 'دستیاب نہیں';
+
+  @override
+  String get statesCapSessions => 'پچھلے سیشن دیکھیں';
+
+  @override
+  String get statesCapApps => 'لاک ایپس کی فہرست';
+
+  @override
+  String get statesCapTimer => 'مقامی فوکس ٹائمر چلائیں';
+
+  @override
+  String get statesCapSync => 'اسٹریک اور اہداف سنک';
+
+  @override
+  String get statesCapAnalytics => 'تجزیاتی ڈیٹا تازہ کریں';
+
+  @override
+  String get statesOfflineNote =>
+      'آپ کا سارا فوکس ڈیٹا مقامی طور پر محفوظ ہے۔ آف لائن ہونے پر کچھ ضائع نہیں ہوتا۔';
+
+  @override
+  String get statesBackOnline => 'دوبارہ آن لائن – سب کچھ سنک ہو گیا';
+
+  @override
+  String get statesShowAgain => 'حالت دوبارہ دکھائیں';
+
+  @override
+  String get statesPermDenied => 'اجازت مسترد';
+
+  @override
+  String get statesPermRequired => 'اجازت درکار';
+
+  @override
+  String get statesPermTitle => 'رسائی بند';
+
+  @override
+  String get statesPermMsg =>
+      'ایپس بلاک کرنے کے لیے Pausey کو اسکرین ٹائم تک رسائی چاہیے۔ اس کے بغیر بلاکنگ کام نہیں کرے گی۔';
+
+  @override
+  String get statesGrant => 'رسائی دیں';
+
+  @override
+  String get statesLearnMore => 'مزید جانیں';
+
+  @override
+  String get statesLearnMoreMsg =>
+      'اسکرین ٹائم رسائی سے Pausey توجہ ہٹانے والی ایپس روک سکتا ہے۔ آپ کا ڈیٹا فون سے باہر نہیں جاتا۔';
+
+  @override
+  String get statesRequiredPerms => 'ضروری اجازتیں';
+
+  @override
+  String get statesPermNotif => 'اطلاعات';
+
+  @override
+  String get statesPermScreenTime => 'اسکرین ٹائم رسائی';
+
+  @override
+  String get statesPermUsage => 'ایپ استعمال کے اعداد';
+
+  @override
+  String get statesPermBio => 'فیس آئی ڈی / بائیومیٹرکس';
+
+  @override
+  String get statesGranted => 'منظور';
+
+  @override
+  String get statesDenied => 'مسترد';
+
+  @override
+  String get statesPermNote =>
+      'اسکرین ٹائم کے بغیر بھی فوکس ٹائمر چلتا ہے، مگر ایپس بلاک نہیں ہوتیں۔';
+
+  @override
+  String get statesAccessGranted => 'رسائی مل گئی – ایپ بلاکنگ تیار ہے';
+
+  @override
+  String get statesDataNA => 'ڈیٹا دستیاب نہیں';
+
+  @override
+  String get statesSyncFailed => 'سنک ناکام';
+
+  @override
+  String get statesLoadTitle => 'ڈیٹا لوڈ نہیں ہو سکا';
+
+  @override
+  String get statesLoadMsg =>
+      'آپ کے تجزیات لاتے وقت مسئلہ ہوا۔ شاید سرور میں عارضی خرابی ہے – آپ کا مقامی ڈیٹا محفوظ ہے۔';
+
+  @override
+  String get statesRetrySync => 'دوبارہ سنک';
+
+  @override
+  String get statesUseCached => 'محفوظ ڈیٹا';
+
+  @override
+  String get statesErrorDetails => 'خرابی کی تفصیل';
+
+  @override
+  String get statesErrorCode => 'خرابی کوڈ';
+
+  @override
+  String get statesTimestamp => 'وقت';
+
+  @override
+  String get statesRetryCount => 'کوششیں';
+
+  @override
+  String statesAttempts(int n) {
+    return '$n / 3 کوششیں';
+  }
+
+  @override
+  String get statesReport => 'سپورٹ کو رپورٹ کریں';
+
+  @override
+  String get statesReported => 'شکریہ – رپورٹ بھیج دی گئی';
+
+  @override
+  String get statesCachedNote =>
+      'اس دوران آخری کامیاب سنک کا محفوظ ڈیٹا دستیاب ہے۔';
+
+  @override
+  String get statesDataLoaded => 'تجزیات لوڈ ہو گئے';
+
+  @override
+  String get statesCachedShown => 'محفوظ ڈیٹا دکھایا جا رہا ہے';
+
+  @override
+  String statesWeekFocus(String time) {
+    return 'اس ہفتے فوکس: $time';
+  }
+
+  @override
+  String get statesEmpty => 'خالی حالت';
+
+  @override
+  String get statesNothingYet => 'ابھی کچھ نہیں';
+
+  @override
+  String get statesEmptyTitle => 'ابھی کوئی سیشن نہیں';
+
+  @override
+  String get statesEmptyMsg =>
+      'اپنا پہلا فوکس سیشن شروع کریں، آپ کی پیش رفت یہاں نظر آئے گی۔';
+
+  @override
+  String get statesStartFocus => 'فوکس شروع کریں';
+
+  @override
+  String get statesLoadingSection => 'لوڈنگ حالتیں';
+
+  @override
+  String get statesDashLoading => 'ڈیش بورڈ';
+
+  @override
+  String get statesAnalyticsLoading => 'تجزیات';
+
+  @override
+  String get statesGoalsLoading => 'اہداف';
+
+  @override
+  String get statesProfileLoading => 'پروفائل';
+
+  @override
+  String get statesCrunching => 'آپ کا ڈیٹا تیار ہو رہا ہے…';
+
+  @override
+  String get statesLoadingGoals => 'اہداف لوڈ ہو رہے ہیں…';
+
+  @override
+  String get statesLoadingProfile => 'پروفائل لوڈ ہو رہی ہے…';
+
+  @override
+  String get statesReplay => 'دوبارہ چلائیں';
 }

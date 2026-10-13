@@ -435,6 +435,159 @@ class AppLocalizationsFr extends AppLocalizations {
   String get ob9StreakSub => 'Terminez une session pour la poursuivre';
 
   @override
+  String get blockTitle => 'Verrou d\'apps';
+
+  @override
+  String blockSubtitle(int locked, int total) {
+    return '$locked apps sur $total verrouillées';
+  }
+
+  @override
+  String get blockAddApp => 'Ajouter';
+
+  @override
+  String blockLockedChip(int n) {
+    return '$n verrouillées';
+  }
+
+  @override
+  String blockUnlockedChip(int n) {
+    return '$n libres';
+  }
+
+  @override
+  String blockScheduledChip(int n) {
+    return '$n planifiées';
+  }
+
+  @override
+  String get blockFaceIdTitle => 'Protection Face ID';
+
+  @override
+  String get blockFaceIdSub => 'Face ID requis pour déverrouiller';
+
+  @override
+  String get blockFaceIdUnavailable =>
+      'Biométrie indisponible sur cet appareil';
+
+  @override
+  String get blockFaceIdReason => 'Confirmez votre identité pour activer';
+
+  @override
+  String get blockFaceIdFailed =>
+      'Échec de vérification, protection désactivée';
+
+  @override
+  String get blockScheduleTitle => 'Verrou planifié';
+
+  @override
+  String get blockStart => 'Début';
+
+  @override
+  String get blockEnd => 'Fin';
+
+  @override
+  String get blockNeedOneDay => 'Gardez au moins un jour';
+
+  @override
+  String get blockManagedApps => 'Apps gérées';
+
+  @override
+  String get blockLockAll => 'Tout verrouiller';
+
+  @override
+  String get blockAllLocked => 'Toutes les apps sont verrouillées';
+
+  @override
+  String get blockSched => 'Planif.';
+
+  @override
+  String get blockOnlySchedule => 'Verrouiller seulement selon le planning';
+
+  @override
+  String get blockOnlyScheduleSub =>
+      'Sinon elle reste verrouillée toute la journée';
+
+  @override
+  String get blockLockedLabel => 'Verrouillée';
+
+  @override
+  String get blockRemove => 'Retirer de la liste';
+
+  @override
+  String blockRemoved(String app) {
+    return '$app retirée';
+  }
+
+  @override
+  String get blockUndo => 'Annuler';
+
+  @override
+  String get blockAppsUpdated => 'Apps mises à jour';
+
+  @override
+  String get blockCatSocial => 'Social';
+
+  @override
+  String get blockCatVideo => 'Vidéo';
+
+  @override
+  String get blockCatGames => 'Jeux';
+
+  @override
+  String get blockCatShopping => 'Shopping';
+
+  @override
+  String get blockCatCommunity => 'Communauté';
+
+  @override
+  String get blockCatOther => 'Autres';
+
+  @override
+  String get blockEmptyBadge => 'Rien de bloqué';
+
+  @override
+  String get blockEmptyTitle => 'Aucune app pour l\'instant';
+
+  @override
+  String get blockEmptyMsg =>
+      'Ajoutez les apps qui vous distraient et Pausey les verrouillera.';
+
+  @override
+  String get blockEmergencyTitle => 'Déblocage d\'urgence';
+
+  @override
+  String blockEmergencySub(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n restants',
+      one: '1 restant',
+    );
+    return 'Tout débloquer temporairement · $_temp0 aujourd\'hui';
+  }
+
+  @override
+  String get blockEmergencyOff => 'Désactivé dans Réglages';
+
+  @override
+  String get blockEmergencyUse => 'Utiliser';
+
+  @override
+  String get blockEmergencyConfirmTitle => 'Utiliser le déblocage d\'urgence ?';
+
+  @override
+  String blockEmergencyConfirmMsg(int n) {
+    return 'Cela utilise un des $n déblocages restants aujourd\'hui. Seulement en cas de besoin.';
+  }
+
+  @override
+  String get blockEmergencyUsed => 'Déblocage utilisé : apps ouvertes';
+
+  @override
+  String get blockEmergencyNone => 'Plus aucun déblocage aujourd\'hui';
+
+  @override
   String get appName => 'Pausey';
 
   @override
@@ -662,6 +815,1358 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cancel => 'Annuler';
 
   @override
+  String get focusModePomodoro => 'Pomodoro';
+
+  @override
+  String get focusModeDeep => 'Focus profond';
+
+  @override
+  String get focusModeCustom => 'Perso';
+
+  @override
+  String get focusRemaining => 'RESTANT';
+
+  @override
+  String get focusBreakLabel => 'PAUSE';
+
+  @override
+  String get focusReadyLabel => 'PRÊT';
+
+  @override
+  String get focusInSession => 'En session';
+
+  @override
+  String get focusPausedState => 'En pause';
+
+  @override
+  String get focusOnBreak => 'En pause';
+
+  @override
+  String get focusIdleState => 'Appuyez sur lecture';
+
+  @override
+  String get focusSessionsDone => 'Sessions faites';
+
+  @override
+  String get focusProgress => 'Progression';
+
+  @override
+  String get focusBreakAfter => 'Pause après';
+
+  @override
+  String get focusFocusedToday => 'Aujourd\'hui';
+
+  @override
+  String focusAppsBlocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count apps bloquées',
+      one: '1 app bloquée',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get focusAppsBlockedSub => 'Les distractions sont verrouillées.';
+
+  @override
+  String get focusNoApps => 'Aucune app bloquée';
+
+  @override
+  String get focusNoAppsSub => 'Choisissez les apps à verrouiller.';
+
+  @override
+  String get focusEdit => 'Modifier';
+
+  @override
+  String get focusAdd => 'Ajouter';
+
+  @override
+  String get focusAmbient => 'Son d\'ambiance';
+
+  @override
+  String get focusSoundOff => 'Désactivé';
+
+  @override
+  String get focusSoundRain => 'Pluie';
+
+  @override
+  String get focusSoundForest => 'Forêt';
+
+  @override
+  String get focusSoundWaves => 'Vagues';
+
+  @override
+  String get focusSoundWhite => 'Bruit blanc';
+
+  @override
+  String get focusVolume => 'Volume';
+
+  @override
+  String get focusStart => 'Démarrer';
+
+  @override
+  String get focusPause => 'Pause';
+
+  @override
+  String get focusResume => 'Reprendre';
+
+  @override
+  String get focusStop => 'Arrêter';
+
+  @override
+  String get focusRestart => 'Recommencer';
+
+  @override
+  String get focusSkipBreak => 'Passer la pause';
+
+  @override
+  String get focusDurations => 'Durée des sessions';
+
+  @override
+  String focusMinutesN(int n) {
+    return '$n min';
+  }
+
+  @override
+  String get focusBreakLength => 'Pause';
+
+  @override
+  String get focusCustomTitle => 'Durée perso';
+
+  @override
+  String get focusSet => 'Valider';
+
+  @override
+  String get focusStopTitle => 'Terminer plus tôt ?';
+
+  @override
+  String get focusStopBody => 'Le temps déjà concentré sera enregistré.';
+
+  @override
+  String get focusEndSession => 'Terminer';
+
+  @override
+  String get focusKeepGoing => 'Continuer';
+
+  @override
+  String get focusTooShort => 'Moins d\'une minute : non enregistré.';
+
+  @override
+  String get focusBreakOver => 'Pause terminée, on repart ?';
+
+  @override
+  String get focusBusy => 'Terminez la session pour changer de mode.';
+
+  @override
+  String get focusFirstHint => 'Votre première session commence ici.';
+
+  @override
+  String get focusCompleteA => 'Session';
+
+  @override
+  String get focusCompleteB => 'terminée !';
+
+  @override
+  String get focusEndedTitle => 'Session terminée';
+
+  @override
+  String focusCompleteMsg(String mode) {
+    return 'Excellent ! Vous avez terminé votre session $mode sans distraction.';
+  }
+
+  @override
+  String get focusEndedMsg =>
+      'Chaque minute compte. Visez une session complète.';
+
+  @override
+  String get focusDurationLabel => 'DURÉE DE FOCUS';
+
+  @override
+  String get focusMinUnit => 'min';
+
+  @override
+  String get focusDayStreak => 'Série';
+
+  @override
+  String get focusAppsLabel => 'Apps bloquées';
+
+  @override
+  String get focusTodayGoal => 'Objectif du jour';
+
+  @override
+  String focusPctCompleted(int pct) {
+    return '$pct % atteint';
+  }
+
+  @override
+  String focusPlusPct(int pct) {
+    return '+$pct % grâce à cette session';
+  }
+
+  @override
+  String get focusMomentum => 'Gardez le rythme !';
+
+  @override
+  String get focusQuote1 =>
+      'La régularité bat l\'intensité. Chaque session compte.';
+
+  @override
+  String get focusQuote2 =>
+      'De petits blocs de focus font de grands résultats.';
+
+  @override
+  String get focusQuote3 => 'Pas de scroll, du concret. Recommencez.';
+
+  @override
+  String get focusStartNext => 'Session suivante';
+
+  @override
+  String get focusBackHome => 'Retour à l\'accueil';
+
+  @override
+  String get goalsTitle => 'Mes objectifs';
+
+  @override
+  String goalsSubtitle(int active, int done) {
+    return '$active actifs · $done terminés';
+  }
+
+  @override
+  String get goalsAdd => 'Ajouter';
+
+  @override
+  String get goalsCompleted => 'Terminés';
+
+  @override
+  String get goalsActive => 'Actifs';
+
+  @override
+  String get goalsStreak => 'Série';
+
+  @override
+  String get goalsOverall => 'Progression globale';
+
+  @override
+  String goalsWeeklyHit(int hit, int total) {
+    return '$hit sur $total objectifs de la semaine';
+  }
+
+  @override
+  String goalsVsLastWeek(String delta) {
+    return '$delta vs semaine passée';
+  }
+
+  @override
+  String get goalsFilterAll => 'Tous';
+
+  @override
+  String get goalsDone => 'Fait';
+
+  @override
+  String get goalsCatFocus => 'Concentration';
+
+  @override
+  String get goalsCatDiscipline => 'Discipline';
+
+  @override
+  String get goalsCatWellness => 'Bien-être';
+
+  @override
+  String goalsTitleFocusHours(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'Concentration : $n heures',
+      one: 'Concentration : 1 heure',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String goalsTitleFocusDur(String duration) {
+    return 'Concentration : $duration';
+  }
+
+  @override
+  String get goalsTitleBlock => 'Bloquer les réseaux sociaux';
+
+  @override
+  String goalsTitleSessions(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n Pomodoros par jour',
+      one: '1 Pomodoro par jour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String goalsTitleScreen(String duration) {
+    return 'Moins de $duration d\'écran';
+  }
+
+  @override
+  String get goalsTitlePhoneFree => 'Temps sans téléphone';
+
+  @override
+  String goalsDescFocus(String duration) {
+    return 'Atteignez $duration de concentration chaque jour';
+  }
+
+  @override
+  String goalsDescBlock(int n) {
+    return 'Gardez vos apps bloquées $n jours par semaine';
+  }
+
+  @override
+  String goalsDescSessions(int n) {
+    return 'Terminez au moins $n sessions par jour';
+  }
+
+  @override
+  String goalsDescScreen(String duration) {
+    return 'Moins de $duration de téléphone par jour';
+  }
+
+  @override
+  String goalsDescPhoneFree(int n) {
+    return '$n jours sans téléphone par semaine — cochez-les';
+  }
+
+  @override
+  String goalsProgressDays(int done, int total) {
+    return '$done / $total jours';
+  }
+
+  @override
+  String goalsProgressSessions(int done, int total) {
+    return '$done / $total sessions';
+  }
+
+  @override
+  String goalsStreakShort(int n) {
+    return '$n j';
+  }
+
+  @override
+  String goalsStreakN(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'Série de $n jours',
+      one: 'Série de 1 jour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get goalsCheckIn => 'Valider aujourd\'hui';
+
+  @override
+  String get goalsCheckedIn => 'Fait aujourd\'hui';
+
+  @override
+  String get goalsCheckedSnack => 'Bravo ! Aujourd\'hui est validé.';
+
+  @override
+  String get goalsUncheckedSnack => 'Aujourd\'hui n\'est plus validé.';
+
+  @override
+  String get goalsCreateNew => 'Créer un objectif';
+
+  @override
+  String get goalsEmptyBadge => 'Commencez';
+
+  @override
+  String get goalsEmptyTitle => 'Aucun objectif';
+
+  @override
+  String get goalsEmptyMsg =>
+      'Fixez un petit objectif quotidien, Pausey le suivra pour vous.';
+
+  @override
+  String get goalsFilterEmpty => 'Aucun objectif pour ce filtre.';
+
+  @override
+  String get goalsNewGoal => 'Nouvel objectif';
+
+  @override
+  String get goalsEditGoal => 'Modifier l\'objectif';
+
+  @override
+  String get goalsType => 'Type d\'objectif';
+
+  @override
+  String get goalsTypeFocus => 'Temps de concentration';
+
+  @override
+  String get goalsTypeSessions => 'Sessions';
+
+  @override
+  String get goalsTypeBlock => 'Bloquer des apps';
+
+  @override
+  String get goalsTypePhoneFree => 'Jours sans téléphone';
+
+  @override
+  String get goalsTypeScreen => 'Limite d\'écran';
+
+  @override
+  String get goalsCategory => 'Catégorie';
+
+  @override
+  String get goalsTarget => 'Cible';
+
+  @override
+  String get goalsPerDay => 'par jour';
+
+  @override
+  String get goalsPerWeek => 'jours par semaine';
+
+  @override
+  String get goalsMaxPerDay => 'maximum par jour';
+
+  @override
+  String get goalsTitleOptional => 'Titre (facultatif)';
+
+  @override
+  String get goalsSave => 'Enregistrer';
+
+  @override
+  String get goalsCreate => 'Créer l\'objectif';
+
+  @override
+  String get goalsSavedSnack => 'Objectif enregistré';
+
+  @override
+  String get goalsCreatedSnack => 'Objectif créé';
+
+  @override
+  String get goalsEdit => 'Modifier';
+
+  @override
+  String get goalsDelete => 'Supprimer l\'objectif';
+
+  @override
+  String get goalsDeleteQ => 'Supprimer cet objectif ?';
+
+  @override
+  String get goalsDeleteMsg =>
+      'Ses validations seront supprimées. Action irréversible.';
+
+  @override
+  String get goalsDeletedSnack => 'Objectif supprimé';
+
+  @override
+  String get goalsComplete => 'terminé';
+
+  @override
+  String get goalsDaysActive => 'Jours actifs';
+
+  @override
+  String get goalsTotalTime => 'Temps total';
+
+  @override
+  String get goalsSessionsLabel => 'Sessions';
+
+  @override
+  String get goals7Day => 'Progression sur 7 jours';
+
+  @override
+  String get goals7DaysAgo => 'Il y a 7 jours';
+
+  @override
+  String get goalsToday => 'Aujourd\'hui';
+
+  @override
+  String goalsTodayDate(String date) {
+    return 'Aujourd\'hui, $date';
+  }
+
+  @override
+  String goalsYesterdayDate(String date) {
+    return 'Hier, $date';
+  }
+
+  @override
+  String get goalsMilestones => 'Étapes';
+
+  @override
+  String get goalsMsFirst => 'Premier jour réussi';
+
+  @override
+  String get goalsMs3 => 'Série de 3 jours';
+
+  @override
+  String get goalsMsHalf => '50 % de l\'objectif hebdo';
+
+  @override
+  String get goalsMs5 => 'Série de 5 jours';
+
+  @override
+  String get goalsMsWeek => 'Semaine complète';
+
+  @override
+  String get goalsMsLocked => 'Pas encore';
+
+  @override
+  String get goalsHistory => 'Historique';
+
+  @override
+  String get goalsShowLess => 'Voir moins';
+
+  @override
+  String get goalsStartSession => 'Lancer une session';
+
+  @override
+  String get goalsManageApps => 'Gérer les apps bloquées';
+
+  @override
+  String get goalsBlockHint =>
+      'Compté automatiquement quand le planning de blocage est actif.';
+
+  @override
+  String goalsScreenToday(String used) {
+    return 'Écran aujourd\'hui : $used';
+  }
+
+  @override
+  String get goalsNotFound => 'Cet objectif n\'existe plus.';
+
+  @override
+  String get goalsMore => 'Plus d\'options';
+
+  @override
+  String goalsFreeLimit(int n) {
+    return 'Offre gratuite : $n objectifs max';
+  }
+
+  @override
+  String get homeGoodMorning => 'Bonjour';
+
+  @override
+  String get homeGoodAfternoon => 'Bon après-midi';
+
+  @override
+  String get homeGoodEvening => 'Bonsoir';
+
+  @override
+  String get homeFriend => 'Ami';
+
+  @override
+  String get homeTodayFocus => 'Focus du jour';
+
+  @override
+  String homeVsYesterday(String pct) {
+    return '$pct % vs hier';
+  }
+
+  @override
+  String get homeStartToday => 'Pas encore de focus';
+
+  @override
+  String get homeDayStreak => 'Jours d\'affilée';
+
+  @override
+  String get homeTodayGoal => 'Objectif du jour';
+
+  @override
+  String homePctCompleted(int pct) {
+    return '$pct % terminé';
+  }
+
+  @override
+  String get homeOnTrack => 'En bonne voie !';
+
+  @override
+  String get homeKeepGoing => 'Continuez';
+
+  @override
+  String get homeGoalMet => 'Objectif atteint !';
+
+  @override
+  String get homeScreenTimeTitle => 'Temps d\'écran';
+
+  @override
+  String get homeToday => 'Aujourd\'hui';
+
+  @override
+  String homeVsAvg(String pct) {
+    return '$pct % vs moyenne';
+  }
+
+  @override
+  String get homeQuickStart => 'Lancer une session de focus';
+
+  @override
+  String get homeManage => 'Gérer';
+
+  @override
+  String get homeNoApps =>
+      'Choisissez les apps qui vous distraient le plus et verrouillez-les.';
+
+  @override
+  String get homeAddApps => 'Ajouter des apps';
+
+  @override
+  String homeAppLocked(String app) {
+    return '$app verrouillée';
+  }
+
+  @override
+  String homeAppUnlocked(String app) {
+    return '$app déverrouillée';
+  }
+
+  @override
+  String homeLockApp(String app) {
+    return 'Verrouiller ou déverrouiller $app';
+  }
+
+  @override
+  String get homeUpgradeTitle => 'Passer à Premium';
+
+  @override
+  String get homeUpgradeBody => 'Blocages, objectifs et analyses illimités.';
+
+  @override
+  String get homeTryFree => 'Essai gratuit';
+
+  @override
+  String get homePro => 'PRO';
+
+  @override
+  String get homeProActive => 'Pausey Pro est actif';
+
+  @override
+  String get homeProActiveBody => 'Tout est débloqué. Merci de votre soutien !';
+
+  @override
+  String get homeNotifications => 'Notifications';
+
+  @override
+  String get homeNoNotifications => 'Vous êtes à jour.';
+
+  @override
+  String get homePushLabel => 'Notifications push';
+
+  @override
+  String get homeFocusReminder => 'Rappel quotidien';
+
+  @override
+  String get homeStreakAlerts => 'Alertes de série';
+
+  @override
+  String get homePwTitle => 'Débloquez Pausey Pro';
+
+  @override
+  String get homePwSubtitle =>
+      'Retrouvez votre concentration et battez l\'addiction au téléphone.';
+
+  @override
+  String get homePwMonthly => 'Mensuel';
+
+  @override
+  String get homePwBilledMonthly => 'Facturé chaque mois';
+
+  @override
+  String get homePwYearly => 'Annuel';
+
+  @override
+  String get homePwPopular => 'Populaire';
+
+  @override
+  String homePwSave(int pct) {
+    return '−$pct %';
+  }
+
+  @override
+  String homePwBilledYearly(String price) {
+    return '$price facturé par an';
+  }
+
+  @override
+  String get homePwLifetime => 'À vie';
+
+  @override
+  String get homePwBestValue => 'Meilleur prix';
+
+  @override
+  String get homePwPayOnce => 'Payez une fois, à vie';
+
+  @override
+  String get homePwPerMonth => '/ mois';
+
+  @override
+  String get homePwOnce => 'une fois';
+
+  @override
+  String get homePwStartTrial => 'Essai gratuit de 7 jours';
+
+  @override
+  String get homePwBuyLifetime => 'Accès à vie';
+
+  @override
+  String get homePwNoCharge =>
+      'Rien à payer aujourd\'hui · Annulable à tout moment';
+
+  @override
+  String get homePwOneTime => 'Paiement unique · Sans abonnement';
+
+  @override
+  String get homePwFree => 'Gratuit';
+
+  @override
+  String get homePwProCol => 'Pro';
+
+  @override
+  String get homePwFeatBlocking => 'Blocage d\'apps illimité';
+
+  @override
+  String get homePwFeatSessions => 'Tous les modes de focus';
+
+  @override
+  String get homePwFeatGoals => 'Objectifs illimités';
+
+  @override
+  String get homePwFeatAnalytics => 'Analyses avancées';
+
+  @override
+  String get homePwFeatStreak => 'Protection de série';
+
+  @override
+  String get homePwFeatSchedule => 'Planification du focus';
+
+  @override
+  String get homePwFeatFaceId => 'Verrouillage Face ID';
+
+  @override
+  String get homePwFeatNotif => 'Notifications intelligentes';
+
+  @override
+  String homePwMax(int n) {
+    return '$n max';
+  }
+
+  @override
+  String get homePwSecure => 'Paiement sécurisé';
+
+  @override
+  String get homePwCancelAnytime => 'Annulable';
+
+  @override
+  String get homePwPrivacyFirst => 'Confidentialité';
+
+  @override
+  String get homePwRestore => 'Restaurer les achats';
+
+  @override
+  String get homePwTerms => 'Conditions d\'utilisation';
+
+  @override
+  String get homePwPrivacyPolicy => 'Politique de confidentialité';
+
+  @override
+  String get homePwWelcome => 'Bienvenue dans Pausey Pro !';
+
+  @override
+  String get homePwNothingToRestore => 'Aucun achat précédent trouvé.';
+
+  @override
+  String get homePwRestored => 'Votre accès Pro est actif.';
+
+  @override
+  String get homePwLinkSoon => 'Cette page s\'ouvrira bientôt sur notre site.';
+
+  @override
+  String get homePwYouArePro => 'Vous êtes Pro, profitez-en !';
+
+  @override
+  String get homePwClose => 'Fermer';
+
+  @override
+  String get insightsAnalytics => 'Analyses';
+
+  @override
+  String get insightsScreenTime => 'Temps d\'écran';
+
+  @override
+  String get insightsToday => 'Aujourd\'hui';
+
+  @override
+  String get insightsWeek => 'Semaine';
+
+  @override
+  String get insightsMonth => 'Mois';
+
+  @override
+  String get insightsProductivity => 'Score de productivité';
+
+  @override
+  String insightsPts(String delta) {
+    return '$delta pts';
+  }
+
+  @override
+  String get insightsVsLastWeek => 'vs semaine dernière';
+
+  @override
+  String get insightsVsLastMonth => 'vs mois dernier';
+
+  @override
+  String insightsScoreDays(int n) {
+    return 'Score sur $n jours';
+  }
+
+  @override
+  String get insightsFocusHours => 'Heures de focus';
+
+  @override
+  String get insightsThisWeek => 'cette semaine';
+
+  @override
+  String get insightsThisMonth => 'ce mois-ci';
+
+  @override
+  String insightsGoalOf(String done, String goal) {
+    return '$done / $goal objectif';
+  }
+
+  @override
+  String get insightsFocusScore => 'Focus';
+
+  @override
+  String get insightsGoals => 'Objectifs';
+
+  @override
+  String get insightsConsistency => 'Régularité';
+
+  @override
+  String get insightsWeeklyFocus => 'Heures de focus de la semaine';
+
+  @override
+  String insightsDailyFocus(int n) {
+    return 'Focus quotidien, $n derniers jours';
+  }
+
+  @override
+  String insightsBestDay(String day, String time) {
+    return 'Meilleur jour : $day · $time';
+  }
+
+  @override
+  String insightsAvgDay(String time) {
+    return 'Moy. $time / jour';
+  }
+
+  @override
+  String get insightsMonthlyTrends => 'Tendances du mois';
+
+  @override
+  String get insightsActual => 'Réel';
+
+  @override
+  String get insightsGoal => 'Objectif';
+
+  @override
+  String insightsWk(int n) {
+    return 'Sem $n';
+  }
+
+  @override
+  String insightsWeekBeat(int n, String time) {
+    return 'Semaine $n : objectif dépassé de $time';
+  }
+
+  @override
+  String insightsWeekShort(int n, String time) {
+    return 'Meilleure : semaine $n, à $time de l\'objectif';
+  }
+
+  @override
+  String get insightsGoalCompletion => 'Objectifs atteints';
+
+  @override
+  String insightsDaysOf(int done, int total) {
+    return '$done/$total jours';
+  }
+
+  @override
+  String get insightsNoGoals =>
+      'Aucun objectif. Ajoutez-en un pour suivre vos progrès ici.';
+
+  @override
+  String get insightsManageGoals => 'Gérer';
+
+  @override
+  String insightsGoalFocus(String hours) {
+    return 'Focus quotidien : $hours heures';
+  }
+
+  @override
+  String get insightsGoalBlock => 'Bloquer les réseaux sociaux';
+
+  @override
+  String insightsGoalPomo(int n) {
+    return '$n pomodoros par jour';
+  }
+
+  @override
+  String insightsGoalScreen(String time) {
+    return 'Moins de $time d\'écran';
+  }
+
+  @override
+  String get insightsGoalPhoneFree => 'Temps sans téléphone';
+
+  @override
+  String get insightsEmptyBadge => 'Aucune session';
+
+  @override
+  String get insightsEmptyTitle =>
+      'Vos statistiques commencent par une session';
+
+  @override
+  String get insightsEmptyBody =>
+      'Terminez une session de focus pour voir ici vos scores, graphiques et objectifs.';
+
+  @override
+  String get insightsEmptyCta => 'Lancer une session';
+
+  @override
+  String get insightsDailyUsage => 'Usage quotidien';
+
+  @override
+  String get insightsFocusTime => 'Temps de focus';
+
+  @override
+  String get insightsVsAvg => 'vs moy.';
+
+  @override
+  String get insightsUsageByDay => 'Usage par jour';
+
+  @override
+  String get insightsUsageByWeek => 'Usage par semaine';
+
+  @override
+  String get insightsUsage => 'Usage';
+
+  @override
+  String insightsTrend(int n) {
+    return 'Tendance sur $n jours';
+  }
+
+  @override
+  String get insightsImproving => 'En progrès';
+
+  @override
+  String get insightsRising => 'En hausse';
+
+  @override
+  String insightsDaysAgo(int n) {
+    return 'Il y a $n jours';
+  }
+
+  @override
+  String get insightsMostUsed => 'Apps les plus utilisées';
+
+  @override
+  String get insightsAllApps => 'Toutes les apps';
+
+  @override
+  String get insightsBreakdown => 'Répartition';
+
+  @override
+  String get insightsTotal => 'total';
+
+  @override
+  String get insightsNoUsage => 'Aucun temps d\'écran sur cette période.';
+
+  @override
+  String get insightsLockApp => 'Bloquer cette app';
+
+  @override
+  String insightsLocked(String app) {
+    return '$app est bloquée';
+  }
+
+  @override
+  String get insightsCatSocial => 'Social';
+
+  @override
+  String get insightsCatVideo => 'Vidéo';
+
+  @override
+  String get insightsCatGames => 'Jeux';
+
+  @override
+  String get insightsCatShopping => 'Shopping';
+
+  @override
+  String get insightsCatCommunity => 'Communauté';
+
+  @override
+  String get insightsCatOther => 'Autres';
+
+  @override
+  String get profileSettings => 'Réglages';
+
+  @override
+  String get profileGuestName => 'Invité';
+
+  @override
+  String get profileGuestBadge => 'Invité · enregistré sur ce téléphone';
+
+  @override
+  String get profileEditName => 'Modifier le nom';
+
+  @override
+  String get profileNameHint => 'Votre nom';
+
+  @override
+  String get profileSave => 'Enregistrer';
+
+  @override
+  String profileMemberSince(String date) {
+    return 'Membre depuis $date';
+  }
+
+  @override
+  String get profileProActive => 'Pro · Actif';
+
+  @override
+  String get profileFree => 'Offre gratuite';
+
+  @override
+  String get profileUpgrade => 'Passer Pro';
+
+  @override
+  String get profileBadges => 'Badges';
+
+  @override
+  String get profileNoBadges => 'Terminez des sessions pour gagner des badges';
+
+  @override
+  String get profileFocusTime => 'Temps de focus';
+
+  @override
+  String get profileGoalsDone => 'Objectifs atteints';
+
+  @override
+  String get profileDayStreak => 'Jours d\'affilée';
+
+  @override
+  String get profileAppsBlocked => 'Apps bloquées';
+
+  @override
+  String get profileFocusActivity => 'Activité de focus';
+
+  @override
+  String get profileLast4Weeks => '4 dernières semaines';
+
+  @override
+  String get profileRecentActivity => 'Activité récente';
+
+  @override
+  String get profileSessionDone => 'Session terminée';
+
+  @override
+  String get profileSessionStopped => 'Session arrêtée tôt';
+
+  @override
+  String get profileModePomodoro => 'Pomodoro';
+
+  @override
+  String get profileModeDeep => 'Travail profond';
+
+  @override
+  String get profileModeCustom => 'Personnalisé';
+
+  @override
+  String get profileJustNow => 'À l\'instant';
+
+  @override
+  String profileAgoMinutes(int n) {
+    return 'il y a $n min';
+  }
+
+  @override
+  String profileAgoHours(int n) {
+    return 'il y a $n h';
+  }
+
+  @override
+  String get profileYesterday => 'Hier';
+
+  @override
+  String get profileEmptyTitle => 'Pas encore de session';
+
+  @override
+  String get profileEmptyBody =>
+      'Lancez votre première session : activité, série et badges apparaîtront ici.';
+
+  @override
+  String get profileStartFocus => 'Commencer';
+
+  @override
+  String get profileMyGoals => 'Mes objectifs';
+
+  @override
+  String get profileStreaks => 'Séries et badges';
+
+  @override
+  String get profileSubscription => 'Abonnement';
+
+  @override
+  String get profileSignOutTitle => 'Se déconnecter ?';
+
+  @override
+  String get profileSignOutBody =>
+      'Vous pourrez vous reconnecter à tout moment.';
+
+  @override
+  String get profileSecNotifications => 'Notifications';
+
+  @override
+  String get profileSecAppearance => 'Apparence';
+
+  @override
+  String get profileSecFocus => 'Focus et blocage';
+
+  @override
+  String get profileSecPrivacy => 'Confidentialité et sécurité';
+
+  @override
+  String get profileSecAccount => 'Compte';
+
+  @override
+  String get profilePush => 'Notifications push';
+
+  @override
+  String get profilePushSub => 'Rappels et alertes';
+
+  @override
+  String get profileReminder => 'Rappel de démarrage';
+
+  @override
+  String profileReminderSub(String time) {
+    return 'Tous les jours à $time';
+  }
+
+  @override
+  String get profileStreakAlerts => 'Alertes de série';
+
+  @override
+  String get profileStreakAlertsSub => 'Avant de perdre votre série';
+
+  @override
+  String get profileGoalMilestones => 'Étapes d\'objectifs';
+
+  @override
+  String get profileGoalMilestonesSub => 'Quand vous atteignez un objectif';
+
+  @override
+  String get profileDarkMode => 'Mode sombre';
+
+  @override
+  String get profileOn => 'Activé';
+
+  @override
+  String get profileOff => 'Désactivé';
+
+  @override
+  String get profileTextSize => 'Taille du texte';
+
+  @override
+  String get profileTextSmall => 'Petit';
+
+  @override
+  String get profileTextMedium => 'Moyen';
+
+  @override
+  String get profileTextLarge => 'Grand';
+
+  @override
+  String get profileTextHuge => 'Très grand';
+
+  @override
+  String get profilePomodoroLen => 'Durée du pomodoro';
+
+  @override
+  String get profileBreakLen => 'Durée de la pause';
+
+  @override
+  String profileMinutes(int n) {
+    return '$n min';
+  }
+
+  @override
+  String get profileFaceIdUnlock => 'Face ID pour déverrouiller';
+
+  @override
+  String get profileFaceIdUnlockSub => 'Confirmer avant de déverrouiller';
+
+  @override
+  String get profileBypass => 'Accès d\'urgence';
+
+  @override
+  String profileBypassSub(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n déverrouillages par jour',
+      one: '1 déverrouillage par jour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profileAppLock => 'Verrouiller Pausey avec Face ID';
+
+  @override
+  String get profileAppLockSub => 'Demander à l\'ouverture';
+
+  @override
+  String get profileHideUsage => 'Masquer les données d\'usage';
+
+  @override
+  String get profileHideUsageSub => 'Masquer le temps d\'écran';
+
+  @override
+  String get profileClearData => 'Effacer l\'activité';
+
+  @override
+  String get profileClearDataSub => 'Supprime sessions et historique';
+
+  @override
+  String get profileClearTitle => 'Effacer l\'activité ?';
+
+  @override
+  String get profileClearBody =>
+      'Toutes les sessions et validations d\'objectifs de ce téléphone seront supprimées. Action irréversible.';
+
+  @override
+  String get profileClear => 'Effacer';
+
+  @override
+  String get profileCleared => 'Activité effacée';
+
+  @override
+  String get profileExport => 'Exporter mes données';
+
+  @override
+  String get profileExportSub => 'Copier en JSON';
+
+  @override
+  String get profileExported => 'Vos données ont été copiées';
+
+  @override
+  String get profileStreaksTitle => 'Séries';
+
+  @override
+  String get profileShare => 'Partager';
+
+  @override
+  String profileShareText(int n) {
+    return 'Je suis à $n jours de focus d\'affilée avec Pausey !';
+  }
+
+  @override
+  String get profileCopied => 'Copié dans le presse-papiers';
+
+  @override
+  String profileNextMilestone(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n jours',
+      one: '1 jour',
+    );
+    return 'Continuez – encore $_temp0 avant la prochaine étape !';
+  }
+
+  @override
+  String get profileAllMilestones =>
+      'Toutes les étapes atteintes. Légendaire !';
+
+  @override
+  String get profileStartStreak =>
+      'Terminez une session aujourd\'hui pour lancer une série.';
+
+  @override
+  String get profileBest => 'Record';
+
+  @override
+  String get profileThisWeek => 'Cette semaine';
+
+  @override
+  String profileDaysCompleted(int n) {
+    return '$n/7 jours réussis';
+  }
+
+  @override
+  String get profileCompleted => 'Réussi';
+
+  @override
+  String get profilePartial => 'Partiel';
+
+  @override
+  String get profileMissed => 'Manqué';
+
+  @override
+  String get profilePrevMonth => 'Mois précédent';
+
+  @override
+  String get profileNextMonth => 'Mois suivant';
+
+  @override
+  String get profileMilestones => 'Étapes de série';
+
+  @override
+  String get profileAchievements => 'Succès';
+
+  @override
+  String get profileAchOnFire => 'En feu';
+
+  @override
+  String get profileAchIronWill => 'Volonté de fer';
+
+  @override
+  String get profileAchFocusMaster => 'Maître du focus';
+
+  @override
+  String get profileAchMonk => 'Moine numérique';
+
+  @override
+  String get profileAchLegend => 'Légendaire';
+
+  @override
+  String get profileAchSpeed => 'Inarrêtable';
+
+  @override
+  String profileAchStreakDesc(int n) {
+    return 'Série de $n jours';
+  }
+
+  @override
+  String profileAchSessionsDesc(int n) {
+    return '$n sessions terminées';
+  }
+
+  @override
+  String profileAchHoursDesc(int n) {
+    return '$n h de focus';
+  }
+
+  @override
+  String profileAchDayDesc(int n) {
+    return '$n sessions en un jour';
+  }
+
+  @override
   String get navHome => 'Accueil';
 
   @override
@@ -698,4 +2203,217 @@ class AppLocalizationsFr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get statesTitle => 'États';
+
+  @override
+  String get statesSubtitle => 'Écrans d\'erreur, vides et de chargement';
+
+  @override
+  String get statesNoInternet => 'Pas d\'internet';
+
+  @override
+  String get statesConnectionLost => 'Connexion perdue';
+
+  @override
+  String get statesOfflineTitle => 'Vous êtes hors ligne';
+
+  @override
+  String get statesOfflineMsg =>
+      'Pausey ne peut pas joindre le serveur. Vérifiez votre Wi-Fi ou vos données mobiles et réessayez – vos données locales sont en sécurité.';
+
+  @override
+  String get statesTryAgain => 'Réessayer';
+
+  @override
+  String get statesOpenSettings => 'Ouvrir les réglages';
+
+  @override
+  String get statesOfflineMode => 'Mode hors ligne actif';
+
+  @override
+  String get statesLimited => 'Limité';
+
+  @override
+  String get statesAvailable => 'Disponible';
+
+  @override
+  String get statesUnavailable => 'Indisponible';
+
+  @override
+  String get statesCapSessions => 'Voir les sessions passées';
+
+  @override
+  String get statesCapApps => 'Liste des apps verrouillées';
+
+  @override
+  String get statesCapTimer => 'Minuteur de focus local';
+
+  @override
+  String get statesCapSync => 'Synchroniser série et objectifs';
+
+  @override
+  String get statesCapAnalytics => 'Actualiser les statistiques';
+
+  @override
+  String get statesOfflineNote =>
+      'Toutes vos données sont stockées localement. Rien n\'est perdu hors ligne.';
+
+  @override
+  String get statesBackOnline => 'De retour en ligne – tout est synchronisé';
+
+  @override
+  String get statesShowAgain => 'Réafficher';
+
+  @override
+  String get statesPermDenied => 'Autorisation refusée';
+
+  @override
+  String get statesPermRequired => 'Autorisation requise';
+
+  @override
+  String get statesPermTitle => 'Accès bloqué';
+
+  @override
+  String get statesPermMsg =>
+      'Pausey a besoin de l\'accès Temps d\'écran pour bloquer les apps. Sans lui, le blocage ne fonctionne pas.';
+
+  @override
+  String get statesGrant => 'Autoriser';
+
+  @override
+  String get statesLearnMore => 'En savoir plus';
+
+  @override
+  String get statesLearnMoreMsg =>
+      'L\'accès Temps d\'écran permet à Pausey de mettre en pause les apps distrayantes. Vos données restent sur le téléphone.';
+
+  @override
+  String get statesRequiredPerms => 'Autorisations requises';
+
+  @override
+  String get statesPermNotif => 'Notifications';
+
+  @override
+  String get statesPermScreenTime => 'Accès Temps d\'écran';
+
+  @override
+  String get statesPermUsage => 'Statistiques d\'usage';
+
+  @override
+  String get statesPermBio => 'Face ID / biométrie';
+
+  @override
+  String get statesGranted => 'Accordé';
+
+  @override
+  String get statesDenied => 'Refusé';
+
+  @override
+  String get statesPermNote =>
+      'Sans Temps d\'écran, le minuteur fonctionne mais les apps ne sont pas bloquées.';
+
+  @override
+  String get statesAccessGranted => 'Accès accordé – blocage prêt';
+
+  @override
+  String get statesDataNA => 'Données indisponibles';
+
+  @override
+  String get statesSyncFailed => 'Échec de synchro';
+
+  @override
+  String get statesLoadTitle => 'Chargement impossible';
+
+  @override
+  String get statesLoadMsg =>
+      'Un problème est survenu en récupérant vos statistiques. Probablement passager – vos données locales sont intactes.';
+
+  @override
+  String get statesRetrySync => 'Resynchroniser';
+
+  @override
+  String get statesUseCached => 'Utiliser le cache';
+
+  @override
+  String get statesErrorDetails => 'Détails de l\'erreur';
+
+  @override
+  String get statesErrorCode => 'Code';
+
+  @override
+  String get statesTimestamp => 'Heure';
+
+  @override
+  String get statesRetryCount => 'Tentatives';
+
+  @override
+  String statesAttempts(int n) {
+    return '$n / 3 tentatives';
+  }
+
+  @override
+  String get statesReport => 'Signaler au support';
+
+  @override
+  String get statesReported => 'Merci – rapport envoyé';
+
+  @override
+  String get statesCachedNote =>
+      'En attendant, les données de la dernière synchro sont disponibles.';
+
+  @override
+  String get statesDataLoaded => 'Statistiques chargées';
+
+  @override
+  String get statesCachedShown => 'Données en cache affichées';
+
+  @override
+  String statesWeekFocus(String time) {
+    return 'Focus cette semaine : $time';
+  }
+
+  @override
+  String get statesEmpty => 'État vide';
+
+  @override
+  String get statesNothingYet => 'Rien pour l\'instant';
+
+  @override
+  String get statesEmptyTitle => 'Aucune session';
+
+  @override
+  String get statesEmptyMsg =>
+      'Lancez votre première session : vos progrès s\'afficheront ici.';
+
+  @override
+  String get statesStartFocus => 'Commencer';
+
+  @override
+  String get statesLoadingSection => 'Chargement';
+
+  @override
+  String get statesDashLoading => 'Tableau de bord';
+
+  @override
+  String get statesAnalyticsLoading => 'Statistiques';
+
+  @override
+  String get statesGoalsLoading => 'Objectifs';
+
+  @override
+  String get statesProfileLoading => 'Profil';
+
+  @override
+  String get statesCrunching => 'Analyse en cours…';
+
+  @override
+  String get statesLoadingGoals => 'Chargement des objectifs…';
+
+  @override
+  String get statesLoadingProfile => 'Chargement du profil…';
+
+  @override
+  String get statesReplay => 'Rejouer';
 }

@@ -232,6 +232,101 @@
   "ob9Done": "DONE",
   "ob9StreakTitle": "Day 1 streak starts now",
   "ob9StreakSub": "Complete a session to keep it going",
+  "blockTitle": "App Lock",
+  "blockSubtitle": "{locked} of {total} apps currently locked",
+  "@blockSubtitle": {
+    "placeholders": {
+      "locked": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "blockAddApp": "Add App",
+  "blockLockedChip": "{n} Locked",
+  "@blockLockedChip": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "blockUnlockedChip": "{n} Unlocked",
+  "@blockUnlockedChip": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "blockScheduledChip": "{n} Scheduled",
+  "@blockScheduledChip": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "blockFaceIdTitle": "Face ID Protection",
+  "blockFaceIdSub": "Require Face ID to unlock any app",
+  "blockFaceIdUnavailable": "Biometric unlock isn't available on this device",
+  "blockFaceIdReason": "Confirm it's you to turn on protection",
+  "blockFaceIdFailed": "Couldn't verify — protection stays off",
+  "blockScheduleTitle": "Schedule Lock",
+  "blockStart": "Start Time",
+  "blockEnd": "End Time",
+  "blockNeedOneDay": "Keep at least one day selected",
+  "blockManagedApps": "Managed Apps",
+  "blockLockAll": "Lock All",
+  "blockAllLocked": "All apps are locked",
+  "blockSched": "Sched",
+  "blockOnlySchedule": "Lock only during schedule",
+  "blockOnlyScheduleSub": "Otherwise it stays locked all day",
+  "blockLockedLabel": "Locked",
+  "blockRemove": "Remove from list",
+  "blockRemoved": "{app} removed",
+  "@blockRemoved": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "blockUndo": "Undo",
+  "blockAppsUpdated": "Managed apps updated",
+  "blockCatSocial": "Social",
+  "blockCatVideo": "Video",
+  "blockCatGames": "Games",
+  "blockCatShopping": "Shopping",
+  "blockCatCommunity": "Community",
+  "blockCatOther": "Other",
+  "blockEmptyBadge": "Nothing blocked",
+  "blockEmptyTitle": "No apps managed yet",
+  "blockEmptyMsg": "Add the apps that distract you most and Pausey will lock them for you.",
+  "blockEmergencyTitle": "Emergency Override",
+  "blockEmergencySub": "Temporarily unlock all apps · {n, plural, =1{1 left today} other{{n} left today}}",
+  "@blockEmergencySub": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "blockEmergencyOff": "Turned off in Settings",
+  "blockEmergencyUse": "Use",
+  "blockEmergencyConfirmTitle": "Use emergency override?",
+  "blockEmergencyConfirmMsg": "This uses one of your {n} overrides left today. Only use it when you really need an app.",
+  "@blockEmergencyConfirmMsg": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "blockEmergencyUsed": "Override used — apps are unlocked for now",
+  "blockEmergencyNone": "No overrides left today",
   "appName": "Pausey",
   "tagline": "Take back your time",
   "versionLabel": "Version 2.0 · App Store Edition",
@@ -311,6 +406,865 @@
   "signOut": "Sign out",
   "signOutGuestWarn": "Signing out deletes guest data on this phone.",
   "cancel": "Cancel",
+  "focusModePomodoro": "Pomodoro",
+  "focusModeDeep": "Deep Focus",
+  "focusModeCustom": "Custom",
+  "focusRemaining": "REMAINING",
+  "focusBreakLabel": "BREAK",
+  "focusReadyLabel": "READY",
+  "focusInSession": "In session",
+  "focusPausedState": "Paused",
+  "focusOnBreak": "On break",
+  "focusIdleState": "Tap play to start",
+  "focusSessionsDone": "Sessions done",
+  "focusProgress": "Progress",
+  "focusBreakAfter": "Break after",
+  "focusFocusedToday": "Focused today",
+  "focusAppsBlocked": "{count, plural, =1{1 app blocked} other{{count} apps blocked}}",
+  "@focusAppsBlocked": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "focusAppsBlockedSub": "Distractions are locked for this session.",
+  "focusNoApps": "No apps blocked",
+  "focusNoAppsSub": "Pick apps to lock while you focus.",
+  "focusEdit": "Edit",
+  "focusAdd": "Add",
+  "focusAmbient": "Ambient Sound",
+  "focusSoundOff": "Off",
+  "focusSoundRain": "Rain",
+  "focusSoundForest": "Forest",
+  "focusSoundWaves": "Ocean Waves",
+  "focusSoundWhite": "White Noise",
+  "focusVolume": "Volume",
+  "focusStart": "Start",
+  "focusPause": "Pause",
+  "focusResume": "Resume",
+  "focusStop": "Stop",
+  "focusRestart": "Restart",
+  "focusSkipBreak": "Skip break",
+  "focusDurations": "Session lengths",
+  "focusMinutesN": "{n} min",
+  "@focusMinutesN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "focusBreakLength": "Break",
+  "focusCustomTitle": "Custom duration",
+  "focusSet": "Set",
+  "focusStopTitle": "End session early?",
+  "focusStopBody": "The time you've focused so far will be saved.",
+  "focusEndSession": "End session",
+  "focusKeepGoing": "Keep going",
+  "focusTooShort": "Under a minute — not saved.",
+  "focusBreakOver": "Break's over — ready for the next one?",
+  "focusBusy": "End the current session to change mode.",
+  "focusFirstHint": "Your first session starts here — press play.",
+  "focusCompleteA": "Session",
+  "focusCompleteB": "Complete!",
+  "focusEndedTitle": "Session Ended",
+  "focusCompleteMsg": "Outstanding work! You finished your {mode} session without a single distraction.",
+  "@focusCompleteMsg": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "focusEndedMsg": "Every minute counts. Try a full session next time.",
+  "focusDurationLabel": "FOCUS DURATION",
+  "focusMinUnit": "min",
+  "focusDayStreak": "Day streak",
+  "focusAppsLabel": "Apps blocked",
+  "focusTodayGoal": "Today's Goal",
+  "focusPctCompleted": "{pct}% completed",
+  "@focusPctCompleted": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "focusPlusPct": "+{pct}% from this session",
+  "@focusPlusPct": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "focusMomentum": "Keep the momentum!",
+  "focusQuote1": "Consistency beats intensity. Every session compounds into mastery.",
+  "focusQuote2": "Small focused blocks add up to big results.",
+  "focusQuote3": "You didn't scroll — you built. Do it again.",
+  "focusStartNext": "Start Next Session",
+  "focusBackHome": "Back to Dashboard",
+  "goalsTitle": "My Goals",
+  "goalsSubtitle": "{active} active · {done} completed",
+  "@goalsSubtitle": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "done": {
+        "type": "int"
+      }
+    }
+  },
+  "goalsAdd": "Add Goal",
+  "goalsCompleted": "Completed",
+  "goalsActive": "Active",
+  "goalsStreak": "Streak",
+  "goalsOverall": "Overall Completion",
+  "goalsWeeklyHit": "{hit} of {total} weekly targets hit",
+  "@goalsWeeklyHit": {
+    "placeholders": {
+      "hit": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "goalsVsLastWeek": "{delta} vs last week",
+  "@goalsVsLastWeek": {
+    "placeholders": {
+      "delta": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsFilterAll": "All",
+  "goalsDone": "Done",
+  "goalsCatFocus": "Focus",
+  "goalsCatDiscipline": "Discipline",
+  "goalsCatWellness": "Wellness",
+  "goalsTitleFocusHours": "{n, plural, =1{Daily Focus: 1 Hour} other{Daily Focus: {n} Hours}}",
+  "@goalsTitleFocusHours": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "goalsTitleFocusDur": "Daily Focus: {duration}",
+  "@goalsTitleFocusDur": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsTitleBlock": "Block Social Apps",
+  "goalsTitleSessions": "{n, plural, =1{1 Pomodoro per day} other{{n} Pomodoros per day}}",
+  "@goalsTitleSessions": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "goalsTitleScreen": "Under {duration} Screen Time",
+  "@goalsTitleScreen": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsTitlePhoneFree": "Phone-free time",
+  "goalsDescFocus": "Achieve {duration} of deep focus every day",
+  "@goalsDescFocus": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsDescBlock": "Keep your locked apps locked {n} days a week",
+  "@goalsDescBlock": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "goalsDescSessions": "Complete at least {n} focus sessions daily",
+  "@goalsDescSessions": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "goalsDescScreen": "Keep total daily phone use under {duration}",
+  "@goalsDescScreen": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsDescPhoneFree": "Have {n} phone-free days a week — tick each one off",
+  "@goalsDescPhoneFree": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "goalsProgressDays": "{done} / {total} days",
+  "@goalsProgressDays": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "goalsProgressSessions": "{done} / {total} sessions",
+  "@goalsProgressSessions": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "goalsStreakShort": "{n}d",
+  "@goalsStreakShort": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "goalsStreakN": "{n, plural, =1{1-day streak} other{{n}-day streak}}",
+  "@goalsStreakN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "goalsCheckIn": "Mark today done",
+  "goalsCheckedIn": "Done today",
+  "goalsCheckedSnack": "Nice! Today is marked as done.",
+  "goalsUncheckedSnack": "Today is no longer marked as done.",
+  "goalsCreateNew": "Create New Goal",
+  "goalsEmptyBadge": "Get started",
+  "goalsEmptyTitle": "No goals yet",
+  "goalsEmptyMsg": "Set a small daily goal and Pausey will track it for you.",
+  "goalsFilterEmpty": "No goals match this filter.",
+  "goalsNewGoal": "New goal",
+  "goalsEditGoal": "Edit goal",
+  "goalsType": "Goal type",
+  "goalsTypeFocus": "Focus time",
+  "goalsTypeSessions": "Focus sessions",
+  "goalsTypeBlock": "Block apps",
+  "goalsTypePhoneFree": "Phone-free days",
+  "goalsTypeScreen": "Screen-time limit",
+  "goalsCategory": "Category",
+  "goalsTarget": "Target",
+  "goalsPerDay": "per day",
+  "goalsPerWeek": "days per week",
+  "goalsMaxPerDay": "max per day",
+  "goalsTitleOptional": "Title (optional)",
+  "goalsSave": "Save goal",
+  "goalsCreate": "Create goal",
+  "goalsSavedSnack": "Goal saved",
+  "goalsCreatedSnack": "Goal created",
+  "goalsEdit": "Edit",
+  "goalsDelete": "Delete goal",
+  "goalsDeleteQ": "Delete this goal?",
+  "goalsDeleteMsg": "Its check-ins will be removed. This can't be undone.",
+  "goalsDeletedSnack": "Goal deleted",
+  "goalsComplete": "complete",
+  "goalsDaysActive": "Days Active",
+  "goalsTotalTime": "Total Time",
+  "goalsSessionsLabel": "Sessions",
+  "goals7Day": "7-Day Completion",
+  "goals7DaysAgo": "7 days ago",
+  "goalsToday": "Today",
+  "goalsTodayDate": "Today, {date}",
+  "@goalsTodayDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsYesterdayDate": "Yesterday, {date}",
+  "@goalsYesterdayDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsMilestones": "Milestones",
+  "goalsMsFirst": "First day completed",
+  "goalsMs3": "3-day streak achieved",
+  "goalsMsHalf": "50% of weekly goal",
+  "goalsMs5": "5-day streak",
+  "goalsMsWeek": "Full week completed",
+  "goalsMsLocked": "Not yet",
+  "goalsHistory": "Activity History",
+  "goalsShowLess": "Show less",
+  "goalsStartSession": "Start Focus Session",
+  "goalsManageApps": "Manage Blocked Apps",
+  "goalsBlockHint": "Counts automatically while your lock schedule is on and apps are locked.",
+  "goalsScreenToday": "Screen time today: {used}",
+  "@goalsScreenToday": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      }
+    }
+  },
+  "goalsNotFound": "This goal no longer exists.",
+  "goalsMore": "More options",
+  "goalsFreeLimit": "Free plan: up to {n} goals",
+  "@goalsFreeLimit": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "homeGoodMorning": "Good morning",
+  "homeGoodAfternoon": "Good afternoon",
+  "homeGoodEvening": "Good evening",
+  "homeFriend": "Friend",
+  "homeTodayFocus": "Today's Focus",
+  "homeVsYesterday": "{pct}% vs yesterday",
+  "@homeVsYesterday": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "homeStartToday": "No focus yet today",
+  "homeDayStreak": "Day Streak",
+  "homeTodayGoal": "Today's Goal",
+  "homePctCompleted": "{pct}% completed",
+  "@homePctCompleted": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "homeOnTrack": "On track!",
+  "homeKeepGoing": "Keep going",
+  "homeGoalMet": "Goal met!",
+  "homeScreenTimeTitle": "Screen Time",
+  "homeToday": "Today",
+  "homeVsAvg": "{pct}% vs avg",
+  "@homeVsAvg": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "homeQuickStart": "Quick Start Focus Session",
+  "homeManage": "Manage",
+  "homeNoApps": "Pick the apps that distract you most and lock them here.",
+  "homeAddApps": "Add apps",
+  "homeAppLocked": "{app} locked",
+  "@homeAppLocked": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "homeAppUnlocked": "{app} unlocked",
+  "@homeAppUnlocked": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "homeLockApp": "Lock or unlock {app}",
+  "@homeLockApp": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "homeUpgradeTitle": "Upgrade to Premium",
+  "homeUpgradeBody": "Unlimited blocks, goals & deep analytics.",
+  "homeTryFree": "Try Free",
+  "homePro": "PRO",
+  "homeProActive": "Pausey Pro is active",
+  "homeProActiveBody": "All features unlocked. Thanks for your support!",
+  "homeNotifications": "Notifications",
+  "homeNoNotifications": "You're all caught up.",
+  "homePushLabel": "Push notifications",
+  "homeFocusReminder": "Daily focus reminder",
+  "homeStreakAlerts": "Streak alerts",
+  "homePwTitle": "Unlock Pausey Pro",
+  "homePwSubtitle": "Reclaim your focus and beat phone addiction.",
+  "homePwMonthly": "Monthly",
+  "homePwBilledMonthly": "Billed monthly",
+  "homePwYearly": "Yearly",
+  "homePwPopular": "Most Popular",
+  "homePwSave": "Save {pct}%",
+  "@homePwSave": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "homePwBilledYearly": "{price} billed annually",
+  "@homePwBilledYearly": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "homePwLifetime": "Lifetime",
+  "homePwBestValue": "Best Value",
+  "homePwPayOnce": "Pay once, own forever",
+  "homePwPerMonth": "/ month",
+  "homePwOnce": "once",
+  "homePwStartTrial": "Start 7-Day Free Trial",
+  "homePwBuyLifetime": "Get Lifetime Access",
+  "homePwNoCharge": "No charge today · Cancel anytime",
+  "homePwOneTime": "One-time payment · No subscription",
+  "homePwFree": "Free",
+  "homePwProCol": "Pro",
+  "homePwFeatBlocking": "Unlimited App Blocking",
+  "homePwFeatSessions": "All Focus Modes",
+  "homePwFeatGoals": "Unlimited Goals",
+  "homePwFeatAnalytics": "Advanced Analytics",
+  "homePwFeatStreak": "Streak Protection",
+  "homePwFeatSchedule": "Focus Scheduling",
+  "homePwFeatFaceId": "Face ID App Lock",
+  "homePwFeatNotif": "Smart Notifications",
+  "homePwMax": "{n} max",
+  "@homePwMax": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "homePwSecure": "Secure Payment",
+  "homePwCancelAnytime": "Cancel Anytime",
+  "homePwPrivacyFirst": "Privacy First",
+  "homePwRestore": "Restore Purchases",
+  "homePwTerms": "Terms of Service",
+  "homePwPrivacyPolicy": "Privacy Policy",
+  "homePwWelcome": "Welcome to Pausey Pro!",
+  "homePwNothingToRestore": "No previous purchases found.",
+  "homePwRestored": "Your Pro access is active.",
+  "homePwLinkSoon": "This page will open on our website soon.",
+  "homePwYouArePro": "You're Pro — enjoy!",
+  "homePwClose": "Close",
+  "insightsAnalytics": "Analytics",
+  "insightsScreenTime": "Screen Time",
+  "insightsToday": "Today",
+  "insightsWeek": "Week",
+  "insightsMonth": "Month",
+  "insightsProductivity": "Productivity score",
+  "insightsPts": "{delta} pts",
+  "@insightsPts": {
+    "placeholders": {
+      "delta": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsVsLastWeek": "vs last week",
+  "insightsVsLastMonth": "vs last month",
+  "insightsScoreDays": "{n}-day score",
+  "@insightsScoreDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "insightsFocusHours": "Focus hours",
+  "insightsThisWeek": "this week",
+  "insightsThisMonth": "this month",
+  "insightsGoalOf": "{done} / {goal} goal",
+  "@insightsGoalOf": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "goal": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsFocusScore": "Focus score",
+  "insightsGoals": "Goals",
+  "insightsConsistency": "Consistency",
+  "insightsWeeklyFocus": "Weekly focus hours",
+  "insightsDailyFocus": "Daily focus, last {n} days",
+  "@insightsDailyFocus": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "insightsBestDay": "Best day: {day} · {time}",
+  "@insightsBestDay": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsAvgDay": "Avg {time} / day",
+  "@insightsAvgDay": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsMonthlyTrends": "Monthly trends",
+  "insightsActual": "Actual",
+  "insightsGoal": "Goal",
+  "insightsWk": "Wk {n}",
+  "@insightsWk": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "insightsWeekBeat": "Week {n} beat the goal by {time}",
+  "@insightsWeekBeat": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsWeekShort": "Best was week {n}, {time} short of the goal",
+  "@insightsWeekShort": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsGoalCompletion": "Goal completion",
+  "insightsDaysOf": "{done}/{total} days",
+  "@insightsDaysOf": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "insightsNoGoals": "No goals yet. Add one to see your progress here.",
+  "insightsManageGoals": "Manage",
+  "insightsGoalFocus": "Daily focus: {hours} hours",
+  "@insightsGoalFocus": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsGoalBlock": "Block social apps",
+  "insightsGoalPomo": "{n} Pomodoros per day",
+  "@insightsGoalPomo": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "insightsGoalScreen": "Under {time} screen time",
+  "@insightsGoalScreen": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsGoalPhoneFree": "Phone-free time",
+  "insightsEmptyBadge": "No sessions yet",
+  "insightsEmptyTitle": "Your insights start with one session",
+  "insightsEmptyBody": "Finish a focus session and your scores, charts and goal progress will show up here.",
+  "insightsEmptyCta": "Start a focus session",
+  "insightsDailyUsage": "Daily usage",
+  "insightsFocusTime": "Focus time",
+  "insightsVsAvg": "vs avg",
+  "insightsUsageByDay": "Usage by day",
+  "insightsUsageByWeek": "Usage by week",
+  "insightsUsage": "Usage",
+  "insightsTrend": "{n}-day trend",
+  "@insightsTrend": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "insightsImproving": "Improving",
+  "insightsRising": "Rising",
+  "insightsDaysAgo": "{n} days ago",
+  "@insightsDaysAgo": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "insightsMostUsed": "Most used apps",
+  "insightsAllApps": "All apps",
+  "insightsBreakdown": "Usage breakdown",
+  "insightsTotal": "total",
+  "insightsNoUsage": "No screen time recorded for this period.",
+  "insightsLockApp": "Lock this app",
+  "insightsLocked": "{app} is now locked",
+  "@insightsLocked": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "insightsCatSocial": "Social",
+  "insightsCatVideo": "Video",
+  "insightsCatGames": "Games",
+  "insightsCatShopping": "Shopping",
+  "insightsCatCommunity": "Community",
+  "insightsCatOther": "Other",
+  "profileSettings": "Settings",
+  "profileGuestName": "Guest",
+  "profileGuestBadge": "Guest · saved on this phone",
+  "profileEditName": "Edit name",
+  "profileNameHint": "Your name",
+  "profileSave": "Save",
+  "profileMemberSince": "Member since {date}",
+  "@profileMemberSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "profileProActive": "Pro · Active",
+  "profileFree": "Free plan",
+  "profileUpgrade": "Upgrade",
+  "profileBadges": "Badges",
+  "profileNoBadges": "Finish focus sessions to earn badges",
+  "profileFocusTime": "Focus time",
+  "profileGoalsDone": "Goals done",
+  "profileDayStreak": "Day streak",
+  "profileAppsBlocked": "Apps blocked",
+  "profileFocusActivity": "Focus Activity",
+  "profileLast4Weeks": "Last 4 weeks",
+  "profileRecentActivity": "Recent Activity",
+  "profileSessionDone": "Focus session completed",
+  "profileSessionStopped": "Session ended early",
+  "profileModePomodoro": "Pomodoro",
+  "profileModeDeep": "Deep work",
+  "profileModeCustom": "Custom",
+  "profileJustNow": "Just now",
+  "profileAgoMinutes": "{n}m ago",
+  "@profileAgoMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "profileAgoHours": "{n}h ago",
+  "@profileAgoHours": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "profileYesterday": "Yesterday",
+  "profileEmptyTitle": "No focus sessions yet",
+  "profileEmptyBody": "Start your first session — your activity, streak and badges will show up here.",
+  "profileStartFocus": "Start focusing",
+  "profileMyGoals": "My Goals",
+  "profileStreaks": "Streaks & badges",
+  "profileSubscription": "Subscription",
+  "profileSignOutTitle": "Sign out?",
+  "profileSignOutBody": "You can log back in any time.",
+  "profileSecNotifications": "Notifications",
+  "profileSecAppearance": "Appearance",
+  "profileSecFocus": "Focus & Blocking",
+  "profileSecPrivacy": "Privacy & Security",
+  "profileSecAccount": "Account",
+  "profilePush": "Push notifications",
+  "profilePushSub": "Focus reminders & alerts",
+  "profileReminder": "Focus start reminder",
+  "profileReminderSub": "Daily at {time}",
+  "@profileReminderSub": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "profileStreakAlerts": "Streak alerts",
+  "profileStreakAlertsSub": "Before your streak breaks",
+  "profileGoalMilestones": "Goal milestones",
+  "profileGoalMilestonesSub": "When you reach a goal",
+  "profileDarkMode": "Dark mode",
+  "profileOn": "On",
+  "profileOff": "Off",
+  "profileTextSize": "Text size",
+  "profileTextSmall": "Small",
+  "profileTextMedium": "Medium",
+  "profileTextLarge": "Large",
+  "profileTextHuge": "Extra large",
+  "profilePomodoroLen": "Pomodoro length",
+  "profileBreakLen": "Break length",
+  "profileMinutes": "{n} min",
+  "@profileMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "profileFaceIdUnlock": "Face ID for unlocks",
+  "profileFaceIdUnlockSub": "Confirm before unlocking an app",
+  "profileBypass": "Emergency bypass",
+  "profileBypassSub": "{n, plural, =1{1 unlock per day} other{{n} unlocks per day}}",
+  "@profileBypassSub": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "profileAppLock": "Lock Pausey with Face ID",
+  "profileAppLockSub": "Ask when opening the app",
+  "profileHideUsage": "Hide usage data",
+  "profileHideUsageSub": "Hide screen-time numbers",
+  "profileClearData": "Clear activity data",
+  "profileClearDataSub": "Removes sessions and goal history",
+  "profileClearTitle": "Clear activity data?",
+  "profileClearBody": "This deletes all focus sessions and goal check-ins on this phone. It can't be undone.",
+  "profileClear": "Clear",
+  "profileCleared": "Activity data cleared",
+  "profileExport": "Export my data",
+  "profileExportSub": "Copy as JSON",
+  "profileExported": "Your data was copied to the clipboard",
+  "profileStreaksTitle": "Streaks",
+  "profileShare": "Share",
+  "profileShareText": "I'm on a {n}-day focus streak with Pausey!",
+  "@profileShareText": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "profileCopied": "Copied to clipboard",
+  "profileNextMilestone": "Keep it going – {n, plural, =1{1 day} other{{n} days}} to your next milestone!",
+  "@profileNextMilestone": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "profileAllMilestones": "Every milestone reached. Legendary!",
+  "profileStartStreak": "Finish a focus session today to start a streak.",
+  "profileBest": "Best",
+  "profileThisWeek": "This Week",
+  "profileDaysCompleted": "{n}/7 days completed",
+  "@profileDaysCompleted": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "profileCompleted": "Completed",
+  "profilePartial": "Partial",
+  "profileMissed": "Missed",
+  "profilePrevMonth": "Previous month",
+  "profileNextMonth": "Next month",
+  "profileMilestones": "Streak Milestones",
+  "profileAchievements": "Achievements",
+  "profileAchOnFire": "On Fire",
+  "profileAchIronWill": "Iron Will",
+  "profileAchFocusMaster": "Focus Master",
+  "profileAchMonk": "Digital Monk",
+  "profileAchLegend": "Legendary",
+  "profileAchSpeed": "Speed Demon",
+  "profileAchStreakDesc": "{n}-day streak",
+  "@profileAchStreakDesc": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "profileAchSessionsDesc": "{n} sessions completed",
+  "@profileAchSessionsDesc": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "profileAchHoursDesc": "{n}h total focus",
+  "@profileAchHoursDesc": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "profileAchDayDesc": "{n} sessions in a day",
+  "@profileAchDayDesc": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "navHome": "Home",
   "navBlock": "Block",
   "navFocus": "Focus",
@@ -327,5 +1281,86 @@
         "type": "int"
       }
     }
-  }
+  },
+  "statesTitle": "States",
+  "statesSubtitle": "Friendly error, empty & loading screens",
+  "statesNoInternet": "No internet",
+  "statesConnectionLost": "Connection lost",
+  "statesOfflineTitle": "You're offline",
+  "statesOfflineMsg": "Pausey can't reach the server right now. Check your Wi-Fi or mobile data and try again – your local data is safe.",
+  "statesTryAgain": "Try again",
+  "statesOpenSettings": "Open settings",
+  "statesOfflineMode": "Offline mode active",
+  "statesLimited": "Limited",
+  "statesAvailable": "Available",
+  "statesUnavailable": "Unavailable",
+  "statesCapSessions": "View previous sessions",
+  "statesCapApps": "Access locked app list",
+  "statesCapTimer": "Run local focus timer",
+  "statesCapSync": "Sync streak & goals",
+  "statesCapAnalytics": "Refresh analytics data",
+  "statesOfflineNote": "All your focus data is stored locally. Nothing is lost when you're offline.",
+  "statesBackOnline": "Back online – everything is synced",
+  "statesShowAgain": "Show state again",
+  "statesPermDenied": "Permission denied",
+  "statesPermRequired": "Permission required",
+  "statesPermTitle": "Access blocked",
+  "statesPermMsg": "Pausey needs Screen Time access to block apps. Without it, app blocking won't work.",
+  "statesGrant": "Grant access",
+  "statesLearnMore": "Learn more",
+  "statesLearnMoreMsg": "Screen Time access lets Pausey see and pause distracting apps. Your data never leaves your phone.",
+  "statesRequiredPerms": "Required permissions",
+  "statesPermNotif": "Notifications",
+  "statesPermScreenTime": "Screen Time access",
+  "statesPermUsage": "App usage stats",
+  "statesPermBio": "Face ID / biometrics",
+  "statesGranted": "Granted",
+  "statesDenied": "Denied",
+  "statesPermNote": "Without Screen Time, the app can still run focus timers but cannot block apps.",
+  "statesAccessGranted": "Access granted – app blocking is ready",
+  "statesDataNA": "Data not available",
+  "statesSyncFailed": "Sync failed",
+  "statesLoadTitle": "Data couldn't load",
+  "statesLoadMsg": "Something went wrong fetching your analytics. This might be a temporary server hiccup – your local data is untouched.",
+  "statesRetrySync": "Retry sync",
+  "statesUseCached": "Use cached",
+  "statesErrorDetails": "Error details",
+  "statesErrorCode": "Error code",
+  "statesTimestamp": "Time",
+  "statesRetryCount": "Retry count",
+  "statesAttempts": "{n} / 3 attempts",
+  "@statesAttempts": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statesReport": "Report to support",
+  "statesReported": "Thanks – the report was sent",
+  "statesCachedNote": "Cached data from your last successful sync is available in the meantime.",
+  "statesDataLoaded": "Analytics loaded",
+  "statesCachedShown": "Showing cached data",
+  "statesWeekFocus": "Focus this week: {time}",
+  "@statesWeekFocus": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "statesEmpty": "Empty state",
+  "statesNothingYet": "Nothing yet",
+  "statesEmptyTitle": "No sessions yet",
+  "statesEmptyMsg": "Start your first focus session and your progress will show up here.",
+  "statesStartFocus": "Start focusing",
+  "statesLoadingSection": "Loading states",
+  "statesDashLoading": "Dashboard",
+  "statesAnalyticsLoading": "Analytics",
+  "statesGoalsLoading": "Goals",
+  "statesProfileLoading": "Profile",
+  "statesCrunching": "Crunching your data…",
+  "statesLoadingGoals": "Loading your goals…",
+  "statesLoadingProfile": "Loading your profile…",
+  "statesReplay": "Replay"
 }

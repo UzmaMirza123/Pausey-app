@@ -32,14 +32,14 @@ class SelectAppsResult {
 ///
 /// Returns the choices when "Confirm Lock" (or "Skip") is tapped, or null when
 /// the sheet is closed with the back button / a swipe down.
-Future<SelectAppsResult?> showSelectAppsSheet(BuildContext context) {
+Future<SelectAppsResult?> showSelectAppsSheet(BuildContext context, {Set<String>? initialApps}) {
   return showModalBottomSheet<SelectAppsResult>(
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
     backgroundColor: Colors.transparent,
     barrierColor: Colors.black.withValues(alpha: context.isDark ? 0.6 : 0.35),
-    builder: (_) => const SelectAppsSheet(),
+    builder: (_) => SelectAppsSheet(initialApps: initialApps),
   );
 }
 
@@ -230,14 +230,17 @@ const _methods = [
 // ---------------------------------------------------------------------------
 
 class SelectAppsSheet extends StatefulWidget {
-  const SelectAppsSheet({super.key});
+  const SelectAppsSheet({super.key, this.initialApps});
+
+  /// Apps ticked when the sheet opens (null = onboarding defaults).
+  final Set<String>? initialApps;
 
   @override
   State<SelectAppsSheet> createState() => _SelectAppsSheetState();
 }
 
 class _SelectAppsSheetState extends State<SelectAppsSheet> {
-  final Set<String> _selectedApps = {'Instagram', 'Twitter / X', 'YouTube'};
+  late final Set<String> _selectedApps = widget.initialApps != null ? Set.of(widget.initialApps!) : {'Instagram', 'Twitter / X', 'YouTube'};
   final List<_Schedule> _schedules = List.of(_defaultSchedules);
   final Set<String> _activeSchedules = {'Work', 'Evening'};
   String _method = 'PIN Code';

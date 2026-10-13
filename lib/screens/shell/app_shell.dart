@@ -19,7 +19,8 @@ class AppShell extends StatefulWidget {
 
   final AppTab initialTab;
 
-  static AppShellState? of(BuildContext context) => context.findAncestorStateOfType<AppShellState>();
+  static AppShellState? of(BuildContext context) =>
+      context.findAncestorStateOfType<AppShellState>() ?? AppShellState._current;
 
   @override
   State<AppShell> createState() => AppShellState();
@@ -27,13 +28,30 @@ class AppShell extends StatefulWidget {
 
 class AppShellState extends State<AppShell> {
   late AppTab _tab = widget.initialTab;
+  static AppShellState? _current;
+
+  @override
+  void initState() {
+    super.initState();
+    _current = this;
+  }
+
+  @override
+  void dispose() {
+    if (_current == this) _current = null;
+    super.dispose();
+  }
 
   // Pages are built once and kept alive (timer keeps running when you switch tab).
   final _pages = const [HomeScreen(), BlockScreen(), FocusScreen(), InsightsScreen(), ProfileScreen()];
 
   AppTab get tab => _tab;
 
-  void goTab(AppTab t) => setState(() => _tab = t);
+  void goTab(AppTab t) {
+    // Called from a pushed screen too: close pushed routes first.
+    Navigator.of(context).popUntil((r) => r.isFirst);
+    setState(() => _tab = t);
+  }
 
   @override
   Widget build(BuildContext context) {

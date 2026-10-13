@@ -359,7 +359,9 @@ class PBar extends StatelessWidget {
       borderRadius: BorderRadius.circular(height),
       child: SizedBox(
         height: height,
+        width: double.infinity,
         child: Stack(
+          fit: StackFit.expand,
           children: [
             Positioned.fill(child: ColoredBox(color: context.colors.dotInactive)),
             TweenAnimationBuilder<double>(
