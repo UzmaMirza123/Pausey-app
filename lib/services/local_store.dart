@@ -75,6 +75,7 @@ class LocalStore {
   Future<void> clearGuest() async {
     await _prefs.remove(_kGuest);
     await _prefs.remove(_kAnswers);
+    await _prefs.remove('app_state');
   }
 
   // ---- Onboarding --------------------------------------------------------
@@ -98,6 +99,12 @@ class LocalStore {
     final a = answers..[key] = value;
     await _prefs.setString(_kAnswers, jsonEncode(a));
   }
+
+  // ---- Raw access (used by AppRepo) -------------------------------------
+
+  String? getRaw(String key) => _prefs.getString(key);
+  Future<void> setRaw(String key, String value) => _prefs.setString(key, value);
+  Future<void> removeRaw(String key) => _prefs.remove(key);
 
   // ---- Settings ----------------------------------------------------------
 

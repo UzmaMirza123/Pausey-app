@@ -639,4 +639,36 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get cancel => '취소';
+
+  @override
+  String get navHome => '홈';
+
+  @override
+  String get navBlock => '차단';
+
+  @override
+  String get navFocus => '집중';
+
+  @override
+  String get navInsights => '인사이트';
+
+  @override
+  String get navProfile => '프로필';
+
+  @override
+  String get unitH => '시간';
+
+  @override
+  String get unitM => '분';
+
+  @override
+  String get sampleData => '샘플 데이터';
+
+  @override
+  String get seeAll => '모두 보기';
+
+  @override
+  String days(int count) {
+    return '$count일';
+  }
 }

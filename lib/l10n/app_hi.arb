@@ -199,5 +199,15 @@
   "homeCreateAccount": "बैकअप के लिए खाता बनाएं",
   "signOut": "साइन आउट",
   "signOutGuestWarn": "साइन आउट करने से इस फ़ोन का मेहमान डेटा मिट जाएगा।",
-  "cancel": "रद्द करें"
+  "cancel": "रद्द करें",
+  "navHome": "होम",
+  "navBlock": "ब्लॉक",
+  "navFocus": "फ़ोकस",
+  "navInsights": "इनसाइट्स",
+  "navProfile": "प्रोफ़ाइल",
+  "unitH": "घं",
+  "unitM": "मि",
+  "sampleData": "नमूना डेटा",
+  "seeAll": "सभी देखें",
+  "days": "{count, plural, =1{1 दिन} other{{count} दिन}}"
 }

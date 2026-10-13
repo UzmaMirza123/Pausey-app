@@ -310,5 +310,22 @@
   "homeCreateAccount": "Create an account to back up",
   "signOut": "Sign out",
   "signOutGuestWarn": "Signing out deletes guest data on this phone.",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "navHome": "Home",
+  "navBlock": "Block",
+  "navFocus": "Focus",
+  "navInsights": "Insights",
+  "navProfile": "Profile",
+  "unitH": "h",
+  "unitM": "m",
+  "sampleData": "Sample data",
+  "seeAll": "See All",
+  "days": "{count, plural, =1{1 day} other{{count} days}}",
+  "@days": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -638,4 +638,36 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get cancel => '取消';
+
+  @override
+  String get navHome => '首页';
+
+  @override
+  String get navBlock => '屏蔽';
+
+  @override
+  String get navFocus => '专注';
+
+  @override
+  String get navInsights => '洞察';
+
+  @override
+  String get navProfile => '我的';
+
+  @override
+  String get unitH => '小时';
+
+  @override
+  String get unitM => '分钟';
+
+  @override
+  String get sampleData => '示例数据';
+
+  @override
+  String get seeAll => '查看全部';
+
+  @override
+  String days(int count) {
+    return '$count天';
+  }
 }

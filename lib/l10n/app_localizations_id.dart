@@ -657,4 +657,36 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cancel => 'Batal';
+
+  @override
+  String get navHome => 'Beranda';
+
+  @override
+  String get navBlock => 'Blokir';
+
+  @override
+  String get navFocus => 'Fokus';
+
+  @override
+  String get navInsights => 'Wawasan';
+
+  @override
+  String get navProfile => 'Profil';
+
+  @override
+  String get unitH => 'j';
+
+  @override
+  String get unitM => 'm';
+
+  @override
+  String get sampleData => 'Data contoh';
+
+  @override
+  String get seeAll => 'Lihat semua';
+
+  @override
+  String days(int count) {
+    return '$count hari';
+  }
 }

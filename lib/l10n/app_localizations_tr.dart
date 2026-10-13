@@ -655,4 +655,36 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get cancel => 'İptal';
+
+  @override
+  String get navHome => 'Ana Sayfa';
+
+  @override
+  String get navBlock => 'Engelle';
+
+  @override
+  String get navFocus => 'Odak';
+
+  @override
+  String get navInsights => 'İstatistik';
+
+  @override
+  String get navProfile => 'Profil';
+
+  @override
+  String get unitH => 'sa';
+
+  @override
+  String get unitM => 'dk';
+
+  @override
+  String get sampleData => 'Örnek veri';
+
+  @override
+  String get seeAll => 'Tümünü gör';
+
+  @override
+  String days(int count) {
+    return '$count gün';
+  }
 }

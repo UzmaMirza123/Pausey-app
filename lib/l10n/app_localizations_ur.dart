@@ -655,4 +655,42 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get cancel => 'منسوخ';
+
+  @override
+  String get navHome => 'ہوم';
+
+  @override
+  String get navBlock => 'بلاک';
+
+  @override
+  String get navFocus => 'فوکس';
+
+  @override
+  String get navInsights => 'جائزہ';
+
+  @override
+  String get navProfile => 'پروفائل';
+
+  @override
+  String get unitH => 'گھ';
+
+  @override
+  String get unitM => 'م';
+
+  @override
+  String get sampleData => 'نمونہ ڈیٹا';
+
+  @override
+  String get seeAll => 'سب دیکھیں';
+
+  @override
+  String days(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count دن',
+      one: '1 دن',
+    );
+    return '$_temp0';
+  }
 }

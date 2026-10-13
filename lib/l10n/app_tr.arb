@@ -199,5 +199,15 @@
   "homeCreateAccount": "Yedeklemek için hesap oluştur",
   "signOut": "Çıkış yap",
   "signOutGuestWarn": "Çıkış yapmak bu telefondaki misafir verilerini siler.",
-  "cancel": "İptal"
+  "cancel": "İptal",
+  "navHome": "Ana Sayfa",
+  "navBlock": "Engelle",
+  "navFocus": "Odak",
+  "navInsights": "İstatistik",
+  "navProfile": "Profil",
+  "unitH": "sa",
+  "unitM": "dk",
+  "sampleData": "Örnek veri",
+  "seeAll": "Tümünü gör",
+  "days": "{count} gün"
 }

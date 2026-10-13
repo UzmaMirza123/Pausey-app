@@ -199,5 +199,15 @@
   "homeCreateAccount": "Crea un account per il backup",
   "signOut": "Esci",
   "signOutGuestWarn": "Uscendo elimini i dati ospite su questo telefono.",
-  "cancel": "Annulla"
+  "cancel": "Annulla",
+  "navHome": "Home",
+  "navBlock": "Blocca",
+  "navFocus": "Focus",
+  "navInsights": "Statistiche",
+  "navProfile": "Profilo",
+  "unitH": "h",
+  "unitM": "min",
+  "sampleData": "Dati di esempio",
+  "seeAll": "Vedi tutto",
+  "days": "{count, plural, =1{1 giorno} other{{count} giorni}}"
 }

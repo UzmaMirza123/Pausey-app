@@ -199,5 +199,15 @@
   "homeCreateAccount": "Buat akun untuk mencadangkan",
   "signOut": "Keluar",
   "signOutGuestWarn": "Keluar akan menghapus data tamu di ponsel ini.",
-  "cancel": "Batal"
+  "cancel": "Batal",
+  "navHome": "Beranda",
+  "navBlock": "Blokir",
+  "navFocus": "Fokus",
+  "navInsights": "Wawasan",
+  "navProfile": "Profil",
+  "unitH": "j",
+  "unitM": "m",
+  "sampleData": "Data contoh",
+  "seeAll": "Lihat semua",
+  "days": "{count} hari"
 }

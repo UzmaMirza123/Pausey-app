@@ -199,5 +199,15 @@
   "homeCreateAccount": "أنشئ حسابًا للنسخ الاحتياطي",
   "signOut": "تسجيل الخروج",
   "signOutGuestWarn": "تسجيل الخروج يحذف بيانات الضيف من هذا الهاتف.",
-  "cancel": "إلغاء"
+  "cancel": "إلغاء",
+  "navHome": "الرئيسية",
+  "navBlock": "الحظر",
+  "navFocus": "التركيز",
+  "navInsights": "الإحصاءات",
+  "navProfile": "الملف",
+  "unitH": "س",
+  "unitM": "د",
+  "sampleData": "بيانات تجريبية",
+  "seeAll": "عرض الكل",
+  "days": "{count, plural, =1{يوم واحد} other{{count} أيام}}"
 }

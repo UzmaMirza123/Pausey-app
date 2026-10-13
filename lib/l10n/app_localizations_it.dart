@@ -659,4 +659,42 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get cancel => 'Annulla';
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navBlock => 'Blocca';
+
+  @override
+  String get navFocus => 'Focus';
+
+  @override
+  String get navInsights => 'Statistiche';
+
+  @override
+  String get navProfile => 'Profilo';
+
+  @override
+  String get unitH => 'h';
+
+  @override
+  String get unitM => 'min';
+
+  @override
+  String get sampleData => 'Dati di esempio';
+
+  @override
+  String get seeAll => 'Vedi tutto';
+
+  @override
+  String days(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count giorni',
+      one: '1 giorno',
+    );
+    return '$_temp0';
+  }
 }

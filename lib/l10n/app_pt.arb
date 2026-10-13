@@ -199,5 +199,15 @@
   "homeCreateAccount": "Crie uma conta para fazer backup",
   "signOut": "Sair",
   "signOutGuestWarn": "Sair apaga os dados de convidado deste celular.",
-  "cancel": "Cancelar"
+  "cancel": "Cancelar",
+  "navHome": "Início",
+  "navBlock": "Bloquear",
+  "navFocus": "Foco",
+  "navInsights": "Estatísticas",
+  "navProfile": "Perfil",
+  "unitH": "h",
+  "unitM": "min",
+  "sampleData": "Dados de exemplo",
+  "seeAll": "Ver tudo",
+  "days": "{count, plural, =1{1 dia} other{{count} dias}}"
 }

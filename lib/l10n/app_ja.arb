@@ -199,5 +199,15 @@
   "homeCreateAccount": "バックアップするにはアカウントを作成",
   "signOut": "ログアウト",
   "signOutGuestWarn": "ログアウトするとこの端末のゲストデータが削除されます。",
-  "cancel": "キャンセル"
+  "cancel": "キャンセル",
+  "navHome": "ホーム",
+  "navBlock": "ブロック",
+  "navFocus": "集中",
+  "navInsights": "分析",
+  "navProfile": "プロフィール",
+  "unitH": "時間",
+  "unitM": "分",
+  "sampleData": "サンプルデータ",
+  "seeAll": "すべて表示",
+  "days": "{count}日"
 }

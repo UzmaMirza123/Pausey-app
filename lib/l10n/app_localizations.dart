@@ -1323,6 +1323,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
+
+  /// No description provided for @navHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get navHome;
+
+  /// No description provided for @navBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Block'**
+  String get navBlock;
+
+  /// No description provided for @navFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get navFocus;
+
+  /// No description provided for @navInsights.
+  ///
+  /// In en, this message translates to:
+  /// **'Insights'**
+  String get navInsights;
+
+  /// No description provided for @navProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get navProfile;
+
+  /// No description provided for @unitH.
+  ///
+  /// In en, this message translates to:
+  /// **'h'**
+  String get unitH;
+
+  /// No description provided for @unitM.
+  ///
+  /// In en, this message translates to:
+  /// **'m'**
+  String get unitM;
+
+  /// No description provided for @sampleData.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample data'**
+  String get sampleData;
+
+  /// No description provided for @seeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See All'**
+  String get seeAll;
+
+  /// No description provided for @days.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{{count} days}}'**
+  String days(int count);
 }
 
 class _AppLocalizationsDelegate

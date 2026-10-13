@@ -199,5 +199,15 @@
   "homeCreateAccount": "Crea una cuenta para hacer copia",
   "signOut": "Cerrar sesión",
   "signOutGuestWarn": "Al cerrar sesión se borran los datos de invitado.",
-  "cancel": "Cancelar"
+  "cancel": "Cancelar",
+  "navHome": "Inicio",
+  "navBlock": "Bloquear",
+  "navFocus": "Enfoque",
+  "navInsights": "Estadísticas",
+  "navProfile": "Perfil",
+  "unitH": "h",
+  "unitM": "min",
+  "sampleData": "Datos de ejemplo",
+  "seeAll": "Ver todo",
+  "days": "{count, plural, =1{1 día} other{{count} días}}"
 }

@@ -199,5 +199,15 @@
   "homeCreateAccount": "Créez un compte pour sauvegarder",
   "signOut": "Se déconnecter",
   "signOutGuestWarn": "Se déconnecter supprime les données invité.",
-  "cancel": "Annuler"
+  "cancel": "Annuler",
+  "navHome": "Accueil",
+  "navBlock": "Bloquer",
+  "navFocus": "Focus",
+  "navInsights": "Statistiques",
+  "navProfile": "Profil",
+  "unitH": "h",
+  "unitM": "min",
+  "sampleData": "Données d'exemple",
+  "seeAll": "Tout voir",
+  "days": "{count, plural, =1{1 jour} other{{count} jours}}"
 }

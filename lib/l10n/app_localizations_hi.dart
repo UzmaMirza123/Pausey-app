@@ -652,4 +652,42 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get cancel => 'रद्द करें';
+
+  @override
+  String get navHome => 'होम';
+
+  @override
+  String get navBlock => 'ब्लॉक';
+
+  @override
+  String get navFocus => 'फ़ोकस';
+
+  @override
+  String get navInsights => 'इनसाइट्स';
+
+  @override
+  String get navProfile => 'प्रोफ़ाइल';
+
+  @override
+  String get unitH => 'घं';
+
+  @override
+  String get unitM => 'मि';
+
+  @override
+  String get sampleData => 'नमूना डेटा';
+
+  @override
+  String get seeAll => 'सभी देखें';
+
+  @override
+  String days(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count दिन',
+      one: '1 दिन',
+    );
+    return '$_temp0';
+  }
 }

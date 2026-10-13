@@ -199,5 +199,15 @@
   "homeCreateAccount": "Konto erstellen zum Sichern",
   "signOut": "Abmelden",
   "signOutGuestWarn": "Abmelden löscht die Gastdaten auf diesem Handy.",
-  "cancel": "Abbrechen"
+  "cancel": "Abbrechen",
+  "navHome": "Start",
+  "navBlock": "Sperren",
+  "navFocus": "Fokus",
+  "navInsights": "Statistik",
+  "navProfile": "Profil",
+  "unitH": "Std.",
+  "unitM": "Min.",
+  "sampleData": "Beispieldaten",
+  "seeAll": "Alle anzeigen",
+  "days": "{count, plural, =1{1 Tag} other{{count} Tage}}"
 }

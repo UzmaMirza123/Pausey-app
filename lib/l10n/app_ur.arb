@@ -199,5 +199,15 @@
   "homeCreateAccount": "بیک اپ کے لیے اکاؤنٹ بنائیں",
   "signOut": "سائن آؤٹ",
   "signOutGuestWarn": "سائن آؤٹ کرنے سے اس فون پر مہمان کا ڈیٹا مٹ جائے گا۔",
-  "cancel": "منسوخ"
+  "cancel": "منسوخ",
+  "navHome": "ہوم",
+  "navBlock": "بلاک",
+  "navFocus": "فوکس",
+  "navInsights": "جائزہ",
+  "navProfile": "پروفائل",
+  "unitH": "گھ",
+  "unitM": "م",
+  "sampleData": "نمونہ ڈیٹا",
+  "seeAll": "سب دیکھیں",
+  "days": "{count, plural, =1{1 دن} other{{count} دن}}"
 }

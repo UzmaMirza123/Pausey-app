@@ -660,4 +660,42 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get cancel => 'Annuler';
+
+  @override
+  String get navHome => 'Accueil';
+
+  @override
+  String get navBlock => 'Bloquer';
+
+  @override
+  String get navFocus => 'Focus';
+
+  @override
+  String get navInsights => 'Statistiques';
+
+  @override
+  String get navProfile => 'Profil';
+
+  @override
+  String get unitH => 'h';
+
+  @override
+  String get unitM => 'min';
+
+  @override
+  String get sampleData => 'Données d\'exemple';
+
+  @override
+  String get seeAll => 'Tout voir';
+
+  @override
+  String days(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count jours',
+      one: '1 jour',
+    );
+    return '$_temp0';
+  }
 }

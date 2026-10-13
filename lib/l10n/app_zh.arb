@@ -199,5 +199,15 @@
   "homeCreateAccount": "创建账户以备份",
   "signOut": "退出登录",
   "signOutGuestWarn": "退出登录将删除此手机上的访客数据。",
-  "cancel": "取消"
+  "cancel": "取消",
+  "navHome": "首页",
+  "navBlock": "屏蔽",
+  "navFocus": "专注",
+  "navInsights": "洞察",
+  "navProfile": "我的",
+  "unitH": "小时",
+  "unitM": "分钟",
+  "sampleData": "示例数据",
+  "seeAll": "查看全部",
+  "days": "{count}天"
 }

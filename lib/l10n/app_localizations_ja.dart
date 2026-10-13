@@ -638,4 +638,36 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get cancel => 'キャンセル';
+
+  @override
+  String get navHome => 'ホーム';
+
+  @override
+  String get navBlock => 'ブロック';
+
+  @override
+  String get navFocus => '集中';
+
+  @override
+  String get navInsights => '分析';
+
+  @override
+  String get navProfile => 'プロフィール';
+
+  @override
+  String get unitH => '時間';
+
+  @override
+  String get unitM => '分';
+
+  @override
+  String get sampleData => 'サンプルデータ';
+
+  @override
+  String get seeAll => 'すべて表示';
+
+  @override
+  String days(int count) {
+    return '$count日';
+  }
 }

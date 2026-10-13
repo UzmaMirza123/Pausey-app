@@ -648,4 +648,42 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cancel => 'إلغاء';
+
+  @override
+  String get navHome => 'الرئيسية';
+
+  @override
+  String get navBlock => 'الحظر';
+
+  @override
+  String get navFocus => 'التركيز';
+
+  @override
+  String get navInsights => 'الإحصاءات';
+
+  @override
+  String get navProfile => 'الملف';
+
+  @override
+  String get unitH => 'س';
+
+  @override
+  String get unitM => 'د';
+
+  @override
+  String get sampleData => 'بيانات تجريبية';
+
+  @override
+  String get seeAll => 'عرض الكل';
+
+  @override
+  String days(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count أيام',
+      one: 'يوم واحد',
+    );
+    return '$_temp0';
+  }
 }

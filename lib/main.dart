@@ -6,7 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'screens/auth/auth_welcome_screen.dart';
-import 'screens/home/home_screen.dart';
+import 'data/app_repo.dart';
+import 'screens/shell/app_shell.dart';
 import 'screens/onboarding/onboarding_flow.dart';
 import 'screens/splash_screen.dart';
 import 'services/auth_service.dart';
@@ -18,6 +19,7 @@ import 'utils/theme_controller.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalStore.init();
+  AppRepo.instance.load();
   ThemeController.instance.load();
   LocaleController.instance.load();
   await AuthService.instance.init();
@@ -119,6 +121,8 @@ class _RootState extends State<_Root> {
 
   Future<void> _afterOnboarding() async {
     await LocalStore.instance.setOnboardingDone();
+    // Onboarding answers (locked apps, daily goal) become the starting data.
+    AppRepo.instance.seedFromOnboarding();
     if (mounted) setState(() => _stage = _Stage.app);
   }
 
@@ -133,7 +137,7 @@ class _RootState extends State<_Root> {
             duration: const Duration(milliseconds: 500),
             child: session is SignedOut
                 ? const AuthWelcomeScreen(key: ValueKey('auth'))
-                : HomeScreen(key: ValueKey(session.runtimeType)),
+                : AppShell(key: ValueKey(session.runtimeType)),
           ),
         ),
     };

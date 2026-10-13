@@ -199,5 +199,15 @@
   "homeCreateAccount": "백업하려면 계정을 만드세요",
   "signOut": "로그아웃",
   "signOutGuestWarn": "로그아웃하면 이 휴대폰의 게스트 데이터가 삭제됩니다.",
-  "cancel": "취소"
+  "cancel": "취소",
+  "navHome": "홈",
+  "navBlock": "차단",
+  "navFocus": "집중",
+  "navInsights": "인사이트",
+  "navProfile": "프로필",
+  "unitH": "시간",
+  "unitM": "분",
+  "sampleData": "샘플 데이터",
+  "seeAll": "모두 보기",
+  "days": "{count}일"
 }

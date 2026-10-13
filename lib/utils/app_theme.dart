@@ -163,6 +163,21 @@ class AppSpacing {
 
   /// Same empty space on the left and right of every screen.
   static const double gutter = 20;
+
+  /// Gap between cards / sections on app screens.
+  static const double section = 16;
+
+  /// Inner padding of cards.
+  static const double card = 18;
+}
+
+/// Corner radii used everywhere (app screens).
+class AppRadius {
+  AppRadius._();
+  static const double card = 24;
+  static const double tile = 18;
+  static const double chip = 99;
+  static const double icon = 12;
 }
 
 /// Text styles used across the screens (Nunito, bundled in assets/fonts; sizes from Figma).
@@ -207,6 +222,30 @@ class AppText {
 
   /// Option rows / list items — 14 / SemiBold
   static TextStyle option = _n(14, FontWeight.w600, height: 20);
+
+  // ---- App screens (tabs) -------------------------------------------------
+  // One scale for every in-app screen: 28 / 20 / 17 / 15 / 13 / 11.
+
+  /// Screen title ("Analytics", "App Lock") — 28 / ExtraBold
+  static TextStyle screenTitle = _n(28, FontWeight.w800, height: 34, ls: -0.6);
+
+  /// Big number in a hero card ("87", "3h 24m") — 34 / ExtraBold
+  static TextStyle heroValue = _n(34, FontWeight.w800, height: 40, ls: -0.8);
+
+  /// Number in a stat tile ("13", "32h 14m") — 22 / ExtraBold
+  static TextStyle tileValue = _n(22, FontWeight.w800, height: 28, ls: -0.4);
+
+  /// Card title ("Weekly Focus Hours") — 17 / Bold
+  static TextStyle cardTitle = _n(17, FontWeight.w700, height: 22, ls: -0.2);
+
+  /// List row title ("Instagram") — 15 / SemiBold
+  static TextStyle rowTitle = _n(15, FontWeight.w600, height: 20);
+
+  /// Secondary text in rows/cards — 13 / Regular
+  static TextStyle rowSub = _n(13, FontWeight.w400, height: 18);
+
+  /// Small labels, chart axes, section headers — 11 / Bold
+  static TextStyle small = _n(11, FontWeight.w700, height: 14, ls: 0.4);
 
   /// Tiny footer text — 11 / Regular
   static TextStyle tiny = _n(11, FontWeight.w400, height: 16.5, ls: 0.66);

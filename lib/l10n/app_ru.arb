@@ -199,5 +199,15 @@
   "homeCreateAccount": "Создайте аккаунт для резервной копии",
   "signOut": "Выйти",
   "signOutGuestWarn": "Выход удалит данные гостя на этом телефоне.",
-  "cancel": "Отмена"
+  "cancel": "Отмена",
+  "navHome": "Главная",
+  "navBlock": "Блок",
+  "navFocus": "Фокус",
+  "navInsights": "Статистика",
+  "navProfile": "Профиль",
+  "unitH": "ч",
+  "unitM": "мин",
+  "sampleData": "Пример данных",
+  "seeAll": "Все",
+  "days": "{count, plural, =1{1 день} few{{count} дня} many{{count} дней} other{{count} дня}}"
 }

@@ -654,4 +654,44 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get cancel => 'Отмена';
+
+  @override
+  String get navHome => 'Главная';
+
+  @override
+  String get navBlock => 'Блок';
+
+  @override
+  String get navFocus => 'Фокус';
+
+  @override
+  String get navInsights => 'Статистика';
+
+  @override
+  String get navProfile => 'Профиль';
+
+  @override
+  String get unitH => 'ч';
+
+  @override
+  String get unitM => 'мин';
+
+  @override
+  String get sampleData => 'Пример данных';
+
+  @override
+  String get seeAll => 'Все';
+
+  @override
+  String days(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count дня',
+      many: '$count дней',
+      few: '$count дня',
+      one: '1 день',
+    );
+    return '$_temp0';
+  }
 }
