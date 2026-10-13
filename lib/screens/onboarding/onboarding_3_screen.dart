@@ -1,0 +1,327 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../utils/app_theme.dart';
+import '../../widgets/common.dart';
+import '../../widgets/glow_background.dart';
+import 'widgets/ob3_timer_ring.dart';
+
+/// Figma: OnBoarding 3 — "Stay Focused Every Day" (727:41202).
+class Onboarding3Screen extends StatefulWidget {
+  const Onboarding3Screen({super.key, required this.onNext, required this.onSkip});
+
+  final VoidCallback onNext;
+  final VoidCallback onSkip;
+
+  @override
+  State<Onboarding3Screen> createState() => _Onboarding3ScreenState();
+}
+
+/// Orange used only by the "+40%" tile.
+const _orange = Color(0xFFFF8A4C);
+
+class _Onboarding3ScreenState extends State<Onboarding3Screen> {
+  /// Which session type drives the timer: Pomodoro (25 min) or Deep Focus (90 min).
+  bool _deep = false;
+
+  static const _blobs = [
+    Blob(left: -130, top: -120, size: 420, color: AppPalette.blue, opacity: 0.13, blur: 55),
+    Blob(right: -100, top: 190, size: 300, color: AppPalette.violet, opacity: 0.10, blur: 45),
+    Blob(left: -50, bottom: 80, size: 200, color: AppPalette.teal, opacity: 0.08, blur: 35),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final dark = context.isDark;
+    return OnboardingScaffold(
+      onSkip: widget.onSkip,
+      dotsIndex: 0,
+      blobs: _blobs,
+      starsAsset: 'assets/svg/ob3_stars.svg',
+      button: PrimaryButton(label: 'Continue', onPressed: widget.onNext),
+      // Figma gap button→caption is 18; the scaffold adds 12.
+      footerExtra: Padding(
+        padding: const EdgeInsets.only(top: 6),
+        child: Text(
+          'Free to start · No credit card needed',
+          style: TextStyle(
+            fontFamily: AppText.fontFamily,
+            fontSize: 12,
+            height: 18 / 12,
+            letterSpacing: 0.24,
+            color: dark ? const Color(0x42FFFFFF) : c.textMuted,
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
+        child: Column(
+          children: [
+            // 298px slot in Figma; the 320px ring overflows it on both sides.
+            // Figma: the ring's 320px box starts 37px below the status bar; our
+            // header is 46px tall, so it sits 9px above the body's top edge.
+            SizedBox(
+              height: 285,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Positioned(
+                    top: -9,
+                    left: -40,
+                    right: -40,
+                    child: Center(
+                      child: Ob3TimerRing(total: Duration(minutes: _deep ? 90 : 25)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Stay Focused Every\nDay',
+              textAlign: TextAlign.center,
+              style: AppText.h1.copyWith(color: c.textPrimary),
+            ),
+            const SizedBox(height: 13),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 295),
+              child: Text(
+                'Use Pomodoro and Deep Focus\nsessions to boost productivity and\nachieve more.',
+                textAlign: TextAlign.center,
+                style: AppText.body.copyWith(color: c.textSecondary),
+              ),
+            ),
+            const SizedBox(height: 22),
+            SizedBox(
+              width: double.infinity,
+              child: IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: _ModeTile(
+                        color: AppPalette.violet,
+                        icon: 'assets/svg/ob3_icon_pomodoro.svg',
+                        iconSize: const Size(12.6667, 15.3333),
+                        title: 'Pomodoro',
+                        subtitle: '25 min sessions',
+                        onTap: () => setState(() => _deep = false),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _ModeTile(
+                        color: AppPalette.blue,
+                        icon: 'assets/svg/ob3_icon_deep_focus.svg',
+                        iconSize: const Size(14.3339, 15.3364),
+                        title: 'Deep Focus',
+                        subtitle: '90 min flow',
+                        onTap: () => setState(() => _deep = true),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            const SizedBox(
+              width: double.infinity,
+              child: IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: _StatTile(
+                        color: _orange,
+                        icon: 'assets/svg/ob3_icon_flame.svg',
+                        iconSize: Size(14, 14),
+                        value: '+40%',
+                        caption: 'productivity boost',
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: _StatTile(
+                        color: AppPalette.teal,
+                        icon: 'assets/svg/ob3_icon_trend.svg',
+                        iconSize: Size(13.6667, 7.83333),
+                        value: '7-day',
+                        caption: 'streak building',
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: _StatTile(
+                        color: AppPalette.blue,
+                        icon: 'assets/svg/ob3_icon_target.svg',
+                        iconSize: Size(13.6667, 13.6667),
+                        value: '94%',
+                        caption: 'goal completion',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 6),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Pomodoro / Deep Focus card. Tapping it sets the timer above to that session length.
+class _ModeTile extends StatefulWidget {
+  const _ModeTile({
+    required this.color,
+    required this.icon,
+    required this.iconSize,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  final Color color;
+  final String icon;
+  final Size iconSize;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  @override
+  State<_ModeTile> createState() => _ModeTileState();
+}
+
+class _ModeTileState extends State<_ModeTile> {
+  bool _down = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final dark = context.isDark;
+    return Semantics(
+      button: true,
+      label: '${widget.title}, ${widget.subtitle}',
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _down = true),
+        onTapCancel: () => setState(() => _down = false),
+        onTapUp: (_) => setState(() => _down = false),
+        onTap: widget.onTap,
+        child: AnimatedScale(
+          scale: _down ? 0.96 : 1,
+          duration: const Duration(milliseconds: 120),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+            decoration: BoxDecoration(
+              color: widget.color.withValues(alpha: 0.09),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: widget.color.withValues(alpha: 0.22)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 34,
+                  height: 34,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: widget.color.withValues(alpha: 0.18),
+                    borderRadius: BorderRadius.circular(11),
+                    border: Border.all(color: widget.color.withValues(alpha: 0.3)),
+                  ),
+                  child: SvgPicture.asset(widget.icon, width: widget.iconSize.width, height: widget.iconSize.height),
+                ),
+                const SizedBox(height: 7),
+                Text(
+                  widget.title,
+                  style: TextStyle(
+                    fontFamily: AppText.fontFamily,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    height: 19.5 / 13,
+                    letterSpacing: -0.13,
+                    color: dark ? const Color(0xE0FFFFFF) : c.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  widget.subtitle,
+                  style: TextStyle(
+                    fontFamily: AppText.fontFamily,
+                    fontSize: 11,
+                    height: 16.5 / 11,
+                    color: dark ? const Color(0x66FFFFFF) : c.textMuted,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StatTile extends StatelessWidget {
+  const _StatTile({required this.color, required this.icon, required this.iconSize, required this.value, required this.caption});
+
+  final Color color;
+  final String icon;
+  final Size iconSize;
+  final String value;
+  final String caption;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final dark = context.isDark;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 9),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withValues(alpha: 0.18)),
+      ),
+      child: Column(
+        children: [
+          SizedBox(
+            width: 14,
+            height: 14,
+            child: Center(
+              child: SvgPicture.asset(icon, width: iconSize.width, height: iconSize.height),
+            ),
+          ),
+          const SizedBox(height: 2.5),
+          Text(
+            value,
+            style: TextStyle(
+              fontFamily: AppText.fontFamily,
+              fontSize: 13,
+              fontWeight: FontWeight.w800,
+              height: 1,
+              letterSpacing: -0.26,
+              color: dark ? const Color(0xD9FFFFFF) : c.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 2.5),
+          Text(
+            caption,
+            maxLines: 1,
+            softWrap: false,
+            overflow: TextOverflow.visible,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppText.fontFamily,
+              fontSize: 9,
+              height: 11.7 / 9,
+              color: dark ? const Color(0x61FFFFFF) : c.textMuted,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

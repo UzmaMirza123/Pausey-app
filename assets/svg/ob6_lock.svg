@@ -1,0 +1,25 @@
+<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="OnBoarding">
+<g id="Main Data">
+<g id="Container">
+<g id="SVG" clip-path="url(#clip0_432_2)">
+<g id="Group">
+<path id="Vector" d="M2.5 5.5H9.5C10.0519 5.5 10.5 5.94808 10.5 6.5V10C10.5 10.5519 10.0519 11 9.5 11H2.5C1.94808 11 1.5 10.5519 1.5 10V6.5C1.5 5.94808 1.94808 5.5 2.5 5.5V5.5" stroke="#6B80A8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M3.5 5.5V3.5C3.5 2.12021 4.62021 1 6 1C7.37979 1 8.5 2.12021 8.5 3.5V5.5" stroke="#6B80A8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_432_2" x1="123.96" y1="-18.4321" x2="265.884" y2="936.04" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0A0A1C"/>
+<stop offset="0.35" stop-color="#0B0D1F"/>
+<stop offset="0.65" stop-color="#080E1B"/>
+<stop offset="1" stop-color="#060810"/>
+</linearGradient>
+<clipPath id="clip0_432_2">
+<rect width="12" height="12" fill="white"/>
+</clipPath>
+</defs>
+</svg>
