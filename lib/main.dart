@@ -35,7 +35,7 @@ class PauseyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: Listenable.merge([ThemeController.instance, LocaleController.instance]),
+      listenable: Listenable.merge([ThemeController.instance, LocaleController.instance, AppRepo.instance]),
       builder: (context, _) {
         final mode = ThemeController.instance.value;
         final dark = mode == ThemeMode.dark;
@@ -59,7 +59,11 @@ class PauseyApp extends StatelessWidget {
           ],
           localeListResolutionCallback: (device, supported) => LocaleController.resolve(device, supported),
           onGenerateTitle: (context) => context.l10n.appName,
-          builder: (context, child) => _TabletScale(child: child!),
+          builder: (context, child) => MediaQuery(
+            // Settings → Text size
+            data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(AppRepo.instance.settings.textScale)),
+            child: _TabletScale(child: child!),
+          ),
           home: home ?? const _Root(),
         );
       },

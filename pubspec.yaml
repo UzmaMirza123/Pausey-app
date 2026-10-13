@@ -41,6 +41,8 @@ dependencies:
   intl: any
   flutter_localizations:
     sdk: flutter
+  local_auth: ^3.0.2
+  audioplayers: ^6.8.1
 
 dev_dependencies:
   flutter_test:
