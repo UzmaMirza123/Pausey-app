@@ -26,6 +26,14 @@ class LocaleController extends ValueNotifier<Locale?> {
     'es': 'Español',
     'fr': 'Français',
     'de': 'Deutsch',
+    'pt': 'Português',
+    'id': 'Bahasa Indonesia',
+    'ru': 'Русский',
+    'ja': '日本語',
+    'ko': '한국어',
+    'tr': 'Türkçe',
+    'it': 'Italiano',
+    'zh': '简体中文',
   };
 
   void load() {

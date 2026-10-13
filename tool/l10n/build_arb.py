@@ -1,6 +1,6 @@
 """Merge every tool/l10n/*.py string table into lib/l10n/app_<lang>.arb.
 
-Each module defines S = {key: [en, ur, ar, hi, es, fr, de]} and optional
+Each module defines S = {key: [en, ur, ar, hi, es, fr, de, pt, id, ru, ja, ko, tr, it, zh]} and optional
 META = {key: {...arb metadata...}}. Run from the project root:
     python3 tool/l10n/build_arb.py && flutter gen-l10n
 """
@@ -9,7 +9,7 @@ import json
 import pathlib
 
 here = pathlib.Path(__file__).parent
-LANGS = ["en", "ur", "ar", "hi", "es", "fr", "de"]
+LANGS = ["en", "ur", "ar", "hi", "es", "fr", "de", "pt", "id", "ru", "ja", "ko", "tr", "it", "zh"]
 strings, meta = {}, {}
 for f in sorted(here.glob("*.py")):
     if f.name == "build_arb.py":

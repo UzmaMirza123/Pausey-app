@@ -30,7 +30,8 @@ email + password, and **Continue as guest**.
 
 ## Language
 
-The app follows the phone's language: English, Urdu, Arabic, Hindi, Spanish, French, German
+The app follows the phone's language — 15 languages: English, Spanish, Portuguese, Hindi, Arabic,
+Urdu, Indonesian, French, German, Russian, Japanese, Korean, Turkish, Italian, Chinese (Simplified)
 (Urdu and Arabic right-to-left). Other phone languages fall back to English. The globe button on the
 Welcome and Home screens lets the user pick a language (saved on the phone).
 
@@ -89,3 +90,9 @@ assets/svg/                      icons and illustrations from Figma
 - **Permissions** — `_requestPermission` in onboarding 8 is where the real OS request goes.
 - **After onboarding** — `main.dart` shows a snackbar when onboarding finishes; route to your
   home screen there.
+
+## Windows build note
+
+If `flutter run` fails with *Could not close incremental caches … is already registered*, the project
+and the Flutter pub cache are on different drives (e.g. D: and C:). `android/gradle.properties` already
+has `kotlin.incremental=false` for this. After pulling, run `flutter clean` once, then `flutter run`.
