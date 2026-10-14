@@ -909,6 +909,472 @@ class AppLocalizationsRu extends AppLocalizations {
   String get blockEmergencyNone => 'На сегодня не осталось';
 
   @override
+  String get cvGetStarted => 'Начать';
+
+  @override
+  String get cvHaveAccount => 'У меня уже есть аккаунт';
+
+  @override
+  String get cvWelcomeTitle => 'Ваше время принадлежит вам.';
+
+  @override
+  String get cvWelcomeBody => 'Давайте освободим место для главного.';
+
+  @override
+  String get cvNext => 'Далее';
+
+  @override
+  String get cvSkipForNow => 'Пропустить пока';
+
+  @override
+  String get cvRelateTitle =>
+      'Бывало, что брали телефон на минутку, а застревали надолго?';
+
+  @override
+  String get cvRelateOften => 'Постоянно';
+
+  @override
+  String get cvRelateSometimes => 'Иногда';
+
+  @override
+  String get cvRelateRarely => 'Редко';
+
+  @override
+  String get cvRelateReplyOften =>
+      'Вы не одни. Телефоны так и задуманы, чтобы нас удерживать.';
+
+  @override
+  String get cvRelateReplySometimes =>
+      'Так бывает почти у всех, обычно незаметно.';
+
+  @override
+  String get cvRelateReplyRarely => 'Отлично. Давайте так и оставим.';
+
+  @override
+  String get cvRelateCta => 'Это про меня';
+
+  @override
+  String get cvGoalTitle => 'На что вам хотелось бы больше времени?';
+
+  @override
+  String get cvGoalFocus => 'Больше концентрации';
+
+  @override
+  String get cvGoalSleep => 'Лучше спать';
+
+  @override
+  String get cvGoalScrolling => 'Меньше листать ленту';
+
+  @override
+  String get cvGoalMe => 'Больше времени для себя';
+
+  @override
+  String get cvGoalHabits => 'Более здоровые привычки';
+
+  @override
+  String get cvGoalOther => 'Другое';
+
+  @override
+  String get cvGoalOtherHint => 'На что вам хотелось бы больше времени?';
+
+  @override
+  String get cvGoalReplyFocus =>
+      'Значит, фокус. Мы сбережём время для глубокой работы.';
+
+  @override
+  String get cvGoalReplySleep =>
+      'Хороший сон начинается до того, как вы ляжете. Мы поможем вечерам проходить спокойнее.';
+
+  @override
+  String get cvGoalReplyScrolling =>
+      'Пусть лента будет выбором, а не привычкой.';
+
+  @override
+  String get cvGoalReplyMe => 'Время для себя важно. Давайте его найдём.';
+
+  @override
+  String get cvGoalReplyHabits =>
+      'Маленькие шаги складываются. Мы сделаем их лёгкими.';
+
+  @override
+  String get cvGoalReplyOther => 'Понятно. Подстроим всё под это.';
+
+  @override
+  String get cvAppsTitle => 'Какие приложения затягивают вас сильнее всего?';
+
+  @override
+  String get cvAppsSubReal =>
+      'Это приложения на этом телефоне. Выберите сколько угодно.';
+
+  @override
+  String get cvAppsSubPopular =>
+      'Популярные приложения, которые часто отнимают время. Выберите подходящие.';
+
+  @override
+  String get cvAppsSearch => 'Поиск приложений';
+
+  @override
+  String cvAppsReply(String apps) {
+    return 'Записали: $apps. Начнём с них.';
+  }
+
+  @override
+  String cvAnd(String a, String b) {
+    return '$a и $b';
+  }
+
+  @override
+  String cvAndMore(String a, String b, int count) {
+    return '$a, $b и ещё $count';
+  }
+
+  @override
+  String get cvStTitle =>
+      'Сколько примерно времени в день вы проводите в телефоне?';
+
+  @override
+  String get cvStSub => 'Можно примерно. Это останется на вашем телефоне.';
+
+  @override
+  String cvStMeasured(String time) {
+    return 'Сегодня на этом телефоне пока: $time';
+  }
+
+  @override
+  String get cvStUnder2 => 'Меньше 2 часов';
+
+  @override
+  String get cvSt2to4 => 'От 2 до 4 часов';
+
+  @override
+  String get cvSt4to6 => 'От 4 до 6 часов';
+
+  @override
+  String get cvStOver6 => 'Больше 6 часов';
+
+  @override
+  String get cvStNotSure => 'Не знаю';
+
+  @override
+  String get cvStReplyUnder2 => 'Это хороший баланс. Мы поможем его сохранить.';
+
+  @override
+  String get cvStReply2to4 =>
+      'Пара небольших изменений может освободить немало времени.';
+
+  @override
+  String get cvStReply4to6 =>
+      'Это заметная часть дня. Давайте вернём вам немного.';
+
+  @override
+  String get cvStReplyOver6 =>
+      'Это большая часть дня, поэтому начнём с малого.';
+
+  @override
+  String get cvStReplyNotSure =>
+      'Ничего страшного. Pausey сможет это измерить, когда вы разрешите доступ к истории использования.';
+
+  @override
+  String get cvPhraseFocus => 'больше концентрации';
+
+  @override
+  String get cvPhraseSleep => 'лучше спать';
+
+  @override
+  String get cvPhraseScrolling => 'меньше листать ленту';
+
+  @override
+  String get cvPhraseMe => 'больше времени для себя';
+
+  @override
+  String get cvPhraseHabits => 'более здоровые привычки';
+
+  @override
+  String get cvPhraseOther => 'больше места для главного';
+
+  @override
+  String cvPhraseOtherNamed(String thing) {
+    return 'больше времени на $thing';
+  }
+
+  @override
+  String cvReflectApps(String goal, String apps) {
+    return 'Вы хотите $goal, но вас то и дело затягивает в $apps.';
+  }
+
+  @override
+  String cvReflectNoApps(String goal) {
+    return 'Вы хотите $goal, а телефон иногда мешает.';
+  }
+
+  @override
+  String cvReflectEstimate(String time) {
+    return 'Примерно $time в день (ваша оценка)';
+  }
+
+  @override
+  String cvReflectMeasured(String time) {
+    return '$time сегодня (измерено)';
+  }
+
+  @override
+  String get cvReflectHelp =>
+      'Pausey поможет выстроить распорядок, который даст вашему вниманию передышку.';
+
+  @override
+  String get cvShowMeHow => 'Покажите как';
+
+  @override
+  String get cvHowTitle => 'Вот как помогает Pausey';
+
+  @override
+  String get cvHowPauseTab => 'Пауза';
+
+  @override
+  String get cvHowLimitTab => 'Лимиты';
+
+  @override
+  String get cvHowFocusTab => 'Фокус';
+
+  @override
+  String get cvHowPauseTitle => 'Спокойная пауза, а не наказание';
+
+  @override
+  String get cvHowPauseBody =>
+      'Когда время приложения выходит, Pausey закрывает его спокойным экраном паузы, оставляя выход.';
+
+  @override
+  String get cvHowLimitTitle => 'Дневной лимит для каждого приложения';
+
+  @override
+  String get cvHowLimitBody =>
+      'У каждого приложения своё время в день и часы блокировки. Изменение одного не затрагивает другие.';
+
+  @override
+  String get cvHowFocusTitle => 'Фокус-сессии';
+
+  @override
+  String get cvHowFocusBody =>
+      'Запустите таймер для работы, учёбы или отдыха. Выбранные приложения будут на паузе до его конца.';
+
+  @override
+  String get cvPreview => 'Предпросмотр';
+
+  @override
+  String get cvYourApp => 'Ваше приложение';
+
+  @override
+  String get cvAnotherApp => 'Другое приложение';
+
+  @override
+  String cvMinOf(int used, int limit) {
+    return '$used из $limit мин';
+  }
+
+  @override
+  String get cvBuildPlan => 'Составить мой план';
+
+  @override
+  String get cvPlanTitle => 'Вот мягкий старт';
+
+  @override
+  String get cvPlanSub => 'Подобрано по вашим ответам. Меняйте что угодно.';
+
+  @override
+  String get cvPlanFocus => 'Фокус-сессия';
+
+  @override
+  String cvPlanFocusSub(String time) {
+    return '$time за сессию';
+  }
+
+  @override
+  String get cvPlanDaily => 'Цель фокуса на день';
+
+  @override
+  String cvPlanDailySub(String time) {
+    return '$time фокуса в день';
+  }
+
+  @override
+  String get cvPlanLimit => 'Дневной лимит приложения';
+
+  @override
+  String cvPlanLimitSub(String app, String time) {
+    return '$app: $time в день';
+  }
+
+  @override
+  String get cvPlanLimitNoPkg =>
+      'Этого приложения нет в списке на телефоне, поэтому лимит можно задать позже в разделе «Блокировка».';
+
+  @override
+  String get cvPlanWind => 'Вечерний отдых';
+
+  @override
+  String cvPlanWindSub(String start, String end) {
+    return 'Выбранные приложения на паузе с $start до $end';
+  }
+
+  @override
+  String get cvPlanOff => 'Выкл.';
+
+  @override
+  String get cvStarts => 'Начало';
+
+  @override
+  String get cvEnds => 'Конец';
+
+  @override
+  String get cvPlanNote =>
+      'Пока ничего не включено. Всё заработает только после настройки, и это можно изменить в любой момент.';
+
+  @override
+  String get cvUsePlan => 'Выбрать этот план';
+
+  @override
+  String get cvPermTitle => 'Для работы нужны несколько разрешений';
+
+  @override
+  String get cvPermSub =>
+      'Каждое открывает настройки Android. Включите там и вернитесь.';
+
+  @override
+  String get cvPermUnsupported =>
+      'Лимиты и экраны паузы работают на телефонах Android. Всё остальное работает и здесь.';
+
+  @override
+  String get cvPermUsageTitle => 'Доступ к истории';
+
+  @override
+  String get cvPermUsageWhy =>
+      'Позволяет Pausey видеть, сколько сегодня открыто каждое приложение и какое сейчас на экране.';
+
+  @override
+  String get cvPermUsageWithout =>
+      'Без него Pausey не сможет измерять экранное время и понимать, когда лимит исчерпан.';
+
+  @override
+  String get cvPermOverlayTitle => 'Поверх других приложений';
+
+  @override
+  String get cvPermOverlayWhy =>
+      'Позволяет Pausey показывать экран паузы поверх приложения, когда его время вышло.';
+
+  @override
+  String get cvPermOverlayWithout =>
+      'Без него приложения нельзя поставить на паузу. Ваш план сохранится на потом.';
+
+  @override
+  String get cvPermBatteryTitle => 'Не останавливать Pausey';
+
+  @override
+  String get cvPermBatteryWhy =>
+      'Некоторые телефоны останавливают фоновые приложения ради экономии заряда. Разрешение для Pausey сохранит работу лимитов.';
+
+  @override
+  String get cvPermBatteryWithout =>
+      'Без этого лимиты могут не работать, пока вы снова не откроете Pausey.';
+
+  @override
+  String get cvPermLater => 'Это можно изменить позже в настройках Android.';
+
+  @override
+  String get cvPermPrivacy =>
+      'Pausey видит только названия приложений и время. Ничто не покидает ваш телефон.';
+
+  @override
+  String get cvAllowInSettings => 'Разрешить в настройках';
+
+  @override
+  String get cvAllowed => 'Разрешено';
+
+  @override
+  String get cvOptional => 'Необязательно';
+
+  @override
+  String get cvContinueAnyway => 'Пока продолжить';
+
+  @override
+  String get cvAccountTitle => 'Сохраните прогресс';
+
+  @override
+  String get cvAccountSub => 'Пользуйтесь Pausey как гость или войдите.';
+
+  @override
+  String get cvNameLabel => 'Ваше имя (необязательно)';
+
+  @override
+  String get cvNameHint => 'Как к вам обращаться?';
+
+  @override
+  String get cvContinueGuest => 'Продолжить как гость';
+
+  @override
+  String get cvAccountNote =>
+      'Вход пока не создаёт резервную копию данных. В любом случае настройки остаются на этом телефоне.';
+
+  @override
+  String get cvReadyTitle => 'Ваш первый шаг начинается здесь.';
+
+  @override
+  String cvReadyTitleNamed(String name) {
+    return '$name, ваш первый шаг начинается здесь.';
+  }
+
+  @override
+  String get cvReadyFocus => 'Давайте освободим чуть больше места для фокуса.';
+
+  @override
+  String get cvReadySleep => 'Давайте сделаем ваши вечера чуть спокойнее.';
+
+  @override
+  String get cvReadyScrolling =>
+      'Давайте отдавать ленте чуть меньше вашего дня.';
+
+  @override
+  String get cvReadyMe => 'Давайте найдём для вас чуть больше времени.';
+
+  @override
+  String get cvReadyHabits =>
+      'Давайте выстроим привычки, которые приносят радость.';
+
+  @override
+  String get cvReadyOther =>
+      'Давайте освободим больше места для того, что важно вам.';
+
+  @override
+  String get cvYourPlan => 'Ваш план';
+
+  @override
+  String cvSumGoal(String goal) {
+    return 'Цель: $goal';
+  }
+
+  @override
+  String cvSumApps(String apps) {
+    return 'Приложения: $apps';
+  }
+
+  @override
+  String cvSumFocus(String session, String daily) {
+    return 'Фокус-сессии по $session, $daily в день';
+  }
+
+  @override
+  String get cvReadyNeedsPerm =>
+      'Лимиты сохранены, но заработают только после двух разрешений.';
+
+  @override
+  String get cvReadyChange => 'Всё это можно изменить позже.';
+
+  @override
+  String get cvStartFirstFocus => 'Начать первую фокус-сессию';
+
+  @override
+  String get cvFinishLimits => 'Завершить настройку лимитов';
+
+  @override
   String get appName => 'Pausey';
 
   @override

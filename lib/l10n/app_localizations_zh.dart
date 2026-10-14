@@ -890,6 +890,438 @@ class AppLocalizationsZh extends AppLocalizations {
   String get blockEmergencyNone => '今天已用完';
 
   @override
+  String get cvGetStarted => '开始使用';
+
+  @override
+  String get cvHaveAccount => '我已有账号';
+
+  @override
+  String get cvWelcomeTitle => '你的时间，属于你。';
+
+  @override
+  String get cvWelcomeBody => '为重要的事腾出更多空间。';
+
+  @override
+  String get cvNext => '下一步';
+
+  @override
+  String get cvSkipForNow => '暂时跳过';
+
+  @override
+  String get cvRelateTitle => '有没有拿起手机只想看一分钟，结果看了很久？';
+
+  @override
+  String get cvRelateOften => '经常这样';
+
+  @override
+  String get cvRelateSometimes => '有时候';
+
+  @override
+  String get cvRelateRarely => '很少';
+
+  @override
+  String get cvRelateReplyOften => '你并不孤单。手机本来就是为了留住我们而设计的。';
+
+  @override
+  String get cvRelateReplySometimes => '大多数人都会这样，而且常常没察觉。';
+
+  @override
+  String get cvRelateReplyRarely => '很好，继续保持。';
+
+  @override
+  String get cvRelateCta => '说的就是我';
+
+  @override
+  String get cvGoalTitle => '你想把更多时间留给什么？';
+
+  @override
+  String get cvGoalFocus => '更专注';
+
+  @override
+  String get cvGoalSleep => '睡得更好';
+
+  @override
+  String get cvGoalScrolling => '少刷手机';
+
+  @override
+  String get cvGoalMe => '多留点时间给自己';
+
+  @override
+  String get cvGoalHabits => '更健康的日常习惯';
+
+  @override
+  String get cvGoalOther => '其他';
+
+  @override
+  String get cvGoalOtherHint => '你想把更多时间留给什么？';
+
+  @override
+  String get cvGoalReplyFocus => '那就专注吧。我们会为你守住深度工作的时间。';
+
+  @override
+  String get cvGoalReplySleep => '好睡眠从睡前开始。我们会帮你让夜晚慢慢放松下来。';
+
+  @override
+  String get cvGoalReplyScrolling => '让刷手机成为一种选择，而不是习惯。';
+
+  @override
+  String get cvGoalReplyMe => '留给自己的时间很重要。我们一起找出来。';
+
+  @override
+  String get cvGoalReplyHabits => '小步积累成大改变。我们会让它们轻松简单。';
+
+  @override
+  String get cvGoalReplyOther => '明白了。我们会围绕它来安排。';
+
+  @override
+  String get cvAppsTitle => '哪些应用最让你停不下来？';
+
+  @override
+  String get cvAppsSubReal => '这些是本机上的应用，想选几个都可以。';
+
+  @override
+  String get cvAppsSubPopular => '这些是常让人花掉时间的热门应用，选出适合你的。';
+
+  @override
+  String get cvAppsSearch => '搜索应用';
+
+  @override
+  String cvAppsReply(String apps) {
+    return '已记下：$apps。我们就从这些开始。';
+  }
+
+  @override
+  String cvAnd(String a, String b) {
+    return '$a和$b';
+  }
+
+  @override
+  String cvAndMore(String a, String b, int count) {
+    return '$a、$b及另外$count个';
+  }
+
+  @override
+  String get cvStTitle => '你每天大约用多久手机？';
+
+  @override
+  String get cvStSub => '大概估一下就好，这些只保存在你的手机上。';
+
+  @override
+  String cvStMeasured(String time) {
+    return '本机今天到目前的测量值：$time';
+  }
+
+  @override
+  String get cvStUnder2 => '少于 2 小时';
+
+  @override
+  String get cvSt2to4 => '2 到 4 小时';
+
+  @override
+  String get cvSt4to6 => '4 到 6 小时';
+
+  @override
+  String get cvStOver6 => '超过 6 小时';
+
+  @override
+  String get cvStNotSure => '不确定';
+
+  @override
+  String get cvStReplyUnder2 => '这是不错的平衡，我们会帮你保持。';
+
+  @override
+  String get cvStReply2to4 => '几个小改变，就能腾出不少时间。';
+
+  @override
+  String get cvStReply4to6 => '这占了你一天中不小的部分。我们一起把一些时间拿回来。';
+
+  @override
+  String get cvStReplyOver6 => '这是一天中很大的一部分，我们就从小处开始。';
+
+  @override
+  String get cvStReplyNotSure => '没关系。允许使用情况访问权限后，Pausey 就能测量。';
+
+  @override
+  String get cvPhraseFocus => '更专注';
+
+  @override
+  String get cvPhraseSleep => '更好的睡眠';
+
+  @override
+  String get cvPhraseScrolling => '少刷手机';
+
+  @override
+  String get cvPhraseMe => '更多属于自己的时间';
+
+  @override
+  String get cvPhraseHabits => '更健康的习惯';
+
+  @override
+  String get cvPhraseOther => '为重要的事留出空间';
+
+  @override
+  String cvPhraseOtherNamed(String thing) {
+    return '更多时间给$thing';
+  }
+
+  @override
+  String cvReflectApps(String goal, String apps) {
+    return '你想要$goal，却总被$apps吸引过去。';
+  }
+
+  @override
+  String cvReflectNoApps(String goal) {
+    return '你想要$goal，但手机有时会碍事。';
+  }
+
+  @override
+  String cvReflectEstimate(String time) {
+    return '每天约 $time（你的估计）';
+  }
+
+  @override
+  String cvReflectMeasured(String time) {
+    return '今天到目前 $time（实测）';
+  }
+
+  @override
+  String get cvReflectHelp => 'Pausey 可以帮你建立一个让注意力喘口气的日常习惯。';
+
+  @override
+  String get cvShowMeHow => '告诉我怎么做';
+
+  @override
+  String get cvHowTitle => 'Pausey 这样帮助你';
+
+  @override
+  String get cvHowPauseTab => '暂停';
+
+  @override
+  String get cvHowLimitTab => '限额';
+
+  @override
+  String get cvHowFocusTab => '专注';
+
+  @override
+  String get cvHowPauseTitle => '温和的暂停，而非惩罚';
+
+  @override
+  String get cvHowPauseBody => '当某个应用的时间用完，Pausey 会用安静的暂停页盖住它，并留一条出路。';
+
+  @override
+  String get cvHowLimitTitle => '每个应用的每日额度';
+
+  @override
+  String get cvHowLimitBody => '为每个应用单独设置每日时长和锁定时段。改一个，不会影响另一个。';
+
+  @override
+  String get cvHowFocusTitle => '专注时段';
+
+  @override
+  String get cvHowFocusBody => '为工作、学习或休息开启计时。结束前，你选的应用都会保持暂停。';
+
+  @override
+  String get cvPreview => '预览';
+
+  @override
+  String get cvYourApp => '你的应用';
+
+  @override
+  String get cvAnotherApp => '另一个应用';
+
+  @override
+  String cvMinOf(int used, int limit) {
+    return '$used/$limit 分钟';
+  }
+
+  @override
+  String get cvBuildPlan => '生成我的计划';
+
+  @override
+  String get cvPlanTitle => '从这里轻松开始';
+
+  @override
+  String get cvPlanSub => '根据你的回答推荐，可以随意修改。';
+
+  @override
+  String get cvPlanFocus => '专注时段';
+
+  @override
+  String cvPlanFocusSub(String time) {
+    return '每次 $time';
+  }
+
+  @override
+  String get cvPlanDaily => '每日专注目标';
+
+  @override
+  String cvPlanDailySub(String time) {
+    return '每天专注 $time';
+  }
+
+  @override
+  String get cvPlanLimit => '每日应用限额';
+
+  @override
+  String cvPlanLimitSub(String app, String time) {
+    return '$app：每天 $time';
+  }
+
+  @override
+  String get cvPlanLimitNoPkg => '此应用不在手机列表中，限额可稍后在应用锁中设置。';
+
+  @override
+  String get cvPlanWind => '晚间放松';
+
+  @override
+  String cvPlanWindSub(String start, String end) {
+    return '所选应用将在 $start 至 $end 暂停';
+  }
+
+  @override
+  String get cvPlanOff => '关闭';
+
+  @override
+  String get cvStarts => '开始';
+
+  @override
+  String get cvEnds => '结束';
+
+  @override
+  String get cvPlanNote => '目前还没有开启任何功能。完成设置后才会开始，你随时可以修改。';
+
+  @override
+  String get cvUsePlan => '使用此计划';
+
+  @override
+  String get cvPermTitle => '需要几项权限才能运行';
+
+  @override
+  String get cvPermSub => '每项都会打开 Android 设置。在那里开启后再返回。';
+
+  @override
+  String get cvPermUnsupported => '应用限额和暂停页适用于 Android 手机，其余功能在这里也能使用。';
+
+  @override
+  String get cvPermUsageTitle => '使用情况访问权限';
+
+  @override
+  String get cvPermUsageWhy => '让 Pausey 了解今天每个应用打开了多久，以及当前在屏幕上的是哪个应用。';
+
+  @override
+  String get cvPermUsageWithout => '没有它，Pausey 无法测量屏幕使用时间，也不知道何时达到限额。';
+
+  @override
+  String get cvPermOverlayTitle => '显示在其他应用上层';
+
+  @override
+  String get cvPermOverlayWhy => '让 Pausey 在应用时间用完时，在其上方显示暂停页。';
+
+  @override
+  String get cvPermOverlayWithout => '没有它，应用无法暂停。你的计划会保留，以后再用。';
+
+  @override
+  String get cvPermBatteryTitle => '保持 Pausey 运行';
+
+  @override
+  String get cvPermBatteryWhy => '有些手机会为了省电停止后台应用。允许 Pausey 运行，限额才能持续生效。';
+
+  @override
+  String get cvPermBatteryWithout => '没有它，限额可能会失效，直到你再次打开 Pausey。';
+
+  @override
+  String get cvPermLater => '之后可以在 Android 设置中更改。';
+
+  @override
+  String get cvPermPrivacy => 'Pausey 只读取应用名称和使用时长，任何数据都不会离开你的手机。';
+
+  @override
+  String get cvAllowInSettings => '前往设置允许';
+
+  @override
+  String get cvAllowed => '已允许';
+
+  @override
+  String get cvOptional => '可选';
+
+  @override
+  String get cvContinueAnyway => '暂时继续';
+
+  @override
+  String get cvAccountTitle => '保存你的进度';
+
+  @override
+  String get cvAccountSub => '以访客身份使用 Pausey，或登录。';
+
+  @override
+  String get cvNameLabel => '你的名字（可选）';
+
+  @override
+  String get cvNameHint => '我们该怎么称呼你？';
+
+  @override
+  String get cvContinueGuest => '以访客身份继续';
+
+  @override
+  String get cvAccountNote => '登录暂时不会备份你的数据。无论哪种方式，设置都保存在这台手机上。';
+
+  @override
+  String get cvReadyTitle => '你的第一步，从这里开始。';
+
+  @override
+  String cvReadyTitleNamed(String name) {
+    return '$name，你的第一步从这里开始。';
+  }
+
+  @override
+  String get cvReadyFocus => '为专注多留一点空间吧。';
+
+  @override
+  String get cvReadySleep => '让你的夜晚更平静一些吧。';
+
+  @override
+  String get cvReadyScrolling => '让刷手机少占一点你的一天吧。';
+
+  @override
+  String get cvReadyMe => '为你自己多留一点时间吧。';
+
+  @override
+  String get cvReadyHabits => '一起养成让人舒服的好习惯吧。';
+
+  @override
+  String get cvReadyOther => '为对你重要的事腾出更多空间吧。';
+
+  @override
+  String get cvYourPlan => '你的计划';
+
+  @override
+  String cvSumGoal(String goal) {
+    return '目标：$goal';
+  }
+
+  @override
+  String cvSumApps(String apps) {
+    return '应用：$apps';
+  }
+
+  @override
+  String cvSumFocus(String session, String daily) {
+    return '每次专注 $session，每天 $daily';
+  }
+
+  @override
+  String get cvReadyNeedsPerm => '应用限额已保存，但需允许这两项权限后才会生效。';
+
+  @override
+  String get cvReadyChange => '这些之后都可以修改。';
+
+  @override
+  String get cvStartFirstFocus => '开始我的第一次专注';
+
+  @override
+  String get cvFinishLimits => '完成应用限额设置';
+
+  @override
   String get appName => 'Pausey';
 
   @override

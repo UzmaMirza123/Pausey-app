@@ -198,15 +198,16 @@ class _PrimaryButtonState extends State<PrimaryButton> {
               child: Container(
                 height: widget.height,
                 width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                  color: AppPalette.button,
+                  color: AppPalette.accent,
                   borderRadius: BorderRadius.circular(50),
                   border: Border.all(color: const Color(0x2EFFFFFF)),
                   boxShadow: [
                     BoxShadow(
-                      color: AppPalette.blue.withValues(alpha: 0.46),
-                      blurRadius: 18,
-                      offset: const Offset(0, 6),
+                      color: AppPalette.accent.withValues(alpha: 0.28),
+                      blurRadius: 14,
+                      offset: const Offset(0, 5),
                     ),
                   ],
                 ),
@@ -222,7 +223,9 @@ class _PrimaryButtonState extends State<PrimaryButton> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (widget.leading != null) ...[widget.leading!, const SizedBox(width: 8)],
-                    Text(widget.label, style: AppText.button.copyWith(color: Colors.white)),
+                    Flexible(
+                      child: Text(widget.label, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.button.copyWith(color: Colors.white)),
+                    ),
                     if (widget.showArrow) ...[
                       const SizedBox(width: 5),
                       // points the reading direction (flips for Urdu/Arabic)

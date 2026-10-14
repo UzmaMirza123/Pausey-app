@@ -127,10 +127,10 @@ class _RootState extends State<_Root> {
     _stage = (signedIn || LocalStore.instance.onboardingDone) ? _Stage.app : _Stage.onboarding;
   });
 
-  Future<void> _afterOnboarding() async {
+  Future<void> _afterOnboarding(ObFirstAction? action) async {
     await LocalStore.instance.setOnboardingDone();
-    // Onboarding answers (locked apps, daily goal) become the starting data.
-    AppRepo.instance.seedFromOnboarding();
+    // The starter plan was already applied by the last onboarding stage.
+    if (action != null) AppShell.pendingTab = action == ObFirstAction.appLimits ? AppTab.block : AppTab.focus;
     if (mounted) setState(() => _stage = _Stage.app);
   }
 

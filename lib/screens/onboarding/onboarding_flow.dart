@@ -1,81 +1,116 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/onboarding_nav.dart';
+import '../../services/auth_service.dart';
+import '../auth/log_in_screen.dart';
+import 'onboarding_state.dart';
+import 'stages/about_you.dart';
+import 'stages/set_up.dart';
+import 'stages/your_plan.dart';
+import 'widgets/ob_kit.dart';
 
-import 'onboarding_1_screen.dart';
-import 'onboarding_2_screen.dart';
-import 'onboarding_3_screen.dart';
-import 'onboarding_4_screen.dart';
-import 'onboarding_5_screen.dart';
-import 'onboarding_6_screen.dart';
-import 'onboarding_7_screen.dart';
-import 'onboarding_8_screen.dart';
-import 'onboarding_9_screen.dart';
+export 'stages/set_up.dart' show ObFirstAction;
 
-/// Runs the 9 onboarding screens in order. "Continue" goes to the next page,
-/// "Skip" jumps to the last one, and the last page calls [onFinished].
+/// The conversational onboarding: 11 stages in three chapters (the 3 dots).
+///
+/// Progress is saved after every step, so closing the app resumes where the user
+/// left. The starter plan is applied only on the last stage.
 class OnboardingFlow extends StatefulWidget {
-  const OnboardingFlow({super.key, this.onFinished, this.initialPage = 0});
+  const OnboardingFlow({super.key, this.onFinished, this.initialStage});
 
-  final VoidCallback? onFinished;
-  final int initialPage;
+  /// Called when done. `null` = a returning user signed in from the welcome screen.
+  final void Function(ObFirstAction? action)? onFinished;
+
+  /// Preview/testing: start on this stage instead of the saved one.
+  final int? initialStage;
+
+  static const stageCount = 11;
+  static const _accountStage = 9;
+
+  /// Progress dot (chapter) for each stage; null = no dots (welcome).
+  static int? chapterOf(int stage) => stage == 0 ? null : (stage <= 4 ? 0 : (stage <= 7 ? 1 : 2));
 
   @override
   State<OnboardingFlow> createState() => _OnboardingFlowState();
 }
 
 class _OnboardingFlowState extends State<OnboardingFlow> {
-  late final PageController _pager = PageController(initialPage: widget.initialPage);
-  static const _count = 9;
-
-  void _next() {
-    final page = _pager.page?.round() ?? 0;
-    if (page >= _count - 1) {
-      widget.onFinished?.call();
-      return;
-    }
-    _pager.nextPage(duration: const Duration(milliseconds: 480), curve: Curves.easeInOutCubic);
-  }
-
-  void _back() {
-    if ((_pager.page ?? 0) > 0.5) {
-      _pager.previousPage(duration: const Duration(milliseconds: 480), curve: Curves.easeInOutCubic);
-    }
-  }
-
-  void _skip() => _pager.animateToPage(_count - 1, duration: const Duration(milliseconds: 500), curve: Curves.easeOutCubic);
+  final _s = OnboardingState.instance;
+  bool _forward = true;
 
   @override
-  void dispose() {
-    _pager.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _s.load();
+    if (widget.initialStage != null) _s.stage = widget.initialStage!;
+    _s.stage = _s.stage.clamp(0, OnboardingFlow.stageCount - 1);
   }
+
+  bool get _signedIn => AuthService.instance.value is! SignedOut;
+
+  void _go(int to) {
+    // The account stage is skipped when the user is already signed in.
+    if (to == OnboardingFlow._accountStage && _signedIn) to += (to > _s.stage ? 1 : -1);
+    if (to < 0 || to >= OnboardingFlow.stageCount) return;
+    if (to == 7) _s.suggestPlan(); // fill the starter plan from the answers
+    setState(() => _forward = to > _s.stage);
+    _s.update((s) => s.stage = to);
+  }
+
+  void _next() => _go(_s.stage + 1);
+  void _back() => _go(_s.stage - 1);
+
+  Future<void> _haveAccount() async {
+    await pushUntilSignedIn(context, const LogInScreen());
+    if (!mounted || !_signedIn) return;
+    await _s.reset();
+    widget.onFinished?.call(null);
+  }
+
+  Future<void> _finish(ObFirstAction action) async {
+    await _s.applyPlan();
+    await _s.reset();
+    widget.onFinished?.call(action);
+  }
+
+  Widget _stage(int i) => switch (i) {
+        0 => WelcomeStage(onNext: _next, onHaveAccount: _haveAccount),
+        1 => RelateStage(onNext: _next),
+        2 => GoalStage(onNext: _next),
+        3 => AppsStage(onNext: _next),
+        4 => ScreenTimeStage(onNext: _next),
+        5 => ReflectionStage(onNext: _next),
+        6 => HowItHelpsStage(onNext: _next),
+        7 => PlanStage(onNext: _next),
+        8 => PermissionsStage(onNext: _next),
+        9 => AccountStage(onNext: _next),
+        _ => ReadyStage(onFinish: _finish),
+      };
 
   @override
   Widget build(BuildContext context) {
+    final i = _s.stage;
+    final reduced = ObMotion.reduced(context);
     return PopScope(
-      canPop: false,
+      canPop: i == 0,
       onPopInvokedWithResult: (didPop, _) {
         if (!didPop) _back();
       },
-      child: PageView(
-        controller: _pager,
-        // Pages with questions must be answered with the button, so no swiping.
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          for (final (i, page) in [
-            Onboarding1Screen(onNext: _next, onSkip: _skip),
-            Onboarding2Screen(onNext: _next, onSkip: _skip),
-            Onboarding3Screen(onNext: _next, onSkip: _skip),
-            Onboarding4Screen(onNext: _next, onSkip: _skip),
-            Onboarding5Screen(onNext: _next, onSkip: _skip),
-            Onboarding6Screen(onNext: _next, onSkip: _skip),
-            Onboarding7Screen(onNext: _next, onSkip: _skip),
-            Onboarding8Screen(onNext: _next, onSkip: _skip),
-            Onboarding9Screen(onNext: _next, onSkip: _skip),
-          ].indexed)
-            OnboardingPageScope(index: i, controller: _pager, onBack: _back, child: page),
-        ],
+      child: AnimatedSwitcher(
+        duration: reduced ? Duration.zero : ObMotion.page,
+        switchInCurve: Curves.easeOutCubic,
+        switchOutCurve: Curves.easeInCubic,
+        transitionBuilder: (child, a) {
+          final incoming = child.key == ValueKey(i);
+          final dir = (_forward ? 1 : -1) * (incoming ? 1 : -1);
+          return FadeTransition(
+            opacity: a,
+            child: SlideTransition(position: Tween(begin: Offset(0.06 * dir, 0), end: Offset.zero).animate(a), child: child),
+          );
+        },
+        child: KeyedSubtree(
+          key: ValueKey(i),
+          child: ObFlowScope(chapter: OnboardingFlow.chapterOf(i), canBack: i > 0, onBack: _back, child: _stage(i)),
+        ),
       ),
     );
   }

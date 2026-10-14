@@ -110,6 +110,28 @@ class AppRepo extends ChangeNotifier {
     _save();
   }
 
+  /// Applies the plan the user accepted at the end of onboarding.
+  /// Picked apps follow the general schedule (the wind-down window) instead of
+  /// being locked all day; with no wind-down the schedule stays off.
+  Future<void> applyStarterPlan({
+    required List<ManagedApp> apps,
+    required bool windDownOn,
+    required int windStart,
+    required int windEnd,
+    required int focusMinutes,
+    required int dailyFocusGoalMinutes,
+  }) async {
+    this.apps = apps;
+    schedule = LockSchedule(enabled: windDownOn, startMinutes: windStart, endMinutes: windEnd, days: {1, 2, 3, 4, 5, 6, 7});
+    settings.pomodoroMinutes = focusMinutes;
+    goals = [
+      Goal(id: 'g_focus', title: '', type: GoalType.focusMinutes, category: GoalCategory.focus, target: dailyFocusGoalMinutes),
+      Goal(id: 'g_block', title: '', type: GoalType.blockApps, category: GoalCategory.discipline, target: 7),
+      Goal(id: 'g_pomo', title: '', type: GoalType.sessions, category: GoalCategory.focus, target: 3),
+    ];
+    await _save();
+  }
+
   /// Delete everything (Settings → Clear activity data keeps apps & goals).
   Future<void> clearActivity() async {
     sessions = [];

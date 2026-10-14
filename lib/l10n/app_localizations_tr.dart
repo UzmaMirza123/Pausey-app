@@ -908,6 +908,474 @@ class AppLocalizationsTr extends AppLocalizations {
   String get blockEmergencyNone => 'Bugün hak kalmadı';
 
   @override
+  String get cvGetStarted => 'Başlayın';
+
+  @override
+  String get cvHaveAccount => 'Zaten hesabım var';
+
+  @override
+  String get cvWelcomeTitle => 'Zamanınız sizin.';
+
+  @override
+  String get cvWelcomeBody => 'Önemli olana daha fazla yer açalım.';
+
+  @override
+  String get cvNext => 'İleri';
+
+  @override
+  String get cvSkipForNow => 'Şimdilik atla';
+
+  @override
+  String get cvRelateTitle =>
+      'Telefonu bir dakikalığına alıp çok daha uzun kaldığınız oldu mu?';
+
+  @override
+  String get cvRelateOften => 'Sürekli';
+
+  @override
+  String get cvRelateSometimes => 'Bazen';
+
+  @override
+  String get cvRelateRarely => 'Nadiren';
+
+  @override
+  String get cvRelateReplyOften =>
+      'Yalnız değilsiniz. Telefonlar bizi orada tutmak için tasarlanıyor.';
+
+  @override
+  String get cvRelateReplySometimes =>
+      'Çoğumuzun başına gelir, genelde fark etmeden.';
+
+  @override
+  String get cvRelateReplyRarely => 'Harika. Böyle devam edelim.';
+
+  @override
+  String get cvRelateCta => 'Bu benim';
+
+  @override
+  String get cvGoalTitle => 'Neye daha fazla zaman ayırmak istersiniz?';
+
+  @override
+  String get cvGoalFocus => 'Daha iyi odak';
+
+  @override
+  String get cvGoalSleep => 'Daha iyi uyku';
+
+  @override
+  String get cvGoalScrolling => 'Daha az kaydırma';
+
+  @override
+  String get cvGoalMe => 'Kendime daha fazla zaman';
+
+  @override
+  String get cvGoalHabits => 'Daha sağlıklı günlük alışkanlıklar';
+
+  @override
+  String get cvGoalOther => 'Başka bir şey';
+
+  @override
+  String get cvGoalOtherHint => 'Neye daha fazla zaman ayırmak istersiniz?';
+
+  @override
+  String get cvGoalReplyFocus =>
+      'Odak olsun. Derin çalışma için gereken zamanı koruyacağız.';
+
+  @override
+  String get cvGoalReplySleep =>
+      'İyi uyku yatmadan önce başlar. Akşamlarınızı sakinleştirmenize yardım edeceğiz.';
+
+  @override
+  String get cvGoalReplyScrolling =>
+      'Kaydırmayı alışkanlık değil, bir tercih haline getirelim.';
+
+  @override
+  String get cvGoalReplyMe =>
+      'Kendinize ayırdığınız zaman önemli. Biraz bulalım.';
+
+  @override
+  String get cvGoalReplyHabits =>
+      'Küçük adımlar birikir. Onları kolay tutacağız.';
+
+  @override
+  String get cvGoalReplyOther =>
+      'Anlaşıldı. Her şeyi buna göre şekillendireceğiz.';
+
+  @override
+  String get cvAppsTitle => 'Sizi en çok hangi uygulamalar içine çekiyor?';
+
+  @override
+  String get cvAppsSubReal =>
+      'Bunlar bu telefondaki uygulamalar. İstediğiniz kadar seçin.';
+
+  @override
+  String get cvAppsSubPopular =>
+      'Çoğu zaman vakit alan popüler uygulamalar. Size uyanları seçin.';
+
+  @override
+  String get cvAppsSearch => 'Uygulama ara';
+
+  @override
+  String cvAppsReply(String apps) {
+    return 'Not edildi: $apps. Bunlarla başlayacağız.';
+  }
+
+  @override
+  String cvAnd(String a, String b) {
+    return '$a ve $b';
+  }
+
+  @override
+  String cvAndMore(String a, String b, int count) {
+    return '$a, $b ve $count uygulama daha';
+  }
+
+  @override
+  String get cvStTitle => 'Günde aşağı yukarı ne kadar telefondasınız?';
+
+  @override
+  String get cvStSub => 'Tahmin yeterli. Bu bilgi telefonunuzda kalır.';
+
+  @override
+  String cvStMeasured(String time) {
+    return 'Bugün bu telefonda şimdiye kadar ölçülen: $time';
+  }
+
+  @override
+  String get cvStUnder2 => '2 saatten az';
+
+  @override
+  String get cvSt2to4 => '2 ile 4 saat arası';
+
+  @override
+  String get cvSt4to6 => '4 ile 6 saat arası';
+
+  @override
+  String get cvStOver6 => '6 saatten fazla';
+
+  @override
+  String get cvStNotSure => 'Emin değilim';
+
+  @override
+  String get cvStReplyUnder2 => 'Bu iyi bir denge. Korumanıza yardım edeceğiz.';
+
+  @override
+  String get cvStReply2to4 =>
+      'Birkaç küçük değişiklik gerçekten zaman kazandırabilir.';
+
+  @override
+  String get cvStReply4to6 =>
+      'Bu, gününüzün epey bir kısmı. Bir kısmını yeniden size kazandıralım.';
+
+  @override
+  String get cvStReplyOver6 =>
+      'Bu, günün büyük bir kısmı; o yüzden küçük adımlarla başlayacağız.';
+
+  @override
+  String get cvStReplyNotSure =>
+      'Sorun değil. Kullanım erişimine izin verdiğinizde Pausey bunu ölçebilir.';
+
+  @override
+  String get cvPhraseFocus => 'daha fazla odak';
+
+  @override
+  String get cvPhraseSleep => 'daha iyi uyku';
+
+  @override
+  String get cvPhraseScrolling => 'daha az kaydırma';
+
+  @override
+  String get cvPhraseMe => 'kendinize daha fazla zaman';
+
+  @override
+  String get cvPhraseHabits => 'daha sağlıklı alışkanlıklar';
+
+  @override
+  String get cvPhraseOther => 'önemli olana daha fazla yer';
+
+  @override
+  String cvPhraseOtherNamed(String thing) {
+    return '$thing için daha fazla zaman';
+  }
+
+  @override
+  String cvReflectApps(String goal, String apps) {
+    return 'Hedefiniz $goal, ama $apps sizi sürekli içine çekiyor.';
+  }
+
+  @override
+  String cvReflectNoApps(String goal) {
+    return 'Hedefiniz $goal, ama telefon bazen araya giriyor.';
+  }
+
+  @override
+  String cvReflectEstimate(String time) {
+    return 'Günde yaklaşık $time (tahmininiz)';
+  }
+
+  @override
+  String cvReflectMeasured(String time) {
+    return 'Bugün şimdiye kadar $time (ölçülen)';
+  }
+
+  @override
+  String get cvReflectHelp =>
+      'Pausey, dikkatinize biraz nefes aldıracak bir rutin oluşturmanıza yardım edebilir.';
+
+  @override
+  String get cvShowMeHow => 'Nasıl olduğunu göster';
+
+  @override
+  String get cvHowTitle => 'Pausey size böyle yardım eder';
+
+  @override
+  String get cvHowPauseTab => 'Mola';
+
+  @override
+  String get cvHowLimitTab => 'Sınırlar';
+
+  @override
+  String get cvHowFocusTab => 'Odak';
+
+  @override
+  String get cvHowPauseTitle => 'Ceza değil, sakin bir mola';
+
+  @override
+  String get cvHowPauseBody =>
+      'Bir uygulamanın süresi dolunca Pausey onu sakin bir mola ekranıyla kapatır ve bir çıkış yolu sunar.';
+
+  @override
+  String get cvHowLimitTitle => 'Her uygulama için günlük süre';
+
+  @override
+  String get cvHowLimitBody =>
+      'Her uygulamaya kendi günlük süresini ve kilit saatlerini verin. Birini değiştirmek diğerini asla değiştirmez.';
+
+  @override
+  String get cvHowFocusTitle => 'Odak seansları';
+
+  @override
+  String get cvHowFocusBody =>
+      'Çalışma, ders ya da dinlenme için bir zamanlayıcı başlatın. Seçtiğiniz uygulamalar bitene kadar duraklatılır.';
+
+  @override
+  String get cvPreview => 'Önizleme';
+
+  @override
+  String get cvYourApp => 'Uygulamanız';
+
+  @override
+  String get cvAnotherApp => 'Başka uygulama';
+
+  @override
+  String cvMinOf(int used, int limit) {
+    return '$used/$limit dk';
+  }
+
+  @override
+  String get cvBuildPlan => 'Planımı oluştur';
+
+  @override
+  String get cvPlanTitle => 'İşte nazik bir başlangıç';
+
+  @override
+  String get cvPlanSub =>
+      'Yanıtlarınıza göre önerildi. İstediğinizi değiştirin.';
+
+  @override
+  String get cvPlanFocus => 'Odak seansı';
+
+  @override
+  String cvPlanFocusSub(String time) {
+    return 'Seans başına $time';
+  }
+
+  @override
+  String get cvPlanDaily => 'Günlük odak hedefi';
+
+  @override
+  String cvPlanDailySub(String time) {
+    return 'Günde $time odak';
+  }
+
+  @override
+  String get cvPlanLimit => 'Günlük uygulama sınırı';
+
+  @override
+  String cvPlanLimitSub(String app, String time) {
+    return '$app: günde $time';
+  }
+
+  @override
+  String get cvPlanLimitNoPkg =>
+      'Bu uygulama telefon listesinde yok; sınır daha sonra Uygulama Kilidi\'nde ayarlanabilir.';
+
+  @override
+  String get cvPlanWind => 'Akşam sakinleşmesi';
+
+  @override
+  String cvPlanWindSub(String start, String end) {
+    return 'Seçtiğiniz uygulamalar $start ile $end arasında duraklatılır';
+  }
+
+  @override
+  String get cvPlanOff => 'Kapalı';
+
+  @override
+  String get cvStarts => 'Başlangıç';
+
+  @override
+  String get cvEnds => 'Bitiş';
+
+  @override
+  String get cvPlanNote =>
+      'Henüz hiçbir şey açılmadı. Yalnızca kurulumu bitirdiğinizde başlar ve istediğiniz zaman değiştirebilirsiniz.';
+
+  @override
+  String get cvUsePlan => 'Bu planı kullan';
+
+  @override
+  String get cvPermTitle => 'Bunun için birkaç izin gerekiyor';
+
+  @override
+  String get cvPermSub =>
+      'Her biri Android ayarlarını açar. Orada açın, sonra geri dönün.';
+
+  @override
+  String get cvPermUnsupported =>
+      'Uygulama sınırları ve mola ekranları Android telefonlarda çalışır. Diğer her şey burada da çalışır.';
+
+  @override
+  String get cvPermUsageTitle => 'Kullanım erişimi';
+
+  @override
+  String get cvPermUsageWhy =>
+      'Pausey\'nin bugün her uygulamanın ne kadar açık kaldığını ve ekranda hangisinin olduğunu görmesini sağlar.';
+
+  @override
+  String get cvPermUsageWithout =>
+      'Bu olmadan Pausey ekran süresini ölçemez ve sınıra ne zaman ulaşıldığını bilemez.';
+
+  @override
+  String get cvPermOverlayTitle => 'Diğer uygulamaların üzerinde göster';
+
+  @override
+  String get cvPermOverlayWhy =>
+      'Süre dolduğunda Pausey\'nin uygulamanın üzerinde mola ekranını göstermesini sağlar.';
+
+  @override
+  String get cvPermOverlayWithout =>
+      'Bu olmadan uygulamalar duraklatılamaz. Planınız sonrası için saklanır.';
+
+  @override
+  String get cvPermBatteryTitle => 'Pausey\'yi çalışır tutun';
+
+  @override
+  String get cvPermBatteryWhy =>
+      'Bazı telefonlar pil tasarrufu için arka plandaki uygulamaları durdurur. Pausey\'ye izin vermek sınırlarınızın çalışmasını sağlar.';
+
+  @override
+  String get cvPermBatteryWithout =>
+      'Bu olmadan, Pausey\'yi yeniden açana kadar sınırlar çalışmayabilir.';
+
+  @override
+  String get cvPermLater =>
+      'Bunu daha sonra Android ayarlarından değiştirebilirsiniz.';
+
+  @override
+  String get cvPermPrivacy =>
+      'Pausey yalnızca uygulama adlarını ve sürelerini okur. Hiçbir şey telefonunuzdan çıkmaz.';
+
+  @override
+  String get cvAllowInSettings => 'Ayarlardan izin ver';
+
+  @override
+  String get cvAllowed => 'İzin verildi';
+
+  @override
+  String get cvOptional => 'İsteğe bağlı';
+
+  @override
+  String get cvContinueAnyway => 'Şimdilik devam et';
+
+  @override
+  String get cvAccountTitle => 'İlerlemenizi koruyun';
+
+  @override
+  String get cvAccountSub =>
+      'Pausey\'yi misafir olarak kullanın ya da giriş yapın.';
+
+  @override
+  String get cvNameLabel => 'Adınız (isteğe bağlı)';
+
+  @override
+  String get cvNameHint => 'Size nasıl hitap edelim?';
+
+  @override
+  String get cvContinueGuest => 'Misafir olarak devam et';
+
+  @override
+  String get cvAccountNote =>
+      'Giriş yapmak henüz verilerinizi yedeklemez. Her durumda ayarlarınız bu telefonda kalır.';
+
+  @override
+  String get cvReadyTitle => 'İlk adımınız burada başlıyor.';
+
+  @override
+  String cvReadyTitleNamed(String name) {
+    return '$name, ilk adımınız burada başlıyor.';
+  }
+
+  @override
+  String get cvReadyFocus => 'Odak için biraz daha yer açalım.';
+
+  @override
+  String get cvReadySleep => 'Akşamlarınızı biraz daha sakin hale getirelim.';
+
+  @override
+  String get cvReadyScrolling =>
+      'Gününüzün biraz daha azını kaydırmaya verelim.';
+
+  @override
+  String get cvReadyMe => 'Kendinize biraz daha zaman ayıralım.';
+
+  @override
+  String get cvReadyHabits => 'İyi hissettiren alışkanlıklar edinelim.';
+
+  @override
+  String get cvReadyOther => 'Sizin için önemli olana daha fazla yer açalım.';
+
+  @override
+  String get cvYourPlan => 'Planınız';
+
+  @override
+  String cvSumGoal(String goal) {
+    return 'Hedef: $goal';
+  }
+
+  @override
+  String cvSumApps(String apps) {
+    return 'Uygulamalar: $apps';
+  }
+
+  @override
+  String cvSumFocus(String session, String daily) {
+    return '$session odak seansları, günde $daily';
+  }
+
+  @override
+  String get cvReadyNeedsPerm =>
+      'Uygulama sınırları kaydedildi ama iki izin verilene kadar çalışmaz.';
+
+  @override
+  String get cvReadyChange => 'Bunların hepsini sonra değiştirebilirsiniz.';
+
+  @override
+  String get cvStartFirstFocus => 'İlk odak seansımı başlat';
+
+  @override
+  String get cvFinishLimits => 'Uygulama sınırlarını tamamla';
+
+  @override
   String get appName => 'Pausey';
 
   @override

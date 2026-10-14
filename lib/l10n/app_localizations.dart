@@ -1756,6 +1756,798 @@ abstract class AppLocalizations {
   /// **'No overrides left today'**
   String get blockEmergencyNone;
 
+  /// No description provided for @cvGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get cvGetStarted;
+
+  /// No description provided for @cvHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'I already have an account'**
+  String get cvHaveAccount;
+
+  /// No description provided for @cvWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your time is yours.'**
+  String get cvWelcomeTitle;
+
+  /// No description provided for @cvWelcomeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s make more room for what matters.'**
+  String get cvWelcomeBody;
+
+  /// No description provided for @cvNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get cvNext;
+
+  /// No description provided for @cvSkipForNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get cvSkipForNow;
+
+  /// No description provided for @cvRelateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ever picked up your phone for a minute and stayed much longer?'**
+  String get cvRelateTitle;
+
+  /// No description provided for @cvRelateOften.
+  ///
+  /// In en, this message translates to:
+  /// **'All the time'**
+  String get cvRelateOften;
+
+  /// No description provided for @cvRelateSometimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Sometimes'**
+  String get cvRelateSometimes;
+
+  /// No description provided for @cvRelateRarely.
+  ///
+  /// In en, this message translates to:
+  /// **'Rarely'**
+  String get cvRelateRarely;
+
+  /// No description provided for @cvRelateReplyOften.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re not alone. Phones are designed to keep us there.'**
+  String get cvRelateReplyOften;
+
+  /// No description provided for @cvRelateReplySometimes.
+  ///
+  /// In en, this message translates to:
+  /// **'It happens to most of us, usually without noticing.'**
+  String get cvRelateReplySometimes;
+
+  /// No description provided for @cvRelateReplyRarely.
+  ///
+  /// In en, this message translates to:
+  /// **'Nice. Let\'s keep it that way.'**
+  String get cvRelateReplyRarely;
+
+  /// No description provided for @cvRelateCta.
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s me'**
+  String get cvRelateCta;
+
+  /// No description provided for @cvGoalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like more time for?'**
+  String get cvGoalTitle;
+
+  /// No description provided for @cvGoalFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Better focus'**
+  String get cvGoalFocus;
+
+  /// No description provided for @cvGoalSleep.
+  ///
+  /// In en, this message translates to:
+  /// **'Better sleep'**
+  String get cvGoalSleep;
+
+  /// No description provided for @cvGoalScrolling.
+  ///
+  /// In en, this message translates to:
+  /// **'Less scrolling'**
+  String get cvGoalScrolling;
+
+  /// No description provided for @cvGoalMe.
+  ///
+  /// In en, this message translates to:
+  /// **'More time for myself'**
+  String get cvGoalMe;
+
+  /// No description provided for @cvGoalHabits.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthier daily habits'**
+  String get cvGoalHabits;
+
+  /// No description provided for @cvGoalOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get cvGoalOther;
+
+  /// No description provided for @cvGoalOtherHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like more time for?'**
+  String get cvGoalOtherHint;
+
+  /// No description provided for @cvGoalReplyFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus it is. We\'ll protect the time you need for deep work.'**
+  String get cvGoalReplyFocus;
+
+  /// No description provided for @cvGoalReplySleep.
+  ///
+  /// In en, this message translates to:
+  /// **'Good sleep starts before bed. We\'ll help your evenings wind down.'**
+  String get cvGoalReplySleep;
+
+  /// No description provided for @cvGoalReplyScrolling.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s make the scroll a choice, not a habit.'**
+  String get cvGoalReplyScrolling;
+
+  /// No description provided for @cvGoalReplyMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Time for yourself matters. Let\'s find some.'**
+  String get cvGoalReplyMe;
+
+  /// No description provided for @cvGoalReplyHabits.
+  ///
+  /// In en, this message translates to:
+  /// **'Small steps add up. We\'ll keep them easy.'**
+  String get cvGoalReplyHabits;
+
+  /// No description provided for @cvGoalReplyOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it. We\'ll shape things around that.'**
+  String get cvGoalReplyOther;
+
+  /// No description provided for @cvAppsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Which apps pull you in the most?'**
+  String get cvAppsTitle;
+
+  /// No description provided for @cvAppsSubReal.
+  ///
+  /// In en, this message translates to:
+  /// **'These are apps on this phone. Pick as many as you like.'**
+  String get cvAppsSubReal;
+
+  /// No description provided for @cvAppsSubPopular.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular apps that often take up time. Pick any that apply.'**
+  String get cvAppsSubPopular;
+
+  /// No description provided for @cvAppsSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search apps'**
+  String get cvAppsSearch;
+
+  /// No description provided for @cvAppsReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Noted: {apps}. We\'ll start with these.'**
+  String cvAppsReply(String apps);
+
+  /// No description provided for @cvAnd.
+  ///
+  /// In en, this message translates to:
+  /// **'{a} and {b}'**
+  String cvAnd(String a, String b);
+
+  /// No description provided for @cvAndMore.
+  ///
+  /// In en, this message translates to:
+  /// **'{a}, {b} and {count} more'**
+  String cvAndMore(String a, String b, int count);
+
+  /// No description provided for @cvStTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Roughly how long are you on your phone each day?'**
+  String get cvStTitle;
+
+  /// No description provided for @cvStSub.
+  ///
+  /// In en, this message translates to:
+  /// **'A guess is fine. This stays on your phone.'**
+  String get cvStSub;
+
+  /// No description provided for @cvStMeasured.
+  ///
+  /// In en, this message translates to:
+  /// **'Measured on this phone today so far: {time}'**
+  String cvStMeasured(String time);
+
+  /// No description provided for @cvStUnder2.
+  ///
+  /// In en, this message translates to:
+  /// **'Under 2 hours'**
+  String get cvStUnder2;
+
+  /// No description provided for @cvSt2to4.
+  ///
+  /// In en, this message translates to:
+  /// **'2 to 4 hours'**
+  String get cvSt2to4;
+
+  /// No description provided for @cvSt4to6.
+  ///
+  /// In en, this message translates to:
+  /// **'4 to 6 hours'**
+  String get cvSt4to6;
+
+  /// No description provided for @cvStOver6.
+  ///
+  /// In en, this message translates to:
+  /// **'More than 6 hours'**
+  String get cvStOver6;
+
+  /// No description provided for @cvStNotSure.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sure'**
+  String get cvStNotSure;
+
+  /// No description provided for @cvStReplyUnder2.
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s a good balance. We\'ll help you keep it.'**
+  String get cvStReplyUnder2;
+
+  /// No description provided for @cvStReply2to4.
+  ///
+  /// In en, this message translates to:
+  /// **'A few small changes can free up real time.'**
+  String get cvStReply2to4;
+
+  /// No description provided for @cvStReply4to6.
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s a good part of your day. Let\'s make some of it yours again.'**
+  String get cvStReply4to6;
+
+  /// No description provided for @cvStReplyOver6.
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s a big part of the day, so we\'ll start small.'**
+  String get cvStReplyOver6;
+
+  /// No description provided for @cvStReplyNotSure.
+  ///
+  /// In en, this message translates to:
+  /// **'No problem. Pausey can measure it once you allow usage access.'**
+  String get cvStReplyNotSure;
+
+  /// No description provided for @cvPhraseFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'more focus'**
+  String get cvPhraseFocus;
+
+  /// No description provided for @cvPhraseSleep.
+  ///
+  /// In en, this message translates to:
+  /// **'better sleep'**
+  String get cvPhraseSleep;
+
+  /// No description provided for @cvPhraseScrolling.
+  ///
+  /// In en, this message translates to:
+  /// **'less scrolling'**
+  String get cvPhraseScrolling;
+
+  /// No description provided for @cvPhraseMe.
+  ///
+  /// In en, this message translates to:
+  /// **'more time for yourself'**
+  String get cvPhraseMe;
+
+  /// No description provided for @cvPhraseHabits.
+  ///
+  /// In en, this message translates to:
+  /// **'healthier habits'**
+  String get cvPhraseHabits;
+
+  /// No description provided for @cvPhraseOther.
+  ///
+  /// In en, this message translates to:
+  /// **'more room for what matters'**
+  String get cvPhraseOther;
+
+  /// No description provided for @cvPhraseOtherNamed.
+  ///
+  /// In en, this message translates to:
+  /// **'more time for {thing}'**
+  String cvPhraseOtherNamed(String thing);
+
+  /// No description provided for @cvReflectApps.
+  ///
+  /// In en, this message translates to:
+  /// **'You want {goal}, but {apps} keep pulling you in.'**
+  String cvReflectApps(String goal, String apps);
+
+  /// No description provided for @cvReflectNoApps.
+  ///
+  /// In en, this message translates to:
+  /// **'You want {goal}, and your phone sometimes gets in the way.'**
+  String cvReflectNoApps(String goal);
+
+  /// No description provided for @cvReflectEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'About {time} a day (your estimate)'**
+  String cvReflectEstimate(String time);
+
+  /// No description provided for @cvReflectMeasured.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} today so far (measured)'**
+  String cvReflectMeasured(String time);
+
+  /// No description provided for @cvReflectHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Pausey can help you build a routine that gives your attention some breathing room.'**
+  String get cvReflectHelp;
+
+  /// No description provided for @cvShowMeHow.
+  ///
+  /// In en, this message translates to:
+  /// **'Show me how'**
+  String get cvShowMeHow;
+
+  /// No description provided for @cvHowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Here\'s how Pausey helps'**
+  String get cvHowTitle;
+
+  /// No description provided for @cvHowPauseTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get cvHowPauseTab;
+
+  /// No description provided for @cvHowLimitTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Limits'**
+  String get cvHowLimitTab;
+
+  /// No description provided for @cvHowFocusTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get cvHowFocusTab;
+
+  /// No description provided for @cvHowPauseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A calm pause, not a punishment'**
+  String get cvHowPauseTitle;
+
+  /// No description provided for @cvHowPauseBody.
+  ///
+  /// In en, this message translates to:
+  /// **'When an app\'s time is up, Pausey covers it with a quiet pause screen and a way out.'**
+  String get cvHowPauseBody;
+
+  /// No description provided for @cvHowLimitTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A daily allowance for each app'**
+  String get cvHowLimitTitle;
+
+  /// No description provided for @cvHowLimitBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Give every app its own daily time and lock times. Changing one never changes another.'**
+  String get cvHowLimitBody;
+
+  /// No description provided for @cvHowFocusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus sessions'**
+  String get cvHowFocusTitle;
+
+  /// No description provided for @cvHowFocusBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a timer for work, study or rest. Your chosen apps stay paused until it ends.'**
+  String get cvHowFocusBody;
+
+  /// No description provided for @cvPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get cvPreview;
+
+  /// No description provided for @cvYourApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Your app'**
+  String get cvYourApp;
+
+  /// No description provided for @cvAnotherApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Another app'**
+  String get cvAnotherApp;
+
+  /// No description provided for @cvMinOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{used}m of {limit}m'**
+  String cvMinOf(int used, int limit);
+
+  /// No description provided for @cvBuildPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Build my plan'**
+  String get cvBuildPlan;
+
+  /// No description provided for @cvPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Here\'s a gentle place to start'**
+  String get cvPlanTitle;
+
+  /// No description provided for @cvPlanSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested from your answers. Change anything you like.'**
+  String get cvPlanSub;
+
+  /// No description provided for @cvPlanFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus session'**
+  String get cvPlanFocus;
+
+  /// No description provided for @cvPlanFocusSub.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} per session'**
+  String cvPlanFocusSub(String time);
+
+  /// No description provided for @cvPlanDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily focus goal'**
+  String get cvPlanDaily;
+
+  /// No description provided for @cvPlanDailySub.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} of focus a day'**
+  String cvPlanDailySub(String time);
+
+  /// No description provided for @cvPlanLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily app limit'**
+  String get cvPlanLimit;
+
+  /// No description provided for @cvPlanLimitSub.
+  ///
+  /// In en, this message translates to:
+  /// **'{app}: {time} a day'**
+  String cvPlanLimitSub(String app, String time);
+
+  /// No description provided for @cvPlanLimitNoPkg.
+  ///
+  /// In en, this message translates to:
+  /// **'This app isn\'t on the phone list, so the limit can be set later in App Lock.'**
+  String get cvPlanLimitNoPkg;
+
+  /// No description provided for @cvPlanWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening wind-down'**
+  String get cvPlanWind;
+
+  /// No description provided for @cvPlanWindSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Your chosen apps pause from {start} to {end}'**
+  String cvPlanWindSub(String start, String end);
+
+  /// No description provided for @cvPlanOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get cvPlanOff;
+
+  /// No description provided for @cvStarts.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts'**
+  String get cvStarts;
+
+  /// No description provided for @cvEnds.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends'**
+  String get cvEnds;
+
+  /// No description provided for @cvPlanNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is switched on yet. It starts only when you finish setup, and you can change it any time.'**
+  String get cvPlanNote;
+
+  /// No description provided for @cvUsePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this plan'**
+  String get cvUsePlan;
+
+  /// No description provided for @cvPermTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A few permissions make this work'**
+  String get cvPermTitle;
+
+  /// No description provided for @cvPermSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Each one opens Android settings. Turn it on there, then come back.'**
+  String get cvPermSub;
+
+  /// No description provided for @cvPermUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'App limits and pause screens work on Android phones. Everything else works here too.'**
+  String get cvPermUnsupported;
+
+  /// No description provided for @cvPermUsageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage access'**
+  String get cvPermUsageTitle;
+
+  /// No description provided for @cvPermUsageWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Lets Pausey see how long each app is open today and which app is on screen.'**
+  String get cvPermUsageWhy;
+
+  /// No description provided for @cvPermUsageWithout.
+  ///
+  /// In en, this message translates to:
+  /// **'Without it, Pausey can\'t measure screen time or know when a limit is reached.'**
+  String get cvPermUsageWithout;
+
+  /// No description provided for @cvPermOverlayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Display over other apps'**
+  String get cvPermOverlayTitle;
+
+  /// No description provided for @cvPermOverlayWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Lets Pausey show its pause screen on top of an app when its time is up.'**
+  String get cvPermOverlayWhy;
+
+  /// No description provided for @cvPermOverlayWithout.
+  ///
+  /// In en, this message translates to:
+  /// **'Without it, apps can\'t be paused. Your plan is kept for later.'**
+  String get cvPermOverlayWithout;
+
+  /// No description provided for @cvPermBatteryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Pausey running'**
+  String get cvPermBatteryTitle;
+
+  /// No description provided for @cvPermBatteryWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Some phones stop background apps to save battery. Allowing Pausey keeps your limits working.'**
+  String get cvPermBatteryWhy;
+
+  /// No description provided for @cvPermBatteryWithout.
+  ///
+  /// In en, this message translates to:
+  /// **'Without it, limits may stop working until you open Pausey again.'**
+  String get cvPermBatteryWithout;
+
+  /// No description provided for @cvPermLater.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change this later in Android settings.'**
+  String get cvPermLater;
+
+  /// No description provided for @cvPermPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Pausey reads app names and times only. Nothing leaves your phone.'**
+  String get cvPermPrivacy;
+
+  /// No description provided for @cvAllowInSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow in settings'**
+  String get cvAllowInSettings;
+
+  /// No description provided for @cvAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed'**
+  String get cvAllowed;
+
+  /// No description provided for @cvOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get cvOptional;
+
+  /// No description provided for @cvContinueAnyway.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue for now'**
+  String get cvContinueAnyway;
+
+  /// No description provided for @cvAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your progress'**
+  String get cvAccountTitle;
+
+  /// No description provided for @cvAccountSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Pausey as a guest, or sign in.'**
+  String get cvAccountSub;
+
+  /// No description provided for @cvNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name (optional)'**
+  String get cvNameLabel;
+
+  /// No description provided for @cvNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What should we call you?'**
+  String get cvNameHint;
+
+  /// No description provided for @cvContinueGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as guest'**
+  String get cvContinueGuest;
+
+  /// No description provided for @cvAccountNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in doesn\'t back up your data yet. Either way, your settings stay on this phone.'**
+  String get cvAccountNote;
+
+  /// No description provided for @cvReadyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your first step starts here.'**
+  String get cvReadyTitle;
+
+  /// No description provided for @cvReadyTitleNamed.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, your first step starts here.'**
+  String cvReadyTitleNamed(String name);
+
+  /// No description provided for @cvReadyFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s make a little more room for focus.'**
+  String get cvReadyFocus;
+
+  /// No description provided for @cvReadySleep.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s make your evenings a little calmer.'**
+  String get cvReadySleep;
+
+  /// No description provided for @cvReadyScrolling.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s give the scroll a little less of your day.'**
+  String get cvReadyScrolling;
+
+  /// No description provided for @cvReadyMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s make a little more time for you.'**
+  String get cvReadyMe;
+
+  /// No description provided for @cvReadyHabits.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s build habits that feel good.'**
+  String get cvReadyHabits;
+
+  /// No description provided for @cvReadyOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s make more room for what matters to you.'**
+  String get cvReadyOther;
+
+  /// No description provided for @cvYourPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan'**
+  String get cvYourPlan;
+
+  /// No description provided for @cvSumGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal: {goal}'**
+  String cvSumGoal(String goal);
+
+  /// No description provided for @cvSumApps.
+  ///
+  /// In en, this message translates to:
+  /// **'Apps: {apps}'**
+  String cvSumApps(String apps);
+
+  /// No description provided for @cvSumFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'{session} focus sessions, {daily} a day'**
+  String cvSumFocus(String session, String daily);
+
+  /// No description provided for @cvReadyNeedsPerm.
+  ///
+  /// In en, this message translates to:
+  /// **'App limits are saved but won\'t run until the two permissions are allowed.'**
+  String get cvReadyNeedsPerm;
+
+  /// No description provided for @cvReadyChange.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change all of this later.'**
+  String get cvReadyChange;
+
+  /// No description provided for @cvStartFirstFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Start my first focus session'**
+  String get cvStartFirstFocus;
+
+  /// No description provided for @cvFinishLimits.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish setting up app limits'**
+  String get cvFinishLimits;
+
   /// No description provided for @appName.
   ///
   /// In en, this message translates to:

@@ -893,6 +893,446 @@ class AppLocalizationsKo extends AppLocalizations {
   String get blockEmergencyNone => '오늘 남은 횟수가 없습니다';
 
   @override
+  String get cvGetStarted => '시작하기';
+
+  @override
+  String get cvHaveAccount => '이미 계정이 있어요';
+
+  @override
+  String get cvWelcomeTitle => '당신의 시간은 당신의 것이에요.';
+
+  @override
+  String get cvWelcomeBody => '소중한 일에 쓸 여유를 더 만들어 봐요.';
+
+  @override
+  String get cvNext => '다음';
+
+  @override
+  String get cvSkipForNow => '지금은 건너뛰기';
+
+  @override
+  String get cvRelateTitle => '잠깐만 보려고 휴대폰을 들었다가 한참 머문 적 있나요?';
+
+  @override
+  String get cvRelateOften => '항상 그래요';
+
+  @override
+  String get cvRelateSometimes => '가끔요';
+
+  @override
+  String get cvRelateRarely => '거의 없어요';
+
+  @override
+  String get cvRelateReplyOften => '당신만 그런 게 아니에요. 휴대폰은 우리를 붙잡아 두도록 만들어졌거든요.';
+
+  @override
+  String get cvRelateReplySometimes => '대부분 그래요. 보통은 알아차리지도 못하죠.';
+
+  @override
+  String get cvRelateReplyRarely => '좋아요. 계속 그렇게 지켜 봐요.';
+
+  @override
+  String get cvRelateCta => '딱 제 얘기예요';
+
+  @override
+  String get cvGoalTitle => '어떤 일에 시간을 더 쓰고 싶나요?';
+
+  @override
+  String get cvGoalFocus => '더 나은 집중';
+
+  @override
+  String get cvGoalSleep => '더 좋은 잠';
+
+  @override
+  String get cvGoalScrolling => '스크롤 줄이기';
+
+  @override
+  String get cvGoalMe => '나를 위한 시간';
+
+  @override
+  String get cvGoalHabits => '더 건강한 생활 습관';
+
+  @override
+  String get cvGoalOther => '다른 것';
+
+  @override
+  String get cvGoalOtherHint => '어떤 일에 시간을 더 쓰고 싶나요?';
+
+  @override
+  String get cvGoalReplyFocus => '집중이군요. 깊이 몰입할 시간을 지켜 드릴게요.';
+
+  @override
+  String get cvGoalReplySleep => '좋은 잠은 잠들기 전부터 시작돼요. 저녁을 차분하게 마무리하도록 도와드릴게요.';
+
+  @override
+  String get cvGoalReplyScrolling => '스크롤을 습관이 아닌 선택으로 만들어 봐요.';
+
+  @override
+  String get cvGoalReplyMe => '나를 위한 시간은 소중해요. 함께 찾아봐요.';
+
+  @override
+  String get cvGoalReplyHabits => '작은 걸음이 모여요. 부담 없게 만들어 드릴게요.';
+
+  @override
+  String get cvGoalReplyOther => '알겠어요. 그에 맞춰 준비할게요.';
+
+  @override
+  String get cvAppsTitle => '어떤 앱에 가장 많이 빠져드나요?';
+
+  @override
+  String get cvAppsSubReal => '이 휴대폰에 있는 앱이에요. 원하는 만큼 골라 주세요.';
+
+  @override
+  String get cvAppsSubPopular => '시간을 많이 잡아먹는 인기 앱이에요. 해당하는 걸 골라 주세요.';
+
+  @override
+  String get cvAppsSearch => '앱 검색';
+
+  @override
+  String cvAppsReply(String apps) {
+    return '확인했어요: $apps. 여기서부터 시작할게요.';
+  }
+
+  @override
+  String cvAnd(String a, String b) {
+    return '$a, $b';
+  }
+
+  @override
+  String cvAndMore(String a, String b, int count) {
+    return '$a, $b 외 $count개';
+  }
+
+  @override
+  String get cvStTitle => '하루에 휴대폰을 대략 얼마나 쓰나요?';
+
+  @override
+  String get cvStSub => '대략이면 돼요. 이 정보는 휴대폰에만 남아요.';
+
+  @override
+  String cvStMeasured(String time) {
+    return '오늘 지금까지 이 휴대폰에서 측정: $time';
+  }
+
+  @override
+  String get cvStUnder2 => '2시간 미만';
+
+  @override
+  String get cvSt2to4 => '2~4시간';
+
+  @override
+  String get cvSt4to6 => '4~6시간';
+
+  @override
+  String get cvStOver6 => '6시간 넘게';
+
+  @override
+  String get cvStNotSure => '잘 모르겠어요';
+
+  @override
+  String get cvStReplyUnder2 => '좋은 균형이에요. 계속 유지하도록 도와드릴게요.';
+
+  @override
+  String get cvStReply2to4 => '작은 변화 몇 가지로도 꽤 많은 시간이 생겨요.';
+
+  @override
+  String get cvStReply4to6 => '하루의 꽤 큰 부분이네요. 그중 일부를 다시 당신의 시간으로 만들어 봐요.';
+
+  @override
+  String get cvStReplyOver6 => '하루의 큰 부분이니, 작은 것부터 시작해요.';
+
+  @override
+  String get cvStReplyNotSure => '괜찮아요. 사용 정보 접근을 허용하면 Pausey가 측정할 수 있어요.';
+
+  @override
+  String get cvPhraseFocus => '더 깊은 집중';
+
+  @override
+  String get cvPhraseSleep => '더 좋은 수면';
+
+  @override
+  String get cvPhraseScrolling => '스크롤 줄이기';
+
+  @override
+  String get cvPhraseMe => '나를 위한 시간';
+
+  @override
+  String get cvPhraseHabits => '더 건강한 습관';
+
+  @override
+  String get cvPhraseOther => '소중한 것을 위한 여유';
+
+  @override
+  String cvPhraseOtherNamed(String thing) {
+    return '$thing에 쓸 시간';
+  }
+
+  @override
+  String cvReflectApps(String goal, String apps) {
+    return '$goal, 그게 목표죠. 그런데 자꾸 $apps에 빠져들게 돼요.';
+  }
+
+  @override
+  String cvReflectNoApps(String goal) {
+    return '$goal, 그게 목표죠. 그런데 가끔 휴대폰이 방해가 돼요.';
+  }
+
+  @override
+  String cvReflectEstimate(String time) {
+    return '하루 약 $time (직접 추정)';
+  }
+
+  @override
+  String cvReflectMeasured(String time) {
+    return '오늘 지금까지 $time (측정)';
+  }
+
+  @override
+  String get cvReflectHelp => 'Pausey가 주의력에 숨 쉴 틈을 주는 루틴을 만들도록 도와드려요.';
+
+  @override
+  String get cvShowMeHow => '방법 보기';
+
+  @override
+  String get cvHowTitle => 'Pausey는 이렇게 도와줘요';
+
+  @override
+  String get cvHowPauseTab => '일시 정지';
+
+  @override
+  String get cvHowLimitTab => '제한';
+
+  @override
+  String get cvHowFocusTab => '집중';
+
+  @override
+  String get cvHowPauseTitle => '벌이 아닌 차분한 쉼표';
+
+  @override
+  String get cvHowPauseBody =>
+      '앱 시간이 다 되면 Pausey가 조용한 일시 정지 화면으로 덮고, 나갈 길도 열어 둬요.';
+
+  @override
+  String get cvHowLimitTitle => '앱마다 하루 사용량';
+
+  @override
+  String get cvHowLimitBody =>
+      '앱마다 하루 사용 시간과 잠금 시간을 따로 정해요. 하나를 바꿔도 다른 앱은 그대로예요.';
+
+  @override
+  String get cvHowFocusTitle => '집중 세션';
+
+  @override
+  String get cvHowFocusBody =>
+      '일, 공부, 휴식을 위한 타이머를 시작하세요. 끝날 때까지 고른 앱은 일시 정지돼요.';
+
+  @override
+  String get cvPreview => '미리보기';
+
+  @override
+  String get cvYourApp => '내 앱';
+
+  @override
+  String get cvAnotherApp => '다른 앱';
+
+  @override
+  String cvMinOf(int used, int limit) {
+    return '$limit분 중 $used분';
+  }
+
+  @override
+  String get cvBuildPlan => '내 계획 만들기';
+
+  @override
+  String get cvPlanTitle => '부담 없이 시작해 봐요';
+
+  @override
+  String get cvPlanSub => '답변을 바탕으로 제안했어요. 원하는 대로 바꿔도 돼요.';
+
+  @override
+  String get cvPlanFocus => '집중 세션';
+
+  @override
+  String cvPlanFocusSub(String time) {
+    return '세션당 $time';
+  }
+
+  @override
+  String get cvPlanDaily => '하루 집중 목표';
+
+  @override
+  String cvPlanDailySub(String time) {
+    return '하루 $time 집중';
+  }
+
+  @override
+  String get cvPlanLimit => '앱 하루 제한';
+
+  @override
+  String cvPlanLimitSub(String app, String time) {
+    return '$app: 하루 $time';
+  }
+
+  @override
+  String get cvPlanLimitNoPkg => '이 앱은 휴대폰 목록에 없어서, 제한은 나중에 앱 잠금에서 설정할 수 있어요.';
+
+  @override
+  String get cvPlanWind => '저녁 휴식 모드';
+
+  @override
+  String cvPlanWindSub(String start, String end) {
+    return '고른 앱이 $start부터 $end까지 일시 정지돼요';
+  }
+
+  @override
+  String get cvPlanOff => '끔';
+
+  @override
+  String get cvStarts => '시작';
+
+  @override
+  String get cvEnds => '종료';
+
+  @override
+  String get cvPlanNote => '아직 켜진 건 없어요. 설정을 마쳐야 시작되고, 언제든 바꿀 수 있어요.';
+
+  @override
+  String get cvUsePlan => '이 계획 사용';
+
+  @override
+  String get cvPermTitle => '몇 가지 권한이 필요해요';
+
+  @override
+  String get cvPermSub => '각각 Android 설정이 열려요. 거기서 켠 뒤 돌아오세요.';
+
+  @override
+  String get cvPermUnsupported =>
+      '앱 제한과 일시 정지 화면은 Android 휴대폰에서 작동해요. 나머지는 여기서도 다 돼요.';
+
+  @override
+  String get cvPermUsageTitle => '사용 정보 접근';
+
+  @override
+  String get cvPermUsageWhy =>
+      'Pausey가 오늘 각 앱을 얼마나 열었는지, 지금 어떤 앱이 화면에 있는지 알 수 있어요.';
+
+  @override
+  String get cvPermUsageWithout =>
+      '이 권한이 없으면 Pausey가 사용 시간을 측정하거나 제한 도달을 알 수 없어요.';
+
+  @override
+  String get cvPermOverlayTitle => '다른 앱 위에 표시';
+
+  @override
+  String get cvPermOverlayWhy => '시간이 다 되면 Pausey가 앱 위에 일시 정지 화면을 띄울 수 있어요.';
+
+  @override
+  String get cvPermOverlayWithout =>
+      '이 권한이 없으면 앱을 일시 정지할 수 없어요. 계획은 나중을 위해 저장돼요.';
+
+  @override
+  String get cvPermBatteryTitle => 'Pausey 계속 실행';
+
+  @override
+  String get cvPermBatteryWhy =>
+      '일부 휴대폰은 배터리를 아끼려고 백그라운드 앱을 멈춰요. Pausey를 허용하면 제한이 계속 작동해요.';
+
+  @override
+  String get cvPermBatteryWithout => '이 권한이 없으면 Pausey를 다시 열 때까지 제한이 멈출 수 있어요.';
+
+  @override
+  String get cvPermLater => '나중에 Android 설정에서 바꿀 수 있어요.';
+
+  @override
+  String get cvPermPrivacy => 'Pausey는 앱 이름과 시간만 읽어요. 어떤 정보도 휴대폰 밖으로 나가지 않아요.';
+
+  @override
+  String get cvAllowInSettings => '설정에서 허용';
+
+  @override
+  String get cvAllowed => '허용됨';
+
+  @override
+  String get cvOptional => '선택';
+
+  @override
+  String get cvContinueAnyway => '일단 계속하기';
+
+  @override
+  String get cvAccountTitle => '진행 상황 저장';
+
+  @override
+  String get cvAccountSub => 'Pausey를 게스트로 쓰거나 로그인하세요.';
+
+  @override
+  String get cvNameLabel => '이름 (선택)';
+
+  @override
+  String get cvNameHint => '뭐라고 불러 드릴까요?';
+
+  @override
+  String get cvContinueGuest => '게스트로 계속';
+
+  @override
+  String get cvAccountNote => '로그인해도 아직 데이터가 백업되지는 않아요. 어느 쪽이든 설정은 이 휴대폰에 남아요.';
+
+  @override
+  String get cvReadyTitle => '첫걸음은 여기서 시작돼요.';
+
+  @override
+  String cvReadyTitleNamed(String name) {
+    return '$name님, 첫걸음은 여기서 시작돼요.';
+  }
+
+  @override
+  String get cvReadyFocus => '집중할 여유를 조금 더 만들어 봐요.';
+
+  @override
+  String get cvReadySleep => '저녁을 조금 더 차분하게 만들어 봐요.';
+
+  @override
+  String get cvReadyScrolling => '스크롤에 쓰는 하루를 조금 줄여 봐요.';
+
+  @override
+  String get cvReadyMe => '당신을 위한 시간을 조금 더 만들어 봐요.';
+
+  @override
+  String get cvReadyHabits => '기분 좋은 습관을 만들어 봐요.';
+
+  @override
+  String get cvReadyOther => '당신에게 소중한 것을 위한 여유를 더 만들어 봐요.';
+
+  @override
+  String get cvYourPlan => '내 계획';
+
+  @override
+  String cvSumGoal(String goal) {
+    return '목표: $goal';
+  }
+
+  @override
+  String cvSumApps(String apps) {
+    return '앱: $apps';
+  }
+
+  @override
+  String cvSumFocus(String session, String daily) {
+    return '집중 세션 $session, 하루 $daily';
+  }
+
+  @override
+  String get cvReadyNeedsPerm => '앱 제한은 저장됐지만, 두 권한을 허용해야 작동해요.';
+
+  @override
+  String get cvReadyChange => '이 모든 건 나중에 바꿀 수 있어요.';
+
+  @override
+  String get cvStartFirstFocus => '첫 집중 세션 시작';
+
+  @override
+  String get cvFinishLimits => '앱 제한 설정 마치기';
+
+  @override
   String get appName => 'Pausey';
 
   @override

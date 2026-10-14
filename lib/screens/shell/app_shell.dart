@@ -19,6 +19,9 @@ class AppShell extends StatefulWidget {
 
   final AppTab initialTab;
 
+  /// Tab to open the next time the shell is built (set at the end of onboarding).
+  static AppTab? pendingTab;
+
   static AppShellState? of(BuildContext context) =>
       context.findAncestorStateOfType<AppShellState>() ?? AppShellState._current;
 
@@ -27,13 +30,14 @@ class AppShell extends StatefulWidget {
 }
 
 class AppShellState extends State<AppShell> {
-  late AppTab _tab = widget.initialTab;
+  late AppTab _tab = AppShell.pendingTab ?? widget.initialTab;
   static AppShellState? _current;
 
   @override
   void initState() {
     super.initState();
     _current = this;
+    AppShell.pendingTab = null;
   }
 
   @override
