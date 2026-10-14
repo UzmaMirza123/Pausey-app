@@ -3169,4 +3169,121 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get statesReplay => '重播';
+
+  @override
+  String get stHowCaption => '使用方式';
+
+  @override
+  String stHow1(String app) {
+    return '不知不觉，你打开了 $app。';
+  }
+
+  @override
+  String get stHow2 => '你开始刷个不停，但这一次……';
+
+  @override
+  String get stHow3 => 'Pausey 会温和地让它暂停。';
+
+  @override
+  String get stHow4 => '还会在额度用完前提醒你。';
+
+  @override
+  String get stYourApp => '你的应用';
+
+  @override
+  String get stTapToContinue => '轻触继续';
+
+  @override
+  String get stNudgeGeneric => '今日额度快用完了';
+
+  @override
+  String get stPermTitle => '为了帮你改变习惯，Pausey 需要几项权限。';
+
+  @override
+  String get stPermUsageTitle => '屏幕使用时间';
+
+  @override
+  String get stPermUsageWhy => '显示每天的屏幕使用时间，以及何时达到额度。';
+
+  @override
+  String get stPermOverlayTitle => '显示在其他应用上层';
+
+  @override
+  String get stPermOverlayWhy => '让 Pausey 能在让你分心的应用上显示暂停画面。';
+
+  @override
+  String get stPermNotifTitle => '通知';
+
+  @override
+  String get stPermNotifWhy => '在额度用完前温和提醒你，之后可以随时关闭。';
+
+  @override
+  String get stPermMore => '还有一件事……';
+
+  @override
+  String get stPermA11yTitle => '无障碍';
+
+  @override
+  String get stPermA11yWhy => '即时识别正在打开的应用，让暂停立刻生效。';
+
+  @override
+  String get stPermA11yNote => '部分手机接下来会显示自己的警告页面，这很正常——你可以随时在设置中关闭。';
+
+  @override
+  String get stPermOnHint => '已开启。如需关闭，请前往 Android 设置 › 应用 › Pausey。';
+
+  @override
+  String get stA11yDialogTitle => '为什么需要无障碍权限？';
+
+  @override
+  String get stA11yDialogBody =>
+      'Pausey 仅使用无障碍权限来识别正在打开的应用，让你的额度和时间表立即生效，并让保护持续稳定运行。';
+
+  @override
+  String get stA11yNot => 'Pausey 不会：';
+
+  @override
+  String get stA11yNot1 => '读取或收集你屏幕上的内容';
+
+  @override
+  String get stA11yNot2 => '存储个人信息';
+
+  @override
+  String get stA11yNot3 => '把任何内容传出你的手机';
+
+  @override
+  String get stPw1 => '让每天更从容的计划';
+
+  @override
+  String get stPw2 => '不会被你说服的锁';
+
+  @override
+  String get stPw3 => '每周查看你的进步';
+
+  @override
+  String get stPwToday => '今天';
+
+  @override
+  String get stPwGoal => '你的目标';
+
+  @override
+  String stPwWeek(int n) {
+    return '第$n周';
+  }
+
+  @override
+  String get stPwFirstWeek => '你的第一周从现在开始';
+
+  @override
+  String get stPwFocusWeek => '每周专注时长';
+
+  @override
+  String nudgeTitle(String app) {
+    return '$app 额度快用完了';
+  }
+
+  @override
+  String nudgeText(String used, String limit) {
+    return '今天已用 $used，共 $limit';
+  }
 }

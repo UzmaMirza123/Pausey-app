@@ -3272,4 +3272,128 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get statesReplay => 'Повторить';
+
+  @override
+  String get stHowCaption => 'Как это работает';
+
+  @override
+  String stHow1(String app) {
+    return 'Сами того не замечая, вы открываете $app.';
+  }
+
+  @override
+  String get stHow2 => 'Вы начинаете листать ленту, но в этот раз…';
+
+  @override
+  String get stHow3 => 'Pausey мягко ставит его на паузу.';
+
+  @override
+  String get stHow4 => 'И напоминает, пока лимит ещё не исчерпан.';
+
+  @override
+  String get stYourApp => 'своё приложение';
+
+  @override
+  String get stTapToContinue => 'Нажмите, чтобы продолжить';
+
+  @override
+  String get stNudgeGeneric => 'Дневной лимит почти исчерпан';
+
+  @override
+  String get stPermTitle =>
+      'Чтобы изменить привычки, Pausey нужно несколько разрешений.';
+
+  @override
+  String get stPermUsageTitle => 'Экранное время';
+
+  @override
+  String get stPermUsageWhy =>
+      'Показывает экранное время за день и момент, когда лимит исчерпан.';
+
+  @override
+  String get stPermOverlayTitle => 'Поверх других приложений';
+
+  @override
+  String get stPermOverlayWhy =>
+      'Позволяет Pausey показывать экран паузы поверх отвлекающего приложения.';
+
+  @override
+  String get stPermNotifTitle => 'Уведомления';
+
+  @override
+  String get stPermNotifWhy =>
+      'Мягкие напоминания до конца лимита. Их можно отключить позже.';
+
+  @override
+  String get stPermMore => 'И ещё кое-что…';
+
+  @override
+  String get stPermA11yTitle => 'Специальные возможности';
+
+  @override
+  String get stPermA11yWhy =>
+      'Мгновенно определяет открытое приложение, чтобы пауза срабатывала сразу.';
+
+  @override
+  String get stPermA11yNote =>
+      'Некоторые телефоны затем показывают своё предупреждение. Это нормально — отключить можно в любой момент в настройках.';
+
+  @override
+  String get stPermOnHint =>
+      'Уже включено. Чтобы отключить, откройте Настройки Android › Приложения › Pausey.';
+
+  @override
+  String get stA11yDialogTitle => 'Зачем специальные возможности?';
+
+  @override
+  String get stA11yDialogBody =>
+      'Pausey использует специальные возможности только чтобы понимать, какое приложение открыто, — так лимиты и расписания срабатывают сразу, а защита работает надёжно.';
+
+  @override
+  String get stA11yNot => 'Чего Pausey НЕ делает:';
+
+  @override
+  String get stA11yNot1 => 'Не читает и не собирает содержимое экрана';
+
+  @override
+  String get stA11yNot2 => 'Не хранит личные данные';
+
+  @override
+  String get stA11yNot3 => 'Ничего не передаёт за пределы телефона';
+
+  @override
+  String get stPw1 => 'Ваш план для спокойного дня';
+
+  @override
+  String get stPw2 => 'Блокировки, которые не уговоришь';
+
+  @override
+  String get stPw3 => 'Следите за прогрессом неделя за неделей';
+
+  @override
+  String get stPwToday => 'Сегодня';
+
+  @override
+  String get stPwGoal => 'Ваша цель';
+
+  @override
+  String stPwWeek(int n) {
+    return 'Н$n';
+  }
+
+  @override
+  String get stPwFirstWeek => 'Ваша первая неделя начинается сейчас';
+
+  @override
+  String get stPwFocusWeek => 'Время фокуса за неделю';
+
+  @override
+  String nudgeTitle(String app) {
+    return 'Лимит $app почти исчерпан';
+  }
+
+  @override
+  String nudgeText(String used, String limit) {
+    return 'Сегодня использовано $used из $limit';
+  }
 }

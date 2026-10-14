@@ -3258,4 +3258,128 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get statesReplay => 'Ulangi';
+
+  @override
+  String get stHowCaption => 'Cara kerjanya';
+
+  @override
+  String stHow1(String app) {
+    return 'Tanpa sadar, kamu membuka $app.';
+  }
+
+  @override
+  String get stHow2 => 'Lalu kamu mulai menggulir, tapi kali ini…';
+
+  @override
+  String get stHow3 => 'Pausey menjedanya dengan lembut.';
+
+  @override
+  String get stHow4 => 'Dan mengingatkanmu sebelum batasmu habis.';
+
+  @override
+  String get stYourApp => 'aplikasimu';
+
+  @override
+  String get stTapToContinue => 'Ketuk untuk lanjut';
+
+  @override
+  String get stNudgeGeneric => 'Hampir mencapai batas harianmu';
+
+  @override
+  String get stPermTitle =>
+      'Untuk mengubah kebiasaanmu, Pausey perlu beberapa izin.';
+
+  @override
+  String get stPermUsageTitle => 'Waktu layar';
+
+  @override
+  String get stPermUsageWhy =>
+      'Menampilkan waktu layar harian dan kapan batas tercapai.';
+
+  @override
+  String get stPermOverlayTitle => 'Tampil di atas aplikasi lain';
+
+  @override
+  String get stPermOverlayWhy =>
+      'Memungkinkan Pausey menampilkan layar jeda di atas aplikasi yang mengganggu.';
+
+  @override
+  String get stPermNotifTitle => 'Notifikasi';
+
+  @override
+  String get stPermNotifWhy =>
+      'Pengingat lembut sebelum batas habis. Kamu bisa mematikannya nanti.';
+
+  @override
+  String get stPermMore => 'Satu hal lagi…';
+
+  @override
+  String get stPermA11yTitle => 'Aksesibilitas';
+
+  @override
+  String get stPermA11yWhy =>
+      'Langsung mendeteksi aplikasi yang terbuka, sehingga jeda terjadi seketika.';
+
+  @override
+  String get stPermA11yNote =>
+      'Beberapa ponsel akan menampilkan layar peringatannya sendiri. Itu normal — kamu bisa mematikannya kapan saja di Setelan.';
+
+  @override
+  String get stPermOnHint =>
+      'Sudah aktif. Untuk mematikan, buka Setelan Android › Aplikasi › Pausey.';
+
+  @override
+  String get stA11yDialogTitle => 'Mengapa aksesibilitas?';
+
+  @override
+  String get stA11yDialogBody =>
+      'Pausey memakai aksesibilitas hanya untuk mendeteksi aplikasi yang terbuka, agar batas dan jadwalmu langsung berlaku, dan agar perlindungan tetap berjalan andal.';
+
+  @override
+  String get stA11yNot => 'Pausey TIDAK:';
+
+  @override
+  String get stA11yNot1 => 'Membaca atau mengumpulkan isi layarmu';
+
+  @override
+  String get stA11yNot2 => 'Menyimpan informasi pribadi';
+
+  @override
+  String get stA11yNot3 => 'Membagikan apa pun keluar dari ponselmu';
+
+  @override
+  String get stPw1 => 'Rencanamu untuk hari yang lebih tenang';
+
+  @override
+  String get stPw2 => 'Kunci yang tak bisa kamu tawar';
+
+  @override
+  String get stPw3 => 'Lihat kemajuanmu minggu demi minggu';
+
+  @override
+  String get stPwToday => 'Hari ini';
+
+  @override
+  String get stPwGoal => 'Targetmu';
+
+  @override
+  String stPwWeek(int n) {
+    return 'M$n';
+  }
+
+  @override
+  String get stPwFirstWeek => 'Minggu pertamamu dimulai sekarang';
+
+  @override
+  String get stPwFocusWeek => 'Waktu fokus per minggu';
+
+  @override
+  String nudgeTitle(String app) {
+    return 'Hampir mencapai batas $app';
+  }
+
+  @override
+  String nudgeText(String used, String limit) {
+    return '$used dari $limit terpakai hari ini';
+  }
 }

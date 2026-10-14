@@ -48,6 +48,13 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
       'close': l.nativeClose,
       'notifTitle': l.nativeNotifTitle,
       'notifText': l.nativeNotifText,
+      // "Almost at your limit" nudge; the native side substitutes the placeholders.
+      'nudgeTitle': l.nudgeTitle('{app}'),
+      'nudgeText': l.nudgeText('{used}', '{limit}'),
+      // Time units for the nudge text, same format as the rest of the app (e.g. "25m", "1h 25m").
+      'durMin': '{m}${l.unitM}',
+      'durH': '{h}${l.unitH}',
+      'durHM': '{h}${l.unitH} {m}${l.unitM}',
     };
     if (mapEquals(m, _nativeStrings)) return;
     _nativeStrings = m;

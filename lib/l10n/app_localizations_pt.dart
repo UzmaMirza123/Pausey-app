@@ -3294,4 +3294,128 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get statesReplay => 'Repetir';
+
+  @override
+  String get stHowCaption => 'Como funciona';
+
+  @override
+  String stHow1(String app) {
+    return 'Sem perceber, você abre o $app.';
+  }
+
+  @override
+  String get stHow2 => 'Você começa a rolar a tela, mas desta vez…';
+
+  @override
+  String get stHow3 => 'O Pausey pausa com delicadeza.';
+
+  @override
+  String get stHow4 => 'E avisa você antes de o limite acabar.';
+
+  @override
+  String get stYourApp => 'seu app';
+
+  @override
+  String get stTapToContinue => 'Toque para continuar';
+
+  @override
+  String get stNudgeGeneric => 'Quase no seu limite diário';
+
+  @override
+  String get stPermTitle =>
+      'Para mudar seus hábitos, o Pausey precisa de algumas permissões.';
+
+  @override
+  String get stPermUsageTitle => 'Tempo de tela';
+
+  @override
+  String get stPermUsageWhy =>
+      'Mostra seu tempo de tela diário e quando um limite é atingido.';
+
+  @override
+  String get stPermOverlayTitle => 'Sobrepor a outros apps';
+
+  @override
+  String get stPermOverlayWhy =>
+      'Permite que o Pausey mostre a tela de pausa sobre um app que distrai.';
+
+  @override
+  String get stPermNotifTitle => 'Notificações';
+
+  @override
+  String get stPermNotifWhy =>
+      'Lembretes gentis antes de um limite acabar. Você pode desativar depois.';
+
+  @override
+  String get stPermMore => 'Só mais uma coisa…';
+
+  @override
+  String get stPermA11yTitle => 'Acessibilidade';
+
+  @override
+  String get stPermA11yWhy =>
+      'Detecta na hora qual app está aberto, para a pausa acontecer imediatamente.';
+
+  @override
+  String get stPermA11yNote =>
+      'Alguns celulares mostram depois a própria tela de aviso. É normal — você pode desativar quando quiser nas Configurações.';
+
+  @override
+  String get stPermOnHint =>
+      'Já está ativado. Para desativar, abra Configurações do Android › Apps › Pausey.';
+
+  @override
+  String get stA11yDialogTitle => 'Por que acessibilidade?';
+
+  @override
+  String get stA11yDialogBody =>
+      'O Pausey usa a acessibilidade só para saber qual app está aberto, para que seus limites e horários funcionem na hora, e para manter a proteção funcionando com confiabilidade.';
+
+  @override
+  String get stA11yNot => 'O que o Pausey NÃO faz:';
+
+  @override
+  String get stA11yNot1 => 'Ler ou coletar o que está na sua tela';
+
+  @override
+  String get stA11yNot2 => 'Armazenar informações pessoais';
+
+  @override
+  String get stA11yNot3 => 'Enviar dados para fora do seu celular';
+
+  @override
+  String get stPw1 => 'Seu plano para um dia mais calmo';
+
+  @override
+  String get stPw2 => 'Bloqueios que você não consegue driblar';
+
+  @override
+  String get stPw3 => 'Veja seu progresso semana a semana';
+
+  @override
+  String get stPwToday => 'Hoje';
+
+  @override
+  String get stPwGoal => 'Sua meta';
+
+  @override
+  String stPwWeek(int n) {
+    return 'S$n';
+  }
+
+  @override
+  String get stPwFirstWeek => 'Sua primeira semana começa agora';
+
+  @override
+  String get stPwFocusWeek => 'Tempo de foco por semana';
+
+  @override
+  String nudgeTitle(String app) {
+    return 'Quase no limite do $app';
+  }
+
+  @override
+  String nudgeText(String used, String limit) {
+    return '$used de $limit usados hoje';
+  }
 }

@@ -1887,5 +1887,72 @@
   "statesCrunching": "Crunching your data…",
   "statesLoadingGoals": "Loading your goals…",
   "statesLoadingProfile": "Loading your profile…",
-  "statesReplay": "Replay"
+  "statesReplay": "Replay",
+  "stHowCaption": "How it works",
+  "stHow1": "Without noticing, you open {app}.",
+  "@stHow1": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "stHow2": "Then you start scrolling, but this time…",
+  "stHow3": "Pausey gently pauses it.",
+  "stHow4": "And nudges you before your limit runs out.",
+  "stYourApp": "your app",
+  "stTapToContinue": "Tap to continue",
+  "stNudgeGeneric": "Almost at your daily limit",
+  "stPermTitle": "To change your habits, Pausey needs a few permissions.",
+  "stPermUsageTitle": "Screen time",
+  "stPermUsageWhy": "Shows your daily screen time and when a limit is reached.",
+  "stPermOverlayTitle": "Display over other apps",
+  "stPermOverlayWhy": "Lets Pausey show its pause screen over a distracting app.",
+  "stPermNotifTitle": "Notifications",
+  "stPermNotifWhy": "Gentle nudges before a limit runs out. You can turn this off later.",
+  "stPermMore": "One more thing…",
+  "stPermA11yTitle": "Accessibility",
+  "stPermA11yWhy": "Detects which app is open instantly, so pauses happen right away.",
+  "stPermA11yNote": "Some phones show their own warning screen next. That's normal — you can turn this off any time in Settings.",
+  "stPermOnHint": "Already on. To turn it off, open Android Settings › Apps › Pausey.",
+  "stA11yDialogTitle": "Why accessibility?",
+  "stA11yDialogBody": "Pausey uses accessibility only to detect which app is open, so your limits and schedules take effect right away, and to keep protection running reliably.",
+  "stA11yNot": "Pausey does NOT:",
+  "stA11yNot1": "Read or collect what's on your screen",
+  "stA11yNot2": "Store personal information",
+  "stA11yNot3": "Share anything off your phone",
+  "stPw1": "Your plan for a calmer day",
+  "stPw2": "Locks you can't talk yourself out of",
+  "stPw3": "See your progress week by week",
+  "stPwToday": "Today",
+  "stPwGoal": "Your goal",
+  "stPwWeek": "W{n}",
+  "@stPwWeek": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "stPwFirstWeek": "Your first week starts now",
+  "stPwFocusWeek": "Focus time per week",
+  "nudgeTitle": "Almost at your {app} limit",
+  "@nudgeTitle": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "nudgeText": "{used} of {limit} used today",
+  "@nudgeText": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "limit": {
+        "type": "String"
+      }
+    }
+  }
 }

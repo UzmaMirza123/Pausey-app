@@ -3175,4 +3175,123 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get statesReplay => 'もう一度';
+
+  @override
+  String get stHowCaption => 'しくみ';
+
+  @override
+  String stHow1(String app) {
+    return '気づけば、$appを開いています。';
+  }
+
+  @override
+  String get stHow2 => 'スクロールが始まる。でも今回は…';
+
+  @override
+  String get stHow3 => 'Pauseyがそっと一時停止します。';
+
+  @override
+  String get stHow4 => '制限に達する前に、そっと知らせます。';
+
+  @override
+  String get stYourApp => 'いつものアプリ';
+
+  @override
+  String get stTapToContinue => 'タップして次へ';
+
+  @override
+  String get stNudgeGeneric => '1日の制限まであと少し';
+
+  @override
+  String get stPermTitle => '習慣を変えるために、Pauseyにいくつかの許可が必要です。';
+
+  @override
+  String get stPermUsageTitle => 'スクリーンタイム';
+
+  @override
+  String get stPermUsageWhy => '1日のスクリーンタイムと、制限に達したタイミングがわかります。';
+
+  @override
+  String get stPermOverlayTitle => '他のアプリの上に重ねて表示';
+
+  @override
+  String get stPermOverlayWhy => '気が散るアプリの上に、Pauseyの一時停止画面を表示できます。';
+
+  @override
+  String get stPermNotifTitle => '通知';
+
+  @override
+  String get stPermNotifWhy => '制限が終わる前に、やさしくお知らせします。あとからオフにできます。';
+
+  @override
+  String get stPermMore => 'あとひとつだけ…';
+
+  @override
+  String get stPermA11yTitle => 'ユーザー補助';
+
+  @override
+  String get stPermA11yWhy => '開いているアプリをすぐに検知し、すぐに一時停止できます。';
+
+  @override
+  String get stPermA11yNote =>
+      '機種によっては、このあと独自の警告画面が表示されます。これは通常のことで、いつでも設定からオフにできます。';
+
+  @override
+  String get stPermOnHint =>
+      'すでにオンです。オフにするには Android の設定 › アプリ › Pausey を開いてください。';
+
+  @override
+  String get stA11yDialogTitle => 'ユーザー補助が必要な理由';
+
+  @override
+  String get stA11yDialogBody =>
+      'Pauseyがユーザー補助を使うのは、開いているアプリを検知するためだけです。制限やスケジュールをすぐに反映し、保護を安定して動かし続けるために使います。';
+
+  @override
+  String get stA11yNot => 'Pauseyがしないこと：';
+
+  @override
+  String get stA11yNot1 => '画面の内容を読み取ったり収集したりすること';
+
+  @override
+  String get stA11yNot2 => '個人情報を保存すること';
+
+  @override
+  String get stA11yNot3 => 'スマホの外に何かを送ること';
+
+  @override
+  String get stPw1 => 'おだやかな1日のためのプラン';
+
+  @override
+  String get stPw2 => '言い訳では外せないロック';
+
+  @override
+  String get stPw3 => '週ごとの成長を確認';
+
+  @override
+  String get stPwToday => '今日';
+
+  @override
+  String get stPwGoal => 'あなたの目標';
+
+  @override
+  String stPwWeek(int n) {
+    return '$n週';
+  }
+
+  @override
+  String get stPwFirstWeek => '最初の1週間が今日から始まります';
+
+  @override
+  String get stPwFocusWeek => '週ごとの集中時間';
+
+  @override
+  String nudgeTitle(String app) {
+    return '$appの制限まであと少し';
+  }
+
+  @override
+  String nudgeText(String used, String limit) {
+    return '今日は$limit中$used使用';
+  }
 }

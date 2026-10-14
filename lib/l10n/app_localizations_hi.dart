@@ -3250,4 +3250,128 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get statesReplay => 'फिर चलाएँ';
+
+  @override
+  String get stHowCaption => 'यह कैसे काम करता है';
+
+  @override
+  String stHow1(String app) {
+    return 'बिना सोचे, आप $app खोल लेते हैं।';
+  }
+
+  @override
+  String get stHow2 => 'फिर आप स्क्रॉल करने लगते हैं, पर इस बार…';
+
+  @override
+  String get stHow3 => 'Pausey उसे धीरे से रोक देता है।';
+
+  @override
+  String get stHow4 => 'और आपकी सीमा खत्म होने से पहले आपको याद दिलाता है।';
+
+  @override
+  String get stYourApp => 'अपना ऐप';
+
+  @override
+  String get stTapToContinue => 'आगे बढ़ने के लिए टैप करें';
+
+  @override
+  String get stNudgeGeneric => 'आपकी रोज़ की सीमा लगभग पूरी';
+
+  @override
+  String get stPermTitle =>
+      'आपकी आदतें बदलने के लिए Pausey को कुछ अनुमतियाँ चाहिए।';
+
+  @override
+  String get stPermUsageTitle => 'स्क्रीन टाइम';
+
+  @override
+  String get stPermUsageWhy =>
+      'आपका रोज़ का स्क्रीन टाइम दिखाता है और बताता है कि सीमा कब पूरी हुई।';
+
+  @override
+  String get stPermOverlayTitle => 'दूसरे ऐप्स के ऊपर दिखाएँ';
+
+  @override
+  String get stPermOverlayWhy =>
+      'Pausey को ध्यान भटकाने वाले ऐप के ऊपर पॉज़ स्क्रीन दिखाने देता है।';
+
+  @override
+  String get stPermNotifTitle => 'सूचनाएँ';
+
+  @override
+  String get stPermNotifWhy =>
+      'सीमा खत्म होने से पहले हल्की याद दिलाहट। आप इसे बाद में बंद कर सकते हैं।';
+
+  @override
+  String get stPermMore => 'एक और बात…';
+
+  @override
+  String get stPermA11yTitle => 'सुलभता (Accessibility)';
+
+  @override
+  String get stPermA11yWhy =>
+      'तुरंत पहचानता है कि कौन-सा ऐप खुला है, ताकि रुकावट तुरंत हो।';
+
+  @override
+  String get stPermA11yNote =>
+      'कुछ फ़ोन इसके बाद अपनी चेतावनी स्क्रीन दिखाते हैं। यह सामान्य है — आप इसे कभी भी सेटिंग्स में बंद कर सकते हैं।';
+
+  @override
+  String get stPermOnHint =>
+      'पहले से चालू है। बंद करने के लिए Android सेटिंग्स › ऐप्स › Pausey खोलें।';
+
+  @override
+  String get stA11yDialogTitle => 'सुलभता (Accessibility) क्यों?';
+
+  @override
+  String get stA11yDialogBody =>
+      'Pausey सुलभता का उपयोग सिर्फ़ यह पहचानने के लिए करता है कि कौन-सा ऐप खुला है, ताकि आपकी सीमाएँ और शेड्यूल तुरंत लागू हों और सुरक्षा भरोसेमंद ढंग से चलती रहे।';
+
+  @override
+  String get stA11yNot => 'Pausey ये नहीं करता:';
+
+  @override
+  String get stA11yNot1 => 'आपकी स्क्रीन की सामग्री पढ़ना या इकट्ठा करना';
+
+  @override
+  String get stA11yNot2 => 'निजी जानकारी सहेजना';
+
+  @override
+  String get stA11yNot3 => 'आपके फ़ोन से कुछ भी बाहर भेजना';
+
+  @override
+  String get stPw1 => 'शांत दिन के लिए आपका प्लान';
+
+  @override
+  String get stPw2 => 'ऐसे लॉक जिन्हें आप बहाने से नहीं खोल पाएँगे';
+
+  @override
+  String get stPw3 => 'हफ़्ते-दर-हफ़्ते अपनी प्रगति देखें';
+
+  @override
+  String get stPwToday => 'आज';
+
+  @override
+  String get stPwGoal => 'आपका लक्ष्य';
+
+  @override
+  String stPwWeek(int n) {
+    return 'स$n';
+  }
+
+  @override
+  String get stPwFirstWeek => 'आपका पहला हफ़्ता अभी से शुरू';
+
+  @override
+  String get stPwFocusWeek => 'हर हफ़्ते फ़ोकस का समय';
+
+  @override
+  String nudgeTitle(String app) {
+    return '$app की सीमा लगभग पूरी';
+  }
+
+  @override
+  String nudgeText(String used, String limit) {
+    return 'आज $limit में से $used इस्तेमाल हुए';
+  }
 }

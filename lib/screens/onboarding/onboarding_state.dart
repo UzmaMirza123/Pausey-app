@@ -134,6 +134,10 @@ class OnboardingState extends ChangeNotifier {
         }),
       );
 
+  /// The daily app limit the starter plan uses (or will suggest from the answers).
+  int get planLimitMinutes => planEdited ? limitMinutes : _suggestedLimit;
+  int get _suggestedLimit => switch (screenTime) { ObScreenTime.over6 || ObScreenTime.h4to6 => 60, _ => 30 };
+
   /// Fills the starter plan from the answers, unless the user already edited it.
   void suggestPlan() {
     if (planEdited) return;
@@ -142,7 +146,7 @@ class OnboardingState extends ChangeNotifier {
       s.dailyFocusGoal = switch (goal) { ObGoal.focus => 120, ObGoal.habits || ObGoal.me => 45, _ => 60 };
       s.limitOn = apps.isNotEmpty;
       s.limitAppId = apps.isEmpty ? null : apps.first.id;
-      s.limitMinutes = switch (screenTime) { ObScreenTime.over6 || ObScreenTime.h4to6 => 60, _ => 30 };
+      s.limitMinutes = _suggestedLimit;
       s.windDownOn = goal == ObGoal.sleep;
     });
   }

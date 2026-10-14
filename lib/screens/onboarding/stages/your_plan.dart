@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 
 import '../../../utils/app_theme.dart';
 import '../../../utils/l10n.dart';
+import '../../../services/installed_apps.dart';
 import '../../../widgets/time_picker.dart';
 import '../../../widgets/ui_kit.dart';
+import '../../block/widgets/applock_ui.dart' show InstalledIcon;
 import '../onboarding_state.dart';
 import '../widgets/ob_kit.dart';
+import '../widgets/story_phone.dart';
 import 'about_you.dart' show appsList;
 
 OnboardingState get _s => OnboardingState.instance;
@@ -61,9 +64,12 @@ class ReflectionStage extends StatelessWidget {
 }
 
 // -----------------------------------------------------------------------------
-// Stage 7 — How Pausey helps (one interactive screen, three parts)
+// Stage 7 — "How it works": a short tap-through story on a phone mockup
 // -----------------------------------------------------------------------------
 
+/// Four beats: the user opens their app without thinking → starts scrolling →
+/// Pausey pauses it → and nudges before the limit runs out. Tap anywhere (or Next)
+/// for the next beat; back goes to the previous beat first, then the previous stage.
 class HowItHelpsStage extends StatefulWidget {
   const HowItHelpsStage({super.key, required this.onNext});
   final VoidCallback onNext;
@@ -73,154 +79,152 @@ class HowItHelpsStage extends StatefulWidget {
 }
 
 class _HowItHelpsStageState extends State<HowItHelpsStage> {
-  int _part = 0;
+  static const _beats = 4;
+  int _beat = 0;
+  ObBackGate? _gate;
+
+  /// Set once the story hands over to the next stage (this one may still be fading out).
+  bool _left = false;
 
   @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final c = context.colors;
-    final app = _s.apps.isEmpty ? null : _s.apps.first;
-    final parts = [
-      (Icons.pause_circle_outline_rounded, l.cvHowPauseTab, l.cvHowPauseTitle, l.cvHowPauseBody),
-      (Icons.hourglass_bottom_rounded, l.cvHowLimitTab, l.cvHowLimitTitle, l.cvHowLimitBody),
-      (Icons.bolt_rounded, l.cvHowFocusTab, l.cvHowFocusTitle, l.cvHowFocusBody),
-    ];
-    final (_, _, title, body) = parts[_part];
-    return ObPage(
-      primaryLabel: _part < 2 ? l.cvNext : l.cvBuildPlan,
-      onPrimary: () => _part < 2 ? setState(() => _part++) : widget.onNext(),
-      children: [
-        ObReveal(child: ObTitle(l.cvHowTitle)),
-        const SizedBox(height: 18),
-        // Segmented tabs
-        Container(
-          padding: const EdgeInsets.all(4),
-          decoration: BoxDecoration(color: context.isDark ? c.glassFill : Colors.white, borderRadius: BorderRadius.circular(AppRadius.chip), border: Border.all(color: c.glassBorder)),
-          child: Row(children: [
-            for (final (i, (icon, tab, _, _)) in parts.indexed)
-              Expanded(
-                child: Semantics(
-                  button: true,
-                  selected: i == _part,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(AppRadius.chip),
-                    onTap: () => setState(() => _part = i),
-                    child: AnimatedContainer(
-                      duration: ObMotion.of(context, ObMotion.select),
-                      constraints: const BoxConstraints(minHeight: 44),
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      decoration: BoxDecoration(color: i == _part ? AppPalette.accent : Colors.transparent, borderRadius: BorderRadius.circular(AppRadius.chip)),
-                      child: Row(mainAxisSize: MainAxisSize.min, children: [
-                        Icon(icon, size: 16, color: i == _part ? Colors.white : c.textSecondary),
-                        const SizedBox(width: 4),
-                        Flexible(
-                          child: Text(tab, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: i == _part ? Colors.white : c.textSecondary)),
-                        ),
-                      ]),
-                    ),
-                  ),
-                ),
-              ),
-          ]),
-        ),
-        const SizedBox(height: 18),
-        AnimatedSwitcher(
-          duration: ObMotion.of(context, ObMotion.content),
-          transitionBuilder: (child, a) => FadeTransition(opacity: a, child: ScaleTransition(scale: Tween(begin: 0.97, end: 1.0).animate(a), child: child)),
-          child: KeyedSubtree(
-            key: ValueKey(_part),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              SizedBox(height: 200, child: switch (_part) { 0 => _PauseDemo(appName: app?.label), 1 => _LimitDemo(app: app), _ => const _FocusDemo() }),
-              const SizedBox(height: 16),
-              Text(title, style: AppText.cardTitle.copyWith(color: c.textPrimary)),
-              const SizedBox(height: 6),
-              Text(body, style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w500, height: 1.45, color: c.textSecondary)),
-            ]),
-          ),
-        ),
-      ],
-    );
+  void initState() {
+    super.initState();
+    InstalledAppsCache.instance.ensureLoaded(); // real launcher icon (Android)
   }
-}
-
-/// Frame for the three illustrations, always marked "Preview".
-class _DemoFrame extends StatelessWidget {
-  const _DemoFrame({required this.child});
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return Semantics(
-      label: context.l10n.cvPreview,
-      child: Container(
-        decoration: BoxDecoration(
-          color: context.isDark ? c.glassFill : Colors.white,
-          borderRadius: BorderRadius.circular(AppRadius.card),
-          border: Border.all(color: c.glassBorder),
-        ),
-        child: Stack(children: [
-          Positioned.fill(child: Padding(padding: const EdgeInsets.all(18), child: child)),
-          PositionedDirectional(top: 12, end: 12, child: ObTag(context.l10n.cvPreview, icon: Icons.visibility_outlined)),
-        ]),
-      ),
-    );
-  }
-}
-
-class _PauseDemo extends StatelessWidget {
-  const _PauseDemo({this.appName});
-  final String? appName;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    return _DemoFrame(
-      child: Center(
-        child: Container(
-          width: 150,
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
-          decoration: BoxDecoration(color: const Color(0xFF0D0B22), borderRadius: BorderRadius.circular(22)),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            _Breath(
-              child: Container(
-                width: 38,
-                height: 38,
-                decoration: const BoxDecoration(shape: BoxShape.circle, color: AppPalette.accent),
-                child: const Icon(Icons.pause_rounded, color: Colors.white, size: 22),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(l.nativeBlockTitle(appName ?? 'App'), maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w800, color: Colors.white)),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-              decoration: BoxDecoration(color: AppPalette.accent, borderRadius: BorderRadius.circular(99)),
-              child: Text(l.nativeClose, style: AppText.small.copyWith(color: Colors.white, letterSpacing: 0)),
-            ),
-          ]),
-        ),
-      ),
-    );
-  }
-}
-
-/// Slow, calm scale loop (a breath). Still when animations are off.
-class _Breath extends StatefulWidget {
-  const _Breath({required this.child});
-  final Widget child;
-  @override
-  State<_Breath> createState() => _BreathState();
-}
-
-class _BreathState extends State<_Breath> with SingleTickerProviderStateMixin {
-  late final _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 2600));
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    ObMotion.reduced(context) ? _c.stop() : _c.repeat(reverse: true);
+    _gate = ObFlowScope.of(context)?.backGate;
+  }
+
+  @override
+  void dispose() {
+    if (_gate?.handler == _stepBack) _gate?.handler = null;
+    super.dispose();
+  }
+
+  void _next() {
+    if (_left) return;
+    if (_beat < _beats - 1) return setState(() => _beat++);
+    _left = true;
+    widget.onNext();
+  }
+
+  void _stepBack() => setState(() => _beat = math.max(0, _beat - 1));
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final c = context.colors;
+    // Back (arrow or system gesture) steps through the beats before leaving the stage.
+    if (!_left) _gate?.handler = _beat > 0 ? _stepBack : null;
+
+    final app = _s.apps.isEmpty ? null : _s.apps.first;
+    final appName = app?.label ?? l.stYourApp;
+    final headlines = [l.stHow1(appName), l.stHow2, l.stHow3, l.stHow4];
+    final limit = math.max(10, _s.planLimitMinutes);
+    String fmt(int m) => fmtMinutes(m, h: l.unitH, m: l.unitM);
+
+    final size = MediaQuery.sizeOf(context);
+    final reduced = ObMotion.reduced(context);
+    // Phone size: fits the width, and leaves room for the headline and footer on short screens.
+    final byWidth = (math.min(size.width, 480) - AppSpacing.gutter * 2) * 0.76;
+    final byHeight = (size.height - 420) / StoryPhone.aspect;
+    final phoneW = math.max(150.0, math.min(byWidth, math.min(300.0, byHeight)));
+
+    Widget appIcon(double s) {
+      if (app == null) {
+        return Container(
+          width: s,
+          height: s,
+          decoration: BoxDecoration(shape: BoxShape.circle, color: context.isDark ? const Color(0xFF1E1A3A) : Colors.white),
+          child: Icon(Icons.apps_rounded, size: s * 0.5, color: AppPalette.accent),
+        );
+      }
+      return ListenableBuilder(
+        listenable: InstalledAppsCache.instance,
+        builder: (context, _) {
+          final bytes = InstalledAppsCache.instance.iconFor(app.packageName);
+          return bytes != null ? InstalledIcon(bytes, size: s) : AppGlyph(app.id, size: s);
+        },
+      );
+    }
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      excludeFromSemantics: true, // the footer button does the same for screen readers
+      onTap: _next,
+      child: ObPage(
+        center: true,
+        primaryLabel: _beat < _beats - 1 ? l.cvNext : l.cvBuildPlan,
+        onPrimary: _next,
+        children: [
+          ObReveal(
+            child: Text(l.stHowCaption, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: c.textMuted)),
+          ),
+          const SizedBox(height: 8),
+          // All headlines are laid out (invisible) so the phone never jumps between beats.
+          ObReveal(
+            index: 1,
+            child: Stack(alignment: Alignment.topCenter, children: [
+              for (final (i, h) in headlines.indexed)
+                ExcludeSemantics(
+                  excluding: i != _beat,
+                  child: AnimatedOpacity(
+                    opacity: i == _beat ? 1 : 0,
+                    duration: ObMotion.of(context, i == _beat ? const Duration(milliseconds: 420) : const Duration(milliseconds: 200)),
+                    curve: Curves.easeOut,
+                    child: AnimatedSlide(
+                      offset: i == _beat ? Offset.zero : Offset(0, i < _beat ? -0.08 : 0.08),
+                      duration: ObMotion.of(context, const Duration(milliseconds: 420)),
+                      curve: Curves.easeOutCubic,
+                      child: Semantics(liveRegion: i == _beat, child: ObTitle(h, align: TextAlign.center)),
+                    ),
+                  ),
+                ),
+            ]),
+          ),
+          const SizedBox(height: 18),
+          ObReveal(
+            index: 2,
+            child: Center(
+              child: StoryPhone(
+                beat: _beat,
+                width: phoneW,
+                appIcon: appIcon,
+                pausedTitle: l.nativeBlockTitle(app?.label ?? l.cvYourApp),
+                nudgeTitle: app != null ? l.nudgeTitle(app.label) : l.stNudgeGeneric,
+                nudgeText: l.nudgeText(fmt(limit - 5), fmt(limit)),
+                nudgeProgress: (limit - 5) / limit,
+              ),
+            ),
+          ),
+          const SizedBox(height: 6),
+          _TapHint(text: l.stTapToContinue, animate: !reduced),
+        ],
+      ),
+    );
+  }
+}
+
+/// "Tap to continue", softly pulsing.
+class _TapHint extends StatefulWidget {
+  const _TapHint({required this.text, required this.animate});
+  final String text;
+  final bool animate;
+
+  @override
+  State<_TapHint> createState() => _TapHintState();
+}
+
+class _TapHintState extends State<_TapHint> with SingleTickerProviderStateMixin {
+  late final _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1800), value: 1);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    widget.animate ? _c.repeat(reverse: true) : _c.value = 1;
   }
 
   @override
@@ -230,90 +234,10 @@ class _BreathState extends State<_Breath> with SingleTickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      ScaleTransition(scale: Tween(begin: 0.9, end: 1.08).animate(CurvedAnimation(parent: _c, curve: Curves.easeInOut)), child: widget.child);
-}
-
-class _LimitDemo extends StatelessWidget {
-  const _LimitDemo({this.app});
-  final ObApp? app;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final c = context.colors;
-    final name = app?.label ?? l.cvYourApp;
-    return _DemoFrame(
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        for (final (i, (n, used, limit)) in [(name, 18, 30), (l.cvAnotherApp, 40, 60)].indexed) ...[
-          if (i > 0) const SizedBox(height: 16),
-          Row(children: [
-            i == 0 && app != null ? AppGlyph(app!.id, size: 32) : CircleAvatar(radius: 16, backgroundColor: c.glassBorder, child: Icon(Icons.apps_rounded, size: 16, color: c.textMuted)),
-            const SizedBox(width: 10),
-            Expanded(child: Text(n, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.rowTitle.copyWith(color: c.textPrimary))),
-            Text(l.cvMinOf(used, limit), style: AppText.rowSub.copyWith(color: c.textMuted)),
-          ]),
-          const SizedBox(height: 8),
-          PBar(value: used / limit, color: i == 0 ? Tone.violet : Tone.blue),
-        ],
-      ]),
-    );
-  }
-}
-
-class _FocusDemo extends StatelessWidget {
-  const _FocusDemo();
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final reduced = ObMotion.reduced(context);
-    return _DemoFrame(
-      child: Center(
-        child: TweenAnimationBuilder<double>(
-          tween: Tween(begin: reduced ? 0.6 : 0, end: 0.6),
-          duration: reduced ? Duration.zero : const Duration(milliseconds: 1400),
-          curve: Curves.easeOutCubic,
-          builder: (_, v, _) => SizedBox.square(
-            dimension: 140,
-            child: CustomPaint(
-              painter: _RingPainter(v, c.glassBorder),
-              child: Center(
-                child: Text(
-                  '${(25 * (1 - v)).floor().toString().padLeft(2, '0')}:${((25 * 60 * (1 - v)) % 60).floor().toString().padLeft(2, '0')}',
-                  style: AppText.heroValue.copyWith(fontSize: 30, color: c.textPrimary),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _RingPainter extends CustomPainter {
-  _RingPainter(this.v, this.track);
-  final double v;
-  final Color track;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final r = size.width / 2 - 6;
-    final center = size.center(Offset.zero);
-    canvas.drawCircle(center, r, Paint()
-      ..color = track
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 8);
-    canvas.drawArc(Rect.fromCircle(center: center, radius: r), -math.pi / 2, 2 * math.pi * v, false, Paint()
-      ..color = AppPalette.accent
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeWidth = 8);
-  }
-
-  @override
-  bool shouldRepaint(_RingPainter old) => old.v != v || old.track != track;
+  Widget build(BuildContext context) => FadeTransition(
+        opacity: Tween(begin: 0.45, end: 1.0).animate(CurvedAnimation(parent: _c, curve: Curves.easeInOut)),
+        child: Text(widget.text, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w600, color: context.colors.textMuted)),
+      );
 }
 
 // -----------------------------------------------------------------------------

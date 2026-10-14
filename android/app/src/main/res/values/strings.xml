@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown in Settings › Accessibility › Pausey. -->
+    <string name="accessibility_description">Pausey uses this only to see which app is open, so your app limits and lock schedules can pause it. It never reads what\'s on your screen.</string>
+</resources>

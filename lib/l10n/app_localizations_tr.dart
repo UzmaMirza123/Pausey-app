@@ -3247,4 +3247,128 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get statesReplay => 'Tekrarla';
+
+  @override
+  String get stHowCaption => 'Nasıl çalışır';
+
+  @override
+  String stHow1(String app) {
+    return 'Farkında olmadan $app uygulamasını açıyorsun.';
+  }
+
+  @override
+  String get stHow2 => 'Sonra kaydırmaya başlıyorsun ama bu sefer…';
+
+  @override
+  String get stHow3 => 'Pausey onu nazikçe duraklatır.';
+
+  @override
+  String get stHow4 => 'Ve sınırın dolmadan seni uyarır.';
+
+  @override
+  String get stYourApp => 'uygulamanı';
+
+  @override
+  String get stTapToContinue => 'Devam etmek için dokun';
+
+  @override
+  String get stNudgeGeneric => 'Günlük sınırına az kaldı';
+
+  @override
+  String get stPermTitle =>
+      'Alışkanlıklarını değiştirmek için Pausey\'nin birkaç izne ihtiyacı var.';
+
+  @override
+  String get stPermUsageTitle => 'Ekran süresi';
+
+  @override
+  String get stPermUsageWhy =>
+      'Günlük ekran süreni ve bir sınıra ne zaman ulaştığını gösterir.';
+
+  @override
+  String get stPermOverlayTitle => 'Diğer uygulamaların üzerinde göster';
+
+  @override
+  String get stPermOverlayWhy =>
+      'Pausey\'nin dikkat dağıtan bir uygulamanın üzerinde duraklatma ekranını göstermesini sağlar.';
+
+  @override
+  String get stPermNotifTitle => 'Bildirimler';
+
+  @override
+  String get stPermNotifWhy =>
+      'Bir sınır dolmadan önce nazik hatırlatmalar. Bunu daha sonra kapatabilirsin.';
+
+  @override
+  String get stPermMore => 'Bir şey daha…';
+
+  @override
+  String get stPermA11yTitle => 'Erişilebilirlik';
+
+  @override
+  String get stPermA11yWhy =>
+      'Hangi uygulamanın açık olduğunu anında algılar, böylece duraklatma hemen olur.';
+
+  @override
+  String get stPermA11yNote =>
+      'Bazı telefonlar ardından kendi uyarı ekranını gösterir. Bu normaldir — istediğin zaman Ayarlar\'dan kapatabilirsin.';
+
+  @override
+  String get stPermOnHint =>
+      'Zaten açık. Kapatmak için Android Ayarları › Uygulamalar › Pausey\'i aç.';
+
+  @override
+  String get stA11yDialogTitle => 'Neden erişilebilirlik?';
+
+  @override
+  String get stA11yDialogBody =>
+      'Pausey erişilebilirliği yalnızca hangi uygulamanın açık olduğunu algılamak için kullanır; böylece sınırların ve programların hemen devreye girer ve koruma güvenilir şekilde çalışır.';
+
+  @override
+  String get stA11yNot => 'Pausey şunları YAPMAZ:';
+
+  @override
+  String get stA11yNot1 => 'Ekranındakileri okumak veya toplamak';
+
+  @override
+  String get stA11yNot2 => 'Kişisel bilgileri saklamak';
+
+  @override
+  String get stA11yNot3 => 'Telefonundan dışarı herhangi bir şey paylaşmak';
+
+  @override
+  String get stPw1 => 'Daha sakin bir gün için planın';
+
+  @override
+  String get stPw2 => 'Kendini ikna edip açamayacağın kilitler';
+
+  @override
+  String get stPw3 => 'İlerlemeni hafta hafta gör';
+
+  @override
+  String get stPwToday => 'Bugün';
+
+  @override
+  String get stPwGoal => 'Hedefin';
+
+  @override
+  String stPwWeek(int n) {
+    return 'H$n';
+  }
+
+  @override
+  String get stPwFirstWeek => 'İlk haftan şimdi başlıyor';
+
+  @override
+  String get stPwFocusWeek => 'Haftalık odak süresi';
+
+  @override
+  String nudgeTitle(String app) {
+    return '$app sınırına az kaldı';
+  }
+
+  @override
+  String nudgeText(String used, String limit) {
+    return 'Bugün $limit sürenin $used kadarı kullanıldı';
+  }
 }

@@ -30,7 +30,7 @@ Future<void> pushUntilSignedIn(BuildContext context, Widget page) async {
 }
 
 // -----------------------------------------------------------------------------
-// Stage 9 — Permissions, with the phone's real state
+// Stage 9 — Permissions, conversational, each switch shows the phone's real state
 // -----------------------------------------------------------------------------
 
 class PermissionsStage extends StatelessWidget {
@@ -39,59 +39,64 @@ class PermissionsStage extends StatelessWidget {
 
   static const _strictMakers = ['xiaomi', 'redmi', 'poco', 'oppo', 'realme', 'vivo', 'oneplus', 'huawei', 'honor'];
 
+  /// Already on: Pausey can't switch a permission off itself, so explain where to do it.
+  static void _explainOff(BuildContext context) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(context.l10n.stPermOnHint), behavior: SnackBarBehavior.floating));
+  }
+
+  static Future<void> _askNotifications() async {
+    await NativeBridge.instance.requestNotifications();
+    await RestrictionRepo.instance.refresh();
+  }
+
+  static Future<void> _askAccessibility(BuildContext context) async {
+    final ok = await showDialog<bool>(context: context, builder: (_) => const _AccessibilityWhyDialog());
+    if (ok == true) await NativeBridge.instance.openAccessibilitySettings();
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final c = context.colors;
     final repo = RestrictionRepo.instance;
+    final bridge = NativeBridge.instance;
     return ListenableBuilder(
       listenable: repo,
       builder: (context, _) {
         final st = repo.status;
-        final all = st.supported && st.usageAccess && st.overlay;
+        Widget card(int i, {required IconData icon, required String title, required String why, required bool on, required VoidCallback onAsk, bool optional = false}) => ObReveal(
+              index: i,
+              child: _PermToggleCard(icon: icon, title: title, why: why, on: on, optional: optional, onAsk: onAsk, onExplainOff: () => _explainOff(context)),
+            );
         return ObPage(
-          primaryLabel: all || !st.supported ? l.cvNext : l.cvContinueAnyway,
+          primaryLabel: st.canEnforce || !st.supported ? l.continueLabel : l.cvContinueAnyway,
           onPrimary: onNext,
           children: [
-            ObReveal(child: ObTitle(l.cvPermTitle)),
-            ObReveal(index: 1, child: ObSubtitle(st.supported ? l.cvPermSub : l.cvPermUnsupported)),
-            const SizedBox(height: 20),
+            ObReveal(child: ObTitle(l.stPermTitle)),
+            if (!st.supported) ObReveal(index: 1, child: ObSubtitle(l.cvPermUnsupported)),
+            const SizedBox(height: 22),
             if (st.supported) ...[
+              card(1, icon: Icons.hourglass_bottom_rounded, title: l.stPermUsageTitle, why: l.stPermUsageWhy, on: st.usageAccess, onAsk: bridge.openUsageAccessSettings),
+              card(2, icon: Icons.layers_rounded, title: l.stPermOverlayTitle, why: l.stPermOverlayWhy, on: st.overlay, onAsk: bridge.openOverlaySettings),
+              card(3, icon: Icons.notifications_none_rounded, title: l.stPermNotifTitle, why: l.stPermNotifWhy, on: st.notifications, onAsk: _askNotifications),
+              const SizedBox(height: 18),
               ObReveal(
-                index: 2,
-                child: _PermissionCard(
-                  icon: Icons.query_stats_rounded,
-                  title: l.cvPermUsageTitle,
-                  why: l.cvPermUsageWhy,
-                  without: l.cvPermUsageWithout,
-                  granted: st.usageAccess,
-                  onAllow: NativeBridge.instance.openUsageAccessSettings,
-                ),
+                index: 4,
+                child: Text(l.stPermMore, style: AppText.cardTitle.copyWith(fontSize: 20, fontWeight: FontWeight.w800, color: c.textPrimary)),
               ),
+              const SizedBox(height: 12),
+              card(5, icon: Icons.accessibility_new_rounded, title: l.stPermA11yTitle, why: l.stPermA11yWhy, on: st.accessibility, onAsk: () => _askAccessibility(context)),
               ObReveal(
-                index: 3,
-                child: _PermissionCard(
-                  icon: Icons.layers_rounded,
-                  title: l.cvPermOverlayTitle,
-                  why: l.cvPermOverlayWhy,
-                  without: l.cvPermOverlayWithout,
-                  granted: st.overlay,
-                  onAllow: NativeBridge.instance.openOverlaySettings,
+                index: 5,
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 12),
+                  child: Text(l.stPermA11yNote, style: AppText.rowSub.copyWith(fontSize: 12, height: 1.45, color: c.textMuted)),
                 ),
               ),
               if (_strictMakers.any(st.manufacturer.contains))
-                ObReveal(
-                  index: 4,
-                  child: _PermissionCard(
-                    icon: Icons.battery_saver_rounded,
-                    title: l.cvPermBatteryTitle,
-                    why: l.cvPermBatteryWhy,
-                    without: l.cvPermBatteryWithout,
-                    granted: st.batteryUnrestricted,
-                    onAllow: NativeBridge.instance.openBatterySettings,
-                    optional: true,
-                  ),
-                ),
+                card(6, icon: Icons.battery_saver_rounded, title: l.cvPermBatteryTitle, why: l.cvPermBatteryWhy, on: st.batteryUnrestricted, onAsk: bridge.openBatterySettings, optional: true),
               const SizedBox(height: 4),
               Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Icon(Icons.lock_outline_rounded, size: 16, color: c.textMuted),
@@ -106,73 +111,110 @@ class PermissionsStage extends StatelessWidget {
   }
 }
 
-class _PermissionCard extends StatelessWidget {
-  const _PermissionCard({
+/// One permission: icon, what it's for, and a switch that mirrors the real state.
+/// Off → opens the right Android screen. On → explains how to turn it off there.
+class _PermToggleCard extends StatelessWidget {
+  const _PermToggleCard({
     required this.icon,
     required this.title,
     required this.why,
-    required this.without,
-    required this.granted,
-    required this.onAllow,
+    required this.on,
+    required this.onAsk,
+    required this.onExplainOff,
     this.optional = false,
   });
   final IconData icon;
-  final String title, why, without;
-  final bool granted, optional;
-  final Future<void> Function() onAllow;
+  final String title, why;
+  final bool on, optional;
+  final VoidCallback onAsk, onExplainOff;
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final c = context.colors;
+    void tap() => on ? onExplainOff() : onAsk();
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: PCard(
-        accent: granted ? Tone.green : null,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Row(children: [
-            IconBadge(icon: icon, color: granted ? Tone.green : Tone.violet),
+      child: MergeSemantics(
+        child: PCard(
+          onTap: tap,
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 14, 10, 14),
+          child: Row(children: [
+            AnimatedSwitcher(
+              duration: ObMotion.of(context, ObMotion.content),
+              child: IconBadge(key: ValueKey(on), icon: on ? Icons.check_rounded : icon, color: on ? Tone.green : Tone.violet),
+            ),
             const SizedBox(width: 12),
-            Expanded(child: Text(title, style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w700, color: c.textPrimary))),
-            if (optional && !granted) ObTag(l.cvOptional, color: Tone.blue),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Wrap(spacing: 6, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: [
+                  Text(title, style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w700, color: c.textPrimary)),
+                  if (optional && !on) ObTag(l.cvOptional, color: Tone.blue),
+                ]),
+                const SizedBox(height: 3),
+                Text(why, style: AppText.rowSub.copyWith(height: 1.4, color: c.textSecondary)),
+              ]),
+            ),
+            const SizedBox(width: 6),
+            PSwitch(value: on, onChanged: (_) => tap()),
           ]),
-          const SizedBox(height: 10),
-          Text(why, style: AppText.rowSub.copyWith(height: 1.45, color: c.textSecondary)),
-          if (!granted) ...[
-            const SizedBox(height: 6),
-            Text(without, style: AppText.rowSub.copyWith(height: 1.45, color: c.textMuted)),
-          ],
-          const SizedBox(height: 12),
-          AnimatedSwitcher(
-            duration: ObMotion.of(context, ObMotion.content),
-            child: granted
-                ? Row(key: const ValueKey('ok'), children: [
-                    const Icon(Icons.check_circle_rounded, size: 18, color: Tone.green),
-                    const SizedBox(width: 6),
-                    Expanded(child: Text(l.cvAllowed, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: Tone.green))),
-                  ])
-                : Align(
-                    key: const ValueKey('ask'),
-                    alignment: AlignmentDirectional.centerStart,
-                    child: FilledButton(
-                      onPressed: onAllow,
-                      style: FilledButton.styleFrom(
-                        backgroundColor: AppPalette.accent,
-                        foregroundColor: Colors.white,
-                        minimumSize: const Size(120, 44),
-                        shape: const StadiumBorder(),
-                        textStyle: AppText.rowSub.copyWith(fontWeight: FontWeight.w700),
-                      ),
-                      child: Text(l.cvAllowInSettings),
-                    ),
-                  ),
-          ),
-          if (!granted) ...[
-            const SizedBox(height: 8),
-            Text(l.cvPermLater, style: AppText.small.copyWith(letterSpacing: 0, fontWeight: FontWeight.w500, color: c.textMuted)),
-          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Shown before opening Accessibility settings: what it is used for, and what it is never used for.
+class _AccessibilityWhyDialog extends StatelessWidget {
+  const _AccessibilityWhyDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final c = context.colors;
+    final dark = context.isDark;
+    return AlertDialog(
+      backgroundColor: dark ? const Color(0xFF17142F) : Colors.white,
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.card)),
+      icon: const Center(child: IconBadge(icon: Icons.accessibility_new_rounded, color: Tone.violet, size: 48)),
+      title: Text(l.stA11yDialogTitle, style: AppText.cardTitle.copyWith(fontSize: 20, color: c.textPrimary)),
+      content: SingleChildScrollView(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+          Text(l.stA11yDialogBody, style: AppText.rowSub.copyWith(fontSize: 14, height: 1.5, color: c.textSecondary)),
+          const SizedBox(height: 16),
+          Text(l.stA11yNot, style: AppText.rowSub.copyWith(fontSize: 14, fontWeight: FontWeight.w800, color: c.textPrimary)),
+          const SizedBox(height: 8),
+          for (final s in [l.stA11yNot1, l.stA11yNot2, l.stA11yNot3])
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 1),
+                  width: 18,
+                  height: 18,
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: AppPalette.accent.withValues(alpha: 0.14)),
+                  child: const Icon(Icons.close_rounded, size: 12, color: AppPalette.accent),
+                ),
+                const SizedBox(width: 10),
+                Expanded(child: Text(s, style: AppText.rowSub.copyWith(fontSize: 14, height: 1.4, color: c.textPrimary))),
+              ]),
+            ),
         ]),
       ),
+      actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          style: TextButton.styleFrom(foregroundColor: c.textSecondary, minimumSize: const Size(64, 44)),
+          child: Text(l.cancel),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(context, true),
+          style: FilledButton.styleFrom(backgroundColor: AppPalette.accent, foregroundColor: Colors.white, minimumSize: const Size(96, 44), shape: const StadiumBorder()),
+          child: Text(l.continueLabel),
+        ),
+      ],
     );
   }
 }

@@ -9,9 +9,16 @@ import java.util.Calendar
 object PolicyStore {
     private const val PREFS = "pausey_native"
     private const val KEY = "policy"
+    private const val KEY_VERSION = "policyVersion"
 
-    fun save(ctx: Context, json: String) =
-        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString(KEY, json).apply()
+    /** Saves the policy and bumps [version] so cached copies (Enforcer) reload. */
+    fun save(ctx: Context, json: String) {
+        val prefs = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        prefs.edit().putString(KEY, json).putLong(KEY_VERSION, prefs.getLong(KEY_VERSION, 0L) + 1).apply()
+    }
+
+    /** Changes on every [save]; in-process reads see it immediately (SharedPreferences memory cache). */
+    fun version(ctx: Context): Long = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getLong(KEY_VERSION, 0L)
 
     fun load(ctx: Context): Policy? {
         val raw = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY, null) ?: return null

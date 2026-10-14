@@ -69,7 +69,17 @@ void main() {
     expect(find.text('About More than 6 hours a day (your estimate)'), findsOneWidget);
     await _tap(t, 'Show me how');
 
+    // "How it works" story: 4 beats, the user's first app in the headline.
+    expect(find.text('Without noticing, you open Instagram.'), findsOneWidget);
     await _tap(t, 'Next');
+    // Back steps to the previous beat first, not the previous stage.
+    await t.tap(find.byType(BackCircleButton));
+    await t.pump(const Duration(milliseconds: 600));
+    expect(OnboardingState.instance.stage, 6);
+    await _tap(t, 'Next');
+    await _tap(t, 'Next');
+    expect(find.text('Almost at your Instagram limit'), findsOneWidget);
+    expect(find.text('55m of 1h used today'), findsOneWidget); // the plan's real limit (6h+ → 1h)
     await _tap(t, 'Next');
     await _tap(t, 'Build my plan');
 
@@ -79,7 +89,7 @@ void main() {
     expect(RestrictionRepo.instance.hasOwnRules('com.instagram.android'), isFalse);
     await _tap(t, 'Use this plan');
 
-    await _tap(t, 'Next'); // permissions (not Android in tests)
+    await _tap(t, 'Continue'); // permissions (not Android in tests)
     await _tap(t, 'Continue as guest');
     expect(AuthService.instance.value, isA<GuestSession>());
 

@@ -17,14 +17,23 @@ class ObMotion {
   static Duration of(BuildContext context, Duration d) => reduced(context) ? Duration.zero : d;
 }
 
+/// Lets a stage with inner steps (the "How it works" story) take the back arrow and
+/// the system back gesture first: set [handler] while there is an inner step to go back to.
+class ObBackGate {
+  VoidCallback? handler;
+}
+
 /// Where a stage sits in the flow; provided by OnboardingFlow.
 class ObFlowScope extends InheritedWidget {
-  const ObFlowScope({super.key, required this.chapter, required this.canBack, required this.onBack, required super.child});
+  const ObFlowScope({super.key, required this.chapter, required this.canBack, required this.onBack, this.backGate, required super.child});
 
   /// 0, 1 or 2 for the three progress dots; null hides them (welcome).
   final int? chapter;
   final bool canBack;
   final VoidCallback onBack;
+
+  /// Checked by [onBack] before leaving the stage (see [ObBackGate]).
+  final ObBackGate? backGate;
 
   static ObFlowScope? of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<ObFlowScope>();
 

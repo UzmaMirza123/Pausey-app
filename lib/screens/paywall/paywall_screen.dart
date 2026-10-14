@@ -5,6 +5,7 @@ import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
 import '../../widgets/glow_background.dart';
 import '../../widgets/ui_kit.dart';
+import 'paywall_carousel.dart';
 
 enum PaywallPlan { monthly, yearly, lifetime }
 
@@ -68,30 +69,21 @@ class _PaywallScreenState extends State<PaywallScreen> {
                     alignment: AlignmentDirectional.centerEnd,
                     child: RoundIconButton(icon: Icons.close_rounded, tooltip: l.homePwClose, onTap: _close),
                   ),
-                  const SizedBox(height: 4),
-                  Center(
-                    child: TweenAnimationBuilder<double>(
-                      tween: Tween(begin: 0.6, end: 1),
-                      duration: const Duration(milliseconds: 600),
-                      curve: Curves.easeOutBack,
-                      builder: (_, s, ch) => Transform.scale(scale: s, child: ch),
-                      child: Container(
-                        width: 64,
-                        height: 64,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
-                          gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Color(0xFFFFC94D), Tone.amber]),
-                          boxShadow: [BoxShadow(color: Tone.amber.withValues(alpha: 0.4), blurRadius: 24, offset: const Offset(0, 8))],
+                  const PaywallCarousel(),
+                  const SizedBox(height: 22),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.workspace_premium_rounded, size: 22, color: Tone.amber),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          l.homePwTitle,
+                          textAlign: TextAlign.center,
+                          style: AppText.screenTitle.copyWith(fontSize: 24, height: 1.2, color: c.textPrimary),
                         ),
-                        child: const Icon(Icons.workspace_premium_rounded, size: 34, color: Color(0xFF3A2400)),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    l.homePwTitle,
-                    textAlign: TextAlign.center,
-                    style: AppText.screenTitle.copyWith(color: c.textPrimary),
+                    ],
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -99,7 +91,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                     textAlign: TextAlign.center,
                     style: AppText.rowSub.copyWith(fontSize: 14, color: c.textSecondary),
                   ),
-                  const SizedBox(height: 22),
+                  const SizedBox(height: 18),
                   if (premium) ...[
                     PCard(
                       accent: Tone.green,

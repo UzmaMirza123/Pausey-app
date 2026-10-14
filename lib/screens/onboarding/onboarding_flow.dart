@@ -35,6 +35,7 @@ class OnboardingFlow extends StatefulWidget {
 
 class _OnboardingFlowState extends State<OnboardingFlow> {
   final _s = OnboardingState.instance;
+  final _gate = ObBackGate();
   bool _forward = true;
 
   @override
@@ -52,12 +53,17 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     if (to == OnboardingFlow._accountStage && _signedIn) to += (to > _s.stage ? 1 : -1);
     if (to < 0 || to >= OnboardingFlow.stageCount) return;
     if (to == 7) _s.suggestPlan(); // fill the starter plan from the answers
+    _gate.handler = null;
     setState(() => _forward = to > _s.stage);
     _s.update((s) => s.stage = to);
   }
 
   void _next() => _go(_s.stage + 1);
-  void _back() => _go(_s.stage - 1);
+  /// A stage's inner step first (story beats), then the previous stage.
+  void _back() {
+    final inner = _gate.handler;
+    inner != null ? inner() : _go(_s.stage - 1);
+  }
 
   Future<void> _haveAccount() async {
     await pushUntilSignedIn(context, const LogInScreen());
@@ -109,7 +115,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         },
         child: KeyedSubtree(
           key: ValueKey(i),
-          child: ObFlowScope(chapter: OnboardingFlow.chapterOf(i), canBack: i > 0, onBack: _back, child: _stage(i)),
+          child: ObFlowScope(chapter: OnboardingFlow.chapterOf(i), canBack: i > 0, onBack: _back, backGate: _gate, child: _stage(i)),
         ),
       ),
     );

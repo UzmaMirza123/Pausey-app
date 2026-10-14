@@ -7,6 +7,6 @@ import io.flutter.embedding.engine.FlutterEngine
 class MainActivity : FlutterFragmentActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        NativeChannel(applicationContext).register(flutterEngine.dartExecutor.binaryMessenger)
+        NativeChannel(this).register(flutterEngine.dartExecutor.binaryMessenger)
     }
 }

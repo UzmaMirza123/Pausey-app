@@ -52,6 +52,20 @@
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="Digital wellbeing: enforces the user's own app time limits and lock schedules"/>
         </service>
+        <!-- Optional, user-enabled: instant detection of the app in front (package name only, never screen
+             content). See PauseyAccessibilityService.kt and res/xml/pausey_accessibility.xml. -->
+        <service
+            android:name=".PauseyAccessibilityService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:exported="false"
+            android:label="Pausey">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/pausey_accessibility"/>
+        </service>
         <receiver
             android:name=".BootReceiver"
             android:exported="true">
@@ -78,6 +92,11 @@
         <intent>
             <action android:name="android.intent.action.MAIN"/>
             <category android:name="android.intent.category.LAUNCHER"/>
+        </intent>
+        <!-- Resolve the default launcher so the accessibility service can ignore it. -->
+        <intent>
+            <action android:name="android.intent.action.MAIN"/>
+            <category android:name="android.intent.category.HOME"/>
         </intent>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>

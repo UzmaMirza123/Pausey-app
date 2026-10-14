@@ -3182,4 +3182,122 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get statesReplay => '다시 재생';
+
+  @override
+  String get stHowCaption => '이렇게 작동해요';
+
+  @override
+  String stHow1(String app) {
+    return '나도 모르게 $app을(를) 열어요.';
+  }
+
+  @override
+  String get stHow2 => '스크롤을 시작하지만, 이번에는…';
+
+  @override
+  String get stHow3 => 'Pausey가 부드럽게 멈춰 줘요.';
+
+  @override
+  String get stHow4 => '한도가 끝나기 전에 미리 알려 줘요.';
+
+  @override
+  String get stYourApp => '자주 쓰는 앱';
+
+  @override
+  String get stTapToContinue => '탭해서 계속하기';
+
+  @override
+  String get stNudgeGeneric => '오늘 한도가 거의 다 됐어요';
+
+  @override
+  String get stPermTitle => '습관을 바꾸려면 Pausey에 몇 가지 권한이 필요해요.';
+
+  @override
+  String get stPermUsageTitle => '스크린 타임';
+
+  @override
+  String get stPermUsageWhy => '하루 스크린 타임과 한도에 도달한 때를 보여 줘요.';
+
+  @override
+  String get stPermOverlayTitle => '다른 앱 위에 표시';
+
+  @override
+  String get stPermOverlayWhy => '방해되는 앱 위에 Pausey의 일시 정지 화면을 띄울 수 있어요.';
+
+  @override
+  String get stPermNotifTitle => '알림';
+
+  @override
+  String get stPermNotifWhy => '한도가 끝나기 전에 살짝 알려 드려요. 나중에 끌 수 있어요.';
+
+  @override
+  String get stPermMore => '하나만 더요…';
+
+  @override
+  String get stPermA11yTitle => '접근성';
+
+  @override
+  String get stPermA11yWhy => '어떤 앱이 열렸는지 바로 감지해서 곧바로 멈출 수 있어요.';
+
+  @override
+  String get stPermA11yNote =>
+      '일부 휴대폰은 다음에 자체 경고 화면을 보여 줘요. 정상이에요 — 언제든 설정에서 끌 수 있어요.';
+
+  @override
+  String get stPermOnHint => '이미 켜져 있어요. 끄려면 Android 설정 › 앱 › Pausey로 가세요.';
+
+  @override
+  String get stA11yDialogTitle => '왜 접근성이 필요한가요?';
+
+  @override
+  String get stA11yDialogBody =>
+      'Pausey는 어떤 앱이 열렸는지 감지할 때만 접근성을 사용해요. 그래서 한도와 일정이 바로 적용되고, 보호 기능이 안정적으로 유지돼요.';
+
+  @override
+  String get stA11yNot => 'Pausey는 이런 일을 하지 않아요:';
+
+  @override
+  String get stA11yNot1 => '화면 내용을 읽거나 수집하기';
+
+  @override
+  String get stA11yNot2 => '개인 정보 저장하기';
+
+  @override
+  String get stA11yNot3 => '휴대폰 밖으로 무언가를 공유하기';
+
+  @override
+  String get stPw1 => '더 차분한 하루를 위한 플랜';
+
+  @override
+  String get stPw2 => '핑계로는 풀 수 없는 잠금';
+
+  @override
+  String get stPw3 => '주마다 나아지는 모습을 확인하세요';
+
+  @override
+  String get stPwToday => '오늘';
+
+  @override
+  String get stPwGoal => '나의 목표';
+
+  @override
+  String stPwWeek(int n) {
+    return '$n주';
+  }
+
+  @override
+  String get stPwFirstWeek => '첫 주가 지금 시작돼요';
+
+  @override
+  String get stPwFocusWeek => '주간 집중 시간';
+
+  @override
+  String nudgeTitle(String app) {
+    return '$app 한도가 거의 다 됐어요';
+  }
+
+  @override
+  String nudgeText(String used, String limit) {
+    return '오늘 $limit 중 $used 사용';
+  }
 }

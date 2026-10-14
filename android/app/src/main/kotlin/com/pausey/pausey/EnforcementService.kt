@@ -11,32 +11,28 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
-import android.os.Handler
 import android.os.IBinder
-import android.os.Looper
 import android.os.PowerManager
-import android.provider.Settings
 
 /**
  * Foreground service that enforces per-app limits and schedules while Pausey is closed.
  *
- * Every second it finds the app on screen (UsageEvents, incremental) and evaluates the saved
- * policy with RestrictionEngine. If the app is restricted it opens BlockActivity on top.
- * Android does not let a normal app truly freeze another app; this is the policy-compliant
- * equivalent used by digital-wellbeing apps and can lag by about a second.
+ * Every second it finds the app on screen (UsageEvents, incremental) and hands it to [Enforcer], which
+ * evaluates the saved policy with RestrictionEngine and opens BlockActivity on top if it's restricted.
+ * When Pausey's Accessibility Service is on it reports app switches instantly through the same Enforcer
+ * (shared debounce, so no double launch); this tick still keeps usage fresh and catches anything missed.
+ * Android does not let a normal app truly freeze another app; this is the policy-compliant equivalent
+ * used by digital-wellbeing apps.
  */
 class EnforcementService : Service() {
-    private val handler = Handler(Looper.getMainLooper())
-    private var policy: Policy? = null
+    private val handler = Enforcer.handler // all enforcement state lives on the Enforcer thread
     private var lastEventMs = 0L
     private var foreground: String? = null
-    private var usage: Map<String, Long> = emptyMap()
-    private var usageAtMs = 0L
-    private var lastBlockMs = 0L
-    private var lastBlockedPkg: String? = null
+    @Volatile private var running = false
 
     private val tick = object : Runnable {
         override fun run() {
+            if (!running) return // destroyed while this tick was already queued/running
             try { check() } catch (e: Exception) { /* keep running */ }
             handler.postDelayed(this, 1000)
         }
@@ -50,14 +46,15 @@ class EnforcementService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        policy = PolicyStore.load(this)
-        usageAtMs = 0 // re-read usage (time/zone may have changed)
+        Enforcer.invalidateUsage() // re-read usage (time/zone may have changed)
+        running = true
         handler.removeCallbacks(tick)
         handler.post(tick)
         return START_STICKY
     }
 
     override fun onDestroy() {
+        running = false
         handler.removeCallbacks(tick)
         super.onDestroy()
     }
@@ -71,7 +68,7 @@ class EnforcementService : Service() {
         val open = PendingIntent.getActivity(
             this, 0, packageManager.getLaunchIntentForPackage(packageName), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
-        @Suppress("DEPRECATION")
+        @Suppress("DEPRECATION") // channel-less builder is the only one below API 26
         val b = if (Build.VERSION.SDK_INT >= 26) Notification.Builder(this, CHANNEL) else Notification.Builder(this)
         val n = b.setSmallIcon(R.drawable.ic_stat_pausey)
             .setContentTitle(p?.str("notifTitle", "Pausey is keeping your limits") ?: "Pausey is keeping your limits")
@@ -87,27 +84,17 @@ class EnforcementService : Service() {
     }
 
     private fun check() {
-        val p = policy ?: return stopSelf()
-        if (!UsageReader.hasAccess(this) || !Settings.canDrawOverlays(this)) return // honest: nothing to enforce with
+        if (Enforcer.currentPolicy(this) == null) {
+            stopSelf()
+            return
+        }
+        if (!Enforcer.canEnforce(this)) return // honest: nothing to enforce with
         val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
         if (!pm.isInteractive) return
         val now = System.currentTimeMillis()
         updateForeground(now)
         val fg = foreground ?: return
-        if (fg == packageName) return
-        val app = p.apps[fg] ?: return
-        // Usage: refresh every 30 s, or right away when the day changed.
-        if (now - usageAtMs > 30_000 || UsageReader.startOfToday(now) != UsageReader.startOfToday(usageAtMs)) {
-            usage = UsageReader.usageToday(this, p.apps.keys, now)
-            usageAtMs = now
-        }
-        val usedMin = ((usage[fg] ?: 0L) / 60_000L).toInt()
-        val reasons = RestrictionEngine.reasons(p, app, now, usedMin)
-        if (reasons.isEmpty()) return
-        if (fg == lastBlockedPkg && now - lastBlockMs < 1500) return
-        lastBlockedPkg = fg
-        lastBlockMs = now
-        startActivity(BlockActivity.intent(this, app.name, reasons, p))
+        Enforcer.check(this, fg, now)
     }
 
     /** Reads only events since the last tick; the first call looks back 6 hours. */
@@ -134,8 +121,7 @@ class EnforcementService : Service() {
         /** Start or stop depending on whether anything needs enforcing and permissions exist. */
         fun sync(ctx: Context) {
             val p = PolicyStore.load(ctx)
-            val needed = p != null && p.apps.values.any { it.locked } &&
-                UsageReader.hasAccess(ctx) && Settings.canDrawOverlays(ctx)
+            val needed = p != null && p.apps.values.any { it.locked } && Enforcer.canEnforce(ctx)
             val i = Intent(ctx, EnforcementService::class.java)
             if (!needed) {
                 ctx.stopService(i)

@@ -5919,6 +5919,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Replay'**
   String get statesReplay;
+
+  /// No description provided for @stHowCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'How it works'**
+  String get stHowCaption;
+
+  /// No description provided for @stHow1.
+  ///
+  /// In en, this message translates to:
+  /// **'Without noticing, you open {app}.'**
+  String stHow1(String app);
+
+  /// No description provided for @stHow2.
+  ///
+  /// In en, this message translates to:
+  /// **'Then you start scrolling, but this time…'**
+  String get stHow2;
+
+  /// No description provided for @stHow3.
+  ///
+  /// In en, this message translates to:
+  /// **'Pausey gently pauses it.'**
+  String get stHow3;
+
+  /// No description provided for @stHow4.
+  ///
+  /// In en, this message translates to:
+  /// **'And nudges you before your limit runs out.'**
+  String get stHow4;
+
+  /// No description provided for @stYourApp.
+  ///
+  /// In en, this message translates to:
+  /// **'your app'**
+  String get stYourApp;
+
+  /// No description provided for @stTapToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to continue'**
+  String get stTapToContinue;
+
+  /// No description provided for @stNudgeGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Almost at your daily limit'**
+  String get stNudgeGeneric;
+
+  /// No description provided for @stPermTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'To change your habits, Pausey needs a few permissions.'**
+  String get stPermTitle;
+
+  /// No description provided for @stPermUsageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Screen time'**
+  String get stPermUsageTitle;
+
+  /// No description provided for @stPermUsageWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows your daily screen time and when a limit is reached.'**
+  String get stPermUsageWhy;
+
+  /// No description provided for @stPermOverlayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Display over other apps'**
+  String get stPermOverlayTitle;
+
+  /// No description provided for @stPermOverlayWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Lets Pausey show its pause screen over a distracting app.'**
+  String get stPermOverlayWhy;
+
+  /// No description provided for @stPermNotifTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get stPermNotifTitle;
+
+  /// No description provided for @stPermNotifWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Gentle nudges before a limit runs out. You can turn this off later.'**
+  String get stPermNotifWhy;
+
+  /// No description provided for @stPermMore.
+  ///
+  /// In en, this message translates to:
+  /// **'One more thing…'**
+  String get stPermMore;
+
+  /// No description provided for @stPermA11yTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Accessibility'**
+  String get stPermA11yTitle;
+
+  /// No description provided for @stPermA11yWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Detects which app is open instantly, so pauses happen right away.'**
+  String get stPermA11yWhy;
+
+  /// No description provided for @stPermA11yNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Some phones show their own warning screen next. That\'s normal — you can turn this off any time in Settings.'**
+  String get stPermA11yNote;
+
+  /// No description provided for @stPermOnHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Already on. To turn it off, open Android Settings › Apps › Pausey.'**
+  String get stPermOnHint;
+
+  /// No description provided for @stA11yDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Why accessibility?'**
+  String get stA11yDialogTitle;
+
+  /// No description provided for @stA11yDialogBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Pausey uses accessibility only to detect which app is open, so your limits and schedules take effect right away, and to keep protection running reliably.'**
+  String get stA11yDialogBody;
+
+  /// No description provided for @stA11yNot.
+  ///
+  /// In en, this message translates to:
+  /// **'Pausey does NOT:'**
+  String get stA11yNot;
+
+  /// No description provided for @stA11yNot1.
+  ///
+  /// In en, this message translates to:
+  /// **'Read or collect what\'s on your screen'**
+  String get stA11yNot1;
+
+  /// No description provided for @stA11yNot2.
+  ///
+  /// In en, this message translates to:
+  /// **'Store personal information'**
+  String get stA11yNot2;
+
+  /// No description provided for @stA11yNot3.
+  ///
+  /// In en, this message translates to:
+  /// **'Share anything off your phone'**
+  String get stA11yNot3;
+
+  /// No description provided for @stPw1.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan for a calmer day'**
+  String get stPw1;
+
+  /// No description provided for @stPw2.
+  ///
+  /// In en, this message translates to:
+  /// **'Locks you can\'t talk yourself out of'**
+  String get stPw2;
+
+  /// No description provided for @stPw3.
+  ///
+  /// In en, this message translates to:
+  /// **'See your progress week by week'**
+  String get stPw3;
+
+  /// No description provided for @stPwToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get stPwToday;
+
+  /// No description provided for @stPwGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Your goal'**
+  String get stPwGoal;
+
+  /// No description provided for @stPwWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'W{n}'**
+  String stPwWeek(int n);
+
+  /// No description provided for @stPwFirstWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Your first week starts now'**
+  String get stPwFirstWeek;
+
+  /// No description provided for @stPwFocusWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus time per week'**
+  String get stPwFocusWeek;
+
+  /// No description provided for @nudgeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Almost at your {app} limit'**
+  String nudgeTitle(String app);
+
+  /// No description provided for @nudgeText.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} of {limit} used today'**
+  String nudgeText(String used, String limit);
 }
 
 class _AppLocalizationsDelegate

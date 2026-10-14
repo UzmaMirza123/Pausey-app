@@ -3236,4 +3236,126 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get statesReplay => 'إعادة';
+
+  @override
+  String get stHowCaption => 'كيف يعمل';
+
+  @override
+  String stHow1(String app) {
+    return 'دون أن تنتبه، تفتح $app.';
+  }
+
+  @override
+  String get stHow2 => 'ثم تبدأ بالتمرير، لكن هذه المرة…';
+
+  @override
+  String get stHow3 => 'يوقفه Pausey مؤقتًا بلطف.';
+
+  @override
+  String get stHow4 => 'وينبّهك قبل أن ينفد حدّك.';
+
+  @override
+  String get stYourApp => 'تطبيقك';
+
+  @override
+  String get stTapToContinue => 'اضغط للمتابعة';
+
+  @override
+  String get stNudgeGeneric => 'اقتربت من حدّك اليومي';
+
+  @override
+  String get stPermTitle => 'لتغيير عاداتك، يحتاج Pausey إلى بعض الأذونات.';
+
+  @override
+  String get stPermUsageTitle => 'وقت الشاشة';
+
+  @override
+  String get stPermUsageWhy => 'يعرض وقت الشاشة اليومي ومتى تصل إلى الحد.';
+
+  @override
+  String get stPermOverlayTitle => 'الظهور فوق التطبيقات الأخرى';
+
+  @override
+  String get stPermOverlayWhy =>
+      'يتيح لـ Pausey عرض شاشة الإيقاف فوق التطبيق المشتّت.';
+
+  @override
+  String get stPermNotifTitle => 'الإشعارات';
+
+  @override
+  String get stPermNotifWhy =>
+      'تنبيهات لطيفة قبل أن ينفد الحد. يمكنك إيقافها لاحقًا.';
+
+  @override
+  String get stPermMore => 'أمر أخير…';
+
+  @override
+  String get stPermA11yTitle => 'إمكانية الوصول';
+
+  @override
+  String get stPermA11yWhy =>
+      'يكتشف التطبيق المفتوح فورًا، ليحدث الإيقاف في الحال.';
+
+  @override
+  String get stPermA11yNote =>
+      'تعرض بعض الهواتف بعد ذلك شاشة تحذير خاصة بها. هذا طبيعي — يمكنك إيقافه في أي وقت من الإعدادات.';
+
+  @override
+  String get stPermOnHint =>
+      'مفعّل بالفعل. لإيقافه، افتح إعدادات Android › التطبيقات › Pausey.';
+
+  @override
+  String get stA11yDialogTitle => 'لماذا إمكانية الوصول؟';
+
+  @override
+  String get stA11yDialogBody =>
+      'يستخدم Pausey إمكانية الوصول فقط لمعرفة التطبيق المفتوح، لتُطبَّق حدودك وجداولك فورًا، ولتبقى الحماية تعمل بشكل موثوق.';
+
+  @override
+  String get stA11yNot => 'Pausey لا يقوم بما يلي:';
+
+  @override
+  String get stA11yNot1 => 'قراءة أو جمع ما يظهر على شاشتك';
+
+  @override
+  String get stA11yNot2 => 'تخزين المعلومات الشخصية';
+
+  @override
+  String get stA11yNot3 => 'مشاركة أي شيء خارج هاتفك';
+
+  @override
+  String get stPw1 => 'خطتك ليوم أكثر هدوءًا';
+
+  @override
+  String get stPw2 => 'أقفال لا يمكنك إقناع نفسك بتجاوزها';
+
+  @override
+  String get stPw3 => 'شاهد تقدّمك أسبوعًا بعد أسبوع';
+
+  @override
+  String get stPwToday => 'اليوم';
+
+  @override
+  String get stPwGoal => 'هدفك';
+
+  @override
+  String stPwWeek(int n) {
+    return 'أ$n';
+  }
+
+  @override
+  String get stPwFirstWeek => 'أسبوعك الأول يبدأ الآن';
+
+  @override
+  String get stPwFocusWeek => 'وقت التركيز أسبوعيًا';
+
+  @override
+  String nudgeTitle(String app) {
+    return 'اقتربت من حدّ $app';
+  }
+
+  @override
+  String nudgeText(String used, String limit) {
+    return 'استُخدم $used من $limit اليوم';
+  }
 }

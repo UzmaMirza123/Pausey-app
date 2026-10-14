@@ -3294,4 +3294,128 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get statesReplay => 'Wiederholen';
+
+  @override
+  String get stHowCaption => 'So funktioniert\'s';
+
+  @override
+  String stHow1(String app) {
+    return 'Ganz nebenbei öffnest du $app.';
+  }
+
+  @override
+  String get stHow2 => 'Du fängst an zu scrollen, aber diesmal …';
+
+  @override
+  String get stHow3 => 'Pausey pausiert sie ganz sanft.';
+
+  @override
+  String get stHow4 => 'Und erinnert dich, bevor dein Limit erreicht ist.';
+
+  @override
+  String get stYourApp => 'deine App';
+
+  @override
+  String get stTapToContinue => 'Tippen zum Fortfahren';
+
+  @override
+  String get stNudgeGeneric => 'Fast am Tageslimit';
+
+  @override
+  String get stPermTitle =>
+      'Damit sich deine Gewohnheiten ändern, braucht Pausey ein paar Berechtigungen.';
+
+  @override
+  String get stPermUsageTitle => 'Bildschirmzeit';
+
+  @override
+  String get stPermUsageWhy =>
+      'Zeigt deine tägliche Bildschirmzeit und wann ein Limit erreicht ist.';
+
+  @override
+  String get stPermOverlayTitle => 'Über anderen Apps einblenden';
+
+  @override
+  String get stPermOverlayWhy =>
+      'Damit Pausey seinen Pausenbildschirm über einer ablenkenden App zeigen kann.';
+
+  @override
+  String get stPermNotifTitle => 'Mitteilungen';
+
+  @override
+  String get stPermNotifWhy =>
+      'Sanfte Hinweise, bevor ein Limit abläuft. Du kannst das später ausschalten.';
+
+  @override
+  String get stPermMore => 'Noch eine Sache …';
+
+  @override
+  String get stPermA11yTitle => 'Bedienungshilfen';
+
+  @override
+  String get stPermA11yWhy =>
+      'Erkennt sofort, welche App offen ist – so greift die Pause direkt.';
+
+  @override
+  String get stPermA11yNote =>
+      'Manche Handys zeigen danach einen eigenen Warnhinweis. Das ist normal – du kannst es jederzeit in den Einstellungen ausschalten.';
+
+  @override
+  String get stPermOnHint =>
+      'Schon an. Zum Ausschalten: Android-Einstellungen › Apps › Pausey.';
+
+  @override
+  String get stA11yDialogTitle => 'Warum Bedienungshilfen?';
+
+  @override
+  String get stA11yDialogBody =>
+      'Pausey nutzt Bedienungshilfen nur, um zu erkennen, welche App offen ist – damit deine Limits und Zeitpläne sofort greifen und der Schutz zuverlässig läuft.';
+
+  @override
+  String get stA11yNot => 'Was Pausey NICHT macht:';
+
+  @override
+  String get stA11yNot1 => 'Inhalte auf deinem Bildschirm lesen oder sammeln';
+
+  @override
+  String get stA11yNot2 => 'Persönliche Daten speichern';
+
+  @override
+  String get stA11yNot3 => 'Irgendetwas von deinem Handy weitergeben';
+
+  @override
+  String get stPw1 => 'Dein Plan für einen ruhigeren Tag';
+
+  @override
+  String get stPw2 => 'Sperren, die du dir nicht ausreden kannst';
+
+  @override
+  String get stPw3 => 'Sieh deinen Fortschritt Woche für Woche';
+
+  @override
+  String get stPwToday => 'Heute';
+
+  @override
+  String get stPwGoal => 'Dein Ziel';
+
+  @override
+  String stPwWeek(int n) {
+    return 'W$n';
+  }
+
+  @override
+  String get stPwFirstWeek => 'Deine erste Woche beginnt jetzt';
+
+  @override
+  String get stPwFocusWeek => 'Fokuszeit pro Woche';
+
+  @override
+  String nudgeTitle(String app) {
+    return 'Fast am $app-Limit';
+  }
+
+  @override
+  String nudgeText(String used, String limit) {
+    return 'Heute $used von $limit genutzt';
+  }
 }
