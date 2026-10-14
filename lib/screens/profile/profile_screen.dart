@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 import '../../data/app_repo.dart';
-import '../../data/models.dart';
 import '../../services/auth_service.dart';
 import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
@@ -87,8 +86,6 @@ class ProfileScreen extends StatelessWidget {
                 ]),
               ]),
             ),
-            FadeIn(delay: 2, child: _Heatmap(onTap: () => _push(context, const StreaksScreen()))),
-            FadeIn(delay: 3, child: _Recent(onSeeAll: () => shell?.goTab(AppTab.insights), onStart: () => shell?.goTab(AppTab.focus))),
             FadeIn(
               delay: 4,
               child: PGroup(children: [
@@ -154,11 +151,13 @@ class _IdentityCard extends StatelessWidget {
                       Text(l.profileMemberSince(DateFormat.yMMM(loc).format(since)), maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.rowSub.copyWith(color: c.textMuted)),
                     const SizedBox(height: 8),
                     InkWell(
-                      onTap: onPaywall,
+                      onTap: isGuest ? () => openSignUp(context) : onPaywall,
                       borderRadius: BorderRadius.circular(AppRadius.chip),
-                      child: r.premium
-                          ? Pill(l.profileProActive, color: Tone.amber, icon: Icons.workspace_premium_rounded)
-                          : Pill('${l.profileFree} · ${l.profileUpgrade}', color: Tone.violet, icon: Icons.workspace_premium_rounded),
+                      child: isGuest
+                          ? Pill(l.signUp, color: Tone.violet, icon: Icons.person_add_alt_1_rounded)
+                          : r.premium
+                              ? Pill(l.profileProActive, color: Tone.amber, icon: Icons.workspace_premium_rounded)
+                              : Pill('${l.profileFree} · ${l.profileUpgrade}', color: Tone.violet, icon: Icons.workspace_premium_rounded),
                     ),
                   ],
                 ),
@@ -186,132 +185,3 @@ class _IdentityCard extends StatelessWidget {
   }
 }
 
-class _Heatmap extends StatelessWidget {
-  const _Heatmap({required this.onTap});
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final c = context.colors;
-    final r = AppRepo.instance;
-    final loc = Localizations.localeOf(context).toString();
-    final today = dateOnly(r.now());
-    final monday = today.subtract(Duration(days: today.weekday - 1));
-    final start = monday.subtract(const Duration(days: 21));
-    final goal = r.dailyFocusGoalMinutes <= 0 ? 60 : r.dailyFocusGoalMinutes;
-    return PCard(
-      onTap: onTap,
-      child: Column(
-        children: [
-          CardTitle(
-            icon: Icons.show_chart_rounded,
-            title: l.profileFocusActivity,
-            trailing: Flexible(child: Text(l.profileLast4Weeks, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.rowSub.copyWith(color: c.textMuted))),
-          ),
-          const SizedBox(height: 14),
-          for (var w = 0; w < 4; w++)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 6),
-              child: Row(children: [
-                for (var d = 0; d < 7; d++) Expanded(child: _cell(context, start.add(Duration(days: w * 7 + d)), today, r, goal)),
-              ]),
-            ),
-          const SizedBox(height: 4),
-          Row(children: [
-            for (var d = 0; d < 7; d++)
-              Expanded(
-                child: Text(DateFormat.EEEEE(loc).format(monday.add(Duration(days: d))), textAlign: TextAlign.center, style: AppText.small.copyWith(color: c.textMuted)),
-              ),
-          ]),
-        ],
-      ),
-    );
-  }
-
-  Widget _cell(BuildContext context, DateTime day, DateTime today, AppRepo r, int goal) {
-    final future = day.isAfter(today);
-    final m = r.focusMinutesOn(day);
-    final t = (m / goal).clamp(0.0, 1.0);
-    final color = m == 0 || future ? context.colors.dotInactive : Color.lerp(Tone.violet.withValues(alpha: 0.35), AppPalette.violet, t)!;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 3),
-      child: Tooltip(
-        message: '${DateFormat.MMMd(Localizations.localeOf(context).toString()).format(day)} · ${fmtMinutes(m, h: context.l10n.unitH, m: context.l10n.unitM)}',
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 400),
-          height: 22,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(8),
-            border: day == today ? Border.all(color: AppPalette.violet, width: 1.5) : null,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _Recent extends StatelessWidget {
-  const _Recent({required this.onSeeAll, required this.onStart});
-  final VoidCallback onSeeAll, onStart;
-
-  String _ago(BuildContext context, DateTime t, DateTime now) {
-    final l = context.l10n;
-    final d = now.difference(t);
-    if (d.inMinutes < 1) return l.profileJustNow;
-    if (d.inHours < 1) return l.profileAgoMinutes(d.inMinutes);
-    if (dateOnly(t) == dateOnly(now)) return l.profileAgoHours(d.inHours);
-    if (dateOnly(t) == dateOnly(now).subtract(const Duration(days: 1))) return l.profileYesterday;
-    return DateFormat.MMMd(Localizations.localeOf(context).toString()).format(t);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final c = context.colors;
-    final r = AppRepo.instance;
-    if (r.sessions.isEmpty) {
-      return StateMessage(
-        icon: Icons.bolt_rounded,
-        color: Tone.violet,
-        badge: l.profileRecentActivity,
-        title: l.profileEmptyTitle,
-        message: l.profileEmptyBody,
-        primaryLabel: l.profileStartFocus,
-        onPrimary: onStart,
-      );
-    }
-    final list = [...r.sessions]..sort((a, b) => b.start.compareTo(a.start));
-    return PCard(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.card, AppSpacing.card, AppSpacing.card, 8),
-      child: Column(
-        children: [
-          CardTitle(icon: Icons.history_rounded, title: l.profileRecentActivity, trailing: LinkText(l.seeAll, onTap: onSeeAll)),
-          const SizedBox(height: 6),
-          for (final s in list.take(4))
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(children: [
-                IconBadge(icon: s.completed ? Icons.bolt_rounded : Icons.timer_off_rounded, color: s.completed ? Tone.violet : Tone.amber, size: 36),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(s.completed ? l.profileSessionDone : l.profileSessionStopped, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.rowTitle.copyWith(fontSize: 14, color: c.textPrimary)),
-                    Text(
-                      '${fmtMinutes(s.focusedMinutes, h: l.unitH, m: l.unitM)} · ${switch (s.mode) { FocusMode.pomodoro => l.profileModePomodoro, FocusMode.deep => l.profileModeDeep, FocusMode.custom => l.profileModeCustom }}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppText.rowSub.copyWith(fontSize: 12, color: c.textMuted),
-                    ),
-                  ]),
-                ),
-                const SizedBox(width: 8),
-                Text(_ago(context, s.start, r.now()), style: AppText.rowSub.copyWith(fontSize: 12, color: c.textMuted)),
-              ]),
-            ),
-        ],
-      ),
-    );
-  }
-}

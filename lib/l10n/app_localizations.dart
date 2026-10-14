@@ -1582,6 +1582,18 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get cancel;
 
+  /// No description provided for @ob6OtherHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type your occupation'**
+  String get ob6OtherHint;
+
+  /// No description provided for @timeSecondLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Second'**
+  String get timeSecondLabel;
+
   /// No description provided for @focusModePomodoro.
   ///
   /// In en, this message translates to:

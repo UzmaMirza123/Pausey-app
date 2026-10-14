@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+
+import '../../widgets/time_picker.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:local_auth/local_auth.dart';
 
@@ -105,9 +107,9 @@ class _BlockScreenState extends State<BlockScreen> {
 
   Future<void> _pickTime(bool start) async {
     final s = _repo.schedule;
-    final picked = await showTimePicker(context: context, initialTime: start ? s.start : s.end);
+    final picked = await showPTimePicker(context, initial: PTime.fromMinutes(start ? s.startMinutes : s.endMinutes));
     if (picked == null) return;
-    final m = picked.hour * 60 + picked.minute;
+    final m = picked.totalMinutes;
     await _repo.updateSchedule((x) => start ? x.startMinutes = m : x.endMinutes = m);
   }
 

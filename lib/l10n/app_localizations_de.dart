@@ -802,6 +802,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get cancel => 'Abbrechen';
 
   @override
+  String get ob6OtherHint => 'Beruf eingeben';
+
+  @override
+  String get timeSecondLabel => 'Sekunde';
+
+  @override
   String get focusModePomodoro => 'Pomodoro';
 
   @override

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+
+import '../../widgets/time_picker.dart';
 import 'package:flutter/services.dart';
 
 import '../../data/app_repo.dart';
@@ -172,7 +174,7 @@ class SettingsScreen extends StatelessWidget {
   Future<void> _pickTime(BuildContext context) async {
     final r = AppRepo.instance;
     final m = r.settings.reminderMinutes;
-    final t = await showTimePicker(context: context, initialTime: TimeOfDay(hour: m ~/ 60, minute: m % 60));
+    final t = await showPTimePicker(context, initial: PTime.fromMinutes(m));
     if (t == null) return;
     await r.updateSettings((x) {
       x.reminderMinutes = t.hour * 60 + t.minute;

@@ -808,6 +808,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cancel => 'Cancelar';
 
   @override
+  String get ob6OtherHint => 'Escribe tu ocupación';
+
+  @override
+  String get timeSecondLabel => 'Segundo';
+
+  @override
   String get focusModePomodoro => 'Pomodoro';
 
   @override

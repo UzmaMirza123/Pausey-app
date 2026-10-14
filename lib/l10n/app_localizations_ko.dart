@@ -784,6 +784,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get cancel => '취소';
 
   @override
+  String get ob6OtherHint => '직업을 입력하세요';
+
+  @override
+  String get timeSecondLabel => '초';
+
+  @override
   String get focusModePomodoro => '뽀모도로';
 
   @override

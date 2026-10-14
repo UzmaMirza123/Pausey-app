@@ -243,6 +243,8 @@
   "signOut": "Sair",
   "signOutGuestWarn": "Sair apaga os dados de convidado deste celular.",
   "cancel": "Cancelar",
+  "ob6OtherHint": "Digite sua ocupação",
+  "timeSecondLabel": "Segundo",
   "focusModePomodoro": "Pomodoro",
   "focusModeDeep": "Foco profundo",
   "focusModeCustom": "Personal",

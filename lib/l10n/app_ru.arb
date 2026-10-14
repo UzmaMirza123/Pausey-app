@@ -243,6 +243,8 @@
   "signOut": "Выйти",
   "signOutGuestWarn": "Выход удалит данные гостя на этом телефоне.",
   "cancel": "Отмена",
+  "ob6OtherHint": "Введите вашу профессию",
+  "timeSecondLabel": "Секунда",
   "focusModePomodoro": "Помодоро",
   "focusModeDeep": "Глубокий фокус",
   "focusModeCustom": "Своё",

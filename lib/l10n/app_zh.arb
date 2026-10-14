@@ -243,6 +243,8 @@
   "signOut": "退出登录",
   "signOutGuestWarn": "退出登录将删除此手机上的访客数据。",
   "cancel": "取消",
+  "ob6OtherHint": "输入你的职业",
+  "timeSecondLabel": "秒",
   "focusModePomodoro": "番茄钟",
   "focusModeDeep": "深度专注",
   "focusModeCustom": "自定义",

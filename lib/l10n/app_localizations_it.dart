@@ -814,6 +814,12 @@ class AppLocalizationsIt extends AppLocalizations {
   String get cancel => 'Annulla';
 
   @override
+  String get ob6OtherHint => 'Scrivi la tua professione';
+
+  @override
+  String get timeSecondLabel => 'Secondo';
+
+  @override
   String get focusModePomodoro => 'Pomodoro';
 
   @override

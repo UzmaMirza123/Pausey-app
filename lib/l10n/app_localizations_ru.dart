@@ -801,6 +801,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get cancel => 'Отмена';
 
   @override
+  String get ob6OtherHint => 'Введите вашу профессию';
+
+  @override
+  String get timeSecondLabel => 'Секунда';
+
+  @override
   String get focusModePomodoro => 'Помодоро';
 
   @override

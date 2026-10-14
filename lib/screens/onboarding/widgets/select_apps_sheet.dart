@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../../../widgets/time_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart' show DateFormat, NumberFormat;
 
@@ -1373,43 +1375,13 @@ class _CustomScheduleSheetState extends State<_CustomScheduleSheet> {
   bool get _valid => _minutes > 0 && _days.isNotEmpty;
 
   Future<void> _pick(bool start) async {
-    final dark = context.isDark;
-    final picked = await showTimePicker(
-      context: context,
-      initialTime: start ? _start : _end,
-      helpText: start ? context.l10n.sheetLockStartsAt : context.l10n.sheetLockEndsAt,
-      builder: (ctx, child) {
-        final base = Theme.of(ctx);
-        return Theme(
-          data: base.copyWith(
-            colorScheme: base.colorScheme.copyWith(
-              primary: AppPalette.accent,
-              onPrimary: Colors.white,
-              surface: dark ? const Color(0xFF13112A) : Colors.white,
-              onSurface: dark ? const Color(0xFFE8E4FF) : const Color(0xFF1B1838),
-            ),
-            timePickerTheme: TimePickerThemeData(
-              backgroundColor: dark ? const Color(0xFF13112A) : Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-              dialBackgroundColor: dark ? const Color(0xFF1E1B38) : const Color(0xFFF1EEFF),
-              hourMinuteShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              dayPeriodColor: WidgetStateColor.resolveWith(
-                (states) => states.contains(WidgetState.selected)
-                    ? AppPalette.accent.withValues(alpha: 0.25)
-                    : Colors.transparent,
-              ),
-              dayPeriodTextColor: WidgetStateColor.resolveWith(
-                (states) => states.contains(WidgetState.selected)
-                    ? (dark ? Colors.white : AppPalette.accent)
-                    : (dark ? const Color(0xFF7B749E) : const Color(0xFF625D86)),
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
+    final l = context.l10n;
+    final picked = await showPTimePicker(
+      context,
+      initial: PTime.fromTimeOfDay(start ? _start : _end),
+      title: start ? l.sheetLockStartsAt : l.sheetLockEndsAt,
     );
-    if (picked != null) setState(() => start ? _start = picked : _end = picked);
+    if (picked != null) setState(() => start ? _start = picked.timeOfDay : _end = picked.timeOfDay);
   }
 
   void _save() {

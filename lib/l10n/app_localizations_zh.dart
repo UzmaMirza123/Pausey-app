@@ -783,6 +783,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cancel => '取消';
 
   @override
+  String get ob6OtherHint => '输入你的职业';
+
+  @override
+  String get timeSecondLabel => '秒';
+
+  @override
   String get focusModePomodoro => '番茄钟';
 
   @override

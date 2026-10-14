@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../../auth/sign_up_screen.dart';
+
 import '../../../data/app_repo.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/local_store.dart';
@@ -220,4 +222,18 @@ class SignOutCard extends StatelessWidget {
       ),
     );
   }
+}
+
+
+/// Guest → open the sign-up screen; closes itself once an account is signed in.
+Future<void> openSignUp(BuildContext context) async {
+  final nav = Navigator.of(context);
+  final route = MaterialPageRoute<void>(builder: (_) => const SignUpScreen());
+  void listener() {
+    if (AuthService.instance.value is! GuestSession && route.isActive) nav.removeRoute(route);
+  }
+
+  AuthService.instance.addListener(listener);
+  await nav.push(route);
+  AuthService.instance.removeListener(listener);
 }

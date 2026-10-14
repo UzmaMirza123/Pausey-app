@@ -243,6 +243,8 @@
   "signOut": "Se déconnecter",
   "signOutGuestWarn": "Se déconnecter supprime les données invité.",
   "cancel": "Annuler",
+  "ob6OtherHint": "Saisissez votre métier",
+  "timeSecondLabel": "Seconde",
   "focusModePomodoro": "Pomodoro",
   "focusModeDeep": "Focus profond",
   "focusModeCustom": "Perso",

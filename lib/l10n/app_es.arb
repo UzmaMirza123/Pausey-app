@@ -243,6 +243,8 @@
   "signOut": "Cerrar sesión",
   "signOutGuestWarn": "Al cerrar sesión se borran los datos de invitado.",
   "cancel": "Cancelar",
+  "ob6OtherHint": "Escribe tu ocupación",
+  "timeSecondLabel": "Segundo",
   "focusModePomodoro": "Pomodoro",
   "focusModeDeep": "Enfoque profundo",
   "focusModeCustom": "Personal",

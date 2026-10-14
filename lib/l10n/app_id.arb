@@ -243,6 +243,8 @@
   "signOut": "Keluar",
   "signOutGuestWarn": "Keluar akan menghapus data tamu di ponsel ini.",
   "cancel": "Batal",
+  "ob6OtherHint": "Ketik pekerjaan Anda",
+  "timeSecondLabel": "Detik",
   "focusModePomodoro": "Pomodoro",
   "focusModeDeep": "Fokus dalam",
   "focusModeCustom": "Kustom",

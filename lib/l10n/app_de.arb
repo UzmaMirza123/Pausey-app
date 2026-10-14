@@ -243,6 +243,8 @@
   "signOut": "Abmelden",
   "signOutGuestWarn": "Abmelden löscht die Gastdaten auf diesem Handy.",
   "cancel": "Abbrechen",
+  "ob6OtherHint": "Beruf eingeben",
+  "timeSecondLabel": "Sekunde",
   "focusModePomodoro": "Pomodoro",
   "focusModeDeep": "Tiefer Fokus",
   "focusModeCustom": "Eigene",

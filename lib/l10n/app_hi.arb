@@ -243,6 +243,8 @@
   "signOut": "साइन आउट",
   "signOutGuestWarn": "साइन आउट करने से इस फ़ोन का मेहमान डेटा मिट जाएगा।",
   "cancel": "रद्द करें",
+  "ob6OtherHint": "अपना पेशा लिखें",
+  "timeSecondLabel": "सेकंड",
   "focusModePomodoro": "पोमोडोरो",
   "focusModeDeep": "गहन फ़ोकस",
   "focusModeCustom": "कस्टम",

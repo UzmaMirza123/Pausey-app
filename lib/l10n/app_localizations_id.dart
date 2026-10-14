@@ -804,6 +804,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get cancel => 'Batal';
 
   @override
+  String get ob6OtherHint => 'Ketik pekerjaan Anda';
+
+  @override
+  String get timeSecondLabel => 'Detik';
+
+  @override
   String get focusModePomodoro => 'Pomodoro';
 
   @override

@@ -794,6 +794,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cancel => 'إلغاء';
 
   @override
+  String get ob6OtherHint => 'اكتب مهنتك';
+
+  @override
+  String get timeSecondLabel => 'ثانية';
+
+  @override
   String get focusModePomodoro => 'بومودورو';
 
   @override

@@ -810,6 +810,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get cancel => 'Cancelar';
 
   @override
+  String get ob6OtherHint => 'Digite sua ocupação';
+
+  @override
+  String get timeSecondLabel => 'Segundo';
+
+  @override
   String get focusModePomodoro => 'Pomodoro';
 
   @override

@@ -807,6 +807,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get ob6OtherHint => 'Type your occupation';
+
+  @override
+  String get timeSecondLabel => 'Second';
+
+  @override
   String get focusModePomodoro => 'Pomodoro';
 
   @override

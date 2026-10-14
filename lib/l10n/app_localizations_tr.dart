@@ -801,6 +801,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get cancel => 'İptal';
 
   @override
+  String get ob6OtherHint => 'Mesleğinizi yazın';
+
+  @override
+  String get timeSecondLabel => 'Saniye';
+
+  @override
   String get focusModePomodoro => 'Pomodoro';
 
   @override

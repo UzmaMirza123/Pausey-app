@@ -243,6 +243,8 @@
   "signOut": "Esci",
   "signOutGuestWarn": "Uscendo elimini i dati ospite su questo telefono.",
   "cancel": "Annulla",
+  "ob6OtherHint": "Scrivi la tua professione",
+  "timeSecondLabel": "Secondo",
   "focusModePomodoro": "Pomodoro",
   "focusModeDeep": "Focus profondo",
   "focusModeCustom": "Personale",

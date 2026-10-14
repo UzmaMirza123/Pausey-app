@@ -798,6 +798,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get cancel => 'रद्द करें';
 
   @override
+  String get ob6OtherHint => 'अपना पेशा लिखें';
+
+  @override
+  String get timeSecondLabel => 'सेकंड';
+
+  @override
   String get focusModePomodoro => 'पोमोडोरो';
 
   @override

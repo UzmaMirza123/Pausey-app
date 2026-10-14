@@ -783,6 +783,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cancel => 'キャンセル';
 
   @override
+  String get ob6OtherHint => '職業を入力';
+
+  @override
+  String get timeSecondLabel => '秒';
+
+  @override
   String get focusModePomodoro => 'ポモドーロ';
 
   @override

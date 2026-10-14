@@ -243,6 +243,8 @@
   "signOut": "تسجيل الخروج",
   "signOutGuestWarn": "تسجيل الخروج يحذف بيانات الضيف من هذا الهاتف.",
   "cancel": "إلغاء",
+  "ob6OtherHint": "اكتب مهنتك",
+  "timeSecondLabel": "ثانية",
   "focusModePomodoro": "بومودورو",
   "focusModeDeep": "تركيز عميق",
   "focusModeCustom": "مخصص",

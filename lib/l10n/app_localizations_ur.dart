@@ -802,6 +802,12 @@ class AppLocalizationsUr extends AppLocalizations {
   String get cancel => 'منسوخ';
 
   @override
+  String get ob6OtherHint => 'اپنا پیشہ لکھیں';
+
+  @override
+  String get timeSecondLabel => 'سیکنڈ';
+
+  @override
   String get focusModePomodoro => 'پومودورو';
 
   @override

@@ -35,7 +35,7 @@ class _Occupation {
   final String icon;
 }
 
-/// Figma: OnBoarding — "What is your occupation?" (727:41749). Multi-select.
+/// Figma: OnBoarding — "What is your occupation?" (727:41749). Single choice; "Others" shows a text field.
 class Onboarding6Screen extends StatefulWidget {
   const Onboarding6Screen({super.key, required this.onNext, required this.onSkip});
 
@@ -57,12 +57,19 @@ class _Onboarding6ScreenState extends State<Onboarding6Screen> {
     _Occupation('Others', 'assets/svg/ob6_dots.svg'),
   ];
 
-  /// The design shows "Art / Content" and "Education" checked.
-  final Set<int> _checked = {4, 5};
+  static const _othersIndex = 6;
 
-  /// The most recently checked row gets the highlighted purple style
-  /// (in the design: "Art / Content").
+  /// Single choice: the selected row gets the highlighted purple style.
   int? _active = 4;
+
+  /// Typed occupation when "Others" is picked.
+  final _other = TextEditingController();
+
+  @override
+  void dispose() {
+    _other.dispose();
+    super.dispose();
+  }
 
   static List<String> _labels(AppLocalizations l) => [
     l.ob6Software,
@@ -81,22 +88,15 @@ class _Onboarding6ScreenState extends State<Onboarding6Screen> {
   }
 
   void _save() {
-    final ids = [
-      for (var i = 0; i < _options.length; i++)
-        if (_checked.contains(i)) _options[i].id,
+    final a = _active;
+    final ids = <String>[
+      if (a != null) a == _othersIndex && _other.text.trim().isNotEmpty ? _other.text.trim() : _options[a].id,
     ];
     LocalStore.instance.saveAnswer('occupation', ids);
   }
 
   void _toggle(int i) {
-    setState(() {
-      if (_checked.remove(i)) {
-        if (_active == i) _active = null;
-      } else {
-        _checked.add(i);
-        _active = i;
-      }
-    });
+    setState(() => _active = i);
     _save();
   }
 
@@ -152,11 +152,46 @@ class _Onboarding6ScreenState extends State<Onboarding6Screen> {
               _OccupationRow(
                 option: _options[i],
                 label: labels[i],
-                checked: _checked.contains(i),
+                checked: _active == i,
                 active: _active == i,
                 onTap: () => _toggle(i),
               ),
             ],
+            AnimatedSize(
+              duration: const Duration(milliseconds: 220),
+              curve: Curves.easeOut,
+              child: _active == _othersIndex
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: TextField(
+                        controller: _other,
+                        autofocus: true,
+                        textCapitalization: TextCapitalization.sentences,
+                        textInputAction: TextInputAction.done,
+                        maxLength: 40,
+                        onChanged: (_) => _save(),
+                        style: AppText.rowTitle.copyWith(color: c.textPrimary),
+                        decoration: InputDecoration(
+                          counterText: '',
+                          hintText: l.ob6OtherHint,
+                          hintStyle: AppText.rowTitle.copyWith(color: c.textMuted, fontWeight: FontWeight.w500),
+                          prefixIcon: const Icon(Icons.edit_rounded, size: 18, color: AppPalette.accent),
+                          filled: true,
+                          fillColor: AppPalette.violet.withValues(alpha: 0.09),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide(color: AppPalette.violet.withValues(alpha: 0.22)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: AppPalette.accent),
+                          ),
+                        ),
+                      ),
+                    )
+                  : const SizedBox(width: double.infinity),
+            ),
             const SizedBox(height: 29),
             const _PrivacyNote(),
             const SizedBox(height: 10),

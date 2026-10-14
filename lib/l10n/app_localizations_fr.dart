@@ -815,6 +815,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cancel => 'Annuler';
 
   @override
+  String get ob6OtherHint => 'Saisissez votre métier';
+
+  @override
+  String get timeSecondLabel => 'Seconde';
+
+  @override
   String get focusModePomodoro => 'Pomodoro';
 
   @override

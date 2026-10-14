@@ -243,6 +243,8 @@
   "signOut": "Çıkış yap",
   "signOutGuestWarn": "Çıkış yapmak bu telefondaki misafir verilerini siler.",
   "cancel": "İptal",
+  "ob6OtherHint": "Mesleğinizi yazın",
+  "timeSecondLabel": "Saniye",
   "focusModePomodoro": "Pomodoro",
   "focusModeDeep": "Derin odak",
   "focusModeCustom": "Özel",

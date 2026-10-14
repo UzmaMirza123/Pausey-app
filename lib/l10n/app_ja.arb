@@ -243,6 +243,8 @@
   "signOut": "ログアウト",
   "signOutGuestWarn": "ログアウトするとこの端末のゲストデータが削除されます。",
   "cancel": "キャンセル",
+  "ob6OtherHint": "職業を入力",
+  "timeSecondLabel": "秒",
   "focusModePomodoro": "ポモドーロ",
   "focusModeDeep": "ディープフォーカス",
   "focusModeCustom": "カスタム",

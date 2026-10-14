@@ -530,35 +530,17 @@ class _LockToggle extends StatelessWidget {
   const _LockToggle({required this.app});
   final ManagedApp app;
 
+  /// Status only (not tappable): filled lock when the app is locked.
   @override
   Widget build(BuildContext context) {
-    final l = context.l10n;
     final c = context.colors;
     final on = app.locked;
-    return Tooltip(
-      message: l.homeLockApp(app.name),
-      child: InkResponse(
-        key: ValueKey('home_lock_${app.id}'),
-        radius: 22,
-        onTap: () async {
-          final messenger = ScaffoldMessenger.of(context);
-          await AppRepo.instance.setAppLocked(app.id, !on);
-          messenger
-            ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(content: Text(on ? l.homeAppUnlocked(app.name) : l.homeAppLocked(app.name)), duration: const Duration(seconds: 2)));
-        },
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          width: 30,
-          height: 30,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: on ? AppPalette.accent : c.glassFill,
-            border: Border.all(color: on ? Colors.transparent : c.glassBorder),
-          ),
-          child: Icon(on ? Icons.lock_rounded : Icons.lock_open_rounded, size: 15, color: on ? Colors.white : c.textMuted),
-        ),
-      ),
+    return Container(
+      key: ValueKey('home_lock_${app.id}'),
+      width: 30,
+      height: 30,
+      decoration: BoxDecoration(shape: BoxShape.circle, color: on ? AppPalette.accent : c.glassFill),
+      child: Icon(on ? Icons.lock_rounded : Icons.lock_open_rounded, size: 15, color: on ? Colors.white : c.textMuted),
     );
   }
 }

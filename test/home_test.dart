@@ -16,7 +16,7 @@ void main() {
     await AppRepo.instance.setPremium(false);
   });
 
-  testWidgets('Home lock toggle changes AppRepo', (tester) async {
+  testWidgets('Home lock icon is status only (tap does nothing)', (tester) async {
     tester.view.physicalSize = const Size(412 * 3, 1600 * 3);
     tester.view.devicePixelRatio = 3;
     addTearDown(tester.view.reset);
@@ -26,9 +26,9 @@ void main() {
     final before = app.locked;
     final toggle = find.byKey(ValueKey('home_lock_${app.id}'));
     await tester.ensureVisible(toggle);
-    await tester.tap(toggle);
+    await tester.tap(toggle, warnIfMissed: false);
     await tester.pump(const Duration(milliseconds: 300));
-    expect(AppRepo.instance.apps.first.locked, !before);
+    expect(AppRepo.instance.apps.first.locked, before);
     await tester.pump(const Duration(seconds: 3));
   });
 
