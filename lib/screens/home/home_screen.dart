@@ -469,7 +469,7 @@ class _LockedAppsCard extends StatelessWidget {
     final c = context.colors;
     final repo = AppRepo.instance;
     final usage = {for (final u in ScreenTime.instance.usageOn(repo.now())) u.appId: u.minutes};
-    final apps = [...repo.apps]..sort((a, b) => (usage[b.id] ?? 0).compareTo(usage[a.id] ?? 0));
+    final apps = repo.apps.where((a) => a.locked).toList()..sort((a, b) => (usage[b.id] ?? 0).compareTo(usage[a.id] ?? 0));
     final shown = apps.take(3).toList();
     return PCard(
       child: Column(
@@ -478,7 +478,7 @@ class _LockedAppsCard extends StatelessWidget {
           CardTitle(
             icon: Icons.lock_outline_rounded,
             title: l.homeLockedApps,
-            trailing: LinkText(apps.isEmpty ? l.homeAddApps : l.homeManage, onTap: () => _goTab(context, AppTab.block)),
+            trailing: LinkText(repo.apps.isEmpty ? l.homeAddApps : l.homeManage, onTap: () => _goTab(context, AppTab.block)),
           ),
           const SizedBox(height: 8),
           if (shown.isEmpty)
