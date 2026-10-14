@@ -147,8 +147,17 @@ class AppRepo extends ChangeNotifier {
       for (final id in ids) keep[id] ?? ManagedApp(id: id, name: id, category: catalog[id] ?? 'other'),
       // keep unlocked apps that were managed before so the user can re-lock them
       for (final a in keep.values)
-        if (!ids.contains(a.id) && !a.locked) a,
+        if (!ids.contains(a.id) && (!a.locked || !catalog.containsKey(a.id))) a,
     ];
+    await _save();
+  }
+
+  /// Add apps picked from the phone's installed-app list (id = package name).
+  Future<void> addInstalledApps(Iterable<({String packageName, String label})> picked) async {
+    for (final p in picked) {
+      if (apps.any((a) => a.packageName == p.packageName)) continue;
+      apps.add(ManagedApp(id: p.packageName, name: p.label, category: 'other', packageName: p.packageName));
+    }
     await _save();
   }
 

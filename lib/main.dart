@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'screens/auth/auth_welcome_screen.dart';
 import 'data/app_repo.dart';
+import 'data/restrictions/restriction_repo.dart';
 import 'screens/shell/app_shell.dart';
 import 'screens/onboarding/onboarding_flow.dart';
 import 'screens/splash_screen.dart';
@@ -20,6 +21,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalStore.init();
   AppRepo.instance.load();
+  RestrictionRepo.instance
+    ..load()
+    ..start();
   ThemeController.instance.load();
   LocaleController.instance.load();
   await AuthService.instance.init();

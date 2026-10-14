@@ -2,7 +2,25 @@ import 'package:flutter/material.dart';
 
 /// An app the user can lock (Block tab / Select Apps sheet).
 class ManagedApp {
-  ManagedApp({required this.id, required this.name, required this.category, this.locked = true, this.scheduled = false});
+  ManagedApp({required this.id, required this.name, required this.category, this.locked = true, this.scheduled = false, String? packageName})
+      : packageName = packageName ?? knownPackages[id];
+
+  /// Android package names for the apps in the Select Apps catalogue.
+  static const knownPackages = <String, String>{
+    'Instagram': 'com.instagram.android',
+    'Twitter / X': 'com.twitter.android',
+    'YouTube': 'com.google.android.youtube',
+    'TikTok': 'com.zhiliaoapp.musically',
+    'Facebook': 'com.facebook.katana',
+    'Netflix': 'com.netflix.mediaclient',
+    'Reddit': 'com.reddit.frontpage',
+    'Snapchat': 'com.snapchat.android',
+    'WhatsApp': 'com.whatsapp',
+  };
+
+  /// Android package name — the stable key for per-app restrictions.
+  /// Null for category placeholders ("Gaming Apps", "Shopping") that aren't a single app.
+  final String? packageName;
 
   /// Stable English id, e.g. "Instagram".
   final String id;
@@ -15,13 +33,14 @@ class ManagedApp {
   /// Locked only during the lock schedule (not all day).
   bool scheduled;
 
-  Map<String, dynamic> toJson() => {'id': id, 'name': name, 'category': category, 'locked': locked, 'scheduled': scheduled};
+  Map<String, dynamic> toJson() => {'id': id, 'name': name, 'category': category, 'locked': locked, 'scheduled': scheduled, 'pkg': packageName};
   factory ManagedApp.fromJson(Map<String, dynamic> j) => ManagedApp(
         id: j['id'] as String,
         name: j['name'] as String? ?? j['id'] as String,
         category: j['category'] as String? ?? 'other',
         locked: j['locked'] as bool? ?? true,
         scheduled: j['scheduled'] as bool? ?? false,
+        packageName: j['pkg'] as String?,
       );
 }
 
