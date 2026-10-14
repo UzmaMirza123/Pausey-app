@@ -1565,6 +1565,17 @@ class AppLocalizationsTr extends AppLocalizations {
   String get homePwClose => 'Kapat';
 
   @override
+  String get homeAvgLegend => '7 günlük ortalama';
+
+  @override
+  String homeGoalOf(String done, String goal) {
+    return '$goal içinden $done';
+  }
+
+  @override
+  String get homeBest => 'En iyi:';
+
+  @override
   String get insightsAnalytics => 'Analiz';
 
   @override

@@ -882,6 +882,19 @@
   "homePwLinkSoon": "This page will open on our website soon.",
   "homePwYouArePro": "You're Pro — enjoy!",
   "homePwClose": "Close",
+  "homeAvgLegend": "7-day average",
+  "homeGoalOf": "{done} of {goal}",
+  "@homeGoalOf": {
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "goal": {
+        "type": "String"
+      }
+    }
+  },
+  "homeBest": "Best:",
   "insightsAnalytics": "Analytics",
   "insightsScreenTime": "Screen Time",
   "insightsToday": "Today",

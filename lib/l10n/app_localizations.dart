@@ -2938,6 +2938,24 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get homePwClose;
 
+  /// No description provided for @homeAvgLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'7-day average'**
+  String get homeAvgLegend;
+
+  /// No description provided for @homeGoalOf.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {goal}'**
+  String homeGoalOf(String done, String goal);
+
+  /// No description provided for @homeBest.
+  ///
+  /// In en, this message translates to:
+  /// **'Best:'**
+  String get homeBest;
+
   /// No description provided for @insightsAnalytics.
   ///
   /// In en, this message translates to:

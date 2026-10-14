@@ -1545,6 +1545,17 @@ class AppLocalizationsKo extends AppLocalizations {
   String get homePwClose => '닫기';
 
   @override
+  String get homeAvgLegend => '7일 평균';
+
+  @override
+  String homeGoalOf(String done, String goal) {
+    return '$goal 중 $done';
+  }
+
+  @override
+  String get homeBest => '최고:';
+
+  @override
   String get insightsAnalytics => '분석';
 
   @override

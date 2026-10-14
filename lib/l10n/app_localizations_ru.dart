@@ -1581,6 +1581,17 @@ class AppLocalizationsRu extends AppLocalizations {
   String get homePwClose => 'Закрыть';
 
   @override
+  String get homeAvgLegend => 'Среднее за 7 дней';
+
+  @override
+  String homeGoalOf(String done, String goal) {
+    return '$done из $goal';
+  }
+
+  @override
+  String get homeBest => 'Рекорд:';
+
+  @override
   String get insightsAnalytics => 'Аналитика';
 
   @override

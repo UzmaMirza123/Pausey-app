@@ -1571,6 +1571,17 @@ class AppLocalizationsId extends AppLocalizations {
   String get homePwClose => 'Tutup';
 
   @override
+  String get homeAvgLegend => 'Rata-rata 7 hari';
+
+  @override
+  String homeGoalOf(String done, String goal) {
+    return '$done dari $goal';
+  }
+
+  @override
+  String get homeBest => 'Terbaik:';
+
+  @override
   String get insightsAnalytics => 'Analitik';
 
   @override

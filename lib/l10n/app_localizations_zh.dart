@@ -1544,6 +1544,17 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homePwClose => '关闭';
 
   @override
+  String get homeAvgLegend => '7 天平均';
+
+  @override
+  String homeGoalOf(String done, String goal) {
+    return '$done / $goal';
+  }
+
+  @override
+  String get homeBest => '最佳:';
+
+  @override
   String get insightsAnalytics => '分析';
 
   @override

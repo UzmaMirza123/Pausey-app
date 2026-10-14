@@ -1570,6 +1570,17 @@ class AppLocalizationsUr extends AppLocalizations {
   String get homePwClose => 'بند کریں';
 
   @override
+  String get homeAvgLegend => '7 دن کی اوسط';
+
+  @override
+  String homeGoalOf(String done, String goal) {
+    return '$goal میں سے $done';
+  }
+
+  @override
+  String get homeBest => 'بہترین:';
+
+  @override
   String get insightsAnalytics => 'تجزیات';
 
   @override

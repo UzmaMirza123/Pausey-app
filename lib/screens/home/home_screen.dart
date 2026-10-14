@@ -13,7 +13,7 @@ import '../paywall/paywall_screen.dart';
 import '../profile/streaks_screen.dart';
 import '../shell/app_shell.dart';
 
-/// Home tab: today's focus, streak, goal, screen time, quick start, locked apps, upgrade.
+/// Home tab: screen time (primary), focus + streak, daily goal, quick start, locked apps, slim upgrade row.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -23,12 +23,12 @@ class HomeScreen extends StatelessWidget {
       listenable: Listenable.merge([AppRepo.instance, AuthService.instance]),
       builder: (context, _) {
         final children = <Widget>[
-          const _HeroRow(),
+          const _ScreenTimeHero(),
+          const _MetricsRow(),
           const _GoalCard(),
-          const _ScreenTimeCard(),
           const _QuickStartButton(),
           const _LockedAppsCard(),
-          AppRepo.instance.premium ? const _ProActiveCard() : const _UpgradeCard(),
+          if (!AppRepo.instance.premium) const _UpgradeRow(),
         ];
         return PageList(
           header: const _Header(),
@@ -183,8 +183,99 @@ class _Header extends StatelessWidget {
   }
 }
 
-class _HeroRow extends StatelessWidget {
-  const _HeroRow();
+/// Primary metric: today's screen time vs the 7-day average, with this week's bars.
+class _ScreenTimeHero extends StatelessWidget {
+  const _ScreenTimeHero();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final c = context.colors;
+    final repo = AppRepo.instance;
+    final st = ScreenTime.instance;
+    final today = dateOnly(repo.now());
+    final monday = today.subtract(Duration(days: today.weekday - 1));
+    final week = [for (var i = 0; i < 7; i++) monday.add(Duration(days: i))];
+    final values = [for (final d in week) d.isAfter(today) ? 0.0 : st.totalOn(d).toDouble()];
+    final todayMin = st.totalOn(today);
+    final prev = [for (var i = 1; i <= 7; i++) st.totalOn(today.subtract(Duration(days: i)))];
+    final avg = prev.reduce((a, b) => a + b) / 7;
+    final pct = avg <= 0 ? 0 : ((todayMin - avg) / avg * 100).round();
+    final better = pct <= 0;
+    final trend = better ? Tone.green : Tone.red;
+    final wd = DateFormat.E(Localizations.localeOf(context).toString());
+    final labels = [for (final d in week) wd.format(d).characters.first.toUpperCase()];
+    return PCard(
+      onTap: () => _goTab(context, AppTab.insights),
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  l.homeScreenTimeTitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppText.rowSub.copyWith(fontWeight: FontWeight.w600, color: c.textSecondary),
+                ),
+              ),
+              if (st.isDemo)
+                Row(mainAxisSize: MainAxisSize.min, children: [
+                  Icon(Icons.info_outline_rounded, size: 13, color: c.textMuted),
+                  const SizedBox(width: 4),
+                  Text(l.sampleData, style: AppText.small.copyWith(color: c.textMuted)),
+                ])
+              else
+                Text(l.homeToday, style: AppText.small.copyWith(color: c.textMuted)),
+            ],
+          ),
+          const SizedBox(height: 6),
+          TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0, end: todayMin.toDouble()),
+            duration: const Duration(milliseconds: 700),
+            curve: Curves.easeOutCubic,
+            builder: (_, v, _) => FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: AlignmentDirectional.centerStart,
+              child: Text(fmtMinutes(v.round(), h: l.unitH, m: l.unitM), style: AppText.heroValue.copyWith(fontSize: 40, color: c.textPrimary)),
+            ),
+          ),
+          if (avg > 0) ...[
+            const SizedBox(height: 2),
+            Row(children: [
+              Icon(better ? Icons.south_east_rounded : Icons.north_east_rounded, size: 15, color: trend),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  l.homeVsAvg('${pct > 0 ? '+' : ''}$pct'),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: trend),
+                ),
+              ),
+            ]),
+          ],
+          const SizedBox(height: 16),
+          PillBars(values: values, labels: labels, highlight: today.weekday - 1, height: 56, color: Tone.violet, goal: avg > 0 ? avg : null),
+          if (avg > 0) ...[
+            const SizedBox(height: 8),
+            Row(children: [
+              CustomPaint(size: const Size(14, 1.5), painter: _Dash(c.textMuted)),
+              const SizedBox(width: 6),
+              Text(l.homeAvgLegend, style: AppText.small.copyWith(color: c.textMuted)),
+            ]),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Supporting metrics: today's focus time and the current streak.
+class _MetricsRow extends StatelessWidget {
+  const _MetricsRow();
 
   @override
   Widget build(BuildContext context) {
@@ -193,92 +284,40 @@ class _HeroRow extends StatelessWidget {
     final repo = AppRepo.instance;
     final today = repo.todayFocusMinutes;
     final yest = repo.yesterdayFocusMinutes;
-    String? delta;
+    String sub;
+    Color subColor = c.textMuted;
     if (yest > 0) {
       final p = ((today - yest) / yest * 100).round();
-      delta = l.homeVsYesterday('${p >= 0 ? '+' : ''}$p');
+      sub = l.homeVsYesterday('${p >= 0 ? '+' : ''}$p');
+      subColor = p >= 0 ? Tone.green : c.textMuted;
+    } else {
+      sub = today == 0 ? l.homeStartToday : l.homeKeepGoing;
     }
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-            flex: 3,
-            child: PCard(
-              gradient: heroGradient,
+            child: _MetricTile(
+              icon: Icons.bolt_rounded,
+              iconColor: AppPalette.accent,
+              label: l.homeTodayFocus,
+              value: fmtMinutes(today, h: l.unitH, m: l.unitM),
+              sub: sub,
+              subColor: subColor,
               onTap: () => _goTab(context, AppTab.insights),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.schedule_rounded, size: 15, color: Colors.white),
-                      const SizedBox(width: 6),
-                      Expanded(
-                        child: Text(
-                          l.homeTodayFocus,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppText.rowSub.copyWith(color: Colors.white.withValues(alpha: 0.9)),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  TweenAnimationBuilder<double>(
-                    tween: Tween(begin: 0, end: today.toDouble()),
-                    duration: const Duration(milliseconds: 900),
-                    curve: Curves.easeOutCubic,
-                    builder: (_, v, _) => FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: AlignmentDirectional.centerStart,
-                      child: Text(
-                        fmtMinutes(v.round(), h: l.unitH, m: l.unitM),
-                        style: AppText.heroValue.copyWith(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      Icon(delta == null ? Icons.bolt_rounded : (today >= yest ? Icons.trending_up_rounded : Icons.trending_down_rounded), size: 15, color: Colors.white),
-                      const SizedBox(width: 5),
-                      Expanded(
-                        child: Text(
-                          delta ?? (today == 0 ? l.homeStartToday : l.homeKeepGoing),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppText.rowSub.copyWith(fontSize: 12, color: Colors.white.withValues(alpha: 0.85)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
             ),
           ),
           const SizedBox(width: 12),
           Expanded(
-            flex: 2,
-            child: PCard(
+            child: _MetricTile(
+              icon: Icons.local_fire_department_rounded,
+              iconColor: repo.streak > 0 ? Tone.amber : c.textMuted,
+              label: l.homeDayStreak,
+              value: '${repo.streak}',
+              sub: l.days(repo.bestStreak),
+              subPrefix: '${l.homeBest} ',
               onTap: () => _push(context, const StreaksScreen()),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: AppSpacing.card),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.local_fire_department_rounded, size: 30, color: repo.streak > 0 ? Tone.amber : c.textMuted),
-                  const SizedBox(height: 4),
-                  Text('${repo.streak}', style: AppText.heroValue.copyWith(color: c.textPrimary)),
-                  Text(
-                    l.homeDayStreak,
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppText.rowSub.copyWith(color: c.textMuted),
-                  ),
-                ],
-              ),
             ),
           ),
         ],
@@ -287,6 +326,54 @@ class _HeroRow extends StatelessWidget {
   }
 }
 
+class _MetricTile extends StatelessWidget {
+  const _MetricTile({
+    required this.icon,
+    required this.iconColor,
+    required this.label,
+    required this.value,
+    required this.sub,
+    this.subColor,
+    this.subPrefix = '',
+    required this.onTap,
+  });
+  final IconData icon;
+  final Color iconColor;
+  final String label, value, sub, subPrefix;
+  final Color? subColor;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return PCard(
+      onTap: onTap,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [
+            Icon(icon, size: 16, color: iconColor),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w600, color: c.textSecondary)),
+            ),
+          ]),
+          const SizedBox(height: 10),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: AlignmentDirectional.centerStart,
+            child: Text(value, style: AppText.tileValue.copyWith(color: c.textPrimary)),
+          ),
+          const SizedBox(height: 2),
+          Text('$subPrefix$sub', maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.small.copyWith(letterSpacing: 0, color: subColor ?? c.textMuted)),
+        ],
+      ),
+    );
+  }
+}
+
+/// Daily focus goal with an accessible progress bar.
 class _GoalCard extends StatelessWidget {
   const _GoalCard();
 
@@ -304,110 +391,38 @@ class _GoalCard extends StatelessWidget {
     final met = p >= 1;
     final onTrack = met || p >= dayShare;
     final statusColor = onTrack ? Tone.green : Tone.amber;
+    final status = met ? l.homeGoalMet : (onTrack ? l.homeOnTrack : l.homeKeepGoing);
+    final doneTxt = fmtMinutes(done, h: l.unitH, m: l.unitM);
+    final goalTxt = fmtMinutes(goal, h: l.unitH, m: l.unitM);
     return PCard(
       onTap: () => _push(context, const GoalsScreen()),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          CardTitle(
-            icon: Icons.track_changes_rounded,
-            title: l.homeTodayGoal,
-            trailing: Text(
-              '${fmtMinutes(done, h: l.unitH, m: l.unitM)} / ${fmtMinutes(goal, h: l.unitH, m: l.unitM)}',
-              style: AppText.rowSub.copyWith(color: c.textMuted),
-            ),
-          ),
-          const SizedBox(height: 14),
-          PBar(value: p),
-          const SizedBox(height: 10),
-          Row(
-            children: [
+      padding: const EdgeInsets.all(16),
+      child: Semantics(
+        label: '${l.homeTodayGoal}: ${l.homeGoalOf(doneTxt, goalTxt)}, ${l.homePctCompleted((p * 100).round())}, $status',
+        excludeSemantics: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(children: [
               Expanded(
-                child: Text(
-                  l.homePctCompleted((p * 100).round()),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppText.rowSub.copyWith(color: c.textMuted),
-                ),
+                child: Text(l.homeTodayGoal, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w600, color: c.textSecondary)),
               ),
               Icon(Icons.circle, size: 7, color: statusColor),
               const SizedBox(width: 6),
-              Text(
-                met ? l.homeGoalMet : (onTrack ? l.homeOnTrack : l.homeKeepGoing),
-                style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: statusColor),
+              Text(status, style: AppText.small.copyWith(letterSpacing: 0, fontWeight: FontWeight.w700, color: statusColor)),
+            ]),
+            const SizedBox(height: 8),
+            Row(crossAxisAlignment: CrossAxisAlignment.baseline, textBaseline: TextBaseline.alphabetic, children: [
+              Expanded(
+                child: Text(l.homeGoalOf(doneTxt, goalTxt), maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.cardTitle.copyWith(color: c.textPrimary)),
               ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ScreenTimeCard extends StatelessWidget {
-  const _ScreenTimeCard();
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final c = context.colors;
-    final repo = AppRepo.instance;
-    final st = ScreenTime.instance;
-    final today = dateOnly(repo.now());
-    final monday = today.subtract(Duration(days: today.weekday - 1));
-    final week = [for (var i = 0; i < 7; i++) monday.add(Duration(days: i))];
-    final values = [for (final d in week) d.isAfter(today) ? 0.0 : st.totalOn(d).toDouble()];
-    final todayMin = st.totalOn(today);
-    final prev = [for (var i = 1; i <= 7; i++) st.totalOn(today.subtract(Duration(days: i)))];
-    final avg = prev.reduce((a, b) => a + b) / 7;
-    final pct = avg <= 0 ? 0 : ((todayMin - avg) / avg * 100).round();
-    final better = pct <= 0;
-    final wd = DateFormat.E(Localizations.localeOf(context).toString());
-    final labels = [for (final d in week) wd.format(d).characters.first.toUpperCase()];
-    return PCard(
-      onTap: () => _goTab(context, AppTab.insights),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CardTitle(
-            icon: Icons.phone_iphone_rounded,
-            color: Tone.amber,
-            title: l.homeScreenTimeTitle,
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (st.isDemo) ...[Pill(l.sampleData, color: Tone.amber), const SizedBox(width: 6)],
-                Text(l.homeToday, style: AppText.rowSub.copyWith(color: c.textMuted)),
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: 12,
-            runSpacing: 4,
-            children: [
-              Text(
-                fmtMinutes(todayMin, h: l.unitH, m: l.unitM),
-                style: AppText.heroValue.copyWith(color: c.textPrimary),
-              ),
-              if (avg > 0)
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(better ? Icons.trending_down_rounded : Icons.trending_up_rounded, size: 16, color: better ? Tone.green : Tone.red),
-                    const SizedBox(width: 4),
-                    Text(
-                      l.homeVsAvg('${pct > 0 ? '+' : ''}$pct'),
-                      style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: better ? Tone.green : Tone.red),
-                    ),
-                  ],
-                ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          PillBars(values: values, labels: labels, highlight: today.weekday - 1, height: 44, color: Tone.violet),
-        ],
+              const SizedBox(width: 8),
+              Text('${(p * 100).round()}%', style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w800, color: c.textPrimary)),
+            ]),
+            const SizedBox(height: 10),
+            PBar(value: p, color: met ? Tone.green : Tone.violet),
+          ],
+        ),
       ),
     );
   }
@@ -422,7 +437,7 @@ class _QuickStartButton extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.chip),
-        boxShadow: [BoxShadow(color: AppPalette.accent.withValues(alpha: 0.35), blurRadius: 22, offset: const Offset(0, 8))],
+        boxShadow: [BoxShadow(color: AppPalette.accent.withValues(alpha: 0.22), blurRadius: 12, offset: const Offset(0, 4))],
       ),
       child: Material(
         type: MaterialType.transparency,
@@ -430,11 +445,8 @@ class _QuickStartButton extends StatelessWidget {
           onTap: () => _goTab(context, AppTab.focus),
           borderRadius: BorderRadius.circular(AppRadius.chip),
           child: Ink(
-            height: 58,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppRadius.chip),
-              gradient: const LinearGradient(colors: [AppPalette.accent, AppPalette.violet]),
-            ),
+            height: 56,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.chip), color: AppPalette.accent),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
@@ -472,15 +484,22 @@ class _LockedAppsCard extends StatelessWidget {
     final apps = repo.apps.where((a) => a.locked).toList()..sort((a, b) => (usage[b.id] ?? 0).compareTo(usage[a.id] ?? 0));
     final shown = apps.take(3).toList();
     return PCard(
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          CardTitle(
-            icon: Icons.lock_outline_rounded,
-            title: l.homeLockedApps,
-            trailing: LinkText(repo.apps.isEmpty ? l.homeAddApps : l.homeManage, onTap: () => _goTab(context, AppTab.block)),
-          ),
-          const SizedBox(height: 8),
+          Row(children: [
+            Expanded(
+              child: Text(
+                apps.isEmpty ? l.homeLockedApps : '${l.homeLockedApps} · ${apps.length}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppText.rowSub.copyWith(fontWeight: FontWeight.w600, color: c.textSecondary),
+              ),
+            ),
+            LinkText(repo.apps.isEmpty ? l.homeAddApps : l.homeManage, onTap: () => _goTab(context, AppTab.block)),
+          ]),
+          const SizedBox(height: 6),
           if (shown.isEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -497,10 +516,10 @@ class _LockedAppsCard extends StatelessWidget {
           else
             for (final a in shown)
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
+                padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Row(
                   children: [
-                    AppGlyph(a.id, size: 36),
+                    AppGlyph(a.id, size: 32),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
@@ -537,102 +556,61 @@ class _LockToggle extends StatelessWidget {
     final on = app.locked;
     return Container(
       key: ValueKey('home_lock_${app.id}'),
-      width: 30,
-      height: 30,
+      width: 26,
+      height: 26,
       decoration: BoxDecoration(shape: BoxShape.circle, color: on ? AppPalette.accent : c.glassFill),
-      child: Icon(on ? Icons.lock_rounded : Icons.lock_open_rounded, size: 15, color: on ? Colors.white : c.textMuted),
+      child: Icon(on ? Icons.lock_rounded : Icons.lock_open_rounded, size: 13, color: on ? Colors.white : c.textMuted),
     );
   }
 }
 
-class _UpgradeCard extends StatelessWidget {
-  const _UpgradeCard();
+/// Low-key upgrade entry (hidden for Pro users).
+class _UpgradeRow extends StatelessWidget {
+  const _UpgradeRow();
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final c = context.colors;
-    void open() => _push(context, const PaywallScreen());
-    return PCard(
-      accent: Tone.violet,
-      onTap: open,
-      child: Row(
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: const BoxDecoration(shape: BoxShape.circle, gradient: heroGradient),
-            child: const Icon(Icons.workspace_premium_rounded, color: Colors.white, size: 24),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 4,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Text(
-                      l.homeUpgradeTitle,
-                      style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w800, color: c.textPrimary),
-                    ),
-                    Pill(l.homePro, filled: true),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(l.homeUpgradeBody, style: AppText.rowSub.copyWith(fontSize: 12, color: c.textSecondary)),
-              ],
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        key: const ValueKey('home_try_free'),
+        onTap: () => _push(context, const PaywallScreen()),
+        borderRadius: BorderRadius.circular(AppRadius.tile),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.tile), border: Border.all(color: c.glassBorder)),
+          child: Row(children: [
+            const Icon(Icons.workspace_premium_outlined, size: 20, color: AppPalette.accent),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(l.homeUpgradeTitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.rowTitle.copyWith(fontSize: 14, fontWeight: FontWeight.w700, color: c.textPrimary)),
+                Text(l.homeUpgradeBody, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.small.copyWith(letterSpacing: 0, color: c.textMuted)),
+              ]),
             ),
-          ),
-          const SizedBox(width: 10),
-          FilledButton(
-            key: const ValueKey('home_try_free'),
-            onPressed: open,
-            style: FilledButton.styleFrom(
-              backgroundColor: AppPalette.accent,
-              foregroundColor: Colors.white,
-              shape: const StadiumBorder(),
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              textStyle: AppText.rowSub.copyWith(fontWeight: FontWeight.w700),
-            ),
-            child: Text(l.homeTryFree),
-          ),
-        ],
+            const SizedBox(width: 8),
+            Icon(Directionality.of(context) == TextDirection.rtl ? Icons.chevron_left_rounded : Icons.chevron_right_rounded, color: c.textMuted),
+          ]),
+        ),
       ),
     );
   }
 }
 
-class _ProActiveCard extends StatelessWidget {
-  const _ProActiveCard();
+class _Dash extends CustomPainter {
+  _Dash(this.color);
+  final Color color;
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()
+      ..color = color
+      ..strokeWidth = size.height;
+    canvas.drawLine(Offset.zero, const Offset(4, 0), p);
+    canvas.drawLine(const Offset(8, 0), const Offset(12, 0), p);
+  }
 
   @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final c = context.colors;
-    return PCard(
-      accent: Tone.green,
-      child: Row(
-        children: [
-          const IconBadge(icon: Icons.workspace_premium_rounded, color: Tone.green),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l.homeProActive,
-                  style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w800, color: c.textPrimary),
-                ),
-                const SizedBox(height: 2),
-                Text(l.homeProActiveBody, style: AppText.rowSub.copyWith(fontSize: 12, color: c.textSecondary)),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  bool shouldRepaint(_Dash old) => old.color != color;
 }

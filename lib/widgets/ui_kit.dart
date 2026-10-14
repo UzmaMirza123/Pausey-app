@@ -46,8 +46,8 @@ class PCard extends StatelessWidget {
         color: gradient != null
             ? null
             : accent != null
-                ? Color.alphaBlend(accent!.withValues(alpha: dark ? 0.10 : 0.07), dark ? const Color(0xFF14122C) : Colors.white)
-                : (dark ? const Color(0xFF14122C) : Colors.white),
+            ? Color.alphaBlend(accent!.withValues(alpha: dark ? 0.10 : 0.07), dark ? const Color(0xFF14122C) : Colors.white)
+            : (dark ? const Color(0xFF14122C) : Colors.white),
         border: Border.all(color: gradient != null ? Colors.white.withValues(alpha: 0.12) : (accent?.withValues(alpha: 0.28) ?? c.glassBorder)),
         boxShadow: gradient != null
             ? [BoxShadow(color: AppPalette.accent.withValues(alpha: 0.35), blurRadius: 24, offset: const Offset(0, 10))]
@@ -63,11 +63,7 @@ class PCard extends StatelessWidget {
 }
 
 /// Gradient used for hero cards (Today's Focus, Productivity score, Pro).
-const heroGradient = LinearGradient(
-  begin: Alignment.topLeft,
-  end: Alignment.bottomRight,
-  colors: [Color(0xFF8E6CFF), Color(0xFF5B34E0)],
-);
+const heroGradient = LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Color(0xFF8E6CFF), Color(0xFF5B34E0)]);
 
 /// Screen title row: big title + optional subtitle + optional trailing action.
 class ScreenHeader extends StatelessWidget {
@@ -93,10 +89,20 @@ class ScreenHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: AppText.screenTitle.copyWith(color: c.textPrimary), maxLines: 2, overflow: TextOverflow.ellipsis),
+                Text(
+                  title,
+                  style: AppText.screenTitle.copyWith(color: c.textPrimary),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 if (subtitle != null) ...[
                   const SizedBox(height: 2),
-                  Text(subtitle!, style: AppText.rowSub.copyWith(color: c.textMuted), maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text(
+                    subtitle!,
+                    style: AppText.rowSub.copyWith(color: c.textMuted),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ],
             ),
@@ -126,13 +132,16 @@ class RoundIconButton extends StatelessWidget {
       child: Container(
         width: 40,
         height: 40,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: c.glassFill, border: Border.all(color: c.glassBorder)),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: c.glassFill,
+          border: Border.all(color: c.glassBorder),
+        ),
         child: Stack(
           alignment: Alignment.center,
           children: [
             Icon(icon, size: 19, color: c.textPrimary),
-            if (badge)
-              const PositionedDirectional(top: 9, end: 10, child: CircleAvatar(radius: 4, backgroundColor: Tone.red)),
+            if (badge) const PositionedDirectional(top: 9, end: 10, child: CircleAvatar(radius: 4, backgroundColor: Tone.red)),
           ],
         ),
       ),
@@ -178,7 +187,14 @@ class CardTitle extends StatelessWidget {
       children: [
         Icon(icon, size: 18, color: color),
         const SizedBox(width: 8),
-        Expanded(child: Text(title, style: AppText.cardTitle.copyWith(color: context.colors.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+        Expanded(
+          child: Text(
+            title,
+            style: AppText.cardTitle.copyWith(color: context.colors.textPrimary),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
         ?trailing,
       ],
     );
@@ -198,7 +214,9 @@ class SectionLabel extends StatelessWidget {
       padding: const EdgeInsetsDirectional.fromSTEB(4, 8, 4, 8),
       child: Row(
         children: [
-          Expanded(child: Text(text.toUpperCase(), style: AppText.small.copyWith(color: context.colors.textMuted, letterSpacing: 1.1))),
+          Expanded(
+            child: Text(text.toUpperCase(), style: AppText.small.copyWith(color: context.colors.textMuted, letterSpacing: 1.1)),
+          ),
           ?trailing,
         ],
       ),
@@ -215,13 +233,16 @@ class LinkText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-          child: Text(text, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: AppPalette.violet)),
-        ),
-      );
+    onTap: onTap,
+    borderRadius: BorderRadius.circular(8),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      child: Text(
+        text,
+        style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: AppPalette.violet),
+      ),
+    ),
+  );
 }
 
 /// Pill tag ("PRO", "Done", "Sched").
@@ -282,7 +303,10 @@ class ChoiceChipP extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (icon != null) ...[Icon(icon, size: 14, color: selected ? AppPalette.violet : c.textMuted), const SizedBox(width: 6)],
-              Text(label, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: selected ? c.textPrimary : c.textSecondary)),
+              Text(
+                label,
+                style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: selected ? c.textPrimary : c.textSecondary),
+              ),
             ],
           ),
         ),
@@ -335,9 +359,18 @@ class StatTile extends StatelessWidget {
         children: [
           Icon(icon, size: 20, color: color),
           const SizedBox(height: 8),
-          FittedBox(fit: BoxFit.scaleDown, child: Text(value, style: AppText.tileValue.copyWith(color: c.textPrimary))),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(value, style: AppText.tileValue.copyWith(color: c.textPrimary)),
+          ),
           const SizedBox(height: 2),
-          Text(label, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppText.rowSub.copyWith(fontSize: 12, color: c.textMuted)),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: AppText.rowSub.copyWith(fontSize: 12, color: c.textMuted),
+          ),
           if (progress != null) ...[const SizedBox(height: 10), PBar(value: progress!, color: color, height: 5)],
         ],
       ),
@@ -423,10 +456,16 @@ class _RingPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final r = Rect.fromLTWH(stroke / 2, stroke / 2, size.width - stroke, size.height - stroke);
-    canvas.drawArc(r, 0, math.pi * 2, false, Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = stroke
-      ..color = track);
+    canvas.drawArc(
+      r,
+      0,
+      math.pi * 2,
+      false,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = stroke
+        ..color = track,
+    );
     if (v <= 0) return;
     canvas.drawArc(
       r,
@@ -464,42 +503,74 @@ class PillBars extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.colors;
     final maxV = math.max(goal ?? 0, values.fold<double>(0, math.max));
-    return SizedBox(
-      height: height + 22,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          for (var i = 0; i < values.length; i++) ...[
-            if (i > 0) const SizedBox(width: 8),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TweenAnimationBuilder<double>(
-                    tween: Tween(begin: 0, end: maxV <= 0 ? 0 : values[i] / maxV),
-                    duration: Duration(milliseconds: 500 + i * 60),
-                    curve: Curves.easeOutCubic,
-                    builder: (_, f, _) => Container(
-                      height: math.max(10, height * f),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        gradient: i == highlight
-                            ? LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [color.withValues(alpha: 0.75), color])
-                            : null,
-                        color: i == highlight ? null : color.withValues(alpha: context.isDark ? 0.22 : 0.18),
-                      ),
+    final row = Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        for (var i = 0; i < values.length; i++) ...[
+          if (i > 0) const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0, end: maxV <= 0 ? 0 : values[i] / maxV),
+                  duration: Duration(milliseconds: 500 + i * 60),
+                  curve: Curves.easeOutCubic,
+                  builder: (_, f, _) => Container(
+                    height: math.max(10, height * f),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      gradient: i == highlight
+                          ? LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [color.withValues(alpha: 0.75), color])
+                          : null,
+                      color: i == highlight ? null : color.withValues(alpha: context.isDark ? 0.22 : 0.18),
                     ),
                   ),
-                  const SizedBox(height: 6),
-                  Text(labels[i], style: AppText.small.copyWith(color: i == highlight ? color : c.textMuted)),
-                ],
-              ),
+                ),
+                const SizedBox(height: 6),
+                Text(labels[i], style: AppText.small.copyWith(color: i == highlight ? color : c.textMuted)),
+              ],
             ),
-          ],
+          ),
         ],
-      ),
+      ],
+    );
+    final g = goal;
+    return SizedBox(
+      height: height + 22,
+      child: g == null || maxV <= 0
+          ? row
+          : Stack(
+              children: [
+                row,
+                // Dashed reference line (e.g. average or goal), above the 22px label area.
+                PositionedDirectional(
+                  start: 0,
+                  end: 0,
+                  bottom: 22 + height * (g / maxV).clamp(0.0, 1.0),
+                  child: CustomPaint(size: const Size.fromHeight(1.5), painter: _DashPainter(c.textMuted)),
+                ),
+              ],
+            ),
     );
   }
+}
+
+class _DashPainter extends CustomPainter {
+  _DashPainter(this.color);
+  final Color color;
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()
+      ..color = color
+      ..strokeWidth = 1.5;
+    for (double x = 0; x < size.width; x += 8) {
+      canvas.drawLine(Offset(x, 0), Offset(math.min(x + 4, size.width), 0), p);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_DashPainter old) => old.color != color;
 }
 
 /// Smooth line chart with a soft fill (sparkline). Values any scale.
@@ -550,12 +621,18 @@ class _SparkPainter extends CustomPainter {
       ..lineTo(size.width, size.height)
       ..lineTo(0, size.height)
       ..close();
-    canvas.drawPath(fill, Paint()..shader = ui.Gradient.linear(Offset.zero, Offset(0, size.height), [color.withValues(alpha: 0.28), color.withValues(alpha: 0)]));
-    canvas.drawPath(path, Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.4
-      ..strokeCap = StrokeCap.round
-      ..color = color);
+    canvas.drawPath(
+      fill,
+      Paint()..shader = ui.Gradient.linear(Offset.zero, Offset(0, size.height), [color.withValues(alpha: 0.28), color.withValues(alpha: 0)]),
+    );
+    canvas.drawPath(
+      path,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2.4
+        ..strokeCap = StrokeCap.round
+        ..color = color,
+    );
     canvas.drawCircle(p(v.length - 1), 4, Paint()..color = color);
   }
 
@@ -565,7 +642,16 @@ class _SparkPainter extends CustomPainter {
 
 /// A row inside a grouped settings-style list.
 class PListTile extends StatelessWidget {
-  const PListTile({super.key, required this.icon, required this.title, this.subtitle, this.color = Tone.violet, this.trailing, this.onTap, this.destructive = false});
+  const PListTile({
+    super.key,
+    required this.icon,
+    required this.title,
+    this.subtitle,
+    this.color = Tone.violet,
+    this.trailing,
+    this.onTap,
+    this.destructive = false,
+  });
 
   final IconData icon;
   final String title;
@@ -595,7 +681,10 @@ class PListTile extends StatelessWidget {
                 ],
               ),
             ),
-            if (trailing != null) trailing! else if (onTap != null) Icon(Icons.chevron_right_rounded, color: c.textMuted, textDirection: Directionality.of(context)),
+            if (trailing != null)
+              trailing!
+            else if (onTap != null)
+              Icon(Icons.chevron_right_rounded, color: c.textMuted, textDirection: Directionality.of(context)),
           ],
         ),
       ),
@@ -617,10 +706,7 @@ class PGroup extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.card),
         child: Column(
           children: [
-            for (var i = 0; i < children.length; i++) ...[
-              if (i > 0) Divider(height: 1, thickness: 1, indent: 66, color: context.colors.divider),
-              children[i],
-            ],
+            for (var i = 0; i < children.length; i++) ...[if (i > 0) Divider(height: 1, thickness: 1, indent: 66, color: context.colors.divider), children[i]],
           ],
         ),
       ),
@@ -709,14 +795,24 @@ class StateMessage extends StatelessWidget {
               color: color.withValues(alpha: 0.12),
               border: Border.all(color: color.withValues(alpha: 0.25)),
             ),
-            child: Center(child: IconBadge(icon: icon, color: color, size: 56)),
+            child: Center(
+              child: IconBadge(icon: icon, color: color, size: 56),
+            ),
           ),
           const SizedBox(height: 16),
           Pill(badge, color: color, icon: Icons.circle),
           const SizedBox(height: 12),
-          Text(title, textAlign: TextAlign.center, style: AppText.cardTitle.copyWith(fontSize: 20, color: c.textPrimary)),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: AppText.cardTitle.copyWith(fontSize: 20, color: c.textPrimary),
+          ),
           const SizedBox(height: 8),
-          Text(message, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(color: c.textSecondary)),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: AppText.rowSub.copyWith(color: c.textSecondary),
+          ),
           if (primaryLabel != null) ...[
             const SizedBox(height: 18),
             FilledButton(
@@ -768,10 +864,7 @@ class PageList extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              for (var i = 0; i < children.length; i++) ...[
-                if (i > 0) const SizedBox(height: AppSpacing.section),
-                children[i],
-              ],
+              for (var i = 0; i < children.length; i++) ...[if (i > 0) const SizedBox(height: AppSpacing.section), children[i]],
             ],
           ),
         ),
@@ -813,7 +906,9 @@ class AppGlyph extends StatelessWidget {
       decoration: BoxDecoration(shape: BoxShape.circle, color: context.isDark ? const Color(0xFF1E1A3A) : const Color(0xFFF1EEFF)),
       alignment: Alignment.center,
       child: png != null
-          ? ClipOval(child: Image.asset(png, width: size * 0.78, height: size * 0.78, filterQuality: FilterQuality.medium))
+          ? ClipOval(
+              child: Image.asset(png, width: size * 0.78, height: size * 0.78, filterQuality: FilterQuality.medium),
+            )
           : Icon(_icons[appId] ?? Icons.apps_rounded, size: size * 0.5, color: AppPalette.violet),
     );
   }

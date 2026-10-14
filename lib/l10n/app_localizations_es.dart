@@ -1585,6 +1585,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homePwClose => 'Cerrar';
 
   @override
+  String get homeAvgLegend => 'Media de 7 días';
+
+  @override
+  String homeGoalOf(String done, String goal) {
+    return '$done de $goal';
+  }
+
+  @override
+  String get homeBest => 'Mejor:';
+
+  @override
   String get insightsAnalytics => 'Análisis';
 
   @override
