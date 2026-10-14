@@ -2368,6 +2368,39 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeBest => 'الأفضل:';
 
   @override
+  String get homeMyApps => 'تطبيقاتي';
+
+  @override
+  String get homeManageApps => 'إدارة التطبيقات';
+
+  @override
+  String get homeUnblockApps => 'إلغاء حظر التطبيقات';
+
+  @override
+  String homeAppsLocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count تطبيقًا مقفلًا',
+      few: '$count تطبيقات مقفلة',
+      two: 'تطبيقان مقفلان',
+      one: 'تطبيق واحد مقفل',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeAppNamesMore(String names, int count) {
+    return '$names +$count';
+  }
+
+  @override
+  String get homeNoLockedApps => 'لا توجد تطبيقات مقفلة بعد';
+
+  @override
+  String get homeNoLockedAppsSub => 'اختر التطبيقات التي تشدّك';
+
+  @override
   String get insightsAnalytics => 'التحليلات';
 
   @override

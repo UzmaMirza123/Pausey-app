@@ -2318,6 +2318,36 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homeBest => '最佳:';
 
   @override
+  String get homeMyApps => '我的应用';
+
+  @override
+  String get homeManageApps => '管理应用';
+
+  @override
+  String get homeUnblockApps => '解除屏蔽';
+
+  @override
+  String homeAppsLocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '已锁定 $count 个应用',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeAppNamesMore(String names, int count) {
+    return '$names +$count';
+  }
+
+  @override
+  String get homeNoLockedApps => '还没有锁定的应用';
+
+  @override
+  String get homeNoLockedAppsSub => '选出总让你停不下来的应用';
+
+  @override
   String get insightsAnalytics => '分析';
 
   @override

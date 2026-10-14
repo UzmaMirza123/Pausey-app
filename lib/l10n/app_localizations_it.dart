@@ -2415,6 +2415,37 @@ class AppLocalizationsIt extends AppLocalizations {
   String get homeBest => 'Record:';
 
   @override
+  String get homeMyApps => 'Le mie app';
+
+  @override
+  String get homeManageApps => 'Gestisci app';
+
+  @override
+  String get homeUnblockApps => 'Sblocca app';
+
+  @override
+  String homeAppsLocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count app bloccate',
+      one: '1 app bloccata',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeAppNamesMore(String names, int count) {
+    return '$names +$count';
+  }
+
+  @override
+  String get homeNoLockedApps => 'Nessuna app bloccata';
+
+  @override
+  String get homeNoLockedAppsSub => 'Scegli le app che ti trascinano';
+
+  @override
   String get insightsAnalytics => 'Analisi';
 
   @override

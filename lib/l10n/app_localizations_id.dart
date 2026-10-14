@@ -2394,6 +2394,36 @@ class AppLocalizationsId extends AppLocalizations {
   String get homeBest => 'Terbaik:';
 
   @override
+  String get homeMyApps => 'Aplikasiku';
+
+  @override
+  String get homeManageApps => 'Kelola aplikasi';
+
+  @override
+  String get homeUnblockApps => 'Buka blokir aplikasi';
+
+  @override
+  String homeAppsLocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count aplikasi dikunci',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeAppNamesMore(String names, int count) {
+    return '$names +$count';
+  }
+
+  @override
+  String get homeNoLockedApps => 'Belum ada aplikasi dikunci';
+
+  @override
+  String get homeNoLockedAppsSub => 'Pilih aplikasi yang sering menarikmu';
+
+  @override
   String get insightsAnalytics => 'Analitik';
 
   @override

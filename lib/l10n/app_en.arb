@@ -1366,6 +1366,30 @@
     }
   },
   "homeBest": "Best:",
+  "homeMyApps": "My apps",
+  "homeManageApps": "Manage apps",
+  "homeUnblockApps": "Unblock apps",
+  "homeAppsLocked": "{count, plural, =1{1 app locked} other{{count} apps locked}}",
+  "@homeAppsLocked": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeAppNamesMore": "{names} +{count}",
+  "@homeAppNamesMore": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeNoLockedApps": "No apps locked yet",
+  "homeNoLockedAppsSub": "Pick the apps that pull you in",
   "insightsAnalytics": "Analytics",
   "insightsScreenTime": "Screen Time",
   "insightsToday": "Today",

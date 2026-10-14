@@ -12,6 +12,7 @@ import '../goals/goals_screen.dart';
 import '../paywall/paywall_screen.dart';
 import '../profile/streaks_screen.dart';
 import '../shell/app_shell.dart';
+import 'widgets/my_apps_card.dart';
 
 /// Home tab: screen time (primary), focus + streak, daily goal, quick start, locked apps, slim upgrade row.
 class HomeScreen extends StatelessWidget {
@@ -27,7 +28,7 @@ class HomeScreen extends StatelessWidget {
           const _MetricsRow(),
           const _GoalCard(),
           const _QuickStartButton(),
-          const _LockedAppsCard(),
+          const MyAppsSection(),
           if (!AppRepo.instance.premium) const _UpgradeRow(),
         ];
         return PageList(
@@ -468,98 +469,6 @@ class _QuickStartButton extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _LockedAppsCard extends StatelessWidget {
-  const _LockedAppsCard();
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final c = context.colors;
-    final repo = AppRepo.instance;
-    final usage = {for (final u in ScreenTime.instance.usageOn(repo.now())) u.appId: u.minutes};
-    final apps = repo.apps.where((a) => a.locked).toList()..sort((a, b) => (usage[b.id] ?? 0).compareTo(usage[a.id] ?? 0));
-    final shown = apps.take(3).toList();
-    return PCard(
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(children: [
-            Expanded(
-              child: Text(
-                apps.isEmpty ? l.homeLockedApps : '${l.homeLockedApps} · ${apps.length}',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppText.rowSub.copyWith(fontWeight: FontWeight.w600, color: c.textSecondary),
-              ),
-            ),
-            LinkText(repo.apps.isEmpty ? l.homeAddApps : l.homeManage, onTap: () => _goTab(context, AppTab.block)),
-          ]),
-          const SizedBox(height: 6),
-          if (shown.isEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                children: [
-                  const IconBadge(icon: Icons.shield_outlined, color: Tone.violet),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(l.homeNoApps, style: AppText.rowSub.copyWith(color: c.textSecondary)),
-                  ),
-                ],
-              ),
-            )
-          else
-            for (final a in shown)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Row(
-                  children: [
-                    AppGlyph(a.id, size: 32),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        a.name,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppText.rowTitle.copyWith(color: c.textPrimary),
-                      ),
-                    ),
-                    if (usage[a.id] != null)
-                      Text(
-                        fmtMinutes(usage[a.id]!, h: l.unitH, m: l.unitM),
-                        style: AppText.rowSub.copyWith(color: c.textMuted),
-                      ),
-                    const SizedBox(width: 10),
-                    _LockToggle(app: a),
-                  ],
-                ),
-              ),
-        ],
-      ),
-    );
-  }
-}
-
-class _LockToggle extends StatelessWidget {
-  const _LockToggle({required this.app});
-  final ManagedApp app;
-
-  /// Status only (not tappable): filled lock when the app is locked.
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final on = app.locked;
-    return Container(
-      key: ValueKey('home_lock_${app.id}'),
-      width: 26,
-      height: 26,
-      decoration: BoxDecoration(shape: BoxShape.circle, color: on ? AppPalette.accent : c.glassFill),
-      child: Icon(on ? Icons.lock_rounded : Icons.lock_open_rounded, size: 13, color: on ? Colors.white : c.textMuted),
     );
   }
 }

@@ -2383,6 +2383,36 @@ class AppLocalizationsTr extends AppLocalizations {
   String get homeBest => 'En iyi:';
 
   @override
+  String get homeMyApps => 'Uygulamalarım';
+
+  @override
+  String get homeManageApps => 'Uygulamaları yönet';
+
+  @override
+  String get homeUnblockApps => 'Engeli kaldır';
+
+  @override
+  String homeAppsLocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count uygulama kilitli',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeAppNamesMore(String names, int count) {
+    return '$names +$count';
+  }
+
+  @override
+  String get homeNoLockedApps => 'Henüz kilitli uygulama yok';
+
+  @override
+  String get homeNoLockedAppsSub => 'Sizi içine çeken uygulamaları seçin';
+
+  @override
   String get insightsAnalytics => 'Analiz';
 
   @override

@@ -2397,6 +2397,39 @@ class AppLocalizationsRu extends AppLocalizations {
   String get homeBest => 'Рекорд:';
 
   @override
+  String get homeMyApps => 'Мои приложения';
+
+  @override
+  String get homeManageApps => 'Управлять';
+
+  @override
+  String get homeUnblockApps => 'Разблокировать';
+
+  @override
+  String homeAppsLocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count приложения заблокировано',
+      many: '$count приложений заблокировано',
+      few: '$count приложения заблокированы',
+      one: '$count приложение заблокировано',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeAppNamesMore(String names, int count) {
+    return '$names +$count';
+  }
+
+  @override
+  String get homeNoLockedApps => 'Пока ничего не заблокировано';
+
+  @override
+  String get homeNoLockedAppsSub => 'Выберите приложения, которые затягивают';
+
+  @override
   String get insightsAnalytics => 'Аналитика';
 
   @override

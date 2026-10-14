@@ -2386,6 +2386,37 @@ class AppLocalizationsUr extends AppLocalizations {
   String get homeBest => 'بہترین:';
 
   @override
+  String get homeMyApps => 'میری ایپس';
+
+  @override
+  String get homeManageApps => 'ایپس منظم کریں';
+
+  @override
+  String get homeUnblockApps => 'ایپس کھولیں';
+
+  @override
+  String homeAppsLocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ایپس لاک ہیں',
+      one: '1 ایپ لاک ہے',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeAppNamesMore(String names, int count) {
+    return '$names +$count';
+  }
+
+  @override
+  String get homeNoLockedApps => 'ابھی کوئی ایپ لاک نہیں';
+
+  @override
+  String get homeNoLockedAppsSub => 'وہ ایپس چنیں جو آپ کو کھینچتی ہیں';
+
+  @override
   String get insightsAnalytics => 'تجزیات';
 
   @override

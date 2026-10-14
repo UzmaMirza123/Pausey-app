@@ -4366,6 +4366,48 @@ abstract class AppLocalizations {
   /// **'Best:'**
   String get homeBest;
 
+  /// No description provided for @homeMyApps.
+  ///
+  /// In en, this message translates to:
+  /// **'My apps'**
+  String get homeMyApps;
+
+  /// No description provided for @homeManageApps.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage apps'**
+  String get homeManageApps;
+
+  /// No description provided for @homeUnblockApps.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock apps'**
+  String get homeUnblockApps;
+
+  /// No description provided for @homeAppsLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 app locked} other{{count} apps locked}}'**
+  String homeAppsLocked(int count);
+
+  /// No description provided for @homeAppNamesMore.
+  ///
+  /// In en, this message translates to:
+  /// **'{names} +{count}'**
+  String homeAppNamesMore(String names, int count);
+
+  /// No description provided for @homeNoLockedApps.
+  ///
+  /// In en, this message translates to:
+  /// **'No apps locked yet'**
+  String get homeNoLockedApps;
+
+  /// No description provided for @homeNoLockedAppsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the apps that pull you in'**
+  String get homeNoLockedAppsSub;
+
   /// No description provided for @insightsAnalytics.
   ///
   /// In en, this message translates to:

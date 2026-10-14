@@ -16,19 +16,27 @@ void main() {
     await AppRepo.instance.setPremium(false);
   });
 
-  testWidgets('Home lock icon is status only (tap does nothing)', (tester) async {
+  testWidgets('My apps card lists locked apps; Manage apps opens App Lock; Unblock opens the sheet', (tester) async {
     tester.view.physicalSize = const Size(412 * 3, 1600 * 3);
     tester.view.devicePixelRatio = 3;
     addTearDown(tester.view.reset);
     await tester.pumpWidget(const PauseyApp(home: AppShell()));
     await tester.pump(const Duration(seconds: 1));
-    final app = AppRepo.instance.apps.first;
-    final before = app.locked;
-    final toggle = find.byKey(ValueKey('home_lock_${app.id}'));
-    await tester.ensureVisible(toggle);
-    await tester.tap(toggle, warnIfMissed: false);
-    await tester.pump(const Duration(milliseconds: 300));
-    expect(AppRepo.instance.apps.first.locked, before);
+    final locked = AppRepo.instance.apps.where((a) => a.locked).toList();
+    expect(find.text('My apps'), findsOneWidget);
+    expect(find.text('${locked.length} apps locked'), findsOneWidget);
+    expect(find.textContaining(locked.first.name), findsWidgets);
+
+    await tester.ensureVisible(find.byKey(const ValueKey('home_unblock')));
+    await tester.tap(find.byKey(const ValueKey('home_unblock')));
+    await tester.pump(const Duration(milliseconds: 600));
+    expect(find.text('Unblock apps'), findsNWidgets(2)); // pill + sheet title
+    Navigator.of(tester.element(find.text('Unblock apps').last)).pop();
+    await tester.pump(const Duration(milliseconds: 600));
+
+    await tester.tap(find.text('Manage apps'));
+    await tester.pump(const Duration(milliseconds: 600));
+    expect(find.text('App Lock'), findsWidgets);
     await tester.pump(const Duration(seconds: 3));
   });
 

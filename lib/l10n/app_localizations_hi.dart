@@ -2381,6 +2381,37 @@ class AppLocalizationsHi extends AppLocalizations {
   String get homeBest => 'सर्वश्रेष्ठ:';
 
   @override
+  String get homeMyApps => 'मेरे ऐप्स';
+
+  @override
+  String get homeManageApps => 'ऐप्स मैनेज करें';
+
+  @override
+  String get homeUnblockApps => 'ऐप्स अनब्लॉक करें';
+
+  @override
+  String homeAppsLocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ऐप्स लॉक हैं',
+      one: '1 ऐप लॉक है',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeAppNamesMore(String names, int count) {
+    return '$names +$count';
+  }
+
+  @override
+  String get homeNoLockedApps => 'अभी कोई ऐप लॉक नहीं';
+
+  @override
+  String get homeNoLockedAppsSub => 'वे ऐप्स चुनें जो आपको खींचते हैं';
+
+  @override
   String get insightsAnalytics => 'एनालिटिक्स';
 
   @override

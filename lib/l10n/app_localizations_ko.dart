@@ -2329,6 +2329,36 @@ class AppLocalizationsKo extends AppLocalizations {
   String get homeBest => '최고:';
 
   @override
+  String get homeMyApps => '내 앱';
+
+  @override
+  String get homeManageApps => '앱 관리';
+
+  @override
+  String get homeUnblockApps => '앱 차단 해제';
+
+  @override
+  String homeAppsLocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '앱 $count개 잠김',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeAppNamesMore(String names, int count) {
+    return '$names +$count';
+  }
+
+  @override
+  String get homeNoLockedApps => '아직 잠긴 앱이 없어요';
+
+  @override
+  String get homeNoLockedAppsSub => '자꾸 손이 가는 앱을 골라 보세요';
+
+  @override
   String get insightsAnalytics => '분석';
 
   @override

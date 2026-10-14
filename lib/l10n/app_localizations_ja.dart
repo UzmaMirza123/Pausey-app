@@ -2322,6 +2322,36 @@ class AppLocalizationsJa extends AppLocalizations {
   String get homeBest => '最高:';
 
   @override
+  String get homeMyApps => 'マイアプリ';
+
+  @override
+  String get homeManageApps => 'アプリを管理';
+
+  @override
+  String get homeUnblockApps => 'アプリのブロック解除';
+
+  @override
+  String homeAppsLocked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count個のアプリをロック中',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeAppNamesMore(String names, int count) {
+    return '$names +$count';
+  }
+
+  @override
+  String get homeNoLockedApps => 'ロック中のアプリはまだありません';
+
+  @override
+  String get homeNoLockedAppsSub => 'つい開いてしまうアプリを選びましょう';
+
+  @override
   String get insightsAnalytics => '分析';
 
   @override
