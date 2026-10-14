@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/models.dart';
+import '../../../services/installed_apps.dart';
 import '../../../services/native_bridge.dart';
 import '../../../utils/app_theme.dart';
 import '../../../utils/l10n.dart';
@@ -193,20 +194,13 @@ class AppsStage extends StatefulWidget {
 }
 
 class _AppsStageState extends State<AppsStage> {
-  List<InstalledApp>? _installed;
-  bool _loading = true;
+  InstalledAppsCache get _cache => InstalledAppsCache.instance;
   String _query = '';
 
   @override
   void initState() {
     super.initState();
-    NativeBridge.instance.installedApps().then((list) {
-      if (!mounted) return;
-      setState(() {
-        _installed = list;
-        _loading = false;
-      });
-    });
+    _cache.ensureLoaded();
   }
 
   /// Installed app → stable id (catalogue name when it's a known app, so Home shows its icon).
@@ -225,11 +219,15 @@ class _AppsStageState extends State<AppsStage> {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final c = context.colors;
-    final installed = _installed ?? const [];
-    final real = installed.isNotEmpty;
     return ListenableBuilder(
-      listenable: _s,
+      listenable: Listenable.merge([_s, _cache]),
       builder: (context, _) {
+        // On a phone only its installed apps are offered; never a made-up list.
+        final android = _cache.supported;
+        final installed = _cache.apps;
+        final real = android && _cache.loaded;
+        final loading = android && !_cache.loaded && !_cache.failed;
+        final failed = android && !_cache.loaded && _cache.failed && !_cache.loading;
         final List<(ObApp, Widget)> rows;
         if (real) {
           final known = ManagedApp.knownPackages.values.toSet();
@@ -247,6 +245,8 @@ class _AppsStageState extends State<AppsStage> {
                       : ClipRRect(borderRadius: BorderRadius.circular(9), child: Image.memory(a.icon!, width: 36, height: 36, gaplessPlayback: true)),
                 ),
           ];
+        } else if (android) {
+          rows = const [];
         } else {
           rows = [
             for (final name in const ['Instagram', 'TikTok', 'YouTube', 'Facebook', 'Twitter / X', 'Snapchat', 'Reddit', 'Netflix', 'WhatsApp'])
@@ -259,7 +259,7 @@ class _AppsStageState extends State<AppsStage> {
           onPrimary: widget.onNext,
           children: [
             ObReveal(child: ObTitle(l.cvAppsTitle)),
-            ObReveal(index: 1, child: ObSubtitle(real ? l.cvAppsSubReal : l.cvAppsSubPopular)),
+            ObReveal(index: 1, child: ObSubtitle(android ? l.cvAppsSubReal : l.cvAppsSubPopular)),
             const SizedBox(height: 18),
             if (real)
               Padding(
@@ -278,8 +278,20 @@ class _AppsStageState extends State<AppsStage> {
                   ),
                 ),
               ),
-            if (_loading)
+            if (loading || _cache.loading && !real)
               const Padding(padding: EdgeInsets.all(24), child: Center(child: CircularProgressIndicator(strokeWidth: 2.5)))
+            else if (failed)
+              PCard(
+                child: Column(children: [
+                  Text(l.cvAppsLoadFailed, textAlign: TextAlign.center, style: AppText.rowTitle.copyWith(color: c.textPrimary)),
+                  const SizedBox(height: 12),
+                  OutlinedButton(
+                    onPressed: () => _cache.ensureLoaded(force: true),
+                    style: OutlinedButton.styleFrom(minimumSize: const Size(120, 44), shape: const StadiumBorder(), foregroundColor: AppPalette.accent),
+                    child: Text(l.cvTryAgain),
+                  ),
+                ]),
+              )
             else
               for (final (i, (app, icon)) in rows.indexed)
                 ObReveal(

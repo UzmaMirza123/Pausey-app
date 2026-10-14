@@ -228,7 +228,7 @@ class _Badge extends StatelessWidget {
       (130.0, 20.0, Tone.violet, 8.0),
       (-135.0, 40.0, Tone.blue, 6.0),
       (-90.0, 85.0, Tone.green, 5.0),
-      (95.0, 80.0, Tone.pink, 6.0),
+      (95.0, 80.0, Tone.indigo, 6.0),
     ];
     return SizedBox(
       height: 200,

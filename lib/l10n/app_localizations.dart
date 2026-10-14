@@ -1756,6 +1756,18 @@ abstract class AppLocalizations {
   /// **'No overrides left today'**
   String get blockEmergencyNone;
 
+  /// No description provided for @cvAppsLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t read the apps on this phone.'**
+  String get cvAppsLoadFailed;
+
+  /// No description provided for @cvTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get cvTryAgain;
+
   /// No description provided for @cvGetStarted.
   ///
   /// In en, this message translates to:

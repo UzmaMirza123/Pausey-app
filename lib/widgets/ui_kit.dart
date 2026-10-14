@@ -16,7 +16,7 @@ class Tone {
   static const green = Color(0xFF2FCB8A); // success, goals met
   static const amber = Color(0xFFF5A524); // streak, warnings
   static const red = Color(0xFFFF6B6B); // errors, over limit
-  static const pink = Color(0xFFE879C9);
+  static const indigo = Color(0xFF5468E8); // deep brand blue-purple (replaces pink)
 }
 
 /// Standard card: glass fill, 24 radius, soft border. [accent] tints it.

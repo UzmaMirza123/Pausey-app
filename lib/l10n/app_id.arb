@@ -272,6 +272,8 @@
   "blockEmergencyConfirmMsg": "Ini memakai satu dari {n} sisa hari ini. Pakai hanya saat benar-benar perlu.",
   "blockEmergencyUsed": "Akses darurat dipakai — aplikasi terbuka",
   "blockEmergencyNone": "Tidak ada sisa hari ini",
+  "cvAppsLoadFailed": "Tidak bisa membaca aplikasi di ponsel ini.",
+  "cvTryAgain": "Coba lagi",
   "cvGetStarted": "Mulai",
   "cvHaveAccount": "Saya sudah punya akun",
   "cvWelcomeTitle": "Waktumu milikmu.",

@@ -32,6 +32,8 @@ EN = {
  "cvAppsSubReal": "These are apps on this phone. Pick as many as you like.",
  "cvAppsSubPopular": "Popular apps that often take up time. Pick any that apply.",
  "cvAppsSearch": "Search apps",
+ "cvAppsLoadFailed": "Couldn't read the apps on this phone.",
+ "cvTryAgain": "Try again",
  "cvAppsReply": "Noted: {apps}. We'll start with these.",
  "cvAnd": "{a} and {b}",
  "cvAndMore": "{a}, {b} and {count} more",

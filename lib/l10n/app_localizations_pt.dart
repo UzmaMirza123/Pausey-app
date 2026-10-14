@@ -922,6 +922,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get blockEmergencyNone => 'Nenhum restante hoje';
 
   @override
+  String get cvAppsLoadFailed => 'Não foi possível ler os apps deste celular.';
+
+  @override
+  String get cvTryAgain => 'Tentar de novo';
+
+  @override
   String get cvGetStarted => 'Começar';
 
   @override

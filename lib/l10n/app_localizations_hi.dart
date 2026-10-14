@@ -908,6 +908,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get blockEmergencyNone => 'आज कोई ओवरराइड बाकी नहीं';
 
   @override
+  String get cvAppsLoadFailed => 'इस फ़ोन के ऐप्स नहीं पढ़े जा सके।';
+
+  @override
+  String get cvTryAgain => 'फिर से कोशिश करें';
+
+  @override
   String get cvGetStarted => 'शुरू करें';
 
   @override

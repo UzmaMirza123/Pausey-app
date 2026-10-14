@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../services/native_bridge.dart';
 import 'app_repo.dart';
 import 'models.dart';
 
@@ -43,7 +44,11 @@ class DemoScreenTime extends ScreenTimeSource {
   @override
   List<AppUsage> usageOn(DateTime day) {
     final repo = AppRepo.instance;
-    final ids = {...repo.apps.map((a) => a.id), 'Instagram', 'YouTube', 'Twitter / X', 'Reddit', 'Shopping'};
+    // On a phone only the user's own (installed) apps appear, even in sample data.
+    final ids = {
+      ...repo.apps.map((a) => a.id),
+      if (!NativeBridge.instance.isAndroid) ...['Instagram', 'YouTube', 'Twitter / X', 'Reddit', 'Shopping'],
+    };
     final seed = day.year * 1000 + day.month * 40 + day.day;
     final r = Random(seed);
     // Focus time pushes usage down a little, so the app "reacts" to the user.

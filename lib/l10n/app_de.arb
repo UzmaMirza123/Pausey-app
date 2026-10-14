@@ -272,6 +272,8 @@
   "blockEmergencyConfirmMsg": "Das verbraucht eine deiner {n} verbleibenden Entsperrungen heute. Nur im echten Notfall.",
   "blockEmergencyUsed": "Entsperrung genutzt – Apps sind frei",
   "blockEmergencyNone": "Heute keine mehr übrig",
+  "cvAppsLoadFailed": "Die Apps auf diesem Handy konnten nicht gelesen werden.",
+  "cvTryAgain": "Erneut versuchen",
   "cvGetStarted": "Los geht's",
   "cvHaveAccount": "Ich habe schon ein Konto",
   "cvWelcomeTitle": "Deine Zeit gehört dir.",

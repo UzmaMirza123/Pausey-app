@@ -101,9 +101,12 @@ class NativeChannel(private val ctx: Context) {
         val seen = mutableSetOf<String>()
         val out = mutableListOf<Map<String, Any?>>()
         for (ri in acts) {
-            val pkg = ri.activityInfo.packageName
+            val pkg = ri.activityInfo?.packageName ?: continue
             if (pkg == ctx.packageName || !seen.add(pkg)) continue
-            out += mapOf("pkg" to pkg, "label" to ri.loadLabel(pm).toString(), "icon" to iconPng(ri.loadIcon(pm)))
+            // One broken app must not hide the rest.
+            val label = try { ri.loadLabel(pm).toString() } catch (e: Exception) { pkg }
+            val icon = try { iconPng(ri.loadIcon(pm)) } catch (e: Exception) { null }
+            out += mapOf("pkg" to pkg, "label" to label, "icon" to icon)
         }
         return out
     }

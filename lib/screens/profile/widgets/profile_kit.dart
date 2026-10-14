@@ -179,7 +179,7 @@ List<Achievement> achievements(BuildContext context, AppRepo r) {
     Achievement(Icons.shield_rounded, Tone.green, l.profileAchIronWill, l.profileAchSessionsDesc(25), p(r.completedSessions, 25)),
     Achievement(Icons.star_rounded, Tone.violet, l.profileAchFocusMaster, l.profileAchHoursDesc(50), p(r.totalFocusMinutes, 50 * 60)),
     Achievement(Icons.self_improvement_rounded, Tone.blue, l.profileAchMonk, l.profileAchStreakDesc(21), p(best, 21)),
-    Achievement(Icons.emoji_events_rounded, Tone.pink, l.profileAchLegend, l.profileAchStreakDesc(30), p(best, 30)),
+    Achievement(Icons.emoji_events_rounded, Tone.indigo, l.profileAchLegend, l.profileAchStreakDesc(30), p(best, 30)),
     Achievement(Icons.bolt_rounded, Tone.red, l.profileAchSpeed, l.profileAchDayDesc(10), p(maxSessionsInADay(r), 10)),
   ];
 }

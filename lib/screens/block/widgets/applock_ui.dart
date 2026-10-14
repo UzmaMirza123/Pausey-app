@@ -7,8 +7,9 @@ import '../../../data/app_repo.dart';
 import '../../../data/models.dart';
 import '../../../data/restrictions/restriction_evaluator.dart';
 import '../../../data/restrictions/restriction_models.dart';
-import '../../../data/restrictions/restriction_repo.dart';
-import '../../../services/native_bridge.dart';
+import '../../../services/installed_apps.dart';
+
+export '../../../services/installed_apps.dart' show InstalledAppsCache;
 import '../../../utils/app_theme.dart';
 import '../../../utils/l10n.dart';
 import '../../../widgets/ui_kit.dart';
@@ -97,37 +98,6 @@ String usageLine(AppLocalizations l, ManagedApp a, RestrictionState s) {
 // ---------------------------------------------------------------------------
 // Installed-app icons (Android)
 // ---------------------------------------------------------------------------
-
-/// Installed apps read once from Android, so rows can show real launcher icons.
-class InstalledAppsCache extends ChangeNotifier {
-  InstalledAppsCache._();
-  static final InstalledAppsCache instance = InstalledAppsCache._();
-
-  List<InstalledApp> apps = const [];
-  bool loaded = false;
-  bool _loading = false;
-
-  Uint8List? iconFor(String? pkg) {
-    if (pkg == null) return null;
-    for (final a in apps) {
-      if (a.packageName == pkg) return a.icon;
-    }
-    return null;
-  }
-
-  /// Loads the list when the native side is available (no-op elsewhere).
-  Future<void> ensureLoaded({bool force = false}) async {
-    if (_loading || (loaded && !force) || !RestrictionRepo.instance.status.supported) return;
-    _loading = true;
-    try {
-      apps = await NativeBridge.instance.installedApps();
-      loaded = true;
-    } finally {
-      _loading = false;
-      notifyListeners();
-    }
-  }
-}
 
 /// Real launcher icon when known, otherwise the bundled brand glyph.
 class AppIcon extends StatelessWidget {

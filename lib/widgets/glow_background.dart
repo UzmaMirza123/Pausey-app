@@ -24,11 +24,11 @@ class Blob {
   final double opacity;
   final double blur;
 
-  /// The three glows used on most onboarding screens (blue top-left,
-  /// coral right, violet bottom-left).
+  /// The three glows used on most screens (blue top-left, brand purple right,
+  /// violet bottom-left) — all from the brand palette.
   static const onboarding = [
     Blob(left: -130, top: -110, size: 420, color: AppPalette.blue, opacity: 0.12, blur: 50),
-    Blob(right: -100, top: 180, size: 300, color: AppPalette.coral, opacity: 0.08, blur: 45),
+    Blob(right: -100, top: 180, size: 300, color: AppPalette.accent, opacity: 0.08, blur: 45),
     Blob(left: -60, bottom: 80, size: 200, color: AppPalette.violet, opacity: 0.09, blur: 35),
   ];
 

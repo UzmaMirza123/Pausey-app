@@ -272,6 +272,8 @@
   "blockEmergencyConfirmMsg": "오늘 남은 {n}회 중 1회를 사용합니다. 꼭 필요할 때만 쓰세요.",
   "blockEmergencyUsed": "긴급 해제됨 — 지금 앱이 열려 있습니다",
   "blockEmergencyNone": "오늘 남은 횟수가 없습니다",
+  "cvAppsLoadFailed": "이 휴대폰의 앱을 불러오지 못했어요.",
+  "cvTryAgain": "다시 시도",
   "cvGetStarted": "시작하기",
   "cvHaveAccount": "이미 계정이 있어요",
   "cvWelcomeTitle": "당신의 시간은 당신의 것이에요.",

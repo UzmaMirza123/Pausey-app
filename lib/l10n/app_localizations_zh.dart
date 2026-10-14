@@ -890,6 +890,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get blockEmergencyNone => '今天已用完';
 
   @override
+  String get cvAppsLoadFailed => '无法读取这部手机上的应用。';
+
+  @override
+  String get cvTryAgain => '重试';
+
+  @override
   String get cvGetStarted => '开始使用';
 
   @override

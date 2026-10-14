@@ -270,7 +270,9 @@ class StackedBars extends StatelessWidget {
                   duration: Duration(milliseconds: 500 + i * 60),
                   curve: Curves.easeOutCubic,
                   builder: (_, t, _) {
-                    final ha = height * a[i] / maxV * t, hb = height * b[i] / maxV * t;
+                    // Leave room for the 2px gap and the 4px minimum bar so the stack never overflows.
+                    final room = height - 6;
+                    final ha = room * a[i] / maxV * t, hb = room * b[i] / maxV * t;
                     return SizedBox(
                       height: height,
                       child: Column(

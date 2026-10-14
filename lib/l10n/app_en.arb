@@ -514,6 +514,8 @@
   },
   "blockEmergencyUsed": "Override used — apps are unlocked for now",
   "blockEmergencyNone": "No overrides left today",
+  "cvAppsLoadFailed": "Couldn't read the apps on this phone.",
+  "cvTryAgain": "Try again",
   "cvGetStarted": "Get started",
   "cvHaveAccount": "I already have an account",
   "cvWelcomeTitle": "Your time is yours.",

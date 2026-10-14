@@ -63,6 +63,9 @@ class NativeBridge {
 
   bool get _android => !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
 
+  /// Running on an Android phone (the only platform with the native side).
+  bool get isAndroid => _android;
+
   Future<T?> _call<T>(String method, [Object? args]) async {
     if (!_android) return null;
     try {

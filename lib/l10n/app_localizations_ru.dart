@@ -909,6 +909,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get blockEmergencyNone => 'На сегодня не осталось';
 
   @override
+  String get cvAppsLoadFailed =>
+      'Не удалось прочитать приложения на этом телефоне.';
+
+  @override
+  String get cvTryAgain => 'Повторить';
+
+  @override
   String get cvGetStarted => 'Начать';
 
   @override

@@ -272,6 +272,8 @@
   "blockEmergencyConfirmMsg": "Будет использован один из {n} оставшихся сегодня. Только при необходимости.",
   "blockEmergencyUsed": "Доступ использован — приложения открыты",
   "blockEmergencyNone": "На сегодня не осталось",
+  "cvAppsLoadFailed": "Не удалось прочитать приложения на этом телефоне.",
+  "cvTryAgain": "Повторить",
   "cvGetStarted": "Начать",
   "cvHaveAccount": "У меня уже есть аккаунт",
   "cvWelcomeTitle": "Ваше время принадлежит вам.",

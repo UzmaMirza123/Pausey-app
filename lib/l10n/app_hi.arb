@@ -272,6 +272,8 @@
   "blockEmergencyConfirmMsg": "यह आज के बचे {n} में से एक इस्तेमाल करेगा। सिर्फ़ ज़रूरत पर इस्तेमाल करें।",
   "blockEmergencyUsed": "ओवरराइड इस्तेमाल हुआ — ऐप अभी खुले हैं",
   "blockEmergencyNone": "आज कोई ओवरराइड बाकी नहीं",
+  "cvAppsLoadFailed": "इस फ़ोन के ऐप्स नहीं पढ़े जा सके।",
+  "cvTryAgain": "फिर से कोशिश करें",
   "cvGetStarted": "शुरू करें",
   "cvHaveAccount": "मेरा पहले से अकाउंट है",
   "cvWelcomeTitle": "आपका समय, आपका अपना।",

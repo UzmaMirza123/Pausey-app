@@ -48,6 +48,8 @@ class _BlockScreenState extends State<BlockScreen> {
   }
 
   Future<void> _addApps() async {
+    // On a phone, only apps that are really installed can be added.
+    if (InstalledAppsCache.instance.supported) return _addInstalled();
     final result = await showSelectAppsSheet(context, initialApps: {for (final a in _repo.apps) if (a.locked) a.id});
     if (result == null || result.skipped || !mounted) return;
     await _repo.setManagedApps(result.apps);
@@ -145,7 +147,7 @@ class _BlockScreenState extends State<BlockScreen> {
       builder: (context, _) {
         final l = context.l10n;
         final status = _rr.status;
-        if (status.supported && !InstalledAppsCache.instance.loaded) {
+        if (InstalledAppsCache.instance.supported && !InstalledAppsCache.instance.loaded) {
           WidgetsBinding.instance.addPostFrameCallback((_) => InstalledAppsCache.instance.ensureLoaded());
         }
         final apps = _repo.apps;
@@ -181,8 +183,6 @@ class _BlockScreenState extends State<BlockScreen> {
                 message: l.blockEmptyMsg,
                 primaryLabel: l.blockAddApp,
                 onPrimary: _addApps,
-                secondaryLabel: status.supported ? l.alFromInstalled : null,
-                onSecondary: status.supported ? _addInstalled : null,
               ),
             ] else ...[
               _SearchField(onChanged: (v) => setState(() => _query = v)),
@@ -229,7 +229,6 @@ class _BlockScreenState extends State<BlockScreen> {
                       ),
                     ),
                   ],
-                  if (status.supported) ...[const SizedBox(height: 10), InstalledAppsLink(onTap: _addInstalled)],
                 ],
               ),
             ],

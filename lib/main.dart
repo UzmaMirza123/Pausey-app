@@ -12,6 +12,7 @@ import 'screens/shell/app_shell.dart';
 import 'screens/onboarding/onboarding_flow.dart';
 import 'screens/splash_screen.dart';
 import 'services/auth_service.dart';
+import 'services/installed_apps.dart';
 import 'services/local_store.dart';
 import 'utils/app_theme.dart';
 import 'utils/l10n.dart';
@@ -24,6 +25,7 @@ Future<void> main() async {
   RestrictionRepo.instance
     ..load()
     ..start();
+  InstalledAppsCache.instance.ensureLoaded();
   ThemeController.instance.load();
   LocaleController.instance.load();
   await AuthService.instance.init();

@@ -174,6 +174,14 @@ class AppRepo extends ChangeNotifier {
     await _save();
   }
 
+  /// Drops managed apps that are not installed on this phone (and placeholders
+  /// like "Gaming Apps" that aren't a single app). Called once the real list is known.
+  Future<void> keepOnlyInstalled(Set<String> installed) async {
+    final before = apps.length;
+    apps.removeWhere((a) => a.packageName == null || !installed.contains(a.packageName));
+    if (apps.length != before) await _save();
+  }
+
   /// Add apps picked from the phone's installed-app list (id = package name).
   Future<void> addInstalledApps(Iterable<({String packageName, String label})> picked) async {
     for (final p in picked) {

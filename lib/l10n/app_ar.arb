@@ -272,6 +272,8 @@
   "blockEmergencyConfirmMsg": "سيستهلك هذا واحدًا من {n} متبقية اليوم. استخدمه عند الحاجة فقط.",
   "blockEmergencyUsed": "تم الاستخدام — التطبيقات مفتوحة الآن",
   "blockEmergencyNone": "لا يوجد المزيد اليوم",
+  "cvAppsLoadFailed": "تعذّرت قراءة التطبيقات على هذا الهاتف.",
+  "cvTryAgain": "حاول مرة أخرى",
   "cvGetStarted": "ابدأ الآن",
   "cvHaveAccount": "لدي حساب بالفعل",
   "cvWelcomeTitle": "وقتك ملكك.",

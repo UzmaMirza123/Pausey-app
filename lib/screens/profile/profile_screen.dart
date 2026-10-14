@@ -93,7 +93,7 @@ class ProfileScreen extends StatelessWidget {
                 PListTile(icon: Icons.local_fire_department_rounded, color: Tone.amber, title: l.profileStreaks, onTap: () => _push(context, const StreaksScreen())),
                 PListTile(
                   icon: Icons.credit_card_rounded,
-                  color: Tone.pink,
+                  color: Tone.indigo,
                   title: l.profileSubscription,
                   subtitle: r.premium ? l.profileProActive : l.profileFree,
                   onTap: () => _push(context, const PaywallScreen()),

@@ -272,6 +272,8 @@
   "blockEmergencyConfirmMsg": "یہ آج کے باقی {n} میں سے ایک استعمال کرے گا۔ صرف ضرورت پر استعمال کریں۔",
   "blockEmergencyUsed": "اوور رائیڈ استعمال ہو گیا — ایپس ابھی کھلی ہیں",
   "blockEmergencyNone": "آج کوئی اوور رائیڈ باقی نہیں",
+  "cvAppsLoadFailed": "اس فون کی ایپس نہیں پڑھی جا سکیں۔",
+  "cvTryAgain": "دوبارہ کوشش کریں",
   "cvGetStarted": "شروع کریں",
   "cvHaveAccount": "میرا پہلے سے اکاؤنٹ ہے",
   "cvWelcomeTitle": "آپ کا وقت، آپ کا اپنا۔",

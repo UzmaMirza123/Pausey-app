@@ -95,7 +95,7 @@ class SettingsScreen extends StatelessWidget {
                           ),
                           PListTile(
                             icon: Icons.language_rounded,
-                            color: Tone.pink,
+                            color: Tone.indigo,
                             title: l.language,
                             subtitle: loc == null ? l.phoneLanguage : LocaleController.names[loc.languageCode],
                             onTap: () => _pickLanguage(context),

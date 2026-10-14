@@ -932,6 +932,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get blockEmergencyNone => 'Plus aucun déblocage aujourd\'hui';
 
   @override
+  String get cvAppsLoadFailed =>
+      'Impossible de lire les applis de ce téléphone.';
+
+  @override
+  String get cvTryAgain => 'Réessayer';
+
+  @override
   String get cvGetStarted => 'Commencer';
 
   @override

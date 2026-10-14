@@ -463,7 +463,7 @@ class _AnalyticsView {
     final l = context.l10n;
     final c = context.colors;
     final goals = data.repo.goals;
-    final colors = [Tone.violet, Tone.green, Tone.amber, Tone.blue, Tone.pink];
+    final colors = [Tone.violet, Tone.green, Tone.amber, Tone.blue, Tone.indigo];
     final overall = (data.goalsRing * 100).round();
     void openGoals() => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const GoalsScreen()));
     return PCard(
@@ -537,8 +537,8 @@ class _ScreenTimeView {
   _ScreenTimeView({required this.data});
   final ScreenTimeData data;
 
-  static const _catColors = {'social': Tone.violet, 'video': Tone.amber, 'shopping': Tone.green, 'games': Tone.pink, 'community': Tone.blue, 'other': Tone.red};
-  static const _appColors = [Tone.violet, Tone.amber, Tone.blue, Tone.green, Tone.red, Tone.pink];
+  static const _catColors = {'social': Tone.violet, 'video': Tone.amber, 'shopping': Tone.green, 'games': Tone.indigo, 'community': Tone.blue, 'other': Tone.red};
+  static const _appColors = [Tone.violet, Tone.amber, Tone.blue, Tone.green, Tone.red, Tone.indigo];
 
   List<Widget> cards(BuildContext context) => [_tops(context), _bars(context), _trend(context), _apps(context), _breakdown(context)];
 
