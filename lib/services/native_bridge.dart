@@ -20,6 +20,7 @@ class NativeStatus {
     this.usageAccess = false,
     this.overlay = false,
     this.notifications = false,
+    this.accessibility = false,
     this.batteryUnrestricted = false,
     this.serviceRunning = false,
     this.manufacturer = '',
@@ -34,18 +35,24 @@ class NativeStatus {
   /// "Display over other apps" (SYSTEM_ALERT_WINDOW) granted: Pausey can show its block screen.
   final bool overlay;
   final bool notifications;
+
+  /// Pausey's Accessibility Service is switched on: instant, reliable detection of the app on screen
+  /// (it only reads which app is open — never screen content).
+  final bool accessibility;
   final bool batteryUnrestricted;
   final bool serviceRunning;
   final String manufacturer;
 
-  /// Both permissions needed to actually block other apps.
-  bool get canEnforce => supported && usageAccess && overlay;
+  /// What blocking needs: usage access (time used + the app on screen) and a way to show the pause
+  /// screen on top — "display over other apps" or the Accessibility Service.
+  bool get canEnforce => supported && usageAccess && (overlay || accessibility);
 
   factory NativeStatus.fromMap(Map m) => NativeStatus(
         supported: true,
         usageAccess: m['usageAccess'] == true,
         overlay: m['overlay'] == true,
         notifications: m['notifications'] == true,
+        accessibility: m['accessibility'] == true,
         batteryUnrestricted: m['batteryUnrestricted'] == true,
         serviceRunning: m['serviceRunning'] == true,
         manufacturer: (m['manufacturer'] as String? ?? '').toLowerCase(),
@@ -86,6 +93,10 @@ class NativeBridge {
   Future<void> openUsageAccessSettings() => _call<void>('openUsageAccess');
   Future<void> openOverlaySettings() => _call<void>('openOverlay');
   Future<void> openNotificationSettings() => _call<void>('openNotifications');
+  Future<void> openAccessibilitySettings() => _call<void>('openAccessibility');
+
+  /// Android 13+: shows the system "Allow notifications?" dialog (opens settings if it was denied before).
+  Future<void> requestNotifications() => _call<void>('requestNotifications');
   Future<void> openBatterySettings() => _call<void>('openBattery');
 
   Future<List<InstalledApp>> installedApps() async {
