@@ -432,30 +432,384 @@ class AppLocalizationsId extends AppLocalizations {
   String get ob9StreakSub => 'Selesaikan satu sesi untuk melanjutkannya';
 
   @override
+  String alSummary(int locked, int total) {
+    return '$locked dibatasi kini · $total dikelola';
+  }
+
+  @override
+  String alSummaryOff(int total) {
+    return '$total dikelola · pemblokiran mati';
+  }
+
+  @override
+  String get alFromInstalled => 'Pilih dari aplikasi terpasang';
+
+  @override
+  String get alFromInstalledSub => 'Aplikasi apa pun di ponsel ini';
+
+  @override
+  String get alPermTitle => 'Pemblokiran belum aktif';
+
+  @override
+  String get alPermMsg =>
+      'Aturan tersimpan, tetapi Pausey baru bisa memblokir setelah dua izin ini diberikan:';
+
+  @override
+  String get alPermUsage => 'Akses penggunaan';
+
+  @override
+  String get alPermUsageSub =>
+      'Melihat aplikasi yang terbuka dan waktunya hari ini';
+
+  @override
+  String get alPermOverlay => 'Tampilkan di atas aplikasi lain';
+
+  @override
+  String get alPermOverlaySub => 'Menampilkan layar kunci';
+
+  @override
+  String get alAllow => 'Izinkan';
+
+  @override
+  String get alAllowed => 'Diizinkan';
+
+  @override
+  String get alPermReturn =>
+      'Kembali ke Pausey setelahnya — dicek ulang otomatis.';
+
+  @override
+  String get alAndroidOnly =>
+      'Pemblokiran hanya di Android. Aturan tetap bisa diatur di sini.';
+
+  @override
+  String get alSearchHint => 'Cari aplikasi';
+
+  @override
+  String get alFilterAll => 'Semua';
+
+  @override
+  String get alFilterLocked => 'Terkunci';
+
+  @override
+  String get alFilterScheduled => 'Terjadwal';
+
+  @override
+  String get alFilterAvailable => 'Tersedia';
+
+  @override
+  String get alStateLocked => 'Terkunci';
+
+  @override
+  String get alStateWillLock => 'Akan dikunci';
+
+  @override
+  String get alStateScheduled => 'Terjadwal';
+
+  @override
+  String get alStateAvailable => 'Tersedia';
+
+  @override
+  String alUsedOf(String used, String limit) {
+    return 'Terpakai $used dari $limit';
+  }
+
+  @override
+  String alUsedToday(String used) {
+    return 'Hari ini $used';
+  }
+
+  @override
+  String get alNoLimit => 'Tanpa batas harian';
+
+  @override
+  String alLimitNoUsage(String limit) {
+    return 'Batas $limit · data tak tersedia';
+  }
+
+  @override
+  String get alRulesOff => 'Pembatasan mati';
+
+  @override
+  String alNextLock(String time) {
+    return 'Kunci berikutnya: $time';
+  }
+
+  @override
+  String alUnlockedUntil(String time) {
+    return 'Terbuka hingga $time';
+  }
+
+  @override
+  String get alReasonLimit => 'Batas harian tercapai';
+
+  @override
+  String get alReasonSchedule => 'Jadwal kunci aktif';
+
+  @override
+  String get alReasonGeneral => 'Jadwal umum aktif';
+
+  @override
+  String get alReasonAllDay => 'Terkunci seharian';
+
+  @override
+  String get alReasonFocus => 'Sesi fokus berjalan';
+
+  @override
+  String get alNoMatches => 'Tidak ada yang cocok';
+
+  @override
+  String get alGeneral => 'Umum';
+
+  @override
+  String get alGeneralScheduleSub =>
+      'Untuk aplikasi dengan “Ikuti jadwal umum”';
+
+  @override
+  String get alLockAllSub => 'Aktifkan pembatasan semua aplikasi';
+
+  @override
+  String get alSaved => 'Tersimpan';
+
+  @override
+  String get alChangesApply => 'Perubahan langsung berlaku';
+
+  @override
+  String get alDetailsTitle => 'Batas Aplikasi';
+
+  @override
+  String get alBlockingOff => 'Pemblokiran mati di ponsel ini';
+
+  @override
+  String get alRestrictApp => 'Batasi aplikasi ini';
+
+  @override
+  String get alMasterOff => 'Mati — Pausey tidak membatasinya';
+
+  @override
+  String get alMasterOnRules => 'Batas dan jadwal di bawah berlaku';
+
+  @override
+  String get alMasterOnAllDay => 'Belum ada batas/jadwal — terkunci seharian';
+
+  @override
+  String get alMasterOnGeneral => 'Terkunci selama jadwal umum';
+
+  @override
+  String get alFollowGeneral => 'Ikuti jadwal umum';
+
+  @override
+  String alFollowGeneralSub(String start, String end) {
+    return 'Juga kunci $start – $end';
+  }
+
+  @override
+  String get alGeneralOff => 'Jadwal umum sedang mati';
+
+  @override
+  String get alDailyLimit => 'Batas harian';
+
+  @override
+  String get alDailyLimitOffSub =>
+      'Kunci aplikasi setelah waktu tertentu tiap hari';
+
+  @override
+  String get alCustom => 'Kustom';
+
+  @override
+  String get alUsedLabel => 'Terpakai hari ini';
+
+  @override
+  String get alLeftLabel => 'Sisa';
+
+  @override
+  String get alLimitReached => 'Batas hari ini tercapai';
+
+  @override
+  String get alResets => 'Reset tengah malam (waktu ponsel)';
+
+  @override
+  String get alUsageUnavailable => 'Data penggunaan tak tersedia';
+
+  @override
+  String get alUsageNeedsAccess =>
+      'Izinkan akses penggunaan agar Pausey bisa menghitung waktu hari ini.';
+
+  @override
+  String get alUsageAndroidOnly =>
+      'Penggunaan hanya diukur di Android. Batas tetap tersimpan dan berlaku di sana.';
+
+  @override
+  String get alGrantUsage => 'Beri akses penggunaan';
+
+  @override
+  String get alCustomLimitTitle => 'Batas harian kustom';
+
+  @override
+  String get alHours => 'Jam';
+
+  @override
+  String get alMinutes => 'Menit';
+
+  @override
+  String get alErrZeroLimit => 'Pilih lebih dari nol';
+
+  @override
+  String get alSave => 'Simpan';
+
+  @override
+  String get alScheduledLocking => 'Kunci terjadwal';
+
+  @override
+  String get alScheduledOffSub => 'Kunci aplikasi ini di jam tertentu';
+
+  @override
+  String get alNoSchedules => 'Belum ada jadwal';
+
+  @override
+  String get alAddSchedule => 'Tambah jadwal';
+
+  @override
+  String get alActiveNow => 'Aktif sekarang';
+
+  @override
+  String get alScheduleDefault => 'Waktu kunci';
+
+  @override
+  String get alEndsNextDay => 'Berakhir besok';
+
+  @override
+  String get alEdit => 'Ubah';
+
+  @override
+  String get alDelete => 'Hapus';
+
+  @override
+  String get alDeleteScheduleQ => 'Hapus jadwal ini?';
+
+  @override
+  String alDeleteScheduleMsg(String title) {
+    return '“$title” tidak akan mengunci aplikasi ini lagi.';
+  }
+
+  @override
+  String get alNewSchedule => 'Jadwal baru';
+
+  @override
+  String get alEditSchedule => 'Ubah jadwal';
+
+  @override
+  String get alTitleOptional => 'Judul (opsional)';
+
+  @override
+  String get alPresetStudy => 'Belajar';
+
+  @override
+  String get alPresetEvening => 'Malam';
+
+  @override
+  String get alPresetSleep => 'Tidur';
+
+  @override
+  String get alRepeatOn => 'Ulangi pada';
+
+  @override
+  String get alErrSameTime => 'Mulai dan selesai tidak boleh sama';
+
+  @override
+  String get alErrNoDays => 'Pilih minimal satu hari';
+
+  @override
+  String alTempUnlock(int minutes) {
+    return 'Buka $minutes menit';
+  }
+
+  @override
+  String alTempUnlockSub(int n) {
+    return 'Pakai 1 akses darurat · sisa $n';
+  }
+
+  @override
+  String get alTempUnlockFocus => 'Tidak bisa saat sesi fokus';
+
+  @override
+  String get alTempUnlockNotLocked => 'Hanya perlu saat aplikasi terkunci';
+
+  @override
+  String alTempUnlockQ(String app, int minutes) {
+    return 'Buka $app selama $minutes menit?';
+  }
+
+  @override
+  String get alUnlock => 'Buka';
+
+  @override
+  String get alEndEarly => 'Akhiri';
+
+  @override
+  String get alResetRules => 'Atur ulang pembatasan';
+
+  @override
+  String get alResetRulesSub => 'Hapus batas dan jadwal aplikasi';
+
+  @override
+  String alResetQ(String app) {
+    return 'Atur ulang pembatasan $app?';
+  }
+
+  @override
+  String get alResetMsg =>
+      'Batas harian dan semua jadwal dihapus. Aplikasi tetap di daftar.';
+
+  @override
+  String get alReset => 'Atur ulang';
+
+  @override
+  String get alResetDone => 'Pembatasan diatur ulang';
+
+  @override
+  String get alRemoveApp => 'Hapus aplikasi';
+
+  @override
+  String get alRemoveAppSub => 'Berhenti mengelola aplikasi ini';
+
+  @override
+  String alRemoveQ(String app) {
+    return 'Hapus $app?';
+  }
+
+  @override
+  String get alRemoveMsg =>
+      'Pausey berhenti membatasinya dan menghapus batas serta jadwalnya.';
+
+  @override
+  String get alRemove => 'Hapus';
+
+  @override
+  String get alNoPackage =>
+      'Batas dan jadwal per aplikasi butuh satu aplikasi terpasang. Di Android, tambahkan lewat “Pilih dari aplikasi terpasang”.';
+
+  @override
+  String get alNotFound => 'Aplikasi ini tidak lagi dikelola';
+
+  @override
+  String get alPickerTitle => 'Aplikasi terpasang';
+
+  @override
+  String get alPickerAdded => 'Sudah ditambahkan';
+
+  @override
+  String alPickerAdd(int n) {
+    return 'Tambah aplikasi ($n)';
+  }
+
+  @override
+  String get alPickerEmpty => 'Tidak ada aplikasi';
+
+  @override
   String get blockTitle => 'Kunci Aplikasi';
 
   @override
-  String blockSubtitle(int locked, int total) {
-    return '$locked dari $total aplikasi terkunci';
-  }
-
-  @override
   String get blockAddApp => 'Tambah';
-
-  @override
-  String blockLockedChip(int n) {
-    return '$n terkunci';
-  }
-
-  @override
-  String blockUnlockedChip(int n) {
-    return '$n terbuka';
-  }
-
-  @override
-  String blockScheduledChip(int n) {
-    return '$n terjadwal';
-  }
 
   @override
   String get blockFaceIdTitle => 'Perlindungan Face ID';
@@ -495,27 +849,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get blockAllLocked => 'Semua aplikasi terkunci';
 
   @override
-  String get blockSched => 'Jadwal';
-
-  @override
-  String get blockOnlySchedule => 'Kunci hanya saat jadwal';
-
-  @override
-  String get blockOnlyScheduleSub => 'Jika tidak, terkunci seharian';
-
-  @override
-  String get blockLockedLabel => 'Terkunci';
-
-  @override
-  String get blockRemove => 'Hapus dari daftar';
-
-  @override
   String blockRemoved(String app) {
     return '$app dihapus';
   }
-
-  @override
-  String get blockUndo => 'Urungkan';
 
   @override
   String get blockAppsUpdated => 'Aplikasi diperbarui';
@@ -1803,6 +2139,33 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get insightsCatOther => 'Lainnya';
+
+  @override
+  String nativeBlockTitle(String app) {
+    return '$app sedang dijeda';
+  }
+
+  @override
+  String get nativeReasonLimit =>
+      'Waktu hari ini untuk aplikasi ini sudah habis.';
+
+  @override
+  String get nativeReasonSchedule => 'Jadwal kunci sedang aktif.';
+
+  @override
+  String get nativeReasonGlobal => 'Aplikasi ini dikunci di Pausey.';
+
+  @override
+  String get nativeReasonFocus => 'Anda sedang dalam sesi fokus.';
+
+  @override
+  String get nativeClose => 'Tutup aplikasi';
+
+  @override
+  String get nativeNotifTitle => 'Pausey menjaga batas Anda';
+
+  @override
+  String get nativeNotifText => 'Batas aplikasi dan jadwal kunci aktif';
 
   @override
   String get profileSettings => 'Pengaturan';

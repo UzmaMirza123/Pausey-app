@@ -892,41 +892,683 @@ abstract class AppLocalizations {
   /// **'Complete a session to keep it going'**
   String get ob9StreakSub;
 
+  /// No description provided for @alSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{locked} restricted now · {total} managed'**
+  String alSummary(int locked, int total);
+
+  /// No description provided for @alSummaryOff.
+  ///
+  /// In en, this message translates to:
+  /// **'{total} managed · blocking off'**
+  String alSummaryOff(int total);
+
+  /// No description provided for @alFromInstalled.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from installed apps'**
+  String get alFromInstalled;
+
+  /// No description provided for @alFromInstalledSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick any app on this phone'**
+  String get alFromInstalledSub;
+
+  /// No description provided for @alPermTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocking isn\'t active yet'**
+  String get alPermTitle;
+
+  /// No description provided for @alPermMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rules are saved, but Pausey can\'t block apps until you allow these two permissions:'**
+  String get alPermMsg;
+
+  /// No description provided for @alPermUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage access'**
+  String get alPermUsage;
+
+  /// No description provided for @alPermUsageSub.
+  ///
+  /// In en, this message translates to:
+  /// **'See which app is open and today\'s time in it'**
+  String get alPermUsageSub;
+
+  /// No description provided for @alPermOverlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Display over other apps'**
+  String get alPermOverlay;
+
+  /// No description provided for @alPermOverlaySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the lock screen over a blocked app'**
+  String get alPermOverlaySub;
+
+  /// No description provided for @alAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get alAllow;
+
+  /// No description provided for @alAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed'**
+  String get alAllowed;
+
+  /// No description provided for @alPermReturn.
+  ///
+  /// In en, this message translates to:
+  /// **'Come back to Pausey after allowing — it checks again automatically.'**
+  String get alPermReturn;
+
+  /// No description provided for @alAndroidOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocking works on Android only. You can still set up your rules here.'**
+  String get alAndroidOnly;
+
+  /// No description provided for @alSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search apps'**
+  String get alSearchHint;
+
+  /// No description provided for @alFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get alFilterAll;
+
+  /// No description provided for @alFilterLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked now'**
+  String get alFilterLocked;
+
+  /// No description provided for @alFilterScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get alFilterScheduled;
+
+  /// No description provided for @alFilterAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get alFilterAvailable;
+
+  /// No description provided for @alStateLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get alStateLocked;
+
+  /// No description provided for @alStateWillLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Will lock'**
+  String get alStateWillLock;
+
+  /// No description provided for @alStateScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get alStateScheduled;
+
+  /// No description provided for @alStateAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get alStateAvailable;
+
+  /// No description provided for @alUsedOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Used {used} of {limit}'**
+  String alUsedOf(String used, String limit);
+
+  /// No description provided for @alUsedToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Used {used} today'**
+  String alUsedToday(String used);
+
+  /// No description provided for @alNoLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'No daily limit'**
+  String get alNoLimit;
+
+  /// No description provided for @alLimitNoUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'{limit} daily limit · usage unavailable'**
+  String alLimitNoUsage(String limit);
+
+  /// No description provided for @alRulesOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Restrictions off'**
+  String get alRulesOff;
+
+  /// No description provided for @alNextLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Next lock: {time}'**
+  String alNextLock(String time);
+
+  /// No description provided for @alUnlockedUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocked until {time}'**
+  String alUnlockedUntil(String time);
+
+  /// No description provided for @alReasonLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily limit reached'**
+  String get alReasonLimit;
+
+  /// No description provided for @alReasonSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock schedule active'**
+  String get alReasonSchedule;
+
+  /// No description provided for @alReasonGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General schedule active'**
+  String get alReasonGeneral;
+
+  /// No description provided for @alReasonAllDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked all day'**
+  String get alReasonAllDay;
+
+  /// No description provided for @alReasonFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus session running'**
+  String get alReasonFocus;
+
+  /// No description provided for @alNoMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No apps match'**
+  String get alNoMatches;
+
+  /// No description provided for @alGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get alGeneral;
+
+  /// No description provided for @alGeneralScheduleSub.
+  ///
+  /// In en, this message translates to:
+  /// **'For apps with “Follow general schedule” on'**
+  String get alGeneralScheduleSub;
+
+  /// No description provided for @alLockAllSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn restrictions on for every app'**
+  String get alLockAllSub;
+
+  /// No description provided for @alSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get alSaved;
+
+  /// No description provided for @alChangesApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes apply immediately'**
+  String get alChangesApply;
+
+  /// No description provided for @alDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App Limits'**
+  String get alDetailsTitle;
+
+  /// No description provided for @alBlockingOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocking is off on this phone'**
+  String get alBlockingOff;
+
+  /// No description provided for @alRestrictApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Restrict this app'**
+  String get alRestrictApp;
+
+  /// No description provided for @alMasterOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off — Pausey won\'t restrict this app'**
+  String get alMasterOff;
+
+  /// No description provided for @alMasterOnRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Your limit and schedules below apply'**
+  String get alMasterOnRules;
+
+  /// No description provided for @alMasterOnAllDay.
+  ///
+  /// In en, this message translates to:
+  /// **'No limit or schedule yet — locked all day'**
+  String get alMasterOnAllDay;
+
+  /// No description provided for @alMasterOnGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked during the general schedule'**
+  String get alMasterOnGeneral;
+
+  /// No description provided for @alFollowGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow general schedule'**
+  String get alFollowGeneral;
+
+  /// No description provided for @alFollowGeneralSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Also lock {start} – {end}'**
+  String alFollowGeneralSub(String start, String end);
+
+  /// No description provided for @alGeneralOff.
+  ///
+  /// In en, this message translates to:
+  /// **'The general schedule is turned off'**
+  String get alGeneralOff;
+
+  /// No description provided for @alDailyLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily limit'**
+  String get alDailyLimit;
+
+  /// No description provided for @alDailyLimitOffSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock the app after a set time each day'**
+  String get alDailyLimitOffSub;
+
+  /// No description provided for @alCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get alCustom;
+
+  /// No description provided for @alUsedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Used today'**
+  String get alUsedLabel;
+
+  /// No description provided for @alLeftLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining'**
+  String get alLeftLabel;
+
+  /// No description provided for @alLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Limit reached for today'**
+  String get alLimitReached;
+
+  /// No description provided for @alResets.
+  ///
+  /// In en, this message translates to:
+  /// **'Resets at midnight (your phone\'s time)'**
+  String get alResets;
+
+  /// No description provided for @alUsageUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage unavailable'**
+  String get alUsageUnavailable;
+
+  /// No description provided for @alUsageNeedsAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Usage access so Pausey can count today\'s time.'**
+  String get alUsageNeedsAccess;
+
+  /// No description provided for @alUsageAndroidOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage is measured on Android phones only. The limit still saves and applies there.'**
+  String get alUsageAndroidOnly;
+
+  /// No description provided for @alGrantUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant usage access'**
+  String get alGrantUsage;
+
+  /// No description provided for @alCustomLimitTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom daily limit'**
+  String get alCustomLimitTitle;
+
+  /// No description provided for @alHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours'**
+  String get alHours;
+
+  /// No description provided for @alMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes'**
+  String get alMinutes;
+
+  /// No description provided for @alErrZeroLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a time above zero'**
+  String get alErrZeroLimit;
+
+  /// No description provided for @alSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get alSave;
+
+  /// No description provided for @alScheduledLocking.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled locking'**
+  String get alScheduledLocking;
+
+  /// No description provided for @alScheduledOffSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock this app at set times'**
+  String get alScheduledOffSub;
+
+  /// No description provided for @alNoSchedules.
+  ///
+  /// In en, this message translates to:
+  /// **'No schedules yet'**
+  String get alNoSchedules;
+
+  /// No description provided for @alAddSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Add schedule'**
+  String get alAddSchedule;
+
+  /// No description provided for @alActiveNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Active now'**
+  String get alActiveNow;
+
+  /// No description provided for @alScheduleDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock time'**
+  String get alScheduleDefault;
+
+  /// No description provided for @alEndsNextDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends next day'**
+  String get alEndsNextDay;
+
+  /// No description provided for @alEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get alEdit;
+
+  /// No description provided for @alDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get alDelete;
+
+  /// No description provided for @alDeleteScheduleQ.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this schedule?'**
+  String get alDeleteScheduleQ;
+
+  /// No description provided for @alDeleteScheduleMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'“{title}” will stop locking this app.'**
+  String alDeleteScheduleMsg(String title);
+
+  /// No description provided for @alNewSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'New schedule'**
+  String get alNewSchedule;
+
+  /// No description provided for @alEditSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit schedule'**
+  String get alEditSchedule;
+
+  /// No description provided for @alTitleOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Title (optional)'**
+  String get alTitleOptional;
+
+  /// No description provided for @alPresetStudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Study'**
+  String get alPresetStudy;
+
+  /// No description provided for @alPresetEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening'**
+  String get alPresetEvening;
+
+  /// No description provided for @alPresetSleep.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep'**
+  String get alPresetSleep;
+
+  /// No description provided for @alRepeatOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat on'**
+  String get alRepeatOn;
+
+  /// No description provided for @alErrSameTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Start and end can\'t be the same'**
+  String get alErrSameTime;
+
+  /// No description provided for @alErrNoDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick at least one day'**
+  String get alErrNoDays;
+
+  /// No description provided for @alTempUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock for {minutes} min'**
+  String alTempUnlock(int minutes);
+
+  /// No description provided for @alTempUnlockSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses 1 emergency override · {n} left today'**
+  String alTempUnlockSub(int n);
+
+  /// No description provided for @alTempUnlockFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t unlock during a Focus session'**
+  String get alTempUnlockFocus;
+
+  /// No description provided for @alTempUnlockNotLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Only needed while the app is locked'**
+  String get alTempUnlockNotLocked;
+
+  /// No description provided for @alTempUnlockQ.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock {app} for {minutes} minutes?'**
+  String alTempUnlockQ(String app, int minutes);
+
+  /// No description provided for @alUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock'**
+  String get alUnlock;
+
+  /// No description provided for @alEndEarly.
+  ///
+  /// In en, this message translates to:
+  /// **'End early'**
+  String get alEndEarly;
+
+  /// No description provided for @alResetRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset restrictions'**
+  String get alResetRules;
+
+  /// No description provided for @alResetRulesSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove this app\'s limit and schedules'**
+  String get alResetRulesSub;
+
+  /// No description provided for @alResetQ.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset restrictions for {app}?'**
+  String alResetQ(String app);
+
+  /// No description provided for @alResetMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'Its daily limit and all schedules will be removed. The app stays in your list.'**
+  String get alResetMsg;
+
+  /// No description provided for @alReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get alReset;
+
+  /// No description provided for @alResetDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Restrictions reset'**
+  String get alResetDone;
+
+  /// No description provided for @alRemoveApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove app'**
+  String get alRemoveApp;
+
+  /// No description provided for @alRemoveAppSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop managing this app'**
+  String get alRemoveAppSub;
+
+  /// No description provided for @alRemoveQ.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {app}?'**
+  String alRemoveQ(String app);
+
+  /// No description provided for @alRemoveMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'Pausey will stop restricting it and forget its limit and schedules.'**
+  String get alRemoveMsg;
+
+  /// No description provided for @alRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get alRemove;
+
+  /// No description provided for @alNoPackage.
+  ///
+  /// In en, this message translates to:
+  /// **'Per-app limits and schedules need one specific installed app. On Android, add it with “Choose from installed apps”.'**
+  String get alNoPackage;
+
+  /// No description provided for @alNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'This app is no longer managed'**
+  String get alNotFound;
+
+  /// No description provided for @alPickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Installed apps'**
+  String get alPickerTitle;
+
+  /// No description provided for @alPickerAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Already added'**
+  String get alPickerAdded;
+
+  /// No description provided for @alPickerAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =0{Add apps} =1{Add 1 app} other{Add {n} apps}}'**
+  String alPickerAdd(int n);
+
+  /// No description provided for @alPickerEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No apps found'**
+  String get alPickerEmpty;
+
   /// No description provided for @blockTitle.
   ///
   /// In en, this message translates to:
   /// **'App Lock'**
   String get blockTitle;
 
-  /// No description provided for @blockSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'{locked} of {total} apps currently locked'**
-  String blockSubtitle(int locked, int total);
-
   /// No description provided for @blockAddApp.
   ///
   /// In en, this message translates to:
   /// **'Add App'**
   String get blockAddApp;
-
-  /// No description provided for @blockLockedChip.
-  ///
-  /// In en, this message translates to:
-  /// **'{n} Locked'**
-  String blockLockedChip(int n);
-
-  /// No description provided for @blockUnlockedChip.
-  ///
-  /// In en, this message translates to:
-  /// **'{n} Unlocked'**
-  String blockUnlockedChip(int n);
-
-  /// No description provided for @blockScheduledChip.
-  ///
-  /// In en, this message translates to:
-  /// **'{n} Scheduled'**
-  String blockScheduledChip(int n);
 
   /// No description provided for @blockFaceIdTitle.
   ///
@@ -1000,47 +1642,11 @@ abstract class AppLocalizations {
   /// **'All apps are locked'**
   String get blockAllLocked;
 
-  /// No description provided for @blockSched.
-  ///
-  /// In en, this message translates to:
-  /// **'Sched'**
-  String get blockSched;
-
-  /// No description provided for @blockOnlySchedule.
-  ///
-  /// In en, this message translates to:
-  /// **'Lock only during schedule'**
-  String get blockOnlySchedule;
-
-  /// No description provided for @blockOnlyScheduleSub.
-  ///
-  /// In en, this message translates to:
-  /// **'Otherwise it stays locked all day'**
-  String get blockOnlyScheduleSub;
-
-  /// No description provided for @blockLockedLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Locked'**
-  String get blockLockedLabel;
-
-  /// No description provided for @blockRemove.
-  ///
-  /// In en, this message translates to:
-  /// **'Remove from list'**
-  String get blockRemove;
-
   /// No description provided for @blockRemoved.
   ///
   /// In en, this message translates to:
   /// **'{app} removed'**
   String blockRemoved(String app);
-
-  /// No description provided for @blockUndo.
-  ///
-  /// In en, this message translates to:
-  /// **'Undo'**
-  String get blockUndo;
 
   /// No description provided for @blockAppsUpdated.
   ///
@@ -3333,6 +3939,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other'**
   String get insightsCatOther;
+
+  /// No description provided for @nativeBlockTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{app} is paused'**
+  String nativeBlockTitle(String app);
+
+  /// No description provided for @nativeReasonLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve used today\'s time for this app.'**
+  String get nativeReasonLimit;
+
+  /// No description provided for @nativeReasonSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'A lock schedule is active right now.'**
+  String get nativeReasonSchedule;
+
+  /// No description provided for @nativeReasonGlobal.
+  ///
+  /// In en, this message translates to:
+  /// **'This app is locked in Pausey.'**
+  String get nativeReasonGlobal;
+
+  /// No description provided for @nativeReasonFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re in a focus session.'**
+  String get nativeReasonFocus;
+
+  /// No description provided for @nativeClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close app'**
+  String get nativeClose;
+
+  /// No description provided for @nativeNotifTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pausey is keeping your limits'**
+  String get nativeNotifTitle;
+
+  /// No description provided for @nativeNotifText.
+  ///
+  /// In en, this message translates to:
+  /// **'App limits and lock schedules are on'**
+  String get nativeNotifText;
 
   /// No description provided for @profileSettings.
   ///

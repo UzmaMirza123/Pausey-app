@@ -435,30 +435,393 @@ class AppLocalizationsFr extends AppLocalizations {
   String get ob9StreakSub => 'Terminez une session pour la poursuivre';
 
   @override
+  String alSummary(int locked, int total) {
+    return '$locked restreintes · $total gérées';
+  }
+
+  @override
+  String alSummaryOff(int total) {
+    return '$total gérées · blocage inactif';
+  }
+
+  @override
+  String get alFromInstalled => 'Choisir parmi les apps installées';
+
+  @override
+  String get alFromInstalledSub => 'N\'importe quelle app du téléphone';
+
+  @override
+  String get alPermTitle => 'Le blocage n\'est pas encore actif';
+
+  @override
+  String get alPermMsg =>
+      'Vos règles sont enregistrées, mais Pausey ne peut rien bloquer sans ces deux autorisations :';
+
+  @override
+  String get alPermUsage => 'Accès à l\'utilisation';
+
+  @override
+  String get alPermUsageSub => 'Voir l\'app ouverte et son temps du jour';
+
+  @override
+  String get alPermOverlay => 'Afficher par-dessus les apps';
+
+  @override
+  String get alPermOverlaySub => 'Afficher l\'écran de verrouillage';
+
+  @override
+  String get alAllow => 'Autoriser';
+
+  @override
+  String get alAllowed => 'Autorisé';
+
+  @override
+  String get alPermReturn =>
+      'Revenez dans Pausey ensuite : la vérification est automatique.';
+
+  @override
+  String get alAndroidOnly =>
+      'Le blocage ne fonctionne que sur Android. Vous pouvez quand même régler vos règles ici.';
+
+  @override
+  String get alSearchHint => 'Rechercher une app';
+
+  @override
+  String get alFilterAll => 'Toutes';
+
+  @override
+  String get alFilterLocked => 'Bloquées';
+
+  @override
+  String get alFilterScheduled => 'Planifiées';
+
+  @override
+  String get alFilterAvailable => 'Disponibles';
+
+  @override
+  String get alStateLocked => 'Bloquée';
+
+  @override
+  String get alStateWillLock => 'À bloquer';
+
+  @override
+  String get alStateScheduled => 'Planifiée';
+
+  @override
+  String get alStateAvailable => 'Disponible';
+
+  @override
+  String alUsedOf(String used, String limit) {
+    return '$used utilisées sur $limit';
+  }
+
+  @override
+  String alUsedToday(String used) {
+    return '$used aujourd\'hui';
+  }
+
+  @override
+  String get alNoLimit => 'Sans limite';
+
+  @override
+  String alLimitNoUsage(String limit) {
+    return 'Limite $limit · usage indisponible';
+  }
+
+  @override
+  String get alRulesOff => 'Restrictions désactivées';
+
+  @override
+  String alNextLock(String time) {
+    return 'Prochain blocage : $time';
+  }
+
+  @override
+  String alUnlockedUntil(String time) {
+    return 'Débloquée jusqu\'à $time';
+  }
+
+  @override
+  String get alReasonLimit => 'Limite atteinte';
+
+  @override
+  String get alReasonSchedule => 'Plage de blocage active';
+
+  @override
+  String get alReasonGeneral => 'Planning général actif';
+
+  @override
+  String get alReasonAllDay => 'Bloquée toute la journée';
+
+  @override
+  String get alReasonFocus => 'Session de concentration en cours';
+
+  @override
+  String get alNoMatches => 'Aucune app ne correspond';
+
+  @override
+  String get alGeneral => 'Général';
+
+  @override
+  String get alGeneralScheduleSub =>
+      'Pour les apps avec « Suivre le planning général »';
+
+  @override
+  String get alLockAllSub => 'Activer les restrictions partout';
+
+  @override
+  String get alSaved => 'Enregistré';
+
+  @override
+  String get alChangesApply => 'Les changements s\'appliquent tout de suite';
+
+  @override
+  String get alDetailsTitle => 'Limites de l\'app';
+
+  @override
+  String get alBlockingOff => 'Le blocage est inactif sur ce téléphone';
+
+  @override
+  String get alRestrictApp => 'Restreindre cette app';
+
+  @override
+  String get alMasterOff => 'Désactivé : Pausey ne la restreint pas';
+
+  @override
+  String get alMasterOnRules =>
+      'La limite et les plages ci-dessous s\'appliquent';
+
+  @override
+  String get alMasterOnAllDay =>
+      'Ni limite ni plage : bloquée toute la journée';
+
+  @override
+  String get alMasterOnGeneral => 'Bloquée pendant le planning général';
+
+  @override
+  String get alFollowGeneral => 'Suivre le planning général';
+
+  @override
+  String alFollowGeneralSub(String start, String end) {
+    return 'Bloquer aussi $start – $end';
+  }
+
+  @override
+  String get alGeneralOff => 'Le planning général est désactivé';
+
+  @override
+  String get alDailyLimit => 'Limite quotidienne';
+
+  @override
+  String get alDailyLimitOffSub => 'Bloque l\'app après un temps fixé par jour';
+
+  @override
+  String get alCustom => 'Personnalisé';
+
+  @override
+  String get alUsedLabel => 'Utilisé aujourd\'hui';
+
+  @override
+  String get alLeftLabel => 'Restant';
+
+  @override
+  String get alLimitReached => 'Limite du jour atteinte';
+
+  @override
+  String get alResets => 'Remise à zéro à minuit (heure du téléphone)';
+
+  @override
+  String get alUsageUnavailable => 'Usage indisponible';
+
+  @override
+  String get alUsageNeedsAccess =>
+      'Autorisez l\'accès à l\'utilisation pour que Pausey compte le temps du jour.';
+
+  @override
+  String get alUsageAndroidOnly =>
+      'L\'usage n\'est mesuré que sur Android. La limite est enregistrée et s\'y applique.';
+
+  @override
+  String get alGrantUsage => 'Autoriser l\'accès';
+
+  @override
+  String get alCustomLimitTitle => 'Limite personnalisée';
+
+  @override
+  String get alHours => 'Heures';
+
+  @override
+  String get alMinutes => 'Minutes';
+
+  @override
+  String get alErrZeroLimit => 'Choisissez plus de zéro';
+
+  @override
+  String get alSave => 'Enregistrer';
+
+  @override
+  String get alScheduledLocking => 'Blocage planifié';
+
+  @override
+  String get alScheduledOffSub => 'Bloque cette app à heures fixes';
+
+  @override
+  String get alNoSchedules => 'Aucune plage pour l\'instant';
+
+  @override
+  String get alAddSchedule => 'Ajouter une plage';
+
+  @override
+  String get alActiveNow => 'En cours';
+
+  @override
+  String get alScheduleDefault => 'Plage de blocage';
+
+  @override
+  String get alEndsNextDay => 'Finit le lendemain';
+
+  @override
+  String get alEdit => 'Modifier';
+
+  @override
+  String get alDelete => 'Supprimer';
+
+  @override
+  String get alDeleteScheduleQ => 'Supprimer cette plage ?';
+
+  @override
+  String alDeleteScheduleMsg(String title) {
+    return '« $title » ne bloquera plus cette app.';
+  }
+
+  @override
+  String get alNewSchedule => 'Nouvelle plage';
+
+  @override
+  String get alEditSchedule => 'Modifier la plage';
+
+  @override
+  String get alTitleOptional => 'Titre (facultatif)';
+
+  @override
+  String get alPresetStudy => 'Études';
+
+  @override
+  String get alPresetEvening => 'Soirée';
+
+  @override
+  String get alPresetSleep => 'Sommeil';
+
+  @override
+  String get alRepeatOn => 'Répéter le';
+
+  @override
+  String get alErrSameTime =>
+      'Le début et la fin ne peuvent pas être identiques';
+
+  @override
+  String get alErrNoDays => 'Choisissez au moins un jour';
+
+  @override
+  String alTempUnlock(int minutes) {
+    return 'Débloquer $minutes min';
+  }
+
+  @override
+  String alTempUnlockSub(int n) {
+    return 'Utilise 1 déblocage · $n restants';
+  }
+
+  @override
+  String get alTempUnlockFocus =>
+      'Impossible pendant une session de concentration';
+
+  @override
+  String get alTempUnlockNotLocked => 'Utile seulement si l\'app est bloquée';
+
+  @override
+  String alTempUnlockQ(String app, int minutes) {
+    return 'Débloquer $app pendant $minutes minutes ?';
+  }
+
+  @override
+  String get alUnlock => 'Débloquer';
+
+  @override
+  String get alEndEarly => 'Arrêter';
+
+  @override
+  String get alResetRules => 'Réinitialiser les règles';
+
+  @override
+  String get alResetRulesSub => 'Supprime la limite et les plages';
+
+  @override
+  String alResetQ(String app) {
+    return 'Réinitialiser les règles de $app ?';
+  }
+
+  @override
+  String get alResetMsg =>
+      'Sa limite et toutes ses plages seront supprimées. L\'app reste dans la liste.';
+
+  @override
+  String get alReset => 'Réinitialiser';
+
+  @override
+  String get alResetDone => 'Règles réinitialisées';
+
+  @override
+  String get alRemoveApp => 'Retirer l\'app';
+
+  @override
+  String get alRemoveAppSub => 'Ne plus gérer cette app';
+
+  @override
+  String alRemoveQ(String app) {
+    return 'Retirer $app ?';
+  }
+
+  @override
+  String get alRemoveMsg =>
+      'Pausey cessera de la restreindre et oubliera sa limite et ses plages.';
+
+  @override
+  String get alRemove => 'Retirer';
+
+  @override
+  String get alNoPackage =>
+      'Les limites et plages par app demandent une app installée précise. Sur Android, ajoutez-la via « Choisir parmi les apps installées ».';
+
+  @override
+  String get alNotFound => 'Cette app n\'est plus gérée';
+
+  @override
+  String get alPickerTitle => 'Apps installées';
+
+  @override
+  String get alPickerAdded => 'Déjà ajoutée';
+
+  @override
+  String alPickerAdd(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: 'Ajouter $n apps',
+      one: 'Ajouter 1 app',
+      zero: 'Ajouter',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get alPickerEmpty => 'Aucune app trouvée';
+
+  @override
   String get blockTitle => 'Verrou d\'apps';
 
   @override
-  String blockSubtitle(int locked, int total) {
-    return '$locked apps sur $total verrouillées';
-  }
-
-  @override
   String get blockAddApp => 'Ajouter';
-
-  @override
-  String blockLockedChip(int n) {
-    return '$n verrouillées';
-  }
-
-  @override
-  String blockUnlockedChip(int n) {
-    return '$n libres';
-  }
-
-  @override
-  String blockScheduledChip(int n) {
-    return '$n planifiées';
-  }
 
   @override
   String get blockFaceIdTitle => 'Protection Face ID';
@@ -499,28 +862,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get blockAllLocked => 'Toutes les apps sont verrouillées';
 
   @override
-  String get blockSched => 'Planif.';
-
-  @override
-  String get blockOnlySchedule => 'Verrouiller seulement selon le planning';
-
-  @override
-  String get blockOnlyScheduleSub =>
-      'Sinon elle reste verrouillée toute la journée';
-
-  @override
-  String get blockLockedLabel => 'Verrouillée';
-
-  @override
-  String get blockRemove => 'Retirer de la liste';
-
-  @override
   String blockRemoved(String app) {
     return '$app retirée';
   }
-
-  @override
-  String get blockUndo => 'Annuler';
 
   @override
   String get blockAppsUpdated => 'Apps mises à jour';
@@ -1827,6 +2171,33 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get insightsCatOther => 'Autres';
+
+  @override
+  String nativeBlockTitle(String app) {
+    return '$app est en pause';
+  }
+
+  @override
+  String get nativeReasonLimit =>
+      'Vous avez utilisé le temps du jour pour cette appli.';
+
+  @override
+  String get nativeReasonSchedule => 'Un horaire de blocage est actif.';
+
+  @override
+  String get nativeReasonGlobal => 'Cette appli est verrouillée dans Pausey.';
+
+  @override
+  String get nativeReasonFocus => 'Vous êtes en session de concentration.';
+
+  @override
+  String get nativeClose => 'Fermer l\'appli';
+
+  @override
+  String get nativeNotifTitle => 'Pausey veille sur vos limites';
+
+  @override
+  String get nativeNotifText => 'Limites et horaires de blocage actifs';
 
   @override
   String get profileSettings => 'Réglages';

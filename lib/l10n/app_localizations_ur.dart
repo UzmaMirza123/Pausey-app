@@ -431,30 +431,381 @@ class AppLocalizationsUr extends AppLocalizations {
   String get ob9StreakSub => 'اسے جاری رکھنے کے لیے ایک سیشن مکمل کریں';
 
   @override
+  String alSummary(int locked, int total) {
+    return 'ابھی $locked محدود · $total زیرِ انتظام';
+  }
+
+  @override
+  String alSummaryOff(int total) {
+    return '$total زیرِ انتظام · بلاکنگ بند';
+  }
+
+  @override
+  String get alFromInstalled => 'انسٹال شدہ ایپس سے چنیں';
+
+  @override
+  String get alFromInstalledSub => 'اس فون کی کوئی بھی ایپ چنیں';
+
+  @override
+  String get alPermTitle => 'بلاکنگ ابھی فعال نہیں';
+
+  @override
+  String get alPermMsg =>
+      'آپ کے اصول محفوظ ہیں، مگر یہ دو اجازتیں دیے بغیر Pausey ایپس بلاک نہیں کر سکتا:';
+
+  @override
+  String get alPermUsage => 'استعمال تک رسائی';
+
+  @override
+  String get alPermUsageSub => 'کون سی ایپ کھلی ہے اور آج کا وقت دیکھنے کے لیے';
+
+  @override
+  String get alPermOverlay => 'دوسری ایپس کے اوپر دکھائیں';
+
+  @override
+  String get alPermOverlaySub => 'بلاک ایپ پر لاک اسکرین دکھانے کے لیے';
+
+  @override
+  String get alAllow => 'اجازت دیں';
+
+  @override
+  String get alAllowed => 'اجازت ہے';
+
+  @override
+  String get alPermReturn =>
+      'اجازت دینے کے بعد Pausey پر واپس آئیں — یہ خود دوبارہ چیک کرے گا۔';
+
+  @override
+  String get alAndroidOnly =>
+      'بلاکنگ صرف اینڈرائیڈ پر کام کرتی ہے۔ اصول یہاں بھی بنا سکتے ہیں۔';
+
+  @override
+  String get alSearchHint => 'ایپس تلاش کریں';
+
+  @override
+  String get alFilterAll => 'سب';
+
+  @override
+  String get alFilterLocked => 'ابھی لاک';
+
+  @override
+  String get alFilterScheduled => 'شیڈول';
+
+  @override
+  String get alFilterAvailable => 'دستیاب';
+
+  @override
+  String get alStateLocked => 'لاک';
+
+  @override
+  String get alStateWillLock => 'لاک ہوگی';
+
+  @override
+  String get alStateScheduled => 'شیڈول';
+
+  @override
+  String get alStateAvailable => 'دستیاب';
+
+  @override
+  String alUsedOf(String used, String limit) {
+    return '$limit میں سے $used استعمال';
+  }
+
+  @override
+  String alUsedToday(String used) {
+    return 'آج $used استعمال';
+  }
+
+  @override
+  String get alNoLimit => 'روزانہ حد نہیں';
+
+  @override
+  String alLimitNoUsage(String limit) {
+    return '$limit روزانہ حد · استعمال معلوم نہیں';
+  }
+
+  @override
+  String get alRulesOff => 'پابندیاں بند';
+
+  @override
+  String alNextLock(String time) {
+    return 'اگلا لاک: $time';
+  }
+
+  @override
+  String alUnlockedUntil(String time) {
+    return '$time تک اَن لاک';
+  }
+
+  @override
+  String get alReasonLimit => 'روزانہ حد پوری';
+
+  @override
+  String get alReasonSchedule => 'لاک شیڈول جاری';
+
+  @override
+  String get alReasonGeneral => 'عام شیڈول جاری';
+
+  @override
+  String get alReasonAllDay => 'سارا دن لاک';
+
+  @override
+  String get alReasonFocus => 'فوکس سیشن جاری';
+
+  @override
+  String get alNoMatches => 'کوئی ایپ نہیں ملی';
+
+  @override
+  String get alGeneral => 'عمومی';
+
+  @override
+  String get alGeneralScheduleSub => 'جن ایپس میں “عام شیڈول پر چلیں” آن ہے';
+
+  @override
+  String get alLockAllSub => 'ہر ایپ پر پابندی آن کریں';
+
+  @override
+  String get alSaved => 'محفوظ';
+
+  @override
+  String get alChangesApply => 'تبدیلیاں فوراً لاگو ہوتی ہیں';
+
+  @override
+  String get alDetailsTitle => 'ایپ کی حدیں';
+
+  @override
+  String get alBlockingOff => 'اس فون پر بلاکنگ بند ہے';
+
+  @override
+  String get alRestrictApp => 'اس ایپ کو محدود کریں';
+
+  @override
+  String get alMasterOff => 'بند — Pausey اس ایپ کو محدود نہیں کرے گا';
+
+  @override
+  String get alMasterOnRules => 'نیچے دی گئی حد اور شیڈول لاگو ہیں';
+
+  @override
+  String get alMasterOnAllDay => 'ابھی حد یا شیڈول نہیں — سارا دن لاک';
+
+  @override
+  String get alMasterOnGeneral => 'عام شیڈول کے دوران لاک';
+
+  @override
+  String get alFollowGeneral => 'عام شیڈول پر چلیں';
+
+  @override
+  String alFollowGeneralSub(String start, String end) {
+    return '$start – $end بھی لاک کریں';
+  }
+
+  @override
+  String get alGeneralOff => 'عام شیڈول بند ہے';
+
+  @override
+  String get alDailyLimit => 'روزانہ حد';
+
+  @override
+  String get alDailyLimitOffSub => 'ہر دن طے شدہ وقت کے بعد ایپ لاک کریں';
+
+  @override
+  String get alCustom => 'اپنی مرضی';
+
+  @override
+  String get alUsedLabel => 'آج استعمال';
+
+  @override
+  String get alLeftLabel => 'باقی';
+
+  @override
+  String get alLimitReached => 'آج کی حد پوری ہو گئی';
+
+  @override
+  String get alResets => 'آدھی رات کو ری سیٹ (فون کا وقت)';
+
+  @override
+  String get alUsageUnavailable => 'استعمال معلوم نہیں';
+
+  @override
+  String get alUsageNeedsAccess =>
+      'Usage access کی اجازت دیں تاکہ Pausey آج کا وقت گن سکے۔';
+
+  @override
+  String get alUsageAndroidOnly =>
+      'استعمال صرف اینڈرائیڈ پر ناپا جاتا ہے۔ حد محفوظ رہتی ہے اور وہاں لاگو ہوتی ہے۔';
+
+  @override
+  String get alGrantUsage => 'استعمال تک رسائی دیں';
+
+  @override
+  String get alCustomLimitTitle => 'اپنی روزانہ حد';
+
+  @override
+  String get alHours => 'گھنٹے';
+
+  @override
+  String get alMinutes => 'منٹ';
+
+  @override
+  String get alErrZeroLimit => 'صفر سے زیادہ وقت چنیں';
+
+  @override
+  String get alSave => 'محفوظ کریں';
+
+  @override
+  String get alScheduledLocking => 'شیڈول لاکنگ';
+
+  @override
+  String get alScheduledOffSub => 'طے شدہ اوقات میں یہ ایپ لاک کریں';
+
+  @override
+  String get alNoSchedules => 'ابھی کوئی شیڈول نہیں';
+
+  @override
+  String get alAddSchedule => 'شیڈول شامل کریں';
+
+  @override
+  String get alActiveNow => 'ابھی جاری';
+
+  @override
+  String get alScheduleDefault => 'لاک کا وقت';
+
+  @override
+  String get alEndsNextDay => 'اگلے دن ختم';
+
+  @override
+  String get alEdit => 'ترمیم';
+
+  @override
+  String get alDelete => 'حذف کریں';
+
+  @override
+  String get alDeleteScheduleQ => 'یہ شیڈول حذف کریں؟';
+
+  @override
+  String alDeleteScheduleMsg(String title) {
+    return '“$title” اب اس ایپ کو لاک نہیں کرے گا۔';
+  }
+
+  @override
+  String get alNewSchedule => 'نیا شیڈول';
+
+  @override
+  String get alEditSchedule => 'شیڈول میں ترمیم';
+
+  @override
+  String get alTitleOptional => 'عنوان (اختیاری)';
+
+  @override
+  String get alPresetStudy => 'پڑھائی';
+
+  @override
+  String get alPresetEvening => 'شام';
+
+  @override
+  String get alPresetSleep => 'نیند';
+
+  @override
+  String get alRepeatOn => 'ان دنوں دہرائیں';
+
+  @override
+  String get alErrSameTime => 'شروع اور اختتام ایک نہیں ہو سکتے';
+
+  @override
+  String get alErrNoDays => 'کم از کم ایک دن چنیں';
+
+  @override
+  String alTempUnlock(int minutes) {
+    return '$minutes منٹ کے لیے اَن لاک';
+  }
+
+  @override
+  String alTempUnlockSub(int n) {
+    return '1 ایمرجنسی اوور رائیڈ استعمال · آج $n باقی';
+  }
+
+  @override
+  String get alTempUnlockFocus => 'فوکس سیشن کے دوران اَن لاک نہیں ہو سکتا';
+
+  @override
+  String get alTempUnlockNotLocked => 'صرف ایپ لاک ہونے پر ضرورت ہوتی ہے';
+
+  @override
+  String alTempUnlockQ(String app, int minutes) {
+    return '$app کو $minutes منٹ کے لیے اَن لاک کریں؟';
+  }
+
+  @override
+  String get alUnlock => 'اَن لاک';
+
+  @override
+  String get alEndEarly => 'پہلے ختم کریں';
+
+  @override
+  String get alResetRules => 'پابندیاں ری سیٹ کریں';
+
+  @override
+  String get alResetRulesSub => 'اس ایپ کی حد اور شیڈول ہٹائیں';
+
+  @override
+  String alResetQ(String app) {
+    return '$app کی پابندیاں ری سیٹ کریں؟';
+  }
+
+  @override
+  String get alResetMsg =>
+      'اس کی روزانہ حد اور تمام شیڈول ہٹ جائیں گے۔ ایپ فہرست میں رہے گی۔';
+
+  @override
+  String get alReset => 'ری سیٹ';
+
+  @override
+  String get alResetDone => 'پابندیاں ری سیٹ ہو گئیں';
+
+  @override
+  String get alRemoveApp => 'ایپ ہٹائیں';
+
+  @override
+  String get alRemoveAppSub => 'اس ایپ کا انتظام بند کریں';
+
+  @override
+  String alRemoveQ(String app) {
+    return '$app ہٹائیں؟';
+  }
+
+  @override
+  String get alRemoveMsg =>
+      'Pausey اسے محدود کرنا بند کر دے گا اور اس کی حد اور شیڈول بھول جائے گا۔';
+
+  @override
+  String get alRemove => 'ہٹائیں';
+
+  @override
+  String get alNoPackage =>
+      'ہر ایپ کی حد اور شیڈول کے لیے کوئی ایک انسٹال شدہ ایپ چاہیے۔ اینڈرائیڈ پر “انسٹال شدہ ایپس سے چنیں” سے شامل کریں۔';
+
+  @override
+  String get alNotFound => 'اس ایپ کا اب انتظام نہیں';
+
+  @override
+  String get alPickerTitle => 'انسٹال شدہ ایپس';
+
+  @override
+  String get alPickerAdded => 'پہلے سے شامل';
+
+  @override
+  String alPickerAdd(int n) {
+    return 'ایپس شامل کریں ($n)';
+  }
+
+  @override
+  String get alPickerEmpty => 'کوئی ایپ نہیں ملی';
+
+  @override
   String get blockTitle => 'ایپ لاک';
 
   @override
-  String blockSubtitle(int locked, int total) {
-    return '$total میں سے $locked ایپس لاک ہیں';
-  }
-
-  @override
   String get blockAddApp => 'ایپ شامل کریں';
-
-  @override
-  String blockLockedChip(int n) {
-    return '$n لاک';
-  }
-
-  @override
-  String blockUnlockedChip(int n) {
-    return '$n اَن لاک';
-  }
-
-  @override
-  String blockScheduledChip(int n) {
-    return '$n شیڈول';
-  }
 
   @override
   String get blockFaceIdTitle => 'فیس آئی ڈی تحفظ';
@@ -493,27 +844,9 @@ class AppLocalizationsUr extends AppLocalizations {
   String get blockAllLocked => 'تمام ایپس لاک ہیں';
 
   @override
-  String get blockSched => 'شیڈول';
-
-  @override
-  String get blockOnlySchedule => 'صرف شیڈول کے دوران لاک';
-
-  @override
-  String get blockOnlyScheduleSub => 'ورنہ سارا دن لاک رہے گی';
-
-  @override
-  String get blockLockedLabel => 'لاک';
-
-  @override
-  String get blockRemove => 'فہرست سے ہٹائیں';
-
-  @override
   String blockRemoved(String app) {
     return '$app ہٹا دی گئی';
   }
-
-  @override
-  String get blockUndo => 'واپس';
 
   @override
   String get blockAppsUpdated => 'ایپس اپ ڈیٹ ہو گئیں';
@@ -1802,6 +2135,32 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get insightsCatOther => 'دیگر';
+
+  @override
+  String nativeBlockTitle(String app) {
+    return '$app روک دی گئی ہے';
+  }
+
+  @override
+  String get nativeReasonLimit => 'آپ آج کا اس ایپ کا وقت استعمال کر چکے ہیں۔';
+
+  @override
+  String get nativeReasonSchedule => 'ابھی لاک شیڈول فعال ہے۔';
+
+  @override
+  String get nativeReasonGlobal => 'یہ ایپ Pausey میں لاک ہے۔';
+
+  @override
+  String get nativeReasonFocus => 'آپ فوکس سیشن میں ہیں۔';
+
+  @override
+  String get nativeClose => 'ایپ بند کریں';
+
+  @override
+  String get nativeNotifTitle => 'Pausey آپ کی حدیں برقرار رکھ رہا ہے';
+
+  @override
+  String get nativeNotifText => 'ایپ کی حدیں اور لاک شیڈول فعال ہیں';
 
   @override
   String get profileSettings => 'ترتیبات';

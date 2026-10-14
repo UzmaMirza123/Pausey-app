@@ -1,21 +1,28 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-
-import '../../widgets/time_picker.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:local_auth/local_auth.dart';
 
 import '../../data/app_repo.dart';
 import '../../data/models.dart';
+import '../../data/restrictions/restriction_models.dart';
+import '../../data/restrictions/restriction_repo.dart';
+import '../../services/native_bridge.dart';
 import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
+import '../../widgets/time_picker.dart';
 import '../../widgets/ui_kit.dart';
 import '../onboarding/widgets/select_apps_sheet.dart';
+import 'app_limit_details_screen.dart';
+import 'widgets/applock_ui.dart';
+import 'widgets/installed_apps_sheet.dart';
 
-/// Which subset of managed apps the filter chips show.
-enum BlockFilter { all, locked, unlocked, scheduled }
+export 'widgets/applock_ui.dart' show blockCategoryLabel;
 
-/// Block tab — App Lock (design 19362e6d).
+/// Which managed apps the filter chips show (matches the row state labels).
+enum BlockFilter { all, locked, scheduled, available }
+
+/// Block tab — App Lock (design 19362e6d): managed apps with real per-app state,
+/// permission status, and the general lock settings below.
 class BlockScreen extends StatefulWidget {
   const BlockScreen({super.key, this.auth});
 
@@ -28,14 +35,16 @@ class BlockScreen extends StatefulWidget {
 
 class _BlockScreenState extends State<BlockScreen> {
   BlockFilter _filter = BlockFilter.all;
+  String _query = '';
   bool _authBusy = false;
 
   AppRepo get _repo => AppRepo.instance;
+  RestrictionRepo get _rr => RestrictionRepo.instance;
 
-  void _snack(String text, {SnackBarAction? action}) {
+  void _snack(String text) {
     final m = ScaffoldMessenger.maybeOf(context);
     m?.hideCurrentSnackBar();
-    m?.showSnackBar(SnackBar(content: Text(text), action: action, behavior: SnackBarBehavior.floating));
+    m?.showSnackBar(SnackBar(content: Text(text), behavior: SnackBarBehavior.floating));
   }
 
   Future<void> _addApps() async {
@@ -45,23 +54,12 @@ class _BlockScreenState extends State<BlockScreen> {
     if (mounted) _snack(context.l10n.blockAppsUpdated);
   }
 
-  Future<void> _remove(ManagedApp app) async {
-    final before = _repo.apps.map((a) => a.id).toList();
-    final locked = app.locked, scheduled = app.scheduled;
-    await _repo.removeApp(app.id);
-    if (!mounted) return;
-    final l = context.l10n;
-    _snack(l.blockRemoved(app.name),
-        action: SnackBarAction(
-          label: l.blockUndo,
-          onPressed: () async {
-            final ids = [for (final id in before) if (id == app.id || _repo.apps.any((a) => a.id == id)) id];
-            await _repo.setManagedApps(ids);
-            await _repo.setAppLocked(app.id, locked);
-            await _repo.setAppScheduled(app.id, scheduled);
-          },
-        ));
+  Future<void> _addInstalled() async {
+    final n = await showInstalledAppsSheet(context);
+    if (n != null && n > 0 && mounted) _snack(context.l10n.blockAppsUpdated);
   }
+
+  void _open(ManagedApp a) => Navigator.of(context).push(MaterialPageRoute(builder: (_) => AppLimitDetailsScreen(appId: a.id)));
 
   Future<void> _toggleFaceId(bool v) async {
     final l = context.l10n;
@@ -133,216 +131,151 @@ class _BlockScreenState extends State<BlockScreen> {
       _snack(l.blockEmergencyNone);
       return;
     }
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(l.blockEmergencyConfirmTitle),
-        content: Text(l.blockEmergencyConfirmMsg(left)),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l.cancel)),
-          FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: Tone.red, foregroundColor: Colors.white),
-            onPressed: () => Navigator.pop(ctx, true),
-            child: Text(l.blockEmergencyUse),
-          ),
-        ],
-      ),
-    );
-    if (ok != true || !mounted) return;
+    final ok = await confirmAction(context,
+        title: l.blockEmergencyConfirmTitle, message: l.blockEmergencyConfirmMsg(left), confirm: l.blockEmergencyUse);
+    if (!ok || !mounted) return;
     final used = await _repo.useBypass();
     if (mounted) _snack(used ? l.blockEmergencyUsed : l.blockEmergencyNone);
-  }
-
-  Future<void> _appOptions(ManagedApp app) async {
-    await showModalBottomSheet<void>(
-      context: context,
-      useSafeArea: true,
-      backgroundColor: context.isDark ? const Color(0xFF14122C) : Colors.white,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.card))),
-      builder: (ctx) => ListenableBuilder(
-        listenable: _repo,
-        builder: (ctx, _) {
-          final l = ctx.l10n;
-          final c = ctx.colors;
-          final a = _repo.apps.where((x) => x.id == app.id).firstOrNull;
-          if (a == null) return const SizedBox.shrink();
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 20, AppSpacing.gutter, 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(children: [
-                  AppGlyph(a.id, size: 44),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text(a.name, style: AppText.cardTitle.copyWith(color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis),
-                      Text(blockCategoryLabel(l, a.category), style: AppText.rowSub.copyWith(color: c.textMuted)),
-                    ]),
-                  ),
-                ]),
-                const SizedBox(height: 12),
-                _OptionRow(
-                  icon: Icons.lock_rounded,
-                  title: l.blockLockedLabel,
-                  trailing: PSwitch(value: a.locked, onChanged: (v) => _repo.setAppLocked(a.id, v)),
-                ),
-                _OptionRow(
-                  icon: Icons.schedule_rounded,
-                  color: Tone.amber,
-                  title: l.blockOnlySchedule,
-                  subtitle: l.blockOnlyScheduleSub,
-                  trailing: PSwitch(value: a.scheduled, color: Tone.amber, onChanged: (v) => _repo.setAppScheduled(a.id, v)),
-                ),
-                const SizedBox(height: 8),
-                TextButton.icon(
-                  style: TextButton.styleFrom(foregroundColor: Tone.red, padding: const EdgeInsets.symmetric(vertical: 14)),
-                  onPressed: () {
-                    Navigator.pop(ctx);
-                    _remove(a);
-                  },
-                  icon: const Icon(Icons.delete_outline_rounded),
-                  label: Text(l.blockRemove, style: AppText.rowTitle.copyWith(color: Tone.red)),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: _repo,
+      listenable: Listenable.merge([_repo, _rr]),
       builder: (context, _) {
         final l = context.l10n;
+        final status = _rr.status;
+        if (status.supported && !InstalledAppsCache.instance.loaded) {
+          WidgetsBinding.instance.addPostFrameCallback((_) => InstalledAppsCache.instance.ensureLoaded());
+        }
         final apps = _repo.apps;
-        final shown = switch (_filter) {
-          BlockFilter.all => apps,
-          BlockFilter.locked => apps.where((a) => a.locked).toList(),
-          BlockFilter.unlocked => apps.where((a) => !a.locked).toList(),
-          BlockFilter.scheduled => apps.where((a) => a.scheduled).toList(),
-        };
-        void setFilter(BlockFilter f) => setState(() => _filter = _filter == f ? BlockFilter.all : f);
+        final states = {for (final a in apps) a.id: _rr.stateFor(a)};
+        final st = {for (final a in apps) a.id: appLockStatus(a, states[a.id]!)};
+        final restricted = st.values.where((s) => s == AppLockStatus.locked).length;
+        final q = _query.trim().toLowerCase();
+        final shown = [
+          for (final a in apps)
+            if ((q.isEmpty || a.name.toLowerCase().contains(q)) &&
+                switch (_filter) {
+                  BlockFilter.all => true,
+                  BlockFilter.locked => st[a.id] == AppLockStatus.locked,
+                  BlockFilter.scheduled => st[a.id] == AppLockStatus.scheduled,
+                  BlockFilter.available => st[a.id] == AppLockStatus.available,
+                })
+              a,
+        ];
         return PageList(
           header: ScreenHeader(
             title: l.blockTitle,
-            subtitle: l.blockSubtitle(_repo.lockedCount, apps.length),
+            subtitle: apps.isEmpty ? null : (status.canEnforce ? l.alSummary(restricted, apps.length) : l.alSummaryOff(apps.length)),
             trailing: _AddButton(label: l.blockAddApp, onTap: _addApps),
           ),
           children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              clipBehavior: Clip.none,
-              child: Row(children: [
-                ChoiceChipP(
-                  icon: Icons.lock_rounded,
-                  label: l.blockLockedChip(_repo.lockedCount),
-                  selected: _filter == BlockFilter.locked,
-                  onTap: () => setFilter(BlockFilter.locked),
-                ),
-                const SizedBox(width: 8),
-                ChoiceChipP(
-                  icon: Icons.lock_open_rounded,
-                  label: l.blockUnlockedChip(_repo.unlockedCount),
-                  selected: _filter == BlockFilter.unlocked,
-                  onTap: () => setFilter(BlockFilter.unlocked),
-                ),
-                const SizedBox(width: 8),
-                ChoiceChipP(
-                  icon: Icons.calendar_month_rounded,
-                  label: l.blockScheduledChip(_repo.scheduledCount),
-                  selected: _filter == BlockFilter.scheduled,
-                  onTap: () => setFilter(BlockFilter.scheduled),
-                ),
-              ]),
-            ),
-            _FadeIn(
-              delay: 0,
-              child: PCard(
+            if (!status.canEnforce) _FadeIn(delay: 0, child: _PermissionBanner(status: status)),
+            if (apps.isEmpty) ...[
+              StateMessage(
+                icon: Icons.shield_outlined,
+                color: Tone.violet,
+                badge: l.blockEmptyBadge,
+                title: l.blockEmptyTitle,
+                message: l.blockEmptyMsg,
+                primaryLabel: l.blockAddApp,
+                onPrimary: _addApps,
+                secondaryLabel: status.supported ? l.alFromInstalled : null,
+                onSecondary: status.supported ? _addInstalled : null,
+              ),
+            ] else ...[
+              _SearchField(onChanged: (v) => setState(() => _query = v)),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                clipBehavior: Clip.none,
                 child: Row(children: [
-                  const IconBadge(icon: Icons.face_retouching_natural_rounded, color: Tone.violet, size: 48),
-                  const SizedBox(width: 14),
-                  Expanded(child: _Texts(title: l.blockFaceIdTitle, sub: l.blockFaceIdSub)),
-                  const SizedBox(width: 8),
-                  PSwitch(key: const Key('faceIdSwitch'), value: _repo.faceIdProtection, onChanged: _authBusy ? null : _toggleFaceId),
+                  for (final f in BlockFilter.values) ...[
+                    if (f.index > 0) const SizedBox(width: 8),
+                    ChoiceChipP(
+                      key: Key('filter_${f.name}'),
+                      label: switch (f) {
+                        BlockFilter.all => l.alFilterAll,
+                        BlockFilter.locked => l.alFilterLocked,
+                        BlockFilter.scheduled => l.alFilterScheduled,
+                        BlockFilter.available => l.alFilterAvailable,
+                      },
+                      selected: _filter == f,
+                      onTap: () => setState(() => _filter = f),
+                    ),
+                  ],
                 ]),
               ),
-            ),
-            _FadeIn(delay: 60, child: _ScheduleCard(onPickTime: _pickTime, onToggleDay: _toggleDay)),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SectionLabel(
-                  l.blockManagedApps,
-                  trailing: apps.isEmpty
-                      ? null
-                      : LinkText(l.blockLockAll, onTap: () async {
-                          await _repo.lockAll();
-                          if (mounted) _snack(l.blockAllLocked);
-                        }),
-                ),
-                if (apps.isEmpty)
-                  StateMessage(
-                    icon: Icons.shield_outlined,
-                    color: Tone.violet,
-                    badge: l.blockEmptyBadge,
-                    title: l.blockEmptyTitle,
-                    message: l.blockEmptyMsg,
-                    primaryLabel: l.blockAddApp,
-                    onPrimary: _addApps,
-                  )
-                else
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SectionLabel(l.blockManagedApps),
+                  if (shown.isEmpty)
+                    PCard(
+                      child: Text(l.alNoMatches, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(color: context.colors.textMuted)),
+                    ),
                   for (var i = 0; i < shown.length; i++) ...[
                     if (i > 0) const SizedBox(height: 10),
                     _FadeIn(
                       key: ValueKey(shown[i].id),
-                      delay: 100 + i * 40,
+                      delay: 60 + i * 40,
                       child: _AppRow(
                         app: shown[i],
-                        onTap: () => _appOptions(shown[i]),
+                        state: states[shown[i].id]!,
+                        status: st[shown[i].id]!,
+                        canEnforce: status.canEnforce,
+                        onTap: () => _open(shown[i]),
                         onLocked: (v) => _repo.setAppLocked(shown[i].id, v),
                       ),
                     ),
                   ],
-              ],
-            ),
-            _FadeIn(delay: 200, child: _EmergencyCard(onTap: _emergency)),
+                  if (status.supported) ...[const SizedBox(height: 10), InstalledAppsLink(onTap: _addInstalled)],
+                ],
+              ),
+            ],
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              SectionLabel(l.alGeneral),
+              _FadeIn(delay: 120, child: _ScheduleCard(onPickTime: _pickTime, onToggleDay: _toggleDay)),
+              const SizedBox(height: 12),
+              _FadeIn(
+                delay: 160,
+                child: PGroup(children: [
+                  PListTile(
+                    icon: Icons.face_retouching_natural_rounded,
+                    title: l.blockFaceIdTitle,
+                    subtitle: l.blockFaceIdSub,
+                    trailing: PSwitch(key: const Key('faceIdSwitch'), value: _repo.faceIdProtection, onChanged: _authBusy ? null : _toggleFaceId),
+                  ),
+                  PListTile(
+                    key: const Key('emergencyCard'),
+                    icon: Icons.shield_rounded,
+                    color: Tone.amber,
+                    title: l.blockEmergencyTitle,
+                    subtitle: _repo.settings.emergencyBypass ? l.blockEmergencySub(_repo.bypassLeftToday) : l.blockEmergencyOff,
+                    onTap: _emergency,
+                    trailing: Text(l.blockEmergencyUse,
+                        style: AppText.rowSub.copyWith(
+                            fontWeight: FontWeight.w800,
+                            color: AppPalette.violet.withValues(alpha: _repo.settings.emergencyBypass && _repo.bypassLeftToday > 0 ? 1 : 0.45))),
+                  ),
+                  if (apps.isNotEmpty)
+                    PListTile(
+                      key: const Key('lockAllRow'),
+                      icon: Icons.lock_rounded,
+                      title: l.blockLockAll,
+                      subtitle: l.alLockAllSub,
+                      onTap: () async {
+                        await _repo.lockAll();
+                        if (mounted) _snack(l.blockAllLocked);
+                      },
+                    ),
+                ]),
+              ),
+            ]),
           ],
         );
       },
     );
-  }
-}
-
-/// Translated label for a managed-app category id.
-String blockCategoryLabel(AppLocalizations l, String id) => switch (id) {
-      'social' => l.blockCatSocial,
-      'video' => l.blockCatVideo,
-      'games' => l.blockCatGames,
-      'shopping' => l.blockCatShopping,
-      'community' => l.blockCatCommunity,
-      _ => l.blockCatOther,
-    };
-
-class _Texts extends StatelessWidget {
-  const _Texts({required this.title, this.sub});
-  final String title;
-  final String? sub;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(title, style: AppText.rowTitle.copyWith(color: c.textPrimary), maxLines: 2, overflow: TextOverflow.ellipsis),
-      if (sub != null) ...[
-        const SizedBox(height: 2),
-        Text(sub!, style: AppText.rowSub.copyWith(color: c.textMuted), maxLines: 2, overflow: TextOverflow.ellipsis),
-      ],
-    ]);
   }
 }
 
@@ -378,6 +311,121 @@ class _AddButton extends StatelessWidget {
   }
 }
 
+class _SearchField extends StatelessWidget {
+  const _SearchField({required this.onChanged});
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return TextField(
+      key: const Key('appSearch'),
+      onChanged: onChanged,
+      style: AppText.rowTitle.copyWith(color: c.textPrimary),
+      textInputAction: TextInputAction.search,
+      decoration: alFieldDecoration(context, hint: context.l10n.alSearchHint, prefixIcon: Icon(Icons.search_rounded, color: c.textMuted, size: 20), radius: AppRadius.chip),
+    );
+  }
+}
+
+/// Honest status: what is (not) enforced on this phone.
+class _PermissionBanner extends StatelessWidget {
+  const _PermissionBanner({required this.status});
+  final NativeStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final c = context.colors;
+    if (!status.supported) {
+      return Container(
+        key: const Key('androidOnlyNote'),
+        padding: const EdgeInsetsDirectional.fromSTEB(14, 10, 14, 10),
+        decoration: BoxDecoration(color: c.glassFill, borderRadius: BorderRadius.circular(AppRadius.tile), border: Border.all(color: c.glassBorder)),
+        child: Row(children: [
+          Icon(Icons.info_outline_rounded, size: 18, color: c.textMuted),
+          const SizedBox(width: 10),
+          Expanded(child: Text(l.alAndroidOnly, style: AppText.rowSub.copyWith(color: c.textSecondary))),
+        ]),
+      );
+    }
+    return PCard(
+      key: const Key('permissionBanner'),
+      accent: Tone.amber,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        CardTitle(icon: Icons.warning_amber_rounded, color: Tone.amber, title: l.alPermTitle),
+        const SizedBox(height: 6),
+        Text(l.alPermMsg, style: AppText.rowSub.copyWith(color: c.textSecondary)),
+        const SizedBox(height: 12),
+        _PermStep(
+          n: 1,
+          title: l.alPermUsage,
+          sub: l.alPermUsageSub,
+          granted: status.usageAccess,
+          onTap: NativeBridge.instance.openUsageAccessSettings,
+        ),
+        const SizedBox(height: 10),
+        _PermStep(
+          n: 2,
+          title: l.alPermOverlay,
+          sub: l.alPermOverlaySub,
+          granted: status.overlay,
+          onTap: NativeBridge.instance.openOverlaySettings,
+        ),
+        const SizedBox(height: 10),
+        Text(l.alPermReturn, style: AppText.small.copyWith(color: c.textMuted)),
+      ]),
+    );
+  }
+}
+
+class _PermStep extends StatelessWidget {
+  const _PermStep({required this.n, required this.title, required this.sub, required this.granted, required this.onTap});
+  final int n;
+  final String title, sub;
+  final bool granted;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final c = context.colors;
+    return Row(children: [
+      Container(
+        width: 26,
+        height: 26,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(shape: BoxShape.circle, color: (granted ? Tone.green : Tone.amber).withValues(alpha: 0.16)),
+        child: granted
+            ? const Icon(Icons.check_rounded, size: 16, color: Tone.green)
+            : Text('$n', style: AppText.small.copyWith(fontWeight: FontWeight.w800, color: Tone.amber)),
+      ),
+      const SizedBox(width: 10),
+      Expanded(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(title, style: AppText.rowTitle.copyWith(color: c.textPrimary)),
+          Text(sub, style: AppText.rowSub.copyWith(fontSize: 12, color: c.textMuted)),
+        ]),
+      ),
+      const SizedBox(width: 8),
+      granted
+          ? Text(l.alAllowed, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: Tone.green))
+          : FilledButton(
+              onPressed: onTap,
+              style: FilledButton.styleFrom(
+                backgroundColor: AppPalette.accent,
+                foregroundColor: Colors.white,
+                shape: const StadiumBorder(),
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                minimumSize: const Size(0, 36),
+                textStyle: AppText.rowSub.copyWith(fontWeight: FontWeight.w700),
+              ),
+              child: Text(l.alAllow),
+            ),
+    ]);
+  }
+}
+
 class _ScheduleCard extends StatelessWidget {
   const _ScheduleCard({required this.onPickTime, required this.onToggleDay});
   final void Function(bool start) onPickTime;
@@ -386,10 +434,10 @@ class _ScheduleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
+    final c = context.colors;
     final s = AppRepo.instance.schedule;
-    final loc = Localizations.localeOf(context).toString();
-    String fmt(TimeOfDay t) => DateFormat.jm(loc).format(DateTime(2024, 1, 1, t.hour, t.minute));
     return PCard(
+      padding: const EdgeInsets.fromLTRB(AppSpacing.card, 14, AppSpacing.card, 16),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         CardTitle(
           icon: Icons.event_available_rounded,
@@ -397,33 +445,28 @@ class _ScheduleCard extends StatelessWidget {
           title: l.blockScheduleTitle,
           trailing: PSwitch(key: const Key('scheduleSwitch'), value: s.enabled, onChanged: (v) => AppRepo.instance.updateSchedule((x) => x.enabled = v)),
         ),
+        Padding(
+          padding: const EdgeInsetsDirectional.only(start: 26),
+          child: Text(l.alGeneralScheduleSub, style: AppText.rowSub.copyWith(fontSize: 12, color: c.textMuted)),
+        ),
         AnimatedOpacity(
           duration: const Duration(milliseconds: 200),
           opacity: s.enabled ? 1 : 0.45,
           child: IgnorePointer(
             ignoring: !s.enabled,
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              const SizedBox(height: 14),
+              const SizedBox(height: 12),
               Row(children: [
-                Expanded(child: _TimeTile(label: l.blockStart, value: fmt(s.start), icon: Icons.bedtime_rounded, color: Tone.violet, onTap: () => onPickTime(true))),
+                Expanded(
+                    child: TimeTile(
+                        label: l.blockStart, value: fmtMinuteOfDay(context, s.startMinutes), icon: Icons.bedtime_rounded, color: Tone.violet, onTap: () => onPickTime(true))),
                 const SizedBox(width: 10),
-                Expanded(child: _TimeTile(label: l.blockEnd, value: fmt(s.end), icon: Icons.wb_sunny_rounded, color: Tone.amber, onTap: () => onPickTime(false))),
+                Expanded(
+                    child: TimeTile(
+                        label: l.blockEnd, value: fmtMinuteOfDay(context, s.endMinutes), icon: Icons.wb_sunny_rounded, color: Tone.amber, onTap: () => onPickTime(false))),
               ]),
-              const SizedBox(height: 14),
-              Row(children: [
-                for (var d = 1; d <= 7; d++) ...[
-                  if (d > 1) const SizedBox(width: 6),
-                  Expanded(
-                    child: _DayChip(
-                      key: Key('day_$d'),
-                      letter: DateFormat.EEEEE(loc).format(DateTime(2024, 1, d)),
-                      tooltip: DateFormat.EEEE(loc).format(DateTime(2024, 1, d)),
-                      selected: s.days.contains(d),
-                      onTap: () => onToggleDay(d),
-                    ),
-                  ),
-                ],
-              ]),
+              const SizedBox(height: 12),
+              DayChips(days: s.days, onToggle: onToggleDay),
             ]),
           ),
         ),
@@ -432,81 +475,12 @@ class _ScheduleCard extends StatelessWidget {
   }
 }
 
-class _TimeTile extends StatelessWidget {
-  const _TimeTile({required this.label, required this.value, required this.icon, required this.color, required this.onTap});
-  final String label, value;
-  final IconData icon;
-  final Color color;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppRadius.tile),
-        child: Ink(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(color: c.glassFill, borderRadius: BorderRadius.circular(AppRadius.tile), border: Border.all(color: c.glassBorder)),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(label, style: AppText.rowSub.copyWith(color: c.textMuted), maxLines: 1, overflow: TextOverflow.ellipsis),
-            const SizedBox(height: 6),
-            Row(children: [
-              Icon(icon, size: 16, color: color),
-              const SizedBox(width: 6),
-              Expanded(
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text(value, style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w800, color: c.textPrimary)),
-                ),
-              ),
-            ]),
-          ]),
-        ),
-      ),
-    );
-  }
-}
-
-class _DayChip extends StatelessWidget {
-  const _DayChip({super.key, required this.letter, required this.tooltip, required this.selected, required this.onTap});
-  final String letter, tooltip;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return Tooltip(
-      message: tooltip,
-      child: Semantics(
-        selected: selected,
-        button: true,
-        child: GestureDetector(
-          onTap: onTap,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            height: 34,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: selected ? AppPalette.accent : c.glassFill,
-              borderRadius: BorderRadius.circular(AppRadius.chip),
-              border: Border.all(color: selected ? Colors.transparent : c.glassBorder),
-            ),
-            child: Text(letter, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: selected ? Colors.white : c.textMuted)),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _AppRow extends StatelessWidget {
-  const _AppRow({required this.app, required this.onTap, required this.onLocked});
+  const _AppRow({required this.app, required this.state, required this.status, required this.canEnforce, required this.onTap, required this.onLocked});
   final ManagedApp app;
+  final RestrictionState state;
+  final AppLockStatus status;
+  final bool canEnforce;
   final VoidCallback onTap;
   final ValueChanged<bool> onLocked;
 
@@ -514,80 +488,46 @@ class _AppRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final c = context.colors;
+    String? line2;
+    if (state.unlockExpiry != null) {
+      line2 = l.alUnlockedUntil(fmtClock(context, state.unlockExpiry!));
+    } else if (status == AppLockStatus.locked) {
+      line2 = reasonText(l, app, state);
+    } else {
+      final next = nextLockFor(app, state);
+      if (next != null) line2 = l.alNextLock(fmtNextLock(context, next));
+    }
+    final label = statusLabel(l, status, canEnforce: canEnforce);
     return PCard(
+      key: Key('row_${app.id}'),
       onTap: onTap,
-      padding: const EdgeInsetsDirectional.fromSTEB(14, 12, 10, 12),
+      padding: const EdgeInsetsDirectional.fromSTEB(14, 12, 6, 12),
       child: Row(children: [
-        AppGlyph(app.id, size: 44),
+        AppIcon(app, size: 44),
         const SizedBox(width: 12),
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(children: [
+            Row(crossAxisAlignment: CrossAxisAlignment.baseline, textBaseline: TextBaseline.alphabetic, children: [
               Flexible(child: Text(app.name, style: AppText.rowTitle.copyWith(color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
-              if (app.scheduled) ...[const SizedBox(width: 8), Pill(l.blockSched, color: Tone.amber, icon: Icons.schedule_rounded)],
+              const SizedBox(width: 8),
+              Text(
+                label,
+                key: Key('state_${app.id}'),
+                style: AppText.small.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: status == AppLockStatus.locked ? c.textSecondary : c.textMuted,
+                ),
+              ),
             ]),
             const SizedBox(height: 2),
-            Text(blockCategoryLabel(l, app.category), style: AppText.rowSub.copyWith(color: c.textMuted), maxLines: 1, overflow: TextOverflow.ellipsis),
+            Text(usageLine(l, app, state), style: AppText.rowSub.copyWith(color: c.textMuted), maxLines: 1, overflow: TextOverflow.ellipsis),
+            if (line2 != null)
+              Text(line2, style: AppText.rowSub.copyWith(fontSize: 12, color: c.textMuted), maxLines: 1, overflow: TextOverflow.ellipsis),
           ]),
         ),
+        const SizedBox(width: 4),
         PSwitch(key: Key('lock_${app.id}'), value: app.locked, onChanged: onLocked),
-      ]),
-    );
-  }
-}
-
-class _OptionRow extends StatelessWidget {
-  const _OptionRow({required this.icon, required this.title, this.subtitle, required this.trailing, this.color = Tone.violet});
-  final IconData icon;
-  final String title;
-  final String? subtitle;
-  final Widget trailing;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(children: [
-          IconBadge(icon: icon, color: color, size: 36),
-          const SizedBox(width: 12),
-          Expanded(child: _Texts(title: title, sub: subtitle)),
-          trailing,
-        ]),
-      );
-}
-
-class _EmergencyCard extends StatelessWidget {
-  const _EmergencyCard({required this.onTap});
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final repo = AppRepo.instance;
-    final on = repo.settings.emergencyBypass;
-    final left = repo.bypassLeftToday;
-    return PCard(
-      key: const Key('emergencyCard'),
-      gradient: heroGradient,
-      onTap: onTap,
-      child: Row(children: [
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: 0.18)),
-          child: const Icon(Icons.shield_rounded, size: 20, color: Colors.white),
-        ),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(l.blockEmergencyTitle, style: AppText.rowTitle.copyWith(color: Colors.white), maxLines: 2, overflow: TextOverflow.ellipsis),
-            const SizedBox(height: 2),
-            Text(on ? l.blockEmergencySub(left) : l.blockEmergencyOff,
-                style: AppText.rowSub.copyWith(color: Colors.white.withValues(alpha: 0.8)), maxLines: 2, overflow: TextOverflow.ellipsis),
-          ]),
-        ),
-        const SizedBox(width: 8),
-        Text(l.blockEmergencyUse, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w800, color: Colors.white.withValues(alpha: on && left > 0 ? 1 : 0.5))),
+        Icon(Icons.chevron_right_rounded, color: c.textMuted, size: 22),
       ]),
     );
   }

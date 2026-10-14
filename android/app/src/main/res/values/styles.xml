@@ -15,4 +15,10 @@
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
+    <!-- Block screen over restricted apps (BlockActivity). -->
+    <style name="Theme.Pausey.Block" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:statusBarColor">#FF0D0B22</item>
+        <item name="android:navigationBarColor">#FF0D0B22</item>
+    </style>
 </resources>

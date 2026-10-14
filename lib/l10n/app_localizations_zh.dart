@@ -422,30 +422,373 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ob9StreakSub => '完成一次专注以保持连续';
 
   @override
+  String alSummary(int locked, int total) {
+    return '当前限制 $locked 个 · 共管理 $total 个';
+  }
+
+  @override
+  String alSummaryOff(int total) {
+    return '管理 $total 个 · 拦截未开启';
+  }
+
+  @override
+  String get alFromInstalled => '从已安装应用中选择';
+
+  @override
+  String get alFromInstalledSub => '选择本机上的任意应用';
+
+  @override
+  String get alPermTitle => '拦截尚未生效';
+
+  @override
+  String get alPermMsg => '规则已保存，但需开启以下两项权限，Pausey 才能拦截应用：';
+
+  @override
+  String get alPermUsage => '使用情况访问权限';
+
+  @override
+  String get alPermUsageSub => '识别正在打开的应用及今日用时';
+
+  @override
+  String get alPermOverlay => '显示在其他应用上层';
+
+  @override
+  String get alPermOverlaySub => '在被拦截的应用上显示锁定页';
+
+  @override
+  String get alAllow => '允许';
+
+  @override
+  String get alAllowed => '已允许';
+
+  @override
+  String get alPermReturn => '授权后返回 Pausey，会自动重新检查。';
+
+  @override
+  String get alAndroidOnly => '拦截仅支持 Android，你仍可在此设置规则。';
+
+  @override
+  String get alSearchHint => '搜索应用';
+
+  @override
+  String get alFilterAll => '全部';
+
+  @override
+  String get alFilterLocked => '已锁定';
+
+  @override
+  String get alFilterScheduled => '定时';
+
+  @override
+  String get alFilterAvailable => '可用';
+
+  @override
+  String get alStateLocked => '已锁定';
+
+  @override
+  String get alStateWillLock => '将锁定';
+
+  @override
+  String get alStateScheduled => '定时';
+
+  @override
+  String get alStateAvailable => '可用';
+
+  @override
+  String alUsedOf(String used, String limit) {
+    return '已用 $used / $limit';
+  }
+
+  @override
+  String alUsedToday(String used) {
+    return '今日 $used';
+  }
+
+  @override
+  String get alNoLimit => '无每日限额';
+
+  @override
+  String alLimitNoUsage(String limit) {
+    return '限额 $limit · 无用时数据';
+  }
+
+  @override
+  String get alRulesOff => '限制已关闭';
+
+  @override
+  String alNextLock(String time) {
+    return '下次锁定：$time';
+  }
+
+  @override
+  String alUnlockedUntil(String time) {
+    return '解锁至 $time';
+  }
+
+  @override
+  String get alReasonLimit => '已达每日限额';
+
+  @override
+  String get alReasonSchedule => '锁定时段进行中';
+
+  @override
+  String get alReasonGeneral => '通用时段进行中';
+
+  @override
+  String get alReasonAllDay => '全天锁定';
+
+  @override
+  String get alReasonFocus => '专注进行中';
+
+  @override
+  String get alNoMatches => '没有匹配的应用';
+
+  @override
+  String get alGeneral => '通用';
+
+  @override
+  String get alGeneralScheduleSub => '适用于开启“跟随通用时段”的应用';
+
+  @override
+  String get alLockAllSub => '为所有应用开启限制';
+
+  @override
+  String get alSaved => '已保存';
+
+  @override
+  String get alChangesApply => '更改立即生效';
+
+  @override
+  String get alDetailsTitle => '应用限制';
+
+  @override
+  String get alBlockingOff => '此手机上拦截未开启';
+
+  @override
+  String get alRestrictApp => '限制此应用';
+
+  @override
+  String get alMasterOff => '已关闭，Pausey 不会限制此应用';
+
+  @override
+  String get alMasterOnRules => '下方的限额和时段生效';
+
+  @override
+  String get alMasterOnAllDay => '尚无限额或时段，将全天锁定';
+
+  @override
+  String get alMasterOnGeneral => '在通用时段内锁定';
+
+  @override
+  String get alFollowGeneral => '跟随通用时段';
+
+  @override
+  String alFollowGeneralSub(String start, String end) {
+    return '同时在 $start – $end 锁定';
+  }
+
+  @override
+  String get alGeneralOff => '通用时段已关闭';
+
+  @override
+  String get alDailyLimit => '每日限额';
+
+  @override
+  String get alDailyLimitOffSub => '每天用满设定时长后锁定';
+
+  @override
+  String get alCustom => '自定义';
+
+  @override
+  String get alUsedLabel => '今日已用';
+
+  @override
+  String get alLeftLabel => '剩余';
+
+  @override
+  String get alLimitReached => '今日限额已用完';
+
+  @override
+  String get alResets => '每天午夜重置（手机时间）';
+
+  @override
+  String get alUsageUnavailable => '无法获取用时';
+
+  @override
+  String get alUsageNeedsAccess => '允许使用情况访问权限，Pausey 才能统计今日用时。';
+
+  @override
+  String get alUsageAndroidOnly => '仅 Android 可统计用时，限额已保存并会在那里生效。';
+
+  @override
+  String get alGrantUsage => '授予访问权限';
+
+  @override
+  String get alCustomLimitTitle => '自定义每日限额';
+
+  @override
+  String get alHours => '小时';
+
+  @override
+  String get alMinutes => '分钟';
+
+  @override
+  String get alErrZeroLimit => '请选择大于 0 的时长';
+
+  @override
+  String get alSave => '保存';
+
+  @override
+  String get alScheduledLocking => '定时锁定';
+
+  @override
+  String get alScheduledOffSub => '在设定时间锁定此应用';
+
+  @override
+  String get alNoSchedules => '还没有时段';
+
+  @override
+  String get alAddSchedule => '添加时段';
+
+  @override
+  String get alActiveNow => '进行中';
+
+  @override
+  String get alScheduleDefault => '锁定时段';
+
+  @override
+  String get alEndsNextDay => '次日结束';
+
+  @override
+  String get alEdit => '编辑';
+
+  @override
+  String get alDelete => '删除';
+
+  @override
+  String get alDeleteScheduleQ => '删除此时段？';
+
+  @override
+  String alDeleteScheduleMsg(String title) {
+    return '“$title”将不再锁定此应用。';
+  }
+
+  @override
+  String get alNewSchedule => '新时段';
+
+  @override
+  String get alEditSchedule => '编辑时段';
+
+  @override
+  String get alTitleOptional => '标题（可选）';
+
+  @override
+  String get alPresetStudy => '学习';
+
+  @override
+  String get alPresetEvening => '傍晚';
+
+  @override
+  String get alPresetSleep => '睡眠';
+
+  @override
+  String get alRepeatOn => '重复';
+
+  @override
+  String get alErrSameTime => '开始和结束不能相同';
+
+  @override
+  String get alErrNoDays => '请至少选择一天';
+
+  @override
+  String alTempUnlock(int minutes) {
+    return '解锁 $minutes 分钟';
+  }
+
+  @override
+  String alTempUnlockSub(int n) {
+    return '消耗 1 次紧急解锁 · 今日剩 $n 次';
+  }
+
+  @override
+  String get alTempUnlockFocus => '专注期间无法解锁';
+
+  @override
+  String get alTempUnlockNotLocked => '仅在应用锁定时需要';
+
+  @override
+  String alTempUnlockQ(String app, int minutes) {
+    return '解锁 $app $minutes 分钟？';
+  }
+
+  @override
+  String get alUnlock => '解锁';
+
+  @override
+  String get alEndEarly => '提前结束';
+
+  @override
+  String get alResetRules => '重置限制';
+
+  @override
+  String get alResetRulesSub => '移除此应用的限额和时段';
+
+  @override
+  String alResetQ(String app) {
+    return '重置 $app 的限制？';
+  }
+
+  @override
+  String get alResetMsg => '将移除其每日限额和所有时段，应用仍保留在列表中。';
+
+  @override
+  String get alReset => '重置';
+
+  @override
+  String get alResetDone => '已重置限制';
+
+  @override
+  String get alRemoveApp => '移除应用';
+
+  @override
+  String get alRemoveAppSub => '不再管理此应用';
+
+  @override
+  String alRemoveQ(String app) {
+    return '移除 $app？';
+  }
+
+  @override
+  String get alRemoveMsg => 'Pausey 将停止限制它，并删除其限额和时段。';
+
+  @override
+  String get alRemove => '移除';
+
+  @override
+  String get alNoPackage => '单独的限额和时段需要指定一个已安装应用。在 Android 上可通过“从已安装应用中选择”添加。';
+
+  @override
+  String get alNotFound => '此应用已不再管理';
+
+  @override
+  String get alPickerTitle => '已安装应用';
+
+  @override
+  String get alPickerAdded => '已添加';
+
+  @override
+  String alPickerAdd(int n) {
+    return '添加应用（$n）';
+  }
+
+  @override
+  String get alPickerEmpty => '未找到应用';
+
+  @override
   String get blockTitle => '应用锁';
 
   @override
-  String blockSubtitle(int locked, int total) {
-    return '已锁定 $locked/$total 个应用';
-  }
-
-  @override
   String get blockAddApp => '添加应用';
-
-  @override
-  String blockLockedChip(int n) {
-    return '已锁 $n';
-  }
-
-  @override
-  String blockUnlockedChip(int n) {
-    return '未锁 $n';
-  }
-
-  @override
-  String blockScheduledChip(int n) {
-    return '定时 $n';
-  }
 
   @override
   String get blockFaceIdTitle => '面容 ID 保护';
@@ -484,27 +827,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get blockAllLocked => '所有应用已锁定';
 
   @override
-  String get blockSched => '定时';
-
-  @override
-  String get blockOnlySchedule => '仅在定时时段锁定';
-
-  @override
-  String get blockOnlyScheduleSub => '否则全天锁定';
-
-  @override
-  String get blockLockedLabel => '已锁定';
-
-  @override
-  String get blockRemove => '从列表移除';
-
-  @override
   String blockRemoved(String app) {
     return '已移除 $app';
   }
-
-  @override
-  String get blockUndo => '撤销';
 
   @override
   String get blockAppsUpdated => '已更新应用';
@@ -1774,6 +2099,32 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get insightsCatOther => '其他';
+
+  @override
+  String nativeBlockTitle(String app) {
+    return '$app 已暂停';
+  }
+
+  @override
+  String get nativeReasonLimit => '今天这个应用的使用时间已用完。';
+
+  @override
+  String get nativeReasonSchedule => '当前锁定时段正在生效。';
+
+  @override
+  String get nativeReasonGlobal => '此应用已在 Pausey 中锁定。';
+
+  @override
+  String get nativeReasonFocus => '你正在专注时段中。';
+
+  @override
+  String get nativeClose => '关闭应用';
+
+  @override
+  String get nativeNotifTitle => 'Pausey 正在执行你的限制';
+
+  @override
+  String get nativeNotifText => '应用限制和锁定时段已开启';
 
   @override
   String get profileSettings => '设置';

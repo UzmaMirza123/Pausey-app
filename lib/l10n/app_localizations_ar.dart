@@ -427,30 +427,380 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ob9StreakSub => 'أكمل جلسة للحفاظ عليها';
 
   @override
+  String alSummary(int locked, int total) {
+    return '$locked مقيّد الآن · $total مُدار';
+  }
+
+  @override
+  String alSummaryOff(int total) {
+    return '$total مُدار · الحظر متوقف';
+  }
+
+  @override
+  String get alFromInstalled => 'اختر من التطبيقات المثبّتة';
+
+  @override
+  String get alFromInstalledSub => 'اختر أي تطبيق على هذا الهاتف';
+
+  @override
+  String get alPermTitle => 'الحظر غير مفعّل بعد';
+
+  @override
+  String get alPermMsg =>
+      'قواعدك محفوظة، لكن Pausey لا يستطيع حظر التطبيقات قبل منح هذين الإذنين:';
+
+  @override
+  String get alPermUsage => 'الوصول إلى الاستخدام';
+
+  @override
+  String get alPermUsageSub => 'لمعرفة التطبيق المفتوح ووقت اليوم فيه';
+
+  @override
+  String get alPermOverlay => 'العرض فوق التطبيقات الأخرى';
+
+  @override
+  String get alPermOverlaySub => 'لعرض شاشة القفل فوق التطبيق المحظور';
+
+  @override
+  String get alAllow => 'سماح';
+
+  @override
+  String get alAllowed => 'مسموح';
+
+  @override
+  String get alPermReturn => 'عد إلى Pausey بعد السماح، وسيتحقق تلقائيًا.';
+
+  @override
+  String get alAndroidOnly =>
+      'الحظر يعمل على أندرويد فقط. يمكنك ضبط قواعدك هنا.';
+
+  @override
+  String get alSearchHint => 'ابحث عن تطبيق';
+
+  @override
+  String get alFilterAll => 'الكل';
+
+  @override
+  String get alFilterLocked => 'مقفل الآن';
+
+  @override
+  String get alFilterScheduled => 'مجدول';
+
+  @override
+  String get alFilterAvailable => 'متاح';
+
+  @override
+  String get alStateLocked => 'مقفل';
+
+  @override
+  String get alStateWillLock => 'سيُقفل';
+
+  @override
+  String get alStateScheduled => 'مجدول';
+
+  @override
+  String get alStateAvailable => 'متاح';
+
+  @override
+  String alUsedOf(String used, String limit) {
+    return 'استُخدم $used من $limit';
+  }
+
+  @override
+  String alUsedToday(String used) {
+    return 'استُخدم $used اليوم';
+  }
+
+  @override
+  String get alNoLimit => 'بلا حد يومي';
+
+  @override
+  String alLimitNoUsage(String limit) {
+    return 'حد $limit يوميًا · الاستخدام غير متاح';
+  }
+
+  @override
+  String get alRulesOff => 'القيود متوقفة';
+
+  @override
+  String alNextLock(String time) {
+    return 'القفل التالي: $time';
+  }
+
+  @override
+  String alUnlockedUntil(String time) {
+    return 'مفتوح حتى $time';
+  }
+
+  @override
+  String get alReasonLimit => 'تم بلوغ الحد اليومي';
+
+  @override
+  String get alReasonSchedule => 'جدول القفل نشط';
+
+  @override
+  String get alReasonGeneral => 'الجدول العام نشط';
+
+  @override
+  String get alReasonAllDay => 'مقفل طوال اليوم';
+
+  @override
+  String get alReasonFocus => 'جلسة تركيز جارية';
+
+  @override
+  String get alNoMatches => 'لا توجد تطبيقات مطابقة';
+
+  @override
+  String get alGeneral => 'عام';
+
+  @override
+  String get alGeneralScheduleSub =>
+      'للتطبيقات التي فُعّل فيها «اتباع الجدول العام»';
+
+  @override
+  String get alLockAllSub => 'تشغيل القيود لكل التطبيقات';
+
+  @override
+  String get alSaved => 'تم الحفظ';
+
+  @override
+  String get alChangesApply => 'تُطبَّق التغييرات فورًا';
+
+  @override
+  String get alDetailsTitle => 'حدود التطبيق';
+
+  @override
+  String get alBlockingOff => 'الحظر متوقف على هذا الهاتف';
+
+  @override
+  String get alRestrictApp => 'تقييد هذا التطبيق';
+
+  @override
+  String get alMasterOff => 'متوقف — لن يقيّد Pausey هذا التطبيق';
+
+  @override
+  String get alMasterOnRules => 'يُطبَّق الحد والجداول أدناه';
+
+  @override
+  String get alMasterOnAllDay => 'لا حد ولا جدول بعد — مقفل طوال اليوم';
+
+  @override
+  String get alMasterOnGeneral => 'مقفل أثناء الجدول العام';
+
+  @override
+  String get alFollowGeneral => 'اتباع الجدول العام';
+
+  @override
+  String alFollowGeneralSub(String start, String end) {
+    return 'قفل أيضًا $start – $end';
+  }
+
+  @override
+  String get alGeneralOff => 'الجدول العام متوقف';
+
+  @override
+  String get alDailyLimit => 'الحد اليومي';
+
+  @override
+  String get alDailyLimitOffSub => 'اقفل التطبيق بعد وقت محدد يوميًا';
+
+  @override
+  String get alCustom => 'مخصص';
+
+  @override
+  String get alUsedLabel => 'المستخدم اليوم';
+
+  @override
+  String get alLeftLabel => 'المتبقي';
+
+  @override
+  String get alLimitReached => 'بلغت حد اليوم';
+
+  @override
+  String get alResets => 'يُعاد ضبطه عند منتصف الليل (وقت هاتفك)';
+
+  @override
+  String get alUsageUnavailable => 'الاستخدام غير متاح';
+
+  @override
+  String get alUsageNeedsAccess =>
+      'اسمح بالوصول إلى الاستخدام ليحسب Pausey وقت اليوم.';
+
+  @override
+  String get alUsageAndroidOnly =>
+      'يُقاس الاستخدام على أندرويد فقط. يُحفظ الحد ويُطبَّق هناك.';
+
+  @override
+  String get alGrantUsage => 'منح الوصول إلى الاستخدام';
+
+  @override
+  String get alCustomLimitTitle => 'حد يومي مخصص';
+
+  @override
+  String get alHours => 'ساعات';
+
+  @override
+  String get alMinutes => 'دقائق';
+
+  @override
+  String get alErrZeroLimit => 'اختر وقتًا أكبر من صفر';
+
+  @override
+  String get alSave => 'حفظ';
+
+  @override
+  String get alScheduledLocking => 'القفل المجدول';
+
+  @override
+  String get alScheduledOffSub => 'اقفل هذا التطبيق في أوقات محددة';
+
+  @override
+  String get alNoSchedules => 'لا جداول بعد';
+
+  @override
+  String get alAddSchedule => 'إضافة جدول';
+
+  @override
+  String get alActiveNow => 'نشط الآن';
+
+  @override
+  String get alScheduleDefault => 'وقت القفل';
+
+  @override
+  String get alEndsNextDay => 'ينتهي في اليوم التالي';
+
+  @override
+  String get alEdit => 'تعديل';
+
+  @override
+  String get alDelete => 'حذف';
+
+  @override
+  String get alDeleteScheduleQ => 'حذف هذا الجدول؟';
+
+  @override
+  String alDeleteScheduleMsg(String title) {
+    return 'سيتوقف «$title» عن قفل هذا التطبيق.';
+  }
+
+  @override
+  String get alNewSchedule => 'جدول جديد';
+
+  @override
+  String get alEditSchedule => 'تعديل الجدول';
+
+  @override
+  String get alTitleOptional => 'العنوان (اختياري)';
+
+  @override
+  String get alPresetStudy => 'دراسة';
+
+  @override
+  String get alPresetEvening => 'المساء';
+
+  @override
+  String get alPresetSleep => 'النوم';
+
+  @override
+  String get alRepeatOn => 'التكرار في';
+
+  @override
+  String get alErrSameTime => 'لا يمكن أن يتساوى البدء والانتهاء';
+
+  @override
+  String get alErrNoDays => 'اختر يومًا واحدًا على الأقل';
+
+  @override
+  String alTempUnlock(int minutes) {
+    return 'فتح لمدة $minutes د';
+  }
+
+  @override
+  String alTempUnlockSub(int n) {
+    return 'يستهلك تجاوز طوارئ واحدًا · المتبقي اليوم $n';
+  }
+
+  @override
+  String get alTempUnlockFocus => 'لا يمكن الفتح أثناء جلسة التركيز';
+
+  @override
+  String get alTempUnlockNotLocked => 'يلزم فقط عندما يكون التطبيق مقفلًا';
+
+  @override
+  String alTempUnlockQ(String app, int minutes) {
+    return 'فتح $app لمدة $minutes دقيقة؟';
+  }
+
+  @override
+  String get alUnlock => 'فتح';
+
+  @override
+  String get alEndEarly => 'إنهاء مبكرًا';
+
+  @override
+  String get alResetRules => 'إعادة ضبط القيود';
+
+  @override
+  String get alResetRulesSub => 'إزالة حد هذا التطبيق وجداوله';
+
+  @override
+  String alResetQ(String app) {
+    return 'إعادة ضبط قيود $app؟';
+  }
+
+  @override
+  String get alResetMsg =>
+      'ستُزال الحدود اليومية وكل الجداول، ويبقى التطبيق في قائمتك.';
+
+  @override
+  String get alReset => 'إعادة ضبط';
+
+  @override
+  String get alResetDone => 'تمت إعادة ضبط القيود';
+
+  @override
+  String get alRemoveApp => 'إزالة التطبيق';
+
+  @override
+  String get alRemoveAppSub => 'التوقف عن إدارة هذا التطبيق';
+
+  @override
+  String alRemoveQ(String app) {
+    return 'إزالة $app؟';
+  }
+
+  @override
+  String get alRemoveMsg => 'سيتوقف Pausey عن تقييده وينسى حده وجداوله.';
+
+  @override
+  String get alRemove => 'إزالة';
+
+  @override
+  String get alNoPackage =>
+      'تحتاج الحدود والجداول لكل تطبيق إلى تطبيق مثبّت محدد. على أندرويد أضفه عبر «اختر من التطبيقات المثبّتة».';
+
+  @override
+  String get alNotFound => 'لم يعد هذا التطبيق مُدارًا';
+
+  @override
+  String get alPickerTitle => 'التطبيقات المثبّتة';
+
+  @override
+  String get alPickerAdded => 'مضاف مسبقًا';
+
+  @override
+  String alPickerAdd(int n) {
+    return 'إضافة التطبيقات ($n)';
+  }
+
+  @override
+  String get alPickerEmpty => 'لم يُعثر على تطبيقات';
+
+  @override
   String get blockTitle => 'قفل التطبيقات';
 
   @override
-  String blockSubtitle(int locked, int total) {
-    return '$locked من $total تطبيقات مقفلة الآن';
-  }
-
-  @override
   String get blockAddApp => 'إضافة تطبيق';
-
-  @override
-  String blockLockedChip(int n) {
-    return '$n مقفل';
-  }
-
-  @override
-  String blockUnlockedChip(int n) {
-    return '$n غير مقفل';
-  }
-
-  @override
-  String blockScheduledChip(int n) {
-    return '$n مجدول';
-  }
 
   @override
   String get blockFaceIdTitle => 'حماية بصمة الوجه';
@@ -489,27 +839,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get blockAllLocked => 'كل التطبيقات مقفلة';
 
   @override
-  String get blockSched => 'مجدول';
-
-  @override
-  String get blockOnlySchedule => 'القفل أثناء الجدول فقط';
-
-  @override
-  String get blockOnlyScheduleSub => 'وإلا فسيبقى مقفلًا طوال اليوم';
-
-  @override
-  String get blockLockedLabel => 'مقفل';
-
-  @override
-  String get blockRemove => 'إزالة من القائمة';
-
-  @override
   String blockRemoved(String app) {
     return 'تمت إزالة $app';
   }
-
-  @override
-  String get blockUndo => 'تراجع';
 
   @override
   String get blockAppsUpdated => 'تم تحديث التطبيقات';
@@ -1796,6 +2128,32 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get insightsCatOther => 'أخرى';
+
+  @override
+  String nativeBlockTitle(String app) {
+    return 'تم إيقاف $app مؤقتًا';
+  }
+
+  @override
+  String get nativeReasonLimit => 'لقد استخدمت وقت اليوم لهذا التطبيق.';
+
+  @override
+  String get nativeReasonSchedule => 'جدول القفل نشط الآن.';
+
+  @override
+  String get nativeReasonGlobal => 'هذا التطبيق مقفل في Pausey.';
+
+  @override
+  String get nativeReasonFocus => 'أنت في جلسة تركيز.';
+
+  @override
+  String get nativeClose => 'إغلاق التطبيق';
+
+  @override
+  String get nativeNotifTitle => 'Pausey يحافظ على حدودك';
+
+  @override
+  String get nativeNotifText => 'حدود التطبيقات وجداول القفل مفعّلة';
 
   @override
   String get profileSettings => 'الإعدادات';

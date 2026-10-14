@@ -431,30 +431,381 @@ class AppLocalizationsTr extends AppLocalizations {
   String get ob9StreakSub => 'Devam ettirmek için bir seans tamamla';
 
   @override
+  String alSummary(int locked, int total) {
+    return 'Şu an $locked kısıtlı · $total yönetilen';
+  }
+
+  @override
+  String alSummaryOff(int total) {
+    return '$total yönetilen · engelleme kapalı';
+  }
+
+  @override
+  String get alFromInstalled => 'Yüklü uygulamalardan seç';
+
+  @override
+  String get alFromInstalledSub => 'Bu telefondaki herhangi bir uygulama';
+
+  @override
+  String get alPermTitle => 'Engelleme henüz etkin değil';
+
+  @override
+  String get alPermMsg =>
+      'Kuralların kaydedildi, ancak bu iki izni verene kadar Pausey engelleme yapamaz:';
+
+  @override
+  String get alPermUsage => 'Kullanım erişimi';
+
+  @override
+  String get alPermUsageSub => 'Açık uygulamayı ve bugünkü süreyi görür';
+
+  @override
+  String get alPermOverlay => 'Diğer uygulamaların üzerinde göster';
+
+  @override
+  String get alPermOverlaySub => 'Engelli uygulamada kilit ekranı gösterir';
+
+  @override
+  String get alAllow => 'İzin ver';
+
+  @override
+  String get alAllowed => 'İzin verildi';
+
+  @override
+  String get alPermReturn =>
+      'İzin verdikten sonra Pausey\'e dön, otomatik kontrol edilir.';
+
+  @override
+  String get alAndroidOnly =>
+      'Engelleme yalnızca Android\'de çalışır. Kurallarını yine de burada ayarlayabilirsin.';
+
+  @override
+  String get alSearchHint => 'Uygulama ara';
+
+  @override
+  String get alFilterAll => 'Tümü';
+
+  @override
+  String get alFilterLocked => 'Kilitli';
+
+  @override
+  String get alFilterScheduled => 'Planlı';
+
+  @override
+  String get alFilterAvailable => 'Açık';
+
+  @override
+  String get alStateLocked => 'Kilitli';
+
+  @override
+  String get alStateWillLock => 'Kilitlenecek';
+
+  @override
+  String get alStateScheduled => 'Planlı';
+
+  @override
+  String get alStateAvailable => 'Açık';
+
+  @override
+  String alUsedOf(String used, String limit) {
+    return '$limit içinden $used kullanıldı';
+  }
+
+  @override
+  String alUsedToday(String used) {
+    return 'Bugün $used';
+  }
+
+  @override
+  String get alNoLimit => 'Günlük sınır yok';
+
+  @override
+  String alLimitNoUsage(String limit) {
+    return 'Sınır $limit · kullanım yok';
+  }
+
+  @override
+  String get alRulesOff => 'Kısıtlamalar kapalı';
+
+  @override
+  String alNextLock(String time) {
+    return 'Sonraki kilit: $time';
+  }
+
+  @override
+  String alUnlockedUntil(String time) {
+    return '$time saatine kadar açık';
+  }
+
+  @override
+  String get alReasonLimit => 'Günlük sınıra ulaşıldı';
+
+  @override
+  String get alReasonSchedule => 'Kilit saati aktif';
+
+  @override
+  String get alReasonGeneral => 'Genel plan aktif';
+
+  @override
+  String get alReasonAllDay => 'Gün boyu kilitli';
+
+  @override
+  String get alReasonFocus => 'Odak oturumu sürüyor';
+
+  @override
+  String get alNoMatches => 'Eşleşen uygulama yok';
+
+  @override
+  String get alGeneral => 'Genel';
+
+  @override
+  String get alGeneralScheduleSub => '“Genel plana uy” açık uygulamalar için';
+
+  @override
+  String get alLockAllSub => 'Tüm uygulamalarda kısıtlamayı aç';
+
+  @override
+  String get alSaved => 'Kaydedildi';
+
+  @override
+  String get alChangesApply => 'Değişiklikler hemen uygulanır';
+
+  @override
+  String get alDetailsTitle => 'Uygulama Sınırları';
+
+  @override
+  String get alBlockingOff => 'Bu telefonda engelleme kapalı';
+
+  @override
+  String get alRestrictApp => 'Bu uygulamayı kısıtla';
+
+  @override
+  String get alMasterOff => 'Kapalı — Pausey kısıtlamaz';
+
+  @override
+  String get alMasterOnRules => 'Aşağıdaki sınır ve planlar geçerli';
+
+  @override
+  String get alMasterOnAllDay => 'Sınır/plan yok — gün boyu kilitli';
+
+  @override
+  String get alMasterOnGeneral => 'Genel plan süresince kilitli';
+
+  @override
+  String get alFollowGeneral => 'Genel plana uy';
+
+  @override
+  String alFollowGeneralSub(String start, String end) {
+    return '$start – $end arası da kilitle';
+  }
+
+  @override
+  String get alGeneralOff => 'Genel plan kapalı';
+
+  @override
+  String get alDailyLimit => 'Günlük sınır';
+
+  @override
+  String get alDailyLimitOffSub => 'Her gün belirli süreden sonra kilitle';
+
+  @override
+  String get alCustom => 'Özel';
+
+  @override
+  String get alUsedLabel => 'Bugün kullanılan';
+
+  @override
+  String get alLeftLabel => 'Kalan';
+
+  @override
+  String get alLimitReached => 'Bugünün sınırına ulaşıldı';
+
+  @override
+  String get alResets => 'Gece yarısı sıfırlanır (telefon saati)';
+
+  @override
+  String get alUsageUnavailable => 'Kullanım bilgisi yok';
+
+  @override
+  String get alUsageNeedsAccess =>
+      'Pausey\'in bugünkü süreyi sayması için kullanım erişimine izin ver.';
+
+  @override
+  String get alUsageAndroidOnly =>
+      'Kullanım yalnızca Android\'de ölçülür. Sınır kaydedilir ve orada uygulanır.';
+
+  @override
+  String get alGrantUsage => 'Erişim izni ver';
+
+  @override
+  String get alCustomLimitTitle => 'Özel günlük sınır';
+
+  @override
+  String get alHours => 'Saat';
+
+  @override
+  String get alMinutes => 'Dakika';
+
+  @override
+  String get alErrZeroLimit => 'Sıfırdan büyük bir süre seç';
+
+  @override
+  String get alSave => 'Kaydet';
+
+  @override
+  String get alScheduledLocking => 'Planlı kilit';
+
+  @override
+  String get alScheduledOffSub => 'Bu uygulamayı belirli saatlerde kilitle';
+
+  @override
+  String get alNoSchedules => 'Henüz plan yok';
+
+  @override
+  String get alAddSchedule => 'Plan ekle';
+
+  @override
+  String get alActiveNow => 'Şu an aktif';
+
+  @override
+  String get alScheduleDefault => 'Kilit saati';
+
+  @override
+  String get alEndsNextDay => 'Ertesi gün biter';
+
+  @override
+  String get alEdit => 'Düzenle';
+
+  @override
+  String get alDelete => 'Sil';
+
+  @override
+  String get alDeleteScheduleQ => 'Bu plan silinsin mi?';
+
+  @override
+  String alDeleteScheduleMsg(String title) {
+    return '“$title” artık bu uygulamayı kilitlemeyecek.';
+  }
+
+  @override
+  String get alNewSchedule => 'Yeni plan';
+
+  @override
+  String get alEditSchedule => 'Planı düzenle';
+
+  @override
+  String get alTitleOptional => 'Başlık (isteğe bağlı)';
+
+  @override
+  String get alPresetStudy => 'Ders';
+
+  @override
+  String get alPresetEvening => 'Akşam';
+
+  @override
+  String get alPresetSleep => 'Uyku';
+
+  @override
+  String get alRepeatOn => 'Tekrar günleri';
+
+  @override
+  String get alErrSameTime => 'Başlangıç ve bitiş aynı olamaz';
+
+  @override
+  String get alErrNoDays => 'En az bir gün seç';
+
+  @override
+  String alTempUnlock(int minutes) {
+    return '$minutes dk aç';
+  }
+
+  @override
+  String alTempUnlockSub(int n) {
+    return '1 acil durum hakkı · bugün $n kaldı';
+  }
+
+  @override
+  String get alTempUnlockFocus => 'Odak oturumunda açılamaz';
+
+  @override
+  String get alTempUnlockNotLocked => 'Yalnızca uygulama kilitliyken gerekir';
+
+  @override
+  String alTempUnlockQ(String app, int minutes) {
+    return '$app $minutes dakikalığına açılsın mı?';
+  }
+
+  @override
+  String get alUnlock => 'Aç';
+
+  @override
+  String get alEndEarly => 'Erken bitir';
+
+  @override
+  String get alResetRules => 'Kısıtlamaları sıfırla';
+
+  @override
+  String get alResetRulesSub => 'Sınır ve planları kaldırır';
+
+  @override
+  String alResetQ(String app) {
+    return '$app kısıtlamaları sıfırlansın mı?';
+  }
+
+  @override
+  String get alResetMsg =>
+      'Günlük sınır ve tüm planlar kaldırılır. Uygulama listede kalır.';
+
+  @override
+  String get alReset => 'Sıfırla';
+
+  @override
+  String get alResetDone => 'Kısıtlamalar sıfırlandı';
+
+  @override
+  String get alRemoveApp => 'Uygulamayı kaldır';
+
+  @override
+  String get alRemoveAppSub => 'Bu uygulamayı yönetmeyi bırak';
+
+  @override
+  String alRemoveQ(String app) {
+    return '$app kaldırılsın mı?';
+  }
+
+  @override
+  String get alRemoveMsg =>
+      'Pausey kısıtlamayı bırakır, sınır ve planlarını siler.';
+
+  @override
+  String get alRemove => 'Kaldır';
+
+  @override
+  String get alNoPackage =>
+      'Uygulamaya özel sınır ve planlar için belirli bir yüklü uygulama gerekir. Android\'de “Yüklü uygulamalardan seç” ile ekle.';
+
+  @override
+  String get alNotFound => 'Bu uygulama artık yönetilmiyor';
+
+  @override
+  String get alPickerTitle => 'Yüklü uygulamalar';
+
+  @override
+  String get alPickerAdded => 'Zaten eklendi';
+
+  @override
+  String alPickerAdd(int n) {
+    return 'Uygulama ekle ($n)';
+  }
+
+  @override
+  String get alPickerEmpty => 'Uygulama bulunamadı';
+
+  @override
   String get blockTitle => 'Uygulama Kilidi';
 
   @override
-  String blockSubtitle(int locked, int total) {
-    return '$total uygulamadan $locked tanesi kilitli';
-  }
-
-  @override
   String get blockAddApp => 'Ekle';
-
-  @override
-  String blockLockedChip(int n) {
-    return '$n kilitli';
-  }
-
-  @override
-  String blockUnlockedChip(int n) {
-    return '$n açık';
-  }
-
-  @override
-  String blockScheduledChip(int n) {
-    return '$n planlı';
-  }
 
   @override
   String get blockFaceIdTitle => 'Face ID Koruması';
@@ -493,27 +844,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get blockAllLocked => 'Tüm uygulamalar kilitli';
 
   @override
-  String get blockSched => 'Plan';
-
-  @override
-  String get blockOnlySchedule => 'Sadece planda kilitle';
-
-  @override
-  String get blockOnlyScheduleSub => 'Aksi halde gün boyu kilitli';
-
-  @override
-  String get blockLockedLabel => 'Kilitli';
-
-  @override
-  String get blockRemove => 'Listeden kaldır';
-
-  @override
   String blockRemoved(String app) {
     return '$app kaldırıldı';
   }
-
-  @override
-  String get blockUndo => 'Geri al';
 
   @override
   String get blockAppsUpdated => 'Uygulamalar güncellendi';
@@ -1797,6 +2130,33 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get insightsCatOther => 'Diğer';
+
+  @override
+  String nativeBlockTitle(String app) {
+    return '$app duraklatıldı';
+  }
+
+  @override
+  String get nativeReasonLimit =>
+      'Bu uygulama için bugünkü süreyi doldurdunuz.';
+
+  @override
+  String get nativeReasonSchedule => 'Şu anda bir kilit programı etkin.';
+
+  @override
+  String get nativeReasonGlobal => 'Bu uygulama Pausey\'de kilitli.';
+
+  @override
+  String get nativeReasonFocus => 'Bir odak oturumundasınız.';
+
+  @override
+  String get nativeClose => 'Uygulamayı kapat';
+
+  @override
+  String get nativeNotifTitle => 'Pausey sınırlarınızı koruyor';
+
+  @override
+  String get nativeNotifText => 'Uygulama sınırları ve kilit programları açık';
 
   @override
   String get profileSettings => 'Ayarlar';

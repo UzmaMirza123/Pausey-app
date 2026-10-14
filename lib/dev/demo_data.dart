@@ -2,6 +2,8 @@ import 'dart:math';
 
 import '../data/app_repo.dart';
 import '../data/models.dart';
+import '../data/restrictions/restriction_models.dart';
+import '../data/restrictions/restriction_repo.dart';
 
 /// Fills AppRepo with ~4 weeks of realistic sessions (previews / screenshots only).
 void seedDemoData({int streakDays = 13}) {
@@ -50,4 +52,25 @@ void seedDemoData({int streakDays = 13}) {
     Goal(id: 'g_pomo', title: '', type: GoalType.sessions, category: GoalCategory.focus, target: 3, createdAt: today.subtract(const Duration(days: 30))),
   ];
   repo.refresh();
+  _seedRestrictions();
+}
+
+/// Per-app rules for previews: Instagram 30m + Sleep 22:00–07:00, YouTube 60m + 09:00–17:00 (Mon–Fri).
+void _seedRestrictions() {
+  final rr = RestrictionRepo.instance;
+  const weekdays = {1, 2, 3, 4, 5};
+  rr.updateConfig('com.instagram.android', (c) {
+    c
+      ..dailyLimitEnabled = true
+      ..dailyLimitMinutes = 30
+      ..schedulesEnabled = true
+      ..schedules = [AppLockSchedule(id: 'demo_sleep', title: 'Sleep', startMinuteOfDay: 22 * 60, endMinuteOfDay: 7 * 60, repeatWeekdays: weekdays)];
+  });
+  rr.updateConfig('com.google.android.youtube', (c) {
+    c
+      ..dailyLimitEnabled = true
+      ..dailyLimitMinutes = 60
+      ..schedulesEnabled = true
+      ..schedules = [AppLockSchedule(id: 'demo_day', startMinuteOfDay: 9 * 60, endMinuteOfDay: 17 * 60, repeatWeekdays: weekdays)];
+  });
 }

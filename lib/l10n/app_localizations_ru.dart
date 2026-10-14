@@ -432,30 +432,380 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ob9StreakSub => 'Завершите сессию, чтобы не прерывать её';
 
   @override
+  String alSummary(int locked, int total) {
+    return 'Сейчас ограничено $locked · всего $total';
+  }
+
+  @override
+  String alSummaryOff(int total) {
+    return 'Всего $total · блокировка выкл.';
+  }
+
+  @override
+  String get alFromInstalled => 'Выбрать из установленных';
+
+  @override
+  String get alFromInstalledSub => 'Любое приложение на телефоне';
+
+  @override
+  String get alPermTitle => 'Блокировка ещё не работает';
+
+  @override
+  String get alPermMsg =>
+      'Правила сохранены, но Pausey не сможет блокировать, пока вы не дадите два разрешения:';
+
+  @override
+  String get alPermUsage => 'Доступ к истории';
+
+  @override
+  String get alPermUsageSub => 'Видеть открытое приложение и время за день';
+
+  @override
+  String get alPermOverlay => 'Поверх других приложений';
+
+  @override
+  String get alPermOverlaySub => 'Показывать экран блокировки';
+
+  @override
+  String get alAllow => 'Разрешить';
+
+  @override
+  String get alAllowed => 'Разрешено';
+
+  @override
+  String get alPermReturn => 'Вернитесь в Pausey — проверка пройдёт сама.';
+
+  @override
+  String get alAndroidOnly =>
+      'Блокировка работает только на Android. Правила можно настроить здесь.';
+
+  @override
+  String get alSearchHint => 'Поиск приложений';
+
+  @override
+  String get alFilterAll => 'Все';
+
+  @override
+  String get alFilterLocked => 'Заблок.';
+
+  @override
+  String get alFilterScheduled => 'По расп.';
+
+  @override
+  String get alFilterAvailable => 'Доступны';
+
+  @override
+  String get alStateLocked => 'Заблок.';
+
+  @override
+  String get alStateWillLock => 'Будет заблок.';
+
+  @override
+  String get alStateScheduled => 'По расп.';
+
+  @override
+  String get alStateAvailable => 'Доступно';
+
+  @override
+  String alUsedOf(String used, String limit) {
+    return 'Использовано $used из $limit';
+  }
+
+  @override
+  String alUsedToday(String used) {
+    return 'Сегодня $used';
+  }
+
+  @override
+  String get alNoLimit => 'Без лимита';
+
+  @override
+  String alLimitNoUsage(String limit) {
+    return 'Лимит $limit · нет данных';
+  }
+
+  @override
+  String get alRulesOff => 'Ограничения выкл.';
+
+  @override
+  String alNextLock(String time) {
+    return 'Следующая блокировка: $time';
+  }
+
+  @override
+  String alUnlockedUntil(String time) {
+    return 'Открыто до $time';
+  }
+
+  @override
+  String get alReasonLimit => 'Лимит исчерпан';
+
+  @override
+  String get alReasonSchedule => 'Идёт блокировка по расписанию';
+
+  @override
+  String get alReasonGeneral => 'Идёт общее расписание';
+
+  @override
+  String get alReasonAllDay => 'Заблокировано весь день';
+
+  @override
+  String get alReasonFocus => 'Идёт фокус-сессия';
+
+  @override
+  String get alNoMatches => 'Ничего не найдено';
+
+  @override
+  String get alGeneral => 'Общее';
+
+  @override
+  String get alGeneralScheduleSub => 'Для приложений с «Общим расписанием»';
+
+  @override
+  String get alLockAllSub => 'Включить ограничения для всех';
+
+  @override
+  String get alSaved => 'Сохранено';
+
+  @override
+  String get alChangesApply => 'Изменения применяются сразу';
+
+  @override
+  String get alDetailsTitle => 'Лимиты';
+
+  @override
+  String get alBlockingOff => 'Блокировка на телефоне выключена';
+
+  @override
+  String get alRestrictApp => 'Ограничивать приложение';
+
+  @override
+  String get alMasterOff => 'Выкл. — Pausey не ограничивает его';
+
+  @override
+  String get alMasterOnRules => 'Действуют лимит и расписания ниже';
+
+  @override
+  String get alMasterOnAllDay => 'Нет лимита и расписания — весь день';
+
+  @override
+  String get alMasterOnGeneral => 'Блокируется по общему расписанию';
+
+  @override
+  String get alFollowGeneral => 'Общее расписание';
+
+  @override
+  String alFollowGeneralSub(String start, String end) {
+    return 'Также блокировать $start – $end';
+  }
+
+  @override
+  String get alGeneralOff => 'Общее расписание выключено';
+
+  @override
+  String get alDailyLimit => 'Дневной лимит';
+
+  @override
+  String get alDailyLimitOffSub => 'Блокировать после заданного времени в день';
+
+  @override
+  String get alCustom => 'Своё';
+
+  @override
+  String get alUsedLabel => 'Сегодня';
+
+  @override
+  String get alLeftLabel => 'Осталось';
+
+  @override
+  String get alLimitReached => 'Лимит на сегодня исчерпан';
+
+  @override
+  String get alResets => 'Сброс в полночь (время телефона)';
+
+  @override
+  String get alUsageUnavailable => 'Нет данных об использовании';
+
+  @override
+  String get alUsageNeedsAccess =>
+      'Разрешите доступ к истории, чтобы Pausey считал время.';
+
+  @override
+  String get alUsageAndroidOnly =>
+      'Время считается только на Android. Лимит сохранится и будет работать там.';
+
+  @override
+  String get alGrantUsage => 'Дать доступ';
+
+  @override
+  String get alCustomLimitTitle => 'Свой дневной лимит';
+
+  @override
+  String get alHours => 'Часы';
+
+  @override
+  String get alMinutes => 'Минуты';
+
+  @override
+  String get alErrZeroLimit => 'Выберите больше нуля';
+
+  @override
+  String get alSave => 'Сохранить';
+
+  @override
+  String get alScheduledLocking => 'Блокировка по расписанию';
+
+  @override
+  String get alScheduledOffSub => 'Блокировать в заданные часы';
+
+  @override
+  String get alNoSchedules => 'Расписаний пока нет';
+
+  @override
+  String get alAddSchedule => 'Добавить расписание';
+
+  @override
+  String get alActiveNow => 'Сейчас активно';
+
+  @override
+  String get alScheduleDefault => 'Время блокировки';
+
+  @override
+  String get alEndsNextDay => 'До следующего дня';
+
+  @override
+  String get alEdit => 'Изменить';
+
+  @override
+  String get alDelete => 'Удалить';
+
+  @override
+  String get alDeleteScheduleQ => 'Удалить расписание?';
+
+  @override
+  String alDeleteScheduleMsg(String title) {
+    return '«$title» больше не будет блокировать приложение.';
+  }
+
+  @override
+  String get alNewSchedule => 'Новое расписание';
+
+  @override
+  String get alEditSchedule => 'Изменить расписание';
+
+  @override
+  String get alTitleOptional => 'Название (необяз.)';
+
+  @override
+  String get alPresetStudy => 'Учёба';
+
+  @override
+  String get alPresetEvening => 'Вечер';
+
+  @override
+  String get alPresetSleep => 'Сон';
+
+  @override
+  String get alRepeatOn => 'Повтор по дням';
+
+  @override
+  String get alErrSameTime => 'Начало и конец не могут совпадать';
+
+  @override
+  String get alErrNoDays => 'Выберите хотя бы один день';
+
+  @override
+  String alTempUnlock(int minutes) {
+    return 'Открыть на $minutes мин';
+  }
+
+  @override
+  String alTempUnlockSub(int n) {
+    return '1 экстренный доступ · осталось $n';
+  }
+
+  @override
+  String get alTempUnlockFocus => 'Нельзя во время фокус-сессии';
+
+  @override
+  String get alTempUnlockNotLocked => 'Нужно, только когда заблокировано';
+
+  @override
+  String alTempUnlockQ(String app, int minutes) {
+    return 'Открыть $app на $minutes мин?';
+  }
+
+  @override
+  String get alUnlock => 'Открыть';
+
+  @override
+  String get alEndEarly => 'Завершить';
+
+  @override
+  String get alResetRules => 'Сбросить ограничения';
+
+  @override
+  String get alResetRulesSub => 'Удалить лимит и расписания';
+
+  @override
+  String alResetQ(String app) {
+    return 'Сбросить ограничения $app?';
+  }
+
+  @override
+  String get alResetMsg =>
+      'Лимит и все расписания удалятся. Приложение останется в списке.';
+
+  @override
+  String get alReset => 'Сбросить';
+
+  @override
+  String get alResetDone => 'Ограничения сброшены';
+
+  @override
+  String get alRemoveApp => 'Убрать приложение';
+
+  @override
+  String get alRemoveAppSub => 'Больше не управлять';
+
+  @override
+  String alRemoveQ(String app) {
+    return 'Убрать $app?';
+  }
+
+  @override
+  String get alRemoveMsg =>
+      'Pausey перестанет его ограничивать и удалит лимит и расписания.';
+
+  @override
+  String get alRemove => 'Убрать';
+
+  @override
+  String get alNoPackage =>
+      'Лимиты и расписания нужны для конкретного приложения. На Android добавьте его через «Выбрать из установленных».';
+
+  @override
+  String get alNotFound => 'Приложение больше не в списке';
+
+  @override
+  String get alPickerTitle => 'Установленные';
+
+  @override
+  String get alPickerAdded => 'Уже добавлено';
+
+  @override
+  String alPickerAdd(int n) {
+    return 'Добавить ($n)';
+  }
+
+  @override
+  String get alPickerEmpty => 'Приложения не найдены';
+
+  @override
   String get blockTitle => 'Блокировка';
 
   @override
-  String blockSubtitle(int locked, int total) {
-    return 'Заблокировано $locked из $total';
-  }
-
-  @override
   String get blockAddApp => 'Добавить';
-
-  @override
-  String blockLockedChip(int n) {
-    return '$n заблок.';
-  }
-
-  @override
-  String blockUnlockedChip(int n) {
-    return '$n открыто';
-  }
-
-  @override
-  String blockScheduledChip(int n) {
-    return '$n по расп.';
-  }
 
   @override
   String get blockFaceIdTitle => 'Защита Face ID';
@@ -495,27 +845,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get blockAllLocked => 'Все приложения заблокированы';
 
   @override
-  String get blockSched => 'Расп.';
-
-  @override
-  String get blockOnlySchedule => 'Только по расписанию';
-
-  @override
-  String get blockOnlyScheduleSub => 'Иначе заблокировано весь день';
-
-  @override
-  String get blockLockedLabel => 'Заблокировано';
-
-  @override
-  String get blockRemove => 'Убрать из списка';
-
-  @override
   String blockRemoved(String app) {
     return '$app удалено';
   }
-
-  @override
-  String get blockUndo => 'Отменить';
 
   @override
   String get blockAppsUpdated => 'Список обновлён';
@@ -1813,6 +2145,33 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get insightsCatOther => 'Другое';
+
+  @override
+  String nativeBlockTitle(String app) {
+    return '$app на паузе';
+  }
+
+  @override
+  String get nativeReasonLimit =>
+      'Время на сегодня для этого приложения истекло.';
+
+  @override
+  String get nativeReasonSchedule => 'Сейчас действует расписание блокировки.';
+
+  @override
+  String get nativeReasonGlobal => 'Это приложение заблокировано в Pausey.';
+
+  @override
+  String get nativeReasonFocus => 'Идёт сессия фокусировки.';
+
+  @override
+  String get nativeClose => 'Закрыть приложение';
+
+  @override
+  String get nativeNotifTitle => 'Pausey следит за вашими лимитами';
+
+  @override
+  String get nativeNotifText => 'Лимиты и расписания блокировки включены';
 
   @override
   String get profileSettings => 'Настройки';

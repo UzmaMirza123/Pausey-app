@@ -232,9 +232,8 @@
   "ob9Done": "DONE",
   "ob9StreakTitle": "Day 1 streak starts now",
   "ob9StreakSub": "Complete a session to keep it going",
-  "blockTitle": "App Lock",
-  "blockSubtitle": "{locked} of {total} apps currently locked",
-  "@blockSubtitle": {
+  "alSummary": "{locked} restricted now · {total} managed",
+  "@alSummary": {
     "placeholders": {
       "locked": {
         "type": "int"
@@ -244,31 +243,225 @@
       }
     }
   },
+  "alSummaryOff": "{total} managed · blocking off",
+  "@alSummaryOff": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "alFromInstalled": "Choose from installed apps",
+  "alFromInstalledSub": "Pick any app on this phone",
+  "alPermTitle": "Blocking isn't active yet",
+  "alPermMsg": "Your rules are saved, but Pausey can't block apps until you allow these two permissions:",
+  "alPermUsage": "Usage access",
+  "alPermUsageSub": "See which app is open and today's time in it",
+  "alPermOverlay": "Display over other apps",
+  "alPermOverlaySub": "Show the lock screen over a blocked app",
+  "alAllow": "Allow",
+  "alAllowed": "Allowed",
+  "alPermReturn": "Come back to Pausey after allowing — it checks again automatically.",
+  "alAndroidOnly": "Blocking works on Android only. You can still set up your rules here.",
+  "alSearchHint": "Search apps",
+  "alFilterAll": "All",
+  "alFilterLocked": "Locked now",
+  "alFilterScheduled": "Scheduled",
+  "alFilterAvailable": "Available",
+  "alStateLocked": "Locked",
+  "alStateWillLock": "Will lock",
+  "alStateScheduled": "Scheduled",
+  "alStateAvailable": "Available",
+  "alUsedOf": "Used {used} of {limit}",
+  "@alUsedOf": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "limit": {
+        "type": "String"
+      }
+    }
+  },
+  "alUsedToday": "Used {used} today",
+  "@alUsedToday": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      }
+    }
+  },
+  "alNoLimit": "No daily limit",
+  "alLimitNoUsage": "{limit} daily limit · usage unavailable",
+  "@alLimitNoUsage": {
+    "placeholders": {
+      "limit": {
+        "type": "String"
+      }
+    }
+  },
+  "alRulesOff": "Restrictions off",
+  "alNextLock": "Next lock: {time}",
+  "@alNextLock": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "alUnlockedUntil": "Unlocked until {time}",
+  "@alUnlockedUntil": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "alReasonLimit": "Daily limit reached",
+  "alReasonSchedule": "Lock schedule active",
+  "alReasonGeneral": "General schedule active",
+  "alReasonAllDay": "Locked all day",
+  "alReasonFocus": "Focus session running",
+  "alNoMatches": "No apps match",
+  "alGeneral": "General",
+  "alGeneralScheduleSub": "For apps with “Follow general schedule” on",
+  "alLockAllSub": "Turn restrictions on for every app",
+  "alSaved": "Saved",
+  "alChangesApply": "Changes apply immediately",
+  "alDetailsTitle": "App Limits",
+  "alBlockingOff": "Blocking is off on this phone",
+  "alRestrictApp": "Restrict this app",
+  "alMasterOff": "Off — Pausey won't restrict this app",
+  "alMasterOnRules": "Your limit and schedules below apply",
+  "alMasterOnAllDay": "No limit or schedule yet — locked all day",
+  "alMasterOnGeneral": "Locked during the general schedule",
+  "alFollowGeneral": "Follow general schedule",
+  "alFollowGeneralSub": "Also lock {start} – {end}",
+  "@alFollowGeneralSub": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "alGeneralOff": "The general schedule is turned off",
+  "alDailyLimit": "Daily limit",
+  "alDailyLimitOffSub": "Lock the app after a set time each day",
+  "alCustom": "Custom",
+  "alUsedLabel": "Used today",
+  "alLeftLabel": "Remaining",
+  "alLimitReached": "Limit reached for today",
+  "alResets": "Resets at midnight (your phone's time)",
+  "alUsageUnavailable": "Usage unavailable",
+  "alUsageNeedsAccess": "Allow Usage access so Pausey can count today's time.",
+  "alUsageAndroidOnly": "Usage is measured on Android phones only. The limit still saves and applies there.",
+  "alGrantUsage": "Grant usage access",
+  "alCustomLimitTitle": "Custom daily limit",
+  "alHours": "Hours",
+  "alMinutes": "Minutes",
+  "alErrZeroLimit": "Pick a time above zero",
+  "alSave": "Save",
+  "alScheduledLocking": "Scheduled locking",
+  "alScheduledOffSub": "Lock this app at set times",
+  "alNoSchedules": "No schedules yet",
+  "alAddSchedule": "Add schedule",
+  "alActiveNow": "Active now",
+  "alScheduleDefault": "Lock time",
+  "alEndsNextDay": "Ends next day",
+  "alEdit": "Edit",
+  "alDelete": "Delete",
+  "alDeleteScheduleQ": "Delete this schedule?",
+  "alDeleteScheduleMsg": "“{title}” will stop locking this app.",
+  "@alDeleteScheduleMsg": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "alNewSchedule": "New schedule",
+  "alEditSchedule": "Edit schedule",
+  "alTitleOptional": "Title (optional)",
+  "alPresetStudy": "Study",
+  "alPresetEvening": "Evening",
+  "alPresetSleep": "Sleep",
+  "alRepeatOn": "Repeat on",
+  "alErrSameTime": "Start and end can't be the same",
+  "alErrNoDays": "Pick at least one day",
+  "alTempUnlock": "Unlock for {minutes} min",
+  "@alTempUnlock": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "alTempUnlockSub": "Uses 1 emergency override · {n} left today",
+  "@alTempUnlockSub": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "alTempUnlockFocus": "Can't unlock during a Focus session",
+  "alTempUnlockNotLocked": "Only needed while the app is locked",
+  "alTempUnlockQ": "Unlock {app} for {minutes} minutes?",
+  "@alTempUnlockQ": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "alUnlock": "Unlock",
+  "alEndEarly": "End early",
+  "alResetRules": "Reset restrictions",
+  "alResetRulesSub": "Remove this app's limit and schedules",
+  "alResetQ": "Reset restrictions for {app}?",
+  "@alResetQ": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "alResetMsg": "Its daily limit and all schedules will be removed. The app stays in your list.",
+  "alReset": "Reset",
+  "alResetDone": "Restrictions reset",
+  "alRemoveApp": "Remove app",
+  "alRemoveAppSub": "Stop managing this app",
+  "alRemoveQ": "Remove {app}?",
+  "@alRemoveQ": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "alRemoveMsg": "Pausey will stop restricting it and forget its limit and schedules.",
+  "alRemove": "Remove",
+  "alNoPackage": "Per-app limits and schedules need one specific installed app. On Android, add it with “Choose from installed apps”.",
+  "alNotFound": "This app is no longer managed",
+  "alPickerTitle": "Installed apps",
+  "alPickerAdded": "Already added",
+  "alPickerAdd": "{n, plural, =0{Add apps} =1{Add 1 app} other{Add {n} apps}}",
+  "@alPickerAdd": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "alPickerEmpty": "No apps found",
+  "blockTitle": "App Lock",
   "blockAddApp": "Add App",
-  "blockLockedChip": "{n} Locked",
-  "@blockLockedChip": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "blockUnlockedChip": "{n} Unlocked",
-  "@blockUnlockedChip": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
-  "blockScheduledChip": "{n} Scheduled",
-  "@blockScheduledChip": {
-    "placeholders": {
-      "n": {
-        "type": "int"
-      }
-    }
-  },
   "blockFaceIdTitle": "Face ID Protection",
   "blockFaceIdSub": "Require Face ID to unlock any app",
   "blockFaceIdUnavailable": "Biometric unlock isn't available on this device",
@@ -281,11 +474,6 @@
   "blockManagedApps": "Managed Apps",
   "blockLockAll": "Lock All",
   "blockAllLocked": "All apps are locked",
-  "blockSched": "Sched",
-  "blockOnlySchedule": "Lock only during schedule",
-  "blockOnlyScheduleSub": "Otherwise it stays locked all day",
-  "blockLockedLabel": "Locked",
-  "blockRemove": "Remove from list",
   "blockRemoved": "{app} removed",
   "@blockRemoved": {
     "placeholders": {
@@ -294,7 +482,6 @@
       }
     }
   },
-  "blockUndo": "Undo",
   "blockAppsUpdated": "Managed apps updated",
   "blockCatSocial": "Social",
   "blockCatVideo": "Video",
@@ -1085,6 +1272,21 @@
   "insightsCatShopping": "Shopping",
   "insightsCatCommunity": "Community",
   "insightsCatOther": "Other",
+  "nativeBlockTitle": "{app} is paused",
+  "@nativeBlockTitle": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "nativeReasonLimit": "You've used today's time for this app.",
+  "nativeReasonSchedule": "A lock schedule is active right now.",
+  "nativeReasonGlobal": "This app is locked in Pausey.",
+  "nativeReasonFocus": "You're in a focus session.",
+  "nativeClose": "Close app",
+  "nativeNotifTitle": "Pausey is keeping your limits",
+  "nativeNotifText": "App limits and lock schedules are on",
   "profileSettings": "Settings",
   "profileGuestName": "Guest",
   "profileGuestBadge": "Guest · saved on this phone",

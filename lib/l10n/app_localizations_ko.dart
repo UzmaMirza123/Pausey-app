@@ -423,30 +423,375 @@ class AppLocalizationsKo extends AppLocalizations {
   String get ob9StreakSub => '세션을 완료해 기록을 이어가세요';
 
   @override
+  String alSummary(int locked, int total) {
+    return '지금 제한 $locked · 관리 $total';
+  }
+
+  @override
+  String alSummaryOff(int total) {
+    return '관리 $total · 차단 꺼짐';
+  }
+
+  @override
+  String get alFromInstalled => '설치된 앱에서 선택';
+
+  @override
+  String get alFromInstalledSub => '이 휴대폰의 모든 앱';
+
+  @override
+  String get alPermTitle => '아직 차단이 작동하지 않아요';
+
+  @override
+  String get alPermMsg => '규칙은 저장됐지만 아래 두 권한을 허용해야 Pausey가 앱을 차단할 수 있어요:';
+
+  @override
+  String get alPermUsage => '사용 정보 접근';
+
+  @override
+  String get alPermUsageSub => '열린 앱과 오늘 사용 시간 확인';
+
+  @override
+  String get alPermOverlay => '다른 앱 위에 표시';
+
+  @override
+  String get alPermOverlaySub => '차단된 앱 위에 잠금 화면 표시';
+
+  @override
+  String get alAllow => '허용';
+
+  @override
+  String get alAllowed => '허용됨';
+
+  @override
+  String get alPermReturn => '허용 후 Pausey로 돌아오면 자동으로 다시 확인해요.';
+
+  @override
+  String get alAndroidOnly => '차단은 Android에서만 작동해요. 규칙은 여기서 설정할 수 있어요.';
+
+  @override
+  String get alSearchHint => '앱 검색';
+
+  @override
+  String get alFilterAll => '전체';
+
+  @override
+  String get alFilterLocked => '잠김';
+
+  @override
+  String get alFilterScheduled => '예약됨';
+
+  @override
+  String get alFilterAvailable => '사용 가능';
+
+  @override
+  String get alStateLocked => '잠김';
+
+  @override
+  String get alStateWillLock => '잠길 예정';
+
+  @override
+  String get alStateScheduled => '예약됨';
+
+  @override
+  String get alStateAvailable => '사용 가능';
+
+  @override
+  String alUsedOf(String used, String limit) {
+    return '$limit 중 $used 사용';
+  }
+
+  @override
+  String alUsedToday(String used) {
+    return '오늘 $used';
+  }
+
+  @override
+  String get alNoLimit => '일일 한도 없음';
+
+  @override
+  String alLimitNoUsage(String limit) {
+    return '한도 $limit · 사용량 없음';
+  }
+
+  @override
+  String get alRulesOff => '제한 꺼짐';
+
+  @override
+  String alNextLock(String time) {
+    return '다음 잠금: $time';
+  }
+
+  @override
+  String alUnlockedUntil(String time) {
+    return '$time까지 해제됨';
+  }
+
+  @override
+  String get alReasonLimit => '일일 한도 도달';
+
+  @override
+  String get alReasonSchedule => '잠금 일정 진행 중';
+
+  @override
+  String get alReasonGeneral => '공통 일정 진행 중';
+
+  @override
+  String get alReasonAllDay => '하루 종일 잠김';
+
+  @override
+  String get alReasonFocus => '집중 세션 진행 중';
+
+  @override
+  String get alNoMatches => '일치하는 앱이 없어요';
+
+  @override
+  String get alGeneral => '일반';
+
+  @override
+  String get alGeneralScheduleSub => '‘공통 일정 따르기’가 켜진 앱에 적용';
+
+  @override
+  String get alLockAllSub => '모든 앱에 제한 켜기';
+
+  @override
+  String get alSaved => '저장됨';
+
+  @override
+  String get alChangesApply => '변경 사항은 즉시 적용돼요';
+
+  @override
+  String get alDetailsTitle => '앱 제한';
+
+  @override
+  String get alBlockingOff => '이 휴대폰에서는 차단이 꺼져 있어요';
+
+  @override
+  String get alRestrictApp => '이 앱 제한';
+
+  @override
+  String get alMasterOff => '꺼짐 — Pausey가 제한하지 않아요';
+
+  @override
+  String get alMasterOnRules => '아래 한도와 일정이 적용돼요';
+
+  @override
+  String get alMasterOnAllDay => '한도·일정 없음 — 하루 종일 잠김';
+
+  @override
+  String get alMasterOnGeneral => '공통 일정 동안 잠김';
+
+  @override
+  String get alFollowGeneral => '공통 일정 따르기';
+
+  @override
+  String alFollowGeneralSub(String start, String end) {
+    return '$start–$end에도 잠금';
+  }
+
+  @override
+  String get alGeneralOff => '공통 일정이 꺼져 있어요';
+
+  @override
+  String get alDailyLimit => '일일 한도';
+
+  @override
+  String get alDailyLimitOffSub => '매일 정한 시간을 넘으면 잠가요';
+
+  @override
+  String get alCustom => '직접 설정';
+
+  @override
+  String get alUsedLabel => '오늘 사용';
+
+  @override
+  String get alLeftLabel => '남은 시간';
+
+  @override
+  String get alLimitReached => '오늘 한도에 도달했어요';
+
+  @override
+  String get alResets => '자정에 초기화돼요(휴대폰 시간)';
+
+  @override
+  String get alUsageUnavailable => '사용량을 알 수 없어요';
+
+  @override
+  String get alUsageNeedsAccess => '사용 정보 접근을 허용하면 오늘 시간을 셀 수 있어요.';
+
+  @override
+  String get alUsageAndroidOnly =>
+      '사용 시간은 Android에서만 측정돼요. 한도는 저장되어 그곳에서 적용돼요.';
+
+  @override
+  String get alGrantUsage => '접근 허용';
+
+  @override
+  String get alCustomLimitTitle => '일일 한도 직접 설정';
+
+  @override
+  String get alHours => '시간';
+
+  @override
+  String get alMinutes => '분';
+
+  @override
+  String get alErrZeroLimit => '0보다 큰 시간을 고르세요';
+
+  @override
+  String get alSave => '저장';
+
+  @override
+  String get alScheduledLocking => '예약 잠금';
+
+  @override
+  String get alScheduledOffSub => '정해진 시간에 이 앱을 잠가요';
+
+  @override
+  String get alNoSchedules => '아직 일정이 없어요';
+
+  @override
+  String get alAddSchedule => '일정 추가';
+
+  @override
+  String get alActiveNow => '진행 중';
+
+  @override
+  String get alScheduleDefault => '잠금 시간';
+
+  @override
+  String get alEndsNextDay => '다음 날 종료';
+
+  @override
+  String get alEdit => '편집';
+
+  @override
+  String get alDelete => '삭제';
+
+  @override
+  String get alDeleteScheduleQ => '이 일정을 삭제할까요?';
+
+  @override
+  String alDeleteScheduleMsg(String title) {
+    return '‘$title’ 일정으로 더 이상 잠기지 않아요.';
+  }
+
+  @override
+  String get alNewSchedule => '새 일정';
+
+  @override
+  String get alEditSchedule => '일정 편집';
+
+  @override
+  String get alTitleOptional => '제목(선택)';
+
+  @override
+  String get alPresetStudy => '공부';
+
+  @override
+  String get alPresetEvening => '저녁';
+
+  @override
+  String get alPresetSleep => '수면';
+
+  @override
+  String get alRepeatOn => '반복 요일';
+
+  @override
+  String get alErrSameTime => '시작과 종료가 같을 수 없어요';
+
+  @override
+  String get alErrNoDays => '하루 이상 선택하세요';
+
+  @override
+  String alTempUnlock(int minutes) {
+    return '$minutes분 해제';
+  }
+
+  @override
+  String alTempUnlockSub(int n) {
+    return '긴급 해제 1회 사용 · 오늘 $n회 남음';
+  }
+
+  @override
+  String get alTempUnlockFocus => '집중 세션 중에는 해제할 수 없어요';
+
+  @override
+  String get alTempUnlockNotLocked => '앱이 잠겨 있을 때만 필요해요';
+
+  @override
+  String alTempUnlockQ(String app, int minutes) {
+    return '$app을(를) $minutes분 동안 해제할까요?';
+  }
+
+  @override
+  String get alUnlock => '해제';
+
+  @override
+  String get alEndEarly => '일찍 끝내기';
+
+  @override
+  String get alResetRules => '제한 초기화';
+
+  @override
+  String get alResetRulesSub => '한도와 일정을 삭제해요';
+
+  @override
+  String alResetQ(String app) {
+    return '$app의 제한을 초기화할까요?';
+  }
+
+  @override
+  String get alResetMsg => '일일 한도와 모든 일정이 삭제돼요. 앱은 목록에 남아요.';
+
+  @override
+  String get alReset => '초기화';
+
+  @override
+  String get alResetDone => '제한을 초기화했어요';
+
+  @override
+  String get alRemoveApp => '앱 제거';
+
+  @override
+  String get alRemoveAppSub => '이 앱 관리 중지';
+
+  @override
+  String alRemoveQ(String app) {
+    return '$app을(를) 제거할까요?';
+  }
+
+  @override
+  String get alRemoveMsg => 'Pausey가 제한을 멈추고 한도와 일정도 지워요.';
+
+  @override
+  String get alRemove => '제거';
+
+  @override
+  String get alNoPackage =>
+      '앱별 한도와 일정은 설치된 특정 앱에만 적용돼요. Android에서 ‘설치된 앱에서 선택’으로 추가하세요.';
+
+  @override
+  String get alNotFound => '더 이상 관리하지 않는 앱이에요';
+
+  @override
+  String get alPickerTitle => '설치된 앱';
+
+  @override
+  String get alPickerAdded => '이미 추가됨';
+
+  @override
+  String alPickerAdd(int n) {
+    return '앱 추가 ($n)';
+  }
+
+  @override
+  String get alPickerEmpty => '앱을 찾을 수 없어요';
+
+  @override
   String get blockTitle => '앱 잠금';
 
   @override
-  String blockSubtitle(int locked, int total) {
-    return '$total개 중 $locked개 앱 잠김';
-  }
-
-  @override
   String get blockAddApp => '앱 추가';
-
-  @override
-  String blockLockedChip(int n) {
-    return '잠김 $n';
-  }
-
-  @override
-  String blockUnlockedChip(int n) {
-    return '해제 $n';
-  }
-
-  @override
-  String blockScheduledChip(int n) {
-    return '예약 $n';
-  }
 
   @override
   String get blockFaceIdTitle => 'Face ID 보호';
@@ -485,27 +830,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get blockAllLocked => '모든 앱이 잠겼습니다';
 
   @override
-  String get blockSched => '예약';
-
-  @override
-  String get blockOnlySchedule => '예약 시간에만 잠금';
-
-  @override
-  String get blockOnlyScheduleSub => '아니면 하루 종일 잠김';
-
-  @override
-  String get blockLockedLabel => '잠금';
-
-  @override
-  String get blockRemove => '목록에서 제거';
-
-  @override
   String blockRemoved(String app) {
     return '$app 제거됨';
   }
-
-  @override
-  String get blockUndo => '실행 취소';
 
   @override
   String get blockAppsUpdated => '앱이 업데이트되었습니다';
@@ -1775,6 +2102,32 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get insightsCatOther => '기타';
+
+  @override
+  String nativeBlockTitle(String app) {
+    return '$app 일시 중지됨';
+  }
+
+  @override
+  String get nativeReasonLimit => '오늘 이 앱의 사용 시간을 모두 썼어요.';
+
+  @override
+  String get nativeReasonSchedule => '지금 잠금 일정이 진행 중이에요.';
+
+  @override
+  String get nativeReasonGlobal => '이 앱은 Pausey에서 잠겨 있어요.';
+
+  @override
+  String get nativeReasonFocus => '집중 세션 중이에요.';
+
+  @override
+  String get nativeClose => '앱 닫기';
+
+  @override
+  String get nativeNotifTitle => 'Pausey가 제한을 지키고 있어요';
+
+  @override
+  String get nativeNotifText => '앱 제한과 잠금 일정이 켜져 있어요';
 
   @override
   String get profileSettings => '설정';

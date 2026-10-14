@@ -44,8 +44,10 @@ class PauseyApp extends StatelessWidget {
         final mode = ThemeController.instance.value;
         final dark = mode == ThemeMode.dark;
         SystemChrome.setSystemUIOverlayStyle(
-          (dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark)
-              .copyWith(statusBarColor: Colors.transparent, systemNavigationBarColor: Colors.transparent),
+          (dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark).copyWith(
+            statusBarColor: Colors.transparent,
+            systemNavigationBarColor: Colors.transparent,
+          ),
         );
         return MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -63,11 +65,14 @@ class PauseyApp extends StatelessWidget {
           ],
           localeListResolutionCallback: (device, supported) => LocaleController.resolve(device, supported),
           onGenerateTitle: (context) => context.l10n.appName,
-          builder: (context, child) => MediaQuery(
-            // Settings → Text size
-            data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(AppRepo.instance.settings.textScale)),
-            child: _TabletScale(child: child!),
-          ),
+          builder: (context, child) {
+            RestrictionRepo.instance.setNativeStrings(context.l10n);
+            return MediaQuery(
+              // Settings → Text size
+              data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(AppRepo.instance.settings.textScale)),
+              child: _TabletScale(child: child!),
+            );
+          },
           home: home ?? const _Root(),
         );
       },
@@ -95,12 +100,7 @@ class _TabletScale extends StatelessWidget {
         width: virtual.width,
         height: virtual.height,
         child: MediaQuery(
-          data: mq.copyWith(
-            size: virtual,
-            padding: mq.padding / scale,
-            viewPadding: mq.viewPadding / scale,
-            viewInsets: mq.viewInsets / scale,
-          ),
+          data: mq.copyWith(size: virtual, padding: mq.padding / scale, viewPadding: mq.viewPadding / scale, viewInsets: mq.viewInsets / scale),
           child: child,
         ),
       ),
@@ -123,9 +123,9 @@ class _RootState extends State<_Root> {
   _Stage _stage = _Stage.splash;
 
   void _afterSplash() => setState(() {
-        final signedIn = AuthService.instance.value is! SignedOut;
-        _stage = (signedIn || LocalStore.instance.onboardingDone) ? _Stage.app : _Stage.onboarding;
-      });
+    final signedIn = AuthService.instance.value is! SignedOut;
+    _stage = (signedIn || LocalStore.instance.onboardingDone) ? _Stage.app : _Stage.onboarding;
+  });
 
   Future<void> _afterOnboarding() async {
     await LocalStore.instance.setOnboardingDone();
@@ -140,14 +140,12 @@ class _RootState extends State<_Root> {
       _Stage.splash => SplashScreen(onFinished: _afterSplash),
       _Stage.onboarding => OnboardingFlow(onFinished: _afterOnboarding),
       _Stage.app => ValueListenableBuilder<Session>(
-          valueListenable: AuthService.instance,
-          builder: (context, session, _) => AnimatedSwitcher(
-            duration: const Duration(milliseconds: 500),
-            child: session is SignedOut
-                ? const AuthWelcomeScreen(key: ValueKey('auth'))
-                : AppShell(key: ValueKey(session.runtimeType)),
-          ),
+        valueListenable: AuthService.instance,
+        builder: (context, session, _) => AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          child: session is SignedOut ? const AuthWelcomeScreen(key: ValueKey('auth')) : AppShell(key: ValueKey(session.runtimeType)),
         ),
+      ),
     };
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 700),

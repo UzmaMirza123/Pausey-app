@@ -422,30 +422,374 @@ class AppLocalizationsJa extends AppLocalizations {
   String get ob9StreakSub => 'セッションを完了して記録を続けよう';
 
   @override
+  String alSummary(int locked, int total) {
+    return '制限中 $locked · 管理 $total';
+  }
+
+  @override
+  String alSummaryOff(int total) {
+    return '管理 $total · ブロック無効';
+  }
+
+  @override
+  String get alFromInstalled => 'インストール済みから選ぶ';
+
+  @override
+  String get alFromInstalledSub => 'この端末の任意のアプリ';
+
+  @override
+  String get alPermTitle => 'ブロックはまだ有効ではありません';
+
+  @override
+  String get alPermMsg => 'ルールは保存済みですが、次の2つを許可するまでPauseyはアプリをブロックできません：';
+
+  @override
+  String get alPermUsage => '使用状況へのアクセス';
+
+  @override
+  String get alPermUsageSub => '開いているアプリと今日の利用時間を確認';
+
+  @override
+  String get alPermOverlay => '他のアプリの上に重ねて表示';
+
+  @override
+  String get alPermOverlaySub => 'ブロック中のアプリにロック画面を表示';
+
+  @override
+  String get alAllow => '許可';
+
+  @override
+  String get alAllowed => '許可済み';
+
+  @override
+  String get alPermReturn => '許可したらPauseyに戻ってください。自動で再確認します。';
+
+  @override
+  String get alAndroidOnly => 'ブロックはAndroidのみ対応。ルールの設定はここでできます。';
+
+  @override
+  String get alSearchHint => 'アプリを検索';
+
+  @override
+  String get alFilterAll => 'すべて';
+
+  @override
+  String get alFilterLocked => 'ロック中';
+
+  @override
+  String get alFilterScheduled => '予定あり';
+
+  @override
+  String get alFilterAvailable => '利用可';
+
+  @override
+  String get alStateLocked => 'ロック中';
+
+  @override
+  String get alStateWillLock => 'ロック予定';
+
+  @override
+  String get alStateScheduled => '予定あり';
+
+  @override
+  String get alStateAvailable => '利用可';
+
+  @override
+  String alUsedOf(String used, String limit) {
+    return '$limit中$used使用';
+  }
+
+  @override
+  String alUsedToday(String used) {
+    return '今日 $used';
+  }
+
+  @override
+  String get alNoLimit => '上限なし';
+
+  @override
+  String alLimitNoUsage(String limit) {
+    return '上限 $limit · 使用状況なし';
+  }
+
+  @override
+  String get alRulesOff => '制限オフ';
+
+  @override
+  String alNextLock(String time) {
+    return '次のロック：$time';
+  }
+
+  @override
+  String alUnlockedUntil(String time) {
+    return '$timeまで解除中';
+  }
+
+  @override
+  String get alReasonLimit => '上限に達しました';
+
+  @override
+  String get alReasonSchedule => 'ロック時間中';
+
+  @override
+  String get alReasonGeneral => '共通スケジュール中';
+
+  @override
+  String get alReasonAllDay => '終日ロック';
+
+  @override
+  String get alReasonFocus => '集中セッション中';
+
+  @override
+  String get alNoMatches => '該当するアプリはありません';
+
+  @override
+  String get alGeneral => '共通設定';
+
+  @override
+  String get alGeneralScheduleSub => '「共通スケジュールに従う」がオンのアプリ';
+
+  @override
+  String get alLockAllSub => 'すべてのアプリで制限をオン';
+
+  @override
+  String get alSaved => '保存しました';
+
+  @override
+  String get alChangesApply => '変更はすぐに反映されます';
+
+  @override
+  String get alDetailsTitle => 'アプリの制限';
+
+  @override
+  String get alBlockingOff => 'この端末ではブロックが無効です';
+
+  @override
+  String get alRestrictApp => 'このアプリを制限';
+
+  @override
+  String get alMasterOff => 'オフ：Pauseyは制限しません';
+
+  @override
+  String get alMasterOnRules => '下の上限とスケジュールが適用されます';
+
+  @override
+  String get alMasterOnAllDay => '上限・スケジュールなし：終日ロック';
+
+  @override
+  String get alMasterOnGeneral => '共通スケジュール中はロック';
+
+  @override
+  String get alFollowGeneral => '共通スケジュールに従う';
+
+  @override
+  String alFollowGeneralSub(String start, String end) {
+    return '$start〜$endもロック';
+  }
+
+  @override
+  String get alGeneralOff => '共通スケジュールはオフです';
+
+  @override
+  String get alDailyLimit => '1日の上限';
+
+  @override
+  String get alDailyLimitOffSub => '毎日決めた時間を超えたらロック';
+
+  @override
+  String get alCustom => 'カスタム';
+
+  @override
+  String get alUsedLabel => '今日の利用';
+
+  @override
+  String get alLeftLabel => '残り';
+
+  @override
+  String get alLimitReached => '今日の上限に達しました';
+
+  @override
+  String get alResets => '深夜0時にリセット（端末の時刻）';
+
+  @override
+  String get alUsageUnavailable => '利用状況を取得できません';
+
+  @override
+  String get alUsageNeedsAccess => '使用状況へのアクセスを許可すると今日の時間を計測できます。';
+
+  @override
+  String get alUsageAndroidOnly => '利用時間はAndroidでのみ計測されます。上限は保存され、そこで適用されます。';
+
+  @override
+  String get alGrantUsage => 'アクセスを許可';
+
+  @override
+  String get alCustomLimitTitle => '1日の上限を設定';
+
+  @override
+  String get alHours => '時間';
+
+  @override
+  String get alMinutes => '分';
+
+  @override
+  String get alErrZeroLimit => '0より大きい時間を選んでください';
+
+  @override
+  String get alSave => '保存';
+
+  @override
+  String get alScheduledLocking => '時間指定ロック';
+
+  @override
+  String get alScheduledOffSub => '決めた時間にこのアプリをロック';
+
+  @override
+  String get alNoSchedules => 'スケジュールはまだありません';
+
+  @override
+  String get alAddSchedule => 'スケジュールを追加';
+
+  @override
+  String get alActiveNow => '実行中';
+
+  @override
+  String get alScheduleDefault => 'ロック時間';
+
+  @override
+  String get alEndsNextDay => '翌日に終了';
+
+  @override
+  String get alEdit => '編集';
+
+  @override
+  String get alDelete => '削除';
+
+  @override
+  String get alDeleteScheduleQ => 'このスケジュールを削除しますか？';
+
+  @override
+  String alDeleteScheduleMsg(String title) {
+    return '「$title」によるロックがなくなります。';
+  }
+
+  @override
+  String get alNewSchedule => '新しいスケジュール';
+
+  @override
+  String get alEditSchedule => 'スケジュールを編集';
+
+  @override
+  String get alTitleOptional => 'タイトル（任意）';
+
+  @override
+  String get alPresetStudy => '勉強';
+
+  @override
+  String get alPresetEvening => '夕方';
+
+  @override
+  String get alPresetSleep => '睡眠';
+
+  @override
+  String get alRepeatOn => '繰り返す曜日';
+
+  @override
+  String get alErrSameTime => '開始と終了を同じにはできません';
+
+  @override
+  String get alErrNoDays => '1日以上選んでください';
+
+  @override
+  String alTempUnlock(int minutes) {
+    return '$minutes分間解除';
+  }
+
+  @override
+  String alTempUnlockSub(int n) {
+    return '緊急解除を1回使用 · 今日あと$n回';
+  }
+
+  @override
+  String get alTempUnlockFocus => '集中セッション中は解除できません';
+
+  @override
+  String get alTempUnlockNotLocked => 'ロック中のみ使えます';
+
+  @override
+  String alTempUnlockQ(String app, int minutes) {
+    return '$appを$minutes分間解除しますか？';
+  }
+
+  @override
+  String get alUnlock => '解除';
+
+  @override
+  String get alEndEarly => '早めに終了';
+
+  @override
+  String get alResetRules => '制限をリセット';
+
+  @override
+  String get alResetRulesSub => '上限とスケジュールを削除';
+
+  @override
+  String alResetQ(String app) {
+    return '$appの制限をリセットしますか？';
+  }
+
+  @override
+  String get alResetMsg => '1日の上限とすべてのスケジュールが削除されます。アプリはリストに残ります。';
+
+  @override
+  String get alReset => 'リセット';
+
+  @override
+  String get alResetDone => '制限をリセットしました';
+
+  @override
+  String get alRemoveApp => 'アプリを削除';
+
+  @override
+  String get alRemoveAppSub => 'このアプリの管理をやめる';
+
+  @override
+  String alRemoveQ(String app) {
+    return '$appを削除しますか？';
+  }
+
+  @override
+  String get alRemoveMsg => 'Pauseyは制限をやめ、上限とスケジュールも削除します。';
+
+  @override
+  String get alRemove => '削除';
+
+  @override
+  String get alNoPackage =>
+      'アプリごとの上限とスケジュールには特定のアプリが必要です。Androidでは「インストール済みから選ぶ」で追加できます。';
+
+  @override
+  String get alNotFound => 'このアプリは管理されていません';
+
+  @override
+  String get alPickerTitle => 'インストール済みアプリ';
+
+  @override
+  String get alPickerAdded => '追加済み';
+
+  @override
+  String alPickerAdd(int n) {
+    return 'アプリを追加（$n）';
+  }
+
+  @override
+  String get alPickerEmpty => 'アプリが見つかりません';
+
+  @override
   String get blockTitle => 'アプリロック';
 
   @override
-  String blockSubtitle(int locked, int total) {
-    return '$total個中$locked個のアプリをロック中';
-  }
-
-  @override
   String get blockAddApp => '追加';
-
-  @override
-  String blockLockedChip(int n) {
-    return 'ロック $n';
-  }
-
-  @override
-  String blockUnlockedChip(int n) {
-    return '解除 $n';
-  }
-
-  @override
-  String blockScheduledChip(int n) {
-    return '予定 $n';
-  }
 
   @override
   String get blockFaceIdTitle => 'Face ID保護';
@@ -484,27 +828,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get blockAllLocked => 'すべてのアプリをロックしました';
 
   @override
-  String get blockSched => '予定';
-
-  @override
-  String get blockOnlySchedule => 'スケジュール中のみロック';
-
-  @override
-  String get blockOnlyScheduleSub => 'オフなら終日ロック';
-
-  @override
-  String get blockLockedLabel => 'ロック';
-
-  @override
-  String get blockRemove => 'リストから削除';
-
-  @override
   String blockRemoved(String app) {
     return '$appを削除しました';
   }
-
-  @override
-  String get blockUndo => '元に戻す';
 
   @override
   String get blockAppsUpdated => 'アプリを更新しました';
@@ -1774,6 +2100,32 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get insightsCatOther => 'その他';
+
+  @override
+  String nativeBlockTitle(String app) {
+    return '$appは一時停止中です';
+  }
+
+  @override
+  String get nativeReasonLimit => 'このアプリの今日の利用時間を使い切りました。';
+
+  @override
+  String get nativeReasonSchedule => '現在ロックスケジュールが有効です。';
+
+  @override
+  String get nativeReasonGlobal => 'このアプリはPauseyでロックされています。';
+
+  @override
+  String get nativeReasonFocus => '集中セッション中です。';
+
+  @override
+  String get nativeClose => 'アプリを閉じる';
+
+  @override
+  String get nativeNotifTitle => 'Pauseyが制限を管理中';
+
+  @override
+  String get nativeNotifText => 'アプリ制限とロックスケジュールが有効';
 
   @override
   String get profileSettings => '設定';

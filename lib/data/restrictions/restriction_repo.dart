@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' show mapEquals;
 import 'package:flutter/widgets.dart';
+
+import '../../l10n/app_localizations.dart';
 
 import '../../screens/focus/focus_timer.dart';
 import '../../services/local_store.dart';
@@ -31,6 +34,25 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
   /// Today's real usage (minutes) per package; null = not available (no permission / not Android).
   Map<String, int>? usage;
   NativeStatus status = const NativeStatus();
+
+  /// Translated texts for the native block screen / notification (set from the app's builder).
+  Map<String, String> _nativeStrings = const {};
+
+  void setNativeStrings(AppLocalizations l) {
+    final m = {
+      'blockTitle': l.nativeBlockTitle('{app}'),
+      'reasonLimit': l.nativeReasonLimit,
+      'reasonSchedule': l.nativeReasonSchedule,
+      'reasonGlobal': l.nativeReasonGlobal,
+      'reasonFocus': l.nativeReasonFocus,
+      'close': l.nativeClose,
+      'notifTitle': l.nativeNotifTitle,
+      'notifText': l.nativeNotifText,
+    };
+    if (mapEquals(m, _nativeStrings)) return;
+    _nativeStrings = m;
+    _scheduleSync();
+  }
 
   Timer? _tick;
   Timer? _syncDebounce;
@@ -239,6 +261,7 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
       // Wall-clock end of the running focus segment; the service ignores it once passed.
       'focusUntilMs': focusActive ? DateTime.now().add(Duration(seconds: ft.remainingSeconds)).millisecondsSinceEpoch : 0,
       'unlocks': [for (final u in _unlocks.values) u.toJson()],
+      'strings': _nativeStrings,
     };
   }
 }
