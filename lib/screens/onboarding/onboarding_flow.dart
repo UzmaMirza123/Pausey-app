@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../services/auth_service.dart';
-import '../auth/log_in_screen.dart';
 import 'onboarding_state.dart';
 import 'stages/about_you.dart';
 import 'stages/set_up.dart';
@@ -15,10 +14,16 @@ export 'stages/set_up.dart' show ObFirstAction;
 /// Progress is saved after every step, so closing the app resumes where the user
 /// left. The starter plan is applied only on the last stage.
 class OnboardingFlow extends StatefulWidget {
-  const OnboardingFlow({super.key, this.onFinished, this.initialStage});
+  const OnboardingFlow({super.key, this.onFinished, this.initialStage, this.onBackFromStart});
 
   /// Called when done. `null` = a returning user signed in from the welcome screen.
   final void Function(ObFirstAction? action)? onFinished;
+
+  /// Back pressed on the first question (returns to the intro screens).
+  final VoidCallback? onBackFromStart;
+
+  /// First stage shown (the old "Your time is yours" welcome, stage 0, was removed).
+  static const firstStage = 1;
 
   /// Preview/testing: start on this stage instead of the saved one.
   final int? initialStage;
@@ -43,7 +48,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     super.initState();
     _s.load();
     if (widget.initialStage != null) _s.stage = widget.initialStage!;
-    _s.stage = _s.stage.clamp(0, OnboardingFlow.stageCount - 1);
+    _s.stage = _s.stage.clamp(OnboardingFlow.firstStage, OnboardingFlow.stageCount - 1);
   }
 
   bool get _signedIn => AuthService.instance.value is! SignedOut;
@@ -51,7 +56,11 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   void _go(int to) {
     // The account stage is skipped when the user is already signed in.
     if (to == OnboardingFlow._accountStage && _signedIn) to += (to > _s.stage ? 1 : -1);
-    if (to < 0 || to >= OnboardingFlow.stageCount) return;
+    if (to < OnboardingFlow.firstStage) {
+      widget.onBackFromStart?.call();
+      return;
+    }
+    if (to >= OnboardingFlow.stageCount) return;
     if (to == 7) _s.suggestPlan(); // fill the starter plan from the answers
     _gate.handler = null;
     setState(() => _forward = to > _s.stage);
@@ -65,13 +74,6 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     inner != null ? inner() : _go(_s.stage - 1);
   }
 
-  Future<void> _haveAccount() async {
-    await pushUntilSignedIn(context, const LogInScreen());
-    if (!mounted || !_signedIn) return;
-    await _s.reset();
-    widget.onFinished?.call(null);
-  }
-
   Future<void> _finish(ObFirstAction action) async {
     await _s.applyPlan();
     await _s.reset();
@@ -79,7 +81,6 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   }
 
   Widget _stage(int i) => switch (i) {
-        0 => WelcomeStage(onNext: _next, onHaveAccount: _haveAccount),
         1 => RelateStage(onNext: _next),
         2 => GoalStage(onNext: _next),
         3 => AppsStage(onNext: _next),
@@ -115,7 +116,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         },
         child: KeyedSubtree(
           key: ValueKey(i),
-          child: ObFlowScope(chapter: OnboardingFlow.chapterOf(i), canBack: i > 0, onBack: _back, backGate: _gate, child: _stage(i)),
+          child: ObFlowScope(chapter: OnboardingFlow.chapterOf(i), canBack: i > OnboardingFlow.firstStage || widget.onBackFromStart != null, onBack: _back, backGate: _gate, child: _stage(i)),
         ),
       ),
     );

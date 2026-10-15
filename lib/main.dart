@@ -125,6 +125,7 @@ enum _Stage { splash, intro, onboarding, app }
 
 class _RootState extends State<_Root> {
   _Stage _stage = _Stage.splash;
+  int _introPage = 0;
 
   void _afterSplash() => setState(() {
     final signedIn = AuthService.instance.value is! SignedOut;
@@ -133,7 +134,7 @@ class _RootState extends State<_Root> {
     } else {
       // The 4 intro screens come first, unless the user already started the questions (resume there).
       OnboardingState.instance.load();
-      _stage = OnboardingState.instance.stage > 0 ? _Stage.onboarding : _Stage.intro;
+      _stage = OnboardingState.instance.stage > OnboardingFlow.firstStage ? _Stage.onboarding : _Stage.intro;
     }
   });
 
@@ -148,8 +149,15 @@ class _RootState extends State<_Root> {
   Widget build(BuildContext context) {
     final Widget child = switch (_stage) {
       _Stage.splash => SplashScreen(onFinished: _afterSplash),
-      _Stage.intro => IntroFlow(onFinished: () => setState(() => _stage = _Stage.onboarding)),
-      _Stage.onboarding => OnboardingFlow(onFinished: _afterOnboarding),
+      _Stage.intro => IntroFlow(initialPage: _introPage, onFinished: () => setState(() => _stage = _Stage.onboarding)),
+      _Stage.onboarding => OnboardingFlow(
+          onFinished: _afterOnboarding,
+          // Back on the first question returns to the last intro screen.
+          onBackFromStart: () => setState(() {
+            _introPage = 3;
+            _stage = _Stage.intro;
+          }),
+        ),
       _Stage.app => ValueListenableBuilder<Session>(
         valueListenable: AuthService.instance,
         builder: (context, session, _) => AnimatedSwitcher(

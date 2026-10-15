@@ -6,38 +6,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
-import '../../data/models.dart';
-import '../../services/installed_apps.dart';
-import 'onboarding_state.dart';
 import 'widgets/intro_motion.dart';
-import 'widgets/select_apps_sheet.dart';
 
 /// Figma: OnBoarding 2 — "Lock Distracting Apps" (727:42272).
 ///
-/// "Select Apps" opens the app-picker sheet (727:43344). When the sheet is
-/// confirmed (or skipped from inside the sheet) onboarding continues.
+/// "Next" goes straight to the next screen (apps are picked later in onboarding).
 class Onboarding2Screen extends StatelessWidget {
   const Onboarding2Screen({super.key, required this.onNext, required this.onSkip});
 
   final VoidCallback onNext;
   final VoidCallback onSkip;
-
-  Future<void> _selectApps(BuildContext context) async {
-    final result = await showSelectAppsSheet(context);
-    if (result == null) return;
-    if (!result.skipped) {
-      // Carry the picks into the onboarding's "Which apps pull you in?" step (only apps on this phone).
-      final cache = InstalledAppsCache.instance;
-      OnboardingState.instance.update((s) {
-        s.apps = [
-          for (final id in result.apps)
-            if (!cache.supported || !cache.loaded || cache.isInstalled(ManagedApp.knownPackages[id]))
-              ObApp(id: id, label: id, packageName: ManagedApp.knownPackages[id]),
-        ];
-      });
-    }
-    onNext();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +26,7 @@ class Onboarding2Screen extends StatelessWidget {
       onSkip: onSkip,
       dotsIndex: 0,
       starsAsset: 'assets/svg/ob2_stars.svg',
-      button: PrimaryButton(label: l.ob2SelectApps, onPressed: () => _selectApps(context)),
+      button: PrimaryButton(label: l.cvNext, onPressed: onNext),
       footerExtra: Text(
         l.freeToStart,
         textAlign: TextAlign.center,

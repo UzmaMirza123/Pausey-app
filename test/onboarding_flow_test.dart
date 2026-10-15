@@ -47,7 +47,8 @@ void main() {
     await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (a) => result = a)));
     await t.pumpAndSettle();
 
-    await _tap(t, 'Get started');
+    // No welcome screen any more: the first question comes straight away.
+    expect(find.text('Your time is yours.'), findsNothing);
     await _tap(t, 'All the time');
     expect(find.text("You're not alone. Phones are designed to keep us there."), findsOneWidget);
     await _tap(t, "That's me");
@@ -115,5 +116,15 @@ void main() {
     await t.tap(find.byType(BackCircleButton));
     await t.pumpAndSettle();
     expect(OnboardingState.instance.stage, 3);
+  }, variant: notAndroid);
+
+  testWidgets('back on the first question returns to the intro screens', (t) async {
+    var back = false;
+    await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {}, onBackFromStart: () => back = true)));
+    await t.pump(const Duration(seconds: 1));
+    expect(find.text('Ever picked up your phone for a minute and stayed much longer?'), findsOneWidget);
+    await t.tap(find.byType(BackCircleButton));
+    await t.pump(const Duration(milliseconds: 500));
+    expect(back, isTrue);
   }, variant: notAndroid);
 }

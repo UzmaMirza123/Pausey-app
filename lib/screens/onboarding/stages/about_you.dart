@@ -5,40 +5,11 @@ import '../../../services/installed_apps.dart';
 import '../../../services/native_bridge.dart';
 import '../../../utils/app_theme.dart';
 import '../../../utils/l10n.dart';
-import '../../../widgets/pausey_logo.dart';
 import '../../../widgets/ui_kit.dart';
 import '../onboarding_state.dart';
 import '../widgets/ob_kit.dart';
 
 OnboardingState get _s => OnboardingState.instance;
-
-// -----------------------------------------------------------------------------
-// Stage 1 — Welcome
-// -----------------------------------------------------------------------------
-
-class WelcomeStage extends StatelessWidget {
-  const WelcomeStage({super.key, required this.onNext, required this.onHaveAccount});
-  final VoidCallback onNext;
-  final VoidCallback onHaveAccount;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    return ObPage(
-      center: true,
-      primaryLabel: l.cvGetStarted,
-      onPrimary: onNext,
-      secondaryLabel: l.cvHaveAccount,
-      onSecondary: onHaveAccount,
-      children: [
-        const ObReveal(child: Center(child: PauseyLogo(size: 132))),
-        const SizedBox(height: 36),
-        ObReveal(index: 1, child: ObTitle(l.cvWelcomeTitle, align: TextAlign.center)),
-        ObReveal(index: 2, child: ObSubtitle(l.cvWelcomeBody, align: TextAlign.center)),
-      ],
-    );
-  }
-}
 
 // -----------------------------------------------------------------------------
 // Stage 2 — Recognition ("Ever picked up your phone for a minute…")

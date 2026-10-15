@@ -27,11 +27,14 @@ void main() {
     expect(find.text('Reduce Screen Addiction'), findsOneWidget);
     await next('Continue');
     expect(find.text('Lock Distracting Apps'), findsOneWidget);
-    // "Skip" from any intro screen goes straight to onboarding; here we keep going.
-    await t.tap(find.byType(PageView), warnIfMissed: false);
-    final state = t.state<State<IntroFlow>>(find.byType(IntroFlow));
-    expect(state.mounted, isTrue);
-    await next('Skip');
+    // Screen 2's button is now "Next" and goes straight on (no app-picker sheet).
+    expect(find.text('Select Apps'), findsNothing);
+    await next('Next');
+    expect(find.text('Stay Focused Every Day'), findsOneWidget);
+    expect(find.byType(BottomSheet), findsNothing);
+    await next('Continue');
+    expect(find.text('Track Your Progress'), findsOneWidget);
+    await next('Continue');
     expect(done, isTrue);
   });
 }
