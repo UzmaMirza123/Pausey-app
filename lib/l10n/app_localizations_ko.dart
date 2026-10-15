@@ -893,6 +893,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get blockEmergencyNone => '오늘 남은 횟수가 없습니다';
 
   @override
+  String get cvNoAccount => '계정이 없으신가요?';
+
+  @override
+  String get cvYourName => '이름';
+
+  @override
   String get cvAppsLoadFailed => '이 휴대폰의 앱을 불러오지 못했어요.';
 
   @override

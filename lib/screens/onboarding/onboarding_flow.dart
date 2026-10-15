@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../services/auth_service.dart';
+import '../../widgets/onboarding_nav.dart';
+import 'onboarding_7_screen.dart';
 import 'onboarding_state.dart';
 import 'stages/about_you.dart';
 import 'stages/set_up.dart';
@@ -41,6 +43,9 @@ class OnboardingFlow extends StatefulWidget {
 class _OnboardingFlowState extends State<OnboardingFlow> {
   final _s = OnboardingState.instance;
   final _gate = ObBackGate();
+
+  /// Lets the original screen's footer show the back arrow and the middle progress dot.
+  final _dialPager = PageController();
   bool _forward = true;
 
   @override
@@ -74,6 +79,12 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     inner != null ? inner() : _go(_s.stage - 1);
   }
 
+  @override
+  void dispose() {
+    _dialPager.dispose();
+    super.dispose();
+  }
+
   Future<void> _finish(ObFirstAction action) async {
     await _s.applyPlan();
     await _s.reset();
@@ -87,7 +98,8 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         4 => ScreenTimeStage(onNext: _next),
         5 => ReflectionStage(onNext: _next),
         6 => HowItHelpsStage(onNext: _next),
-        7 => PlanStage(onNext: _next),
+        // "Set your daily screen-time goal" (the original onboarding screen) in place of the starter plan.
+        7 => OnboardingPageScope(index: 1, controller: _dialPager, onBack: _back, child: Onboarding7Screen(onNext: _next, onSkip: _next)),
         8 => PermissionsStage(onNext: _next),
         9 => AccountStage(onNext: _next),
         _ => ReadyStage(onFinish: _finish),

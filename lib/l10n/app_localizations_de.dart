@@ -920,6 +920,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get blockEmergencyNone => 'Heute keine mehr übrig';
 
   @override
+  String get cvNoAccount => 'Noch kein Konto?';
+
+  @override
+  String get cvYourName => 'Dein Name';
+
+  @override
   String get cvAppsLoadFailed =>
       'Die Apps auf diesem Handy konnten nicht gelesen werden.';
 

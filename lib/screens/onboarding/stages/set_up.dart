@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../data/restrictions/restriction_repo.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/native_bridge.dart';
 import '../../../utils/app_theme.dart';
 import '../../../utils/l10n.dart';
+import '../../../widgets/common.dart';
 import '../../../widgets/ui_kit.dart';
 import '../../auth/auth_widgets.dart';
-import '../../auth/log_in_screen.dart';
 import '../../auth/sign_up_screen.dart';
 import '../onboarding_state.dart';
 import '../widgets/ob_kit.dart';
@@ -220,7 +221,7 @@ class _AccessibilityWhyDialog extends StatelessWidget {
 }
 
 // -----------------------------------------------------------------------------
-// Stage 10 — Account (only the sign-in methods that exist)
+// Stage 10 — Log in (email), sign up, Google / Apple, or continue as guest
 // -----------------------------------------------------------------------------
 
 class AccountStage extends StatefulWidget {
@@ -232,17 +233,21 @@ class AccountStage extends StatefulWidget {
 }
 
 class _AccountStageState extends State<AccountStage> {
-  String? _busy;
+  final _form = GlobalKey<FormState>();
+  final _email = TextEditingController();
+  final _pass = TextEditingController();
+  String? _busy; // email | google | apple | guest
   String? _error;
-  late final _name = TextEditingController(text: _s.name);
 
   @override
   void dispose() {
-    _name.dispose();
+    _email.dispose();
+    _pass.dispose();
     super.dispose();
   }
 
   Future<void> _run(String which, Future<void> Function() action) async {
+    FocusScope.of(context).unfocus();
     setState(() {
       _busy = which;
       _error = null;
@@ -257,14 +262,22 @@ class _AccountStageState extends State<AccountStage> {
     }
   }
 
-  Future<void> _email() async {
+  void _logIn() {
+    if (!_form.currentState!.validate()) return;
+    _run('email', () => AuthService.instance.logInWithEmail(email: _email.text, password: _pass.text));
+  }
+
+  Future<void> _signUp() async {
     await pushUntilSignedIn(context, const SignUpScreen());
     if (mounted && AuthService.instance.value is! SignedOut) widget.onNext();
   }
 
-  Future<void> _login() async {
-    await pushUntilSignedIn(context, const LogInScreen());
-    if (mounted && AuthService.instance.value is! SignedOut) widget.onNext();
+  /// "Continue as guest" first asks what to call the user.
+  Future<void> _guest() async {
+    final name = await _askName(context);
+    if (name == null || !mounted) return;
+    _s.update((s) => s.name = name);
+    await _run('guest', () => AuthService.instance.continueAsGuest(name: name));
   }
 
   @override
@@ -275,84 +288,166 @@ class _AccountStageState extends State<AccountStage> {
     return ObPage(
       primaryLabel: l.cvContinueGuest,
       showArrow: false,
-      onPrimary: _busy != null
-          ? null
-          : () => _run('guest', () async {
-                _s.update((s) => s.name = _name.text.trim());
-                await auth.continueAsGuest(name: _name.text.trim());
-              }),
-      secondaryLabel: l.haveAccount,
-      onSecondary: _busy == null ? _login : null,
+      onPrimary: _busy == null ? _guest : null,
       children: [
-        ObReveal(child: ObTitle(l.cvAccountTitle)),
-        ObReveal(index: 1, child: ObSubtitle(l.cvAccountSub)),
-        const SizedBox(height: 20),
-        ObReveal(
-          index: 2,
-          child: TextField(
-            controller: _name,
-            maxLength: 30,
-            textCapitalization: TextCapitalization.words,
-            style: AppText.rowTitle.copyWith(color: c.textPrimary),
-            decoration: InputDecoration(
-              counterText: '',
-              labelText: l.cvNameLabel,
-              hintText: l.cvNameHint,
-              filled: true,
-              fillColor: context.isDark ? c.glassFill : Colors.white,
-              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadius.tile), borderSide: BorderSide(color: c.glassBorder)),
-              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadius.tile), borderSide: const BorderSide(color: AppPalette.accent, width: 1.5)),
-            ),
+        ObReveal(child: ObTitle(l.logInTitle)),
+        ObReveal(index: 1, child: ObSubtitle(l.logInSubtitle)),
+        const SizedBox(height: 22),
+        AuthErrorBanner(message: _error),
+        Form(
+          key: _form,
+          child: AutofillGroup(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              ObReveal(
+                index: 2,
+                child: AuthField(
+                  controller: _email,
+                  label: l.email,
+                  icon: Icons.mail_outline_rounded,
+                  keyboardType: TextInputType.emailAddress,
+                  autofillHints: const [AutofillHints.email],
+                  validator: (v) => validateEmail(context, v),
+                ),
+              ),
+              const SizedBox(height: 14),
+              ObReveal(
+                index: 3,
+                child: AuthField(
+                  controller: _pass,
+                  label: l.password,
+                  icon: Icons.lock_outline_rounded,
+                  obscure: true,
+                  textInputAction: TextInputAction.done,
+                  autofillHints: const [AutofillHints.password],
+                  onSubmitted: (_) => _logIn(),
+                  validator: (v) => (v ?? '').isEmpty ? l.errPasswordShort : null,
+                ),
+              ),
+            ]),
           ),
         ),
         const SizedBox(height: 18),
-        AuthErrorBanner(message: _error),
-        if (auth.firebaseReady) ...[
-          ObReveal(
-            index: 3,
-            child: SocialButton(
-              kind: SocialKind.google,
-              label: l.continueWithGoogle,
-              loading: _busy == 'google',
-              onPressed: _busy == null ? () => _run('google', auth.signInWithGoogle) : null,
-            ),
-          ),
-          const SizedBox(height: 10),
-          ObReveal(
-            index: 4,
-            child: SocialButton(
-              kind: SocialKind.apple,
-              label: l.continueWithApple,
-              loading: _busy == 'apple',
-              onPressed: _busy == null ? () => _run('apple', auth.signInWithApple) : null,
-            ),
-          ),
-          const SizedBox(height: 10),
-          ObReveal(
-            index: 5,
-            child: OutlinedButton.icon(
-              onPressed: _busy == null ? _email : null,
-              icon: const Icon(Icons.mail_outline_rounded),
-              label: Text(l.signUpWithEmail),
-              style: OutlinedButton.styleFrom(
-                minimumSize: const Size.fromHeight(52),
-                foregroundColor: c.textPrimary,
-                side: BorderSide(color: c.glassBorder),
-                shape: const StadiumBorder(),
-                textStyle: AppText.button,
+        ObReveal(index: 4, child: BusyButton(label: l.logIn, busy: _busy == 'email', onPressed: _busy == null ? _logIn : () {})),
+        const SizedBox(height: 8),
+        ObReveal(
+          index: 5,
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Text(l.cvNoAccount, style: AppText.rowSub.copyWith(fontSize: 14, color: c.textSecondary)),
+              TextButton(
+                onPressed: _busy == null ? _signUp : null,
+                style: TextButton.styleFrom(minimumSize: const Size(48, 44)),
+                child: Text(l.signUp, style: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet)),
               ),
-            ),
+            ],
           ),
-          const SizedBox(height: 16),
-        ],
-        Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Icon(Icons.phone_android_rounded, size: 16, color: c.textMuted),
-          const SizedBox(width: 8),
-          Expanded(child: Text(l.cvAccountNote, style: AppText.rowSub.copyWith(color: c.textMuted))),
-        ]),
+        ),
+        const SizedBox(height: 10),
+        const ObReveal(index: 6, child: OrDivider()),
+        const SizedBox(height: 18),
+        ObReveal(
+          index: 7,
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            _SocialCircle(
+              label: l.continueWithGoogle,
+              busy: _busy == 'google',
+              onTap: _busy == null ? () => _run('google', auth.signInWithGoogle) : null,
+              child: SvgPicture.asset('assets/svg/google_g.svg', width: 24, height: 24),
+            ),
+            const SizedBox(width: 22),
+            _SocialCircle(
+              label: l.continueWithApple,
+              busy: _busy == 'apple',
+              onTap: _busy == null ? () => _run('apple', auth.signInWithApple) : null,
+              child: Icon(Icons.apple, size: 28, color: c.textPrimary),
+            ),
+          ]),
+        ),
       ],
     );
   }
+}
+
+/// Round Google / Apple sign-in button.
+class _SocialCircle extends StatelessWidget {
+  const _SocialCircle({required this.label, required this.child, required this.onTap, this.busy = false});
+  final String label;
+  final Widget child;
+  final VoidCallback? onTap;
+  final bool busy;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final dark = context.isDark;
+    return Semantics(
+      button: true,
+      label: label,
+      excludeSemantics: true,
+      child: Material(
+        color: dark ? c.glassFill : Colors.white,
+        shape: CircleBorder(side: BorderSide(color: c.glassBorder)),
+        child: InkWell(
+          customBorder: const CircleBorder(),
+          onTap: busy ? null : onTap,
+          child: SizedBox.square(
+            dimension: 60,
+            child: Center(child: busy ? const SizedBox.square(dimension: 22, child: CircularProgressIndicator(strokeWidth: 2.4)) : child),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Bottom sheet: "What should we call you?" with a "Your name" field. Returns the name, or null if closed.
+Future<String?> _askName(BuildContext context) {
+  final ctl = TextEditingController(text: _s.name);
+  return showModalBottomSheet<String>(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: context.isDark ? const Color(0xFF14122C) : Colors.white,
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.card))),
+    builder: (ctx) {
+      final l = ctx.l10n;
+      final c = ctx.colors;
+      void done() => Navigator.of(ctx).pop(ctl.text.trim());
+      return Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(ctx).bottom),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 22, AppSpacing.gutter, 16),
+            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              Text(l.cvNameHint, style: AppText.cardTitle.copyWith(fontSize: 20, color: c.textPrimary)),
+              const SizedBox(height: 16),
+              TextField(
+                controller: ctl,
+                autofocus: true,
+                maxLength: 30,
+                textCapitalization: TextCapitalization.words,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) => done(),
+                style: AppText.rowTitle.copyWith(color: c.textPrimary),
+                decoration: InputDecoration(
+                  counterText: '',
+                  labelText: l.cvYourName,
+                  hintText: l.cvNameHint,
+                  filled: true,
+                  fillColor: ctx.isDark ? c.glassFill : const Color(0xFFF6F4FF),
+                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadius.tile), borderSide: BorderSide(color: c.glassBorder)),
+                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadius.tile), borderSide: const BorderSide(color: AppPalette.accent, width: 1.5)),
+                ),
+              ),
+              const SizedBox(height: 18),
+              PrimaryButton(label: l.continueLabel, onPressed: done, height: 54),
+            ]),
+          ),
+        ),
+      );
+    },
+  );
 }
 
 // -----------------------------------------------------------------------------

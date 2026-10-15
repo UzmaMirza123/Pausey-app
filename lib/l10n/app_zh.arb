@@ -272,6 +272,8 @@
   "blockEmergencyConfirmMsg": "这将消耗今天剩余 {n} 次中的一次。请仅在确有需要时使用。",
   "blockEmergencyUsed": "已使用紧急解锁，应用暂时可用",
   "blockEmergencyNone": "今天已用完",
+  "cvNoAccount": "还没有账号？",
+  "cvYourName": "你的名字",
   "cvAppsLoadFailed": "无法读取这部手机上的应用。",
   "cvTryAgain": "重试",
   "cvGetStarted": "开始使用",

@@ -891,6 +891,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get blockEmergencyNone => '今日はもう使えません';
 
   @override
+  String get cvNoAccount => 'アカウントをお持ちでない方';
+
+  @override
+  String get cvYourName => 'お名前';
+
+  @override
   String get cvAppsLoadFailed => 'このスマホのアプリを読み込めませんでした。';
 
   @override

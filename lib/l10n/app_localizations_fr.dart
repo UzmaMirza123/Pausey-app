@@ -932,6 +932,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get blockEmergencyNone => 'Plus aucun déblocage aujourd\'hui';
 
   @override
+  String get cvNoAccount => 'Pas encore de compte ?';
+
+  @override
+  String get cvYourName => 'Votre prénom';
+
+  @override
   String get cvAppsLoadFailed =>
       'Impossible de lire les applis de ce téléphone.';
 

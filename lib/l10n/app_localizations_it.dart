@@ -925,6 +925,12 @@ class AppLocalizationsIt extends AppLocalizations {
   String get blockEmergencyNone => 'Nessuno rimasto oggi';
 
   @override
+  String get cvNoAccount => 'Non hai un account?';
+
+  @override
+  String get cvYourName => 'Il tuo nome';
+
+  @override
   String get cvAppsLoadFailed =>
       'Impossibile leggere le app di questo telefono.';
 

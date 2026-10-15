@@ -908,6 +908,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get blockEmergencyNone => 'Bugün hak kalmadı';
 
   @override
+  String get cvNoAccount => 'Hesabınız yok mu?';
+
+  @override
+  String get cvYourName => 'Adınız';
+
+  @override
   String get cvAppsLoadFailed => 'Bu telefondaki uygulamalar okunamadı.';
 
   @override

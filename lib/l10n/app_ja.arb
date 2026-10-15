@@ -272,6 +272,8 @@
   "blockEmergencyConfirmMsg": "今日残り{n}回のうち1回を使います。本当に必要なときだけ使いましょう。",
   "blockEmergencyUsed": "緊急解除しました",
   "blockEmergencyNone": "今日はもう使えません",
+  "cvNoAccount": "アカウントをお持ちでない方",
+  "cvYourName": "お名前",
   "cvAppsLoadFailed": "このスマホのアプリを読み込めませんでした。",
   "cvTryAgain": "もう一度試す",
   "cvGetStarted": "はじめる",

@@ -114,6 +114,8 @@ EN = {
  "cvContinueAnyway": "Continue for now",
  "cvAccountTitle": "Keep your progress",
  "cvAccountSub": "Use Pausey as a guest, or sign in.",
+ "cvYourName": "Your name",
+ "cvNoAccount": "Don't have an account?",
  "cvNameLabel": "Your name (optional)",
  "cvNameHint": "What should we call you?",
  "cvContinueGuest": "Continue as guest",

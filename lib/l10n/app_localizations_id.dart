@@ -913,6 +913,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get blockEmergencyNone => 'Tidak ada sisa hari ini';
 
   @override
+  String get cvNoAccount => 'Belum punya akun?';
+
+  @override
+  String get cvYourName => 'Nama kamu';
+
+  @override
   String get cvAppsLoadFailed => 'Tidak bisa membaca aplikasi di ponsel ini.';
 
   @override

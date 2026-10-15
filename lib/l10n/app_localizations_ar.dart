@@ -903,6 +903,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get blockEmergencyNone => 'لا يوجد المزيد اليوم';
 
   @override
+  String get cvNoAccount => 'ليس لديك حساب؟';
+
+  @override
+  String get cvYourName => 'اسمك';
+
+  @override
   String get cvAppsLoadFailed => 'تعذّرت قراءة التطبيقات على هذا الهاتف.';
 
   @override

@@ -909,6 +909,12 @@ class AppLocalizationsUr extends AppLocalizations {
   String get blockEmergencyNone => 'آج کوئی اوور رائیڈ باقی نہیں';
 
   @override
+  String get cvNoAccount => 'اکاؤنٹ نہیں ہے؟';
+
+  @override
+  String get cvYourName => 'آپ کا نام';
+
+  @override
   String get cvAppsLoadFailed => 'اس فون کی ایپس نہیں پڑھی جا سکیں۔';
 
   @override

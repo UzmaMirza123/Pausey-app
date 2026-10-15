@@ -272,6 +272,8 @@
   "blockEmergencyConfirmMsg": "Usará una de las {n} que te quedan hoy. Úsala solo si de verdad la necesitas.",
   "blockEmergencyUsed": "Anulación usada: apps desbloqueadas",
   "blockEmergencyNone": "No te quedan hoy",
+  "cvNoAccount": "¿No tienes cuenta?",
+  "cvYourName": "Tu nombre",
   "cvAppsLoadFailed": "No se pudieron leer las apps de este teléfono.",
   "cvTryAgain": "Reintentar",
   "cvGetStarted": "Empezar",

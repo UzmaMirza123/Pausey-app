@@ -1756,6 +1756,18 @@ abstract class AppLocalizations {
   /// **'No overrides left today'**
   String get blockEmergencyNone;
 
+  /// No description provided for @cvNoAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get cvNoAccount;
+
+  /// No description provided for @cvYourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get cvYourName;
+
   /// No description provided for @cvAppsLoadFailed.
   ///
   /// In en, this message translates to:

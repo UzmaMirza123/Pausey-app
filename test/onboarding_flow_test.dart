@@ -84,15 +84,27 @@ void main() {
     await _tap(t, 'Next');
     await _tap(t, 'Build my plan');
 
-    // Plan suggested from answers: sleep → wind-down on; 6h+ → 1h limit on Instagram.
-    expect(find.text('Instagram: 1h a day'), findsOneWidget);
-    expect(AppRepo.instance.schedule.enabled, isTrue); // not applied yet: still the default schedule
-    expect(RestrictionRepo.instance.hasOwnRules('com.instagram.android'), isFalse);
-    await _tap(t, 'Use this plan');
+    // "Set your daily screen-time goal" now replaces the starter-plan screen.
+    expect(find.text('Set your daily screen-time goal'), findsOneWidget);
+    expect(RestrictionRepo.instance.hasOwnRules('com.instagram.android'), isFalse); // nothing applied yet
+    await _tap(t, '3h');
+    expect(LocalStore.instance.answers['dailyGoalHours'], 3);
+    await _tap(t, 'Continue');
 
     await _tap(t, 'Continue'); // permissions (not Android in tests)
+
+    // Log-in screen: email, sign up link, Google/Apple circles, then guest.
+    expect(find.text("Don't have an account?"), findsOneWidget);
+    expect(find.bySemanticsLabel('Continue with Google'), findsOneWidget);
+    expect(find.bySemanticsLabel('Continue with Apple'), findsOneWidget);
     await _tap(t, 'Continue as guest');
+    // Guest is asked what to call them ("Your name" field, no "optional").
+    expect(find.text('What should we call you?'), findsWidgets);
+    expect(find.text('Your name'), findsOneWidget);
+    await t.enterText(find.byType(TextField).last, 'Uzma');
+    await _tap(t, 'Continue');
     expect(AuthService.instance.value, isA<GuestSession>());
+    expect(AuthService.instance.value.displayName, 'Uzma');
 
     await _tap(t, 'Start my first focus session');
     expect(result, ObFirstAction.focus);
