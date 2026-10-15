@@ -1822,6 +1822,12 @@ abstract class AppLocalizations {
   /// **'Lose track of time?'**
   String get cvRelateTitle;
 
+  /// No description provided for @cvRelateSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Be honest, there\'s no wrong answer.'**
+  String get cvRelateSub;
+
   /// No description provided for @cvRelateOften.
   ///
   /// In en, this message translates to:
@@ -1869,6 +1875,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'More time for what?'**
   String get cvGoalTitle;
+
+  /// No description provided for @cvGoalSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick what matters most to you right now.'**
+  String get cvGoalSub;
 
   /// No description provided for @cvGoalFocus.
   ///
@@ -2109,12 +2121,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'more time for {thing}'**
   String cvPhraseOtherNamed(String thing);
-
-  /// No description provided for @cvReflectTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Here\'s what we heard'**
-  String get cvReflectTitle;
 
   /// No description provided for @cvReflectApps.
   ///

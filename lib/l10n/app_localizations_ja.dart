@@ -924,6 +924,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cvRelateTitle => '時間を忘れていませんか？';
 
   @override
+  String get cvRelateSub => '正直にどうぞ。間違った答えはありません。';
+
+  @override
   String get cvRelateOften => 'しょっちゅう';
 
   @override
@@ -946,6 +949,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get cvGoalTitle => '何に時間を使いたい？';
+
+  @override
+  String get cvGoalSub => '今いちばん大切なことを選んでください。';
 
   @override
   String get cvGoalFocus => '集中力アップ';
@@ -1076,9 +1082,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String cvPhraseOtherNamed(String thing) {
     return '$thingの時間を増やすこと';
   }
-
-  @override
-  String get cvReflectTitle => 'わかったこと';
 
   @override
   String cvReflectApps(String goal, String apps) {

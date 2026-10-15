@@ -525,6 +525,7 @@
   "cvNext": "Next",
   "cvSkipForNow": "Skip for now",
   "cvRelateTitle": "Lose track of time?",
+  "cvRelateSub": "Be honest, there's no wrong answer.",
   "cvRelateOften": "All the time",
   "cvRelateSometimes": "Sometimes",
   "cvRelateRarely": "Rarely",
@@ -533,6 +534,7 @@
   "cvRelateReplyRarely": "Nice. Let's keep it that way.",
   "cvRelateCta": "That's me",
   "cvGoalTitle": "More time for what?",
+  "cvGoalSub": "Pick what matters most to you right now.",
   "cvGoalFocus": "Better focus",
   "cvGoalSleep": "Better sleep",
   "cvGoalScrolling": "Less scrolling",
@@ -617,7 +619,6 @@
       }
     }
   },
-  "cvReflectTitle": "Here's what we heard",
   "cvReflectApps": "You want {goal}, but {apps} keep pulling you in.",
   "@cvReflectApps": {
     "placeholders": {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../utils/app_theme.dart';
 import '../../../utils/l10n.dart';
 import '../../../services/installed_apps.dart';
+import '../../../widgets/flat_scene.dart';
 import '../../../widgets/time_picker.dart';
 import '../../../widgets/ui_kit.dart';
 import '../../block/widgets/applock_ui.dart' show InstalledIcon;
@@ -54,9 +55,10 @@ class ReflectionStage extends StatelessWidget {
       primaryLabel: l.cvShowMeHow,
       onPrimary: onNext,
       children: [
-        ObReveal(child: ObTitle(l.cvReflectTitle)),
-        ObReveal(child: ObSubtitle(headline)),
-        if (st != null) ...[const SizedBox(height: 16), ObReveal(index: 1, child: Align(alignment: AlignmentDirectional.centerStart, child: ObTag(st, icon: Icons.schedule_rounded)))],
+        // An illustration of a message for the user, then what Pausey understood.
+        const Center(child: FlatScene(kind: SceneKind.message, width: 270)),
+        ObReveal(child: ObSubtitle(headline, align: TextAlign.center)),
+        if (st != null) ...[const SizedBox(height: 16), ObReveal(index: 1, child: Align(child: ObTag(st, icon: Icons.schedule_rounded)))],
         const SizedBox(height: 22),
         ObReveal(index: 2, child: ObReply(l.cvReflectHelp)),
       ],
@@ -128,7 +130,6 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
     String fmt(int m) => fmtMinutes(m, h: l.unitH, m: l.unitM);
 
     final size = MediaQuery.sizeOf(context);
-    final reduced = ObMotion.reduced(context);
     // Phone size: fits the width, and leaves room for the headline and footer on short screens.
     final byWidth = (math.min(size.width, 480) - AppSpacing.gutter * 2) * 0.76;
     final byHeight = (size.height - 420) / StoryPhone.aspect;
@@ -202,44 +203,10 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
               ),
             ),
           ),
-          const SizedBox(height: 6),
-          _TapHint(text: l.stTapToContinue, animate: !reduced),
         ],
       ),
     );
   }
-}
-
-/// "Tap to continue", softly pulsing.
-class _TapHint extends StatefulWidget {
-  const _TapHint({required this.text, required this.animate});
-  final String text;
-  final bool animate;
-
-  @override
-  State<_TapHint> createState() => _TapHintState();
-}
-
-class _TapHintState extends State<_TapHint> with SingleTickerProviderStateMixin {
-  late final _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1800), value: 1);
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    widget.animate ? _c.repeat(reverse: true) : _c.value = 1;
-  }
-
-  @override
-  void dispose() {
-    _c.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => FadeTransition(
-        opacity: Tween(begin: 0.45, end: 1.0).animate(CurvedAnimation(parent: _c, curve: Curves.easeInOut)),
-        child: Text(widget.text, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w600, color: context.colors.textMuted)),
-      );
 }
 
 // -----------------------------------------------------------------------------

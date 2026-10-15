@@ -67,6 +67,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     _s.load();
     if (widget.initialStage != null) _s.stage = widget.initialStage!;
     _s.stage = _s.stage.clamp(OnboardingFlow.firstStage, OnboardingFlow.stageCount - 1);
+    _s.selectDefaults();
     final at = OnboardingFlow.dotsAt(_s.stage);
     _dotsFrom = _s.stage == OnboardingFlow.firstStage ? at - 1 : at;
   }

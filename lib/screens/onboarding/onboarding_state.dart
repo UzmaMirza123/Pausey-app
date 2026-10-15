@@ -50,6 +50,9 @@ class OnboardingState extends ChangeNotifier {
   ObGoal? goal;
   String goalOther = '';
   List<ObApp> apps = [];
+
+  /// The first app was pre-selected once (so it isn't re-added after the user clears it).
+  bool appsDefaulted = false;
   ObScreenTime? screenTime;
 
   /// Minutes measured on the phone today (only when usage access was already on).
@@ -77,6 +80,7 @@ class OnboardingState extends ChangeNotifier {
       goal = _enum(ObGoal.values, j['goal']);
       goalOther = j['goalOther'] as String? ?? '';
       apps = [for (final a in (j['apps'] as List? ?? const [])) ObApp.fromJson(Map<String, dynamic>.from(a as Map))];
+      appsDefaulted = j['appsDefaulted'] as bool? ?? false;
       screenTime = _enum(ObScreenTime.values, j['screenTime']);
       measuredMinutes = j['measured'] as int?;
       name = j['name'] as String? ?? '';
@@ -102,6 +106,15 @@ class OnboardingState extends ChangeNotifier {
     return null;
   }
 
+  /// Each question starts with its first answer selected (the user can change it).
+  void selectDefaults() {
+    if (relate != null && goal != null && screenTime != null) return;
+    relate ??= ObRelate.values.first;
+    goal ??= ObGoal.values.first;
+    screenTime ??= ObScreenTime.values.first;
+    _save();
+  }
+
   /// Change something and save.
   void update(void Function(OnboardingState s) change) {
     change(this);
@@ -117,6 +130,7 @@ class OnboardingState extends ChangeNotifier {
           'goal': goal?.name,
           'goalOther': goalOther,
           'apps': [for (final a in apps) a.toJson()],
+          'appsDefaulted': appsDefaulted,
           'screenTime': screenTime?.name,
           'measured': measuredMinutes,
           'name': name,
@@ -198,6 +212,7 @@ class OnboardingState extends ChangeNotifier {
     goal = null;
     goalOther = '';
     apps = [];
+    appsDefaulted = false;
     screenTime = null;
     measuredMinutes = null;
     name = '';

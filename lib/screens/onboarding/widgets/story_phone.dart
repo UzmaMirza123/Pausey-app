@@ -11,7 +11,6 @@ import 'ob_kit.dart';
 /// 0 home screen (arrow + tap on the user's app), 1 a feed scrolling by itself,
 /// 2 Pausey's pause screen sliding up, 3 a limit nudge dropping in from the top.
 ///
-/// It is an illustration, so it always carries a "Preview" tag.
 class StoryPhone extends StatelessWidget {
   const StoryPhone({
     super.key,
@@ -97,7 +96,7 @@ class StoryPhone extends StatelessWidget {
             ),
           ),
         ),
-        // Camera + "Preview" tag on top of everything.
+        // Camera on top of everything.
         Positioned(
           top: 10,
           left: 0,
@@ -110,7 +109,6 @@ class StoryPhone extends StatelessWidget {
             ),
           ),
         ),
-        PositionedDirectional(top: 6, end: 8, child: ObTag(l.cvPreview, icon: Icons.visibility_outlined)),
       ],
     );
 

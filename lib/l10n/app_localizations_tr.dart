@@ -941,6 +941,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get cvRelateTitle => 'Zamanı unutuyor musun?';
 
   @override
+  String get cvRelateSub => 'Dürüst ol, yanlış cevap yok.';
+
+  @override
   String get cvRelateOften => 'Sürekli';
 
   @override
@@ -965,6 +968,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get cvGoalTitle => 'Ne için daha çok zaman?';
+
+  @override
+  String get cvGoalSub => 'Şu an senin için en önemli olanı seç.';
 
   @override
   String get cvGoalFocus => 'Daha iyi odak';
@@ -1107,9 +1113,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String cvPhraseOtherNamed(String thing) {
     return '$thing için daha fazla zaman';
   }
-
-  @override
-  String get cvReflectTitle => 'Anladığımız şu';
 
   @override
   String cvReflectApps(String goal, String apps) {

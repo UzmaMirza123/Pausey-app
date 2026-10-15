@@ -51,8 +51,12 @@ void main() {
     })));
     await t.pumpAndSettle();
 
-    // No welcome screen any more: the first question comes straight away.
+    // No welcome screen any more: the first question comes straight away,
+    // with its first answer already selected.
     expect(find.text('Your time is yours.'), findsNothing);
+    expect(OnboardingState.instance.relate, ObRelate.often);
+    expect(find.text("You're not alone. Phones are designed to keep us there."), findsOneWidget);
+    await _tap(t, 'Sometimes');
     await _tap(t, 'All the time');
     expect(find.text("You're not alone. Phones are designed to keep us there."), findsOneWidget);
     await _tap(t, "That's me");
@@ -61,7 +65,8 @@ void main() {
     expect(find.textContaining('evenings wind down'), findsOneWidget);
     await _tap(t, 'Next');
 
-    await _tap(t, 'Instagram');
+    // The first app is pre-selected.
+    expect(OnboardingState.instance.apps.map((a) => a.id), ['Instagram']);
     await _tap(t, 'TikTok');
     expect(find.text("Noted: Instagram and TikTok. We'll start with these."), findsOneWidget);
     await _tap(t, 'Next');

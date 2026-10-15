@@ -33,10 +33,12 @@ class RelateStage extends StatelessWidget {
           null => null,
         };
         return ObPage(
+          center: true,
           primaryLabel: r == ObRelate.rarely ? l.cvNext : l.cvRelateCta,
           onPrimary: r == null ? null : onNext,
           children: [
-            ObReveal(child: ObTitle(l.cvRelateTitle)),
+            ObReveal(child: ObTitle(l.cvRelateTitle, align: TextAlign.center)),
+            ObReveal(index: 1, child: ObSubtitle(l.cvRelateSub, align: TextAlign.center)),
             const SizedBox(height: 24),
             for (final (i, (v, label)) in [
               (ObRelate.often, l.cvRelateOften),
@@ -100,10 +102,12 @@ class _GoalStageState extends State<GoalStage> {
           (ObGoal.other, Icons.edit_rounded, l.cvGoalOther),
         ];
         return ObPage(
+          center: true,
           primaryLabel: l.cvNext,
           onPrimary: g == null ? null : widget.onNext,
           children: [
-            ObReveal(child: ObTitle(l.cvGoalTitle)),
+            ObReveal(child: ObTitle(l.cvGoalTitle, align: TextAlign.center)),
+            ObReveal(index: 1, child: ObSubtitle(l.cvGoalSub, align: TextAlign.center)),
             const SizedBox(height: 24),
             for (final (i, (v, icon, label)) in options.indexed)
               ObReveal(
@@ -225,12 +229,24 @@ class _AppsStageState extends State<AppsStage> {
           ];
         }
         final picked = _s.apps;
+        // One app is pre-selected the first time the list shows (the user can change it).
+        if (!_s.appsDefaulted && rows.isNotEmpty) {
+          final first = rows.first.$1;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (_s.appsDefaulted) return;
+            _s.update((s) {
+              s.appsDefaulted = true;
+              if (s.apps.isEmpty) s.apps = [first];
+            });
+          });
+        }
         return ObPage(
+          center: true,
           primaryLabel: picked.isEmpty ? l.cvSkipForNow : l.cvNext,
           onPrimary: widget.onNext,
           children: [
-            ObReveal(child: ObTitle(l.cvAppsTitle)),
-            ObReveal(index: 1, child: ObSubtitle(android ? l.cvAppsSubReal : l.cvAppsSubPopular)),
+            ObReveal(child: ObTitle(l.cvAppsTitle, align: TextAlign.center)),
+            ObReveal(index: 1, child: ObSubtitle(android ? l.cvAppsSubReal : l.cvAppsSubPopular, align: TextAlign.center)),
             const SizedBox(height: 18),
             if (real)
               Padding(
@@ -323,11 +339,12 @@ class _ScreenTimeStageState extends State<ScreenTimeStage> {
         };
         final measured = _s.measuredMinutes;
         return ObPage(
+          center: true,
           primaryLabel: v == null ? l.cvSkipForNow : l.cvNext,
           onPrimary: widget.onNext,
           children: [
-            ObReveal(child: ObTitle(l.cvStTitle)),
-            ObReveal(index: 1, child: ObSubtitle(l.cvStSub)),
+            ObReveal(child: ObTitle(l.cvStTitle, align: TextAlign.center)),
+            ObReveal(index: 1, child: ObSubtitle(l.cvStSub, align: TextAlign.center)),
             if (measured != null) ...[
               const SizedBox(height: 16),
               ObReveal(

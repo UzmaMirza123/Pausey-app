@@ -942,6 +942,9 @@ class AppLocalizationsUr extends AppLocalizations {
   String get cvRelateTitle => 'وقت کا پتا نہیں چلتا؟';
 
   @override
+  String get cvRelateSub => 'سچ بتائیں، کوئی جواب غلط نہیں۔';
+
+  @override
   String get cvRelateOften => 'ہر وقت';
 
   @override
@@ -966,6 +969,9 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get cvGoalTitle => 'کس چیز کے لیے مزید وقت؟';
+
+  @override
+  String get cvGoalSub => 'ابھی آپ کے لیے جو سب سے اہم ہے، وہ چنیں۔';
 
   @override
   String get cvGoalFocus => 'بہتر توجہ';
@@ -1106,9 +1112,6 @@ class AppLocalizationsUr extends AppLocalizations {
   String cvPhraseOtherNamed(String thing) {
     return '$thing کے لیے زیادہ وقت';
   }
-
-  @override
-  String get cvReflectTitle => 'ہم نے یہ سمجھا';
 
   @override
   String cvReflectApps(String goal, String apps) {

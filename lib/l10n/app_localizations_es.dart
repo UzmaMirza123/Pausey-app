@@ -957,6 +957,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cvRelateTitle => '¿Se te va el tiempo?';
 
   @override
+  String get cvRelateSub => 'Sé sincero, no hay respuestas incorrectas.';
+
+  @override
   String get cvRelateOften => 'Todo el tiempo';
 
   @override
@@ -981,6 +984,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get cvGoalTitle => '¿Más tiempo para qué?';
+
+  @override
+  String get cvGoalSub => 'Elige lo que más te importa ahora.';
 
   @override
   String get cvGoalFocus => 'Más concentración';
@@ -1123,9 +1129,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String cvPhraseOtherNamed(String thing) {
     return 'más tiempo para $thing';
   }
-
-  @override
-  String get cvReflectTitle => 'Esto es lo que entendimos';
 
   @override
   String cvReflectApps(String goal, String apps) {

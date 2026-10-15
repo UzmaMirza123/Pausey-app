@@ -923,6 +923,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cvRelateTitle => '常常忘了时间？';
 
   @override
+  String get cvRelateSub => '如实回答就好，没有错误答案。';
+
+  @override
   String get cvRelateOften => '经常这样';
 
   @override
@@ -945,6 +948,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get cvGoalTitle => '想把时间留给什么？';
+
+  @override
+  String get cvGoalSub => '选出你现在最在意的一项。';
 
   @override
   String get cvGoalFocus => '更专注';
@@ -1075,9 +1081,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String cvPhraseOtherNamed(String thing) {
     return '更多时间给$thing';
   }
-
-  @override
-  String get cvReflectTitle => '我们了解到';
 
   @override
   String cvReflectApps(String goal, String apps) {

@@ -74,8 +74,8 @@ class PermissionsStage extends StatelessWidget {
           primaryLabel: st.canEnforce || !st.supported ? l.continueLabel : l.cvContinueAnyway,
           onPrimary: onNext,
           children: [
-            ObReveal(child: ObTitle(l.stPermTitle)),
-            if (!st.supported) ObReveal(index: 1, child: ObSubtitle(l.cvPermUnsupported)),
+            ObReveal(child: ObTitle(l.stPermTitle, align: TextAlign.center)),
+            if (!st.supported) ObReveal(index: 1, child: ObSubtitle(l.cvPermUnsupported, align: TextAlign.center)),
             const SizedBox(height: 22),
             if (st.supported) ...[
               card(1, icon: Icons.hourglass_bottom_rounded, title: l.stPermUsageTitle, why: l.stPermUsageWhy, on: st.usageAccess, onAsk: bridge.openUsageAccessSettings),

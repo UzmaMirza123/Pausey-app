@@ -947,6 +947,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get cvRelateTitle => 'Sering lupa waktu?';
 
   @override
+  String get cvRelateSub => 'Jujur saja, tidak ada jawaban yang salah.';
+
+  @override
   String get cvRelateOften => 'Sering sekali';
 
   @override
@@ -971,6 +974,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cvGoalTitle => 'Waktu lebih untuk apa?';
+
+  @override
+  String get cvGoalSub => 'Pilih yang paling penting bagimu saat ini.';
 
   @override
   String get cvGoalFocus => 'Fokus lebih baik';
@@ -1114,9 +1120,6 @@ class AppLocalizationsId extends AppLocalizations {
   String cvPhraseOtherNamed(String thing) {
     return 'lebih banyak waktu untuk $thing';
   }
-
-  @override
-  String get cvReflectTitle => 'Ini yang kami tangkap';
 
   @override
   String cvReflectApps(String goal, String apps) {
