@@ -1,9 +1,12 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../services/auth_service.dart';
 import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
+import '../onboarding/widgets/intro_motion.dart';
 
 /// Translated message for an [AuthFailure].
 String authErrorText(BuildContext context, Object error) {
@@ -293,6 +296,146 @@ class AuthTopBar extends StatelessWidget {
           const Spacer(),
           trailing,
         ],
+      ),
+    );
+  }
+}
+
+/// Which screen an [AuthIllustration] sits on.
+enum AuthArt { logIn, signUp }
+
+/// Small themed hero for the log-in and sign-up screens: a glowing brand disc with
+/// an icon, an orbit ring and three floating badges. Still when animations are off.
+class AuthIllustration extends StatelessWidget {
+  const AuthIllustration({super.key, required this.art});
+  final AuthArt art;
+
+  static const _w = 210.0, _h = 170.0, _orbit = 66.0, _badge = 38.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final dark = context.isDark;
+    final (IconData main, List<IconData> badges) = switch (art) {
+      AuthArt.logIn => (Icons.lock_open_rounded, [Icons.mail_outline_rounded, Icons.key_rounded, Icons.verified_user_outlined]),
+      AuthArt.signUp => (Icons.person_add_alt_1_rounded, [Icons.mail_outline_rounded, Icons.shield_outlined, Icons.auto_awesome_rounded]),
+    };
+    const angles = [-145.0, -25.0, 100.0];
+    Widget ring(double size, {Color? fill, Color? border}) => Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: fill,
+        border: border == null ? null : Border.all(color: border, width: 1.2),
+      ),
+    );
+    return ExcludeSemantics(
+      child: SizedBox(
+        width: _w,
+        height: _h,
+        child: Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            // soft glow
+            Container(
+              width: 190,
+              height: 190,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    AppPalette.accent.withValues(alpha: dark ? 0.30 : 0.20),
+                    AppPalette.accent.withValues(alpha: 0),
+                  ],
+                ),
+              ),
+            ),
+            ring(_orbit * 2, border: AppPalette.violet.withValues(alpha: dark ? 0.35 : 0.30)),
+            ring(100, fill: AppPalette.accent.withValues(alpha: dark ? 0.14 : 0.08)),
+            IntroEnter(
+              scale: true,
+              rise: 8,
+              child: IntroFloat(
+                amplitude: 4,
+                child: Container(
+                  width: 78,
+                  height: 78,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [AppPalette.blue, AppPalette.accent]),
+                    boxShadow: [BoxShadow(color: AppPalette.accent.withValues(alpha: 0.40), blurRadius: 24, offset: const Offset(0, 8))],
+                  ),
+                  child: Icon(main, size: 34, color: Colors.white),
+                ),
+              ),
+            ),
+            for (final (i, icon) in badges.indexed)
+              Positioned(
+                left: _w / 2 + _orbit * math.cos(angles[i] * math.pi / 180) - _badge / 2,
+                top: _h / 2 + _orbit * math.sin(angles[i] * math.pi / 180) - _badge / 2,
+                child: IntroEnter(
+                  index: i + 1,
+                  scale: true,
+                  rise: 6,
+                  child: IntroFloat(
+                    amplitude: 5,
+                    period: Duration(milliseconds: 2600 + i * 500),
+                    child: Container(
+                      width: _badge,
+                      height: _badge,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: dark ? const Color(0xFF231E45) : Colors.white,
+                        border: Border.all(color: c.glassBorder),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppPalette.accent.withValues(alpha: dark ? 0.25 : 0.16),
+                            blurRadius: 14,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Icon(icon, size: 18, color: dark ? AppPalette.violet : AppPalette.accent),
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Round Google / Apple sign-in button.
+class SocialCircle extends StatelessWidget {
+  const SocialCircle({super.key, required this.label, required this.child, required this.onTap, this.busy = false});
+  final String label;
+  final Widget child;
+  final VoidCallback? onTap;
+  final bool busy;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final dark = context.isDark;
+    return Semantics(
+      button: true,
+      label: label,
+      excludeSemantics: true,
+      child: Material(
+        color: dark ? c.glassFill : Colors.white,
+        shape: CircleBorder(side: BorderSide(color: c.glassBorder)),
+        child: InkWell(
+          customBorder: const CircleBorder(),
+          onTap: busy ? null : onTap,
+          child: SizedBox.square(
+            dimension: 60,
+            child: Center(child: busy ? const SizedBox.square(dimension: 22, child: CircularProgressIndicator(strokeWidth: 2.4)) : child),
+          ),
+        ),
       ),
     );
   }

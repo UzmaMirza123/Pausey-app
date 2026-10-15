@@ -334,7 +334,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ob6Others => '其他';
 
   @override
-  String get ob7Title => '设定每日屏幕使用时间目标';
+  String get ob7Title => '每日屏幕时间目标';
 
   @override
   String get ob7Subtitle => '你可以随时更改。接近上限时我们会提醒你。';
@@ -920,7 +920,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cvSkipForNow => '暂时跳过';
 
   @override
-  String get cvRelateTitle => '有没有拿起手机只想看一分钟，结果看了很久？';
+  String get cvRelateTitle => '常常忘了时间？';
 
   @override
   String get cvRelateOften => '经常这样';
@@ -944,7 +944,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cvRelateCta => '说的就是我';
 
   @override
-  String get cvGoalTitle => '你想把更多时间留给什么？';
+  String get cvGoalTitle => '想把时间留给什么？';
 
   @override
   String get cvGoalFocus => '更专注';
@@ -986,7 +986,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cvGoalReplyOther => '明白了。我们会围绕它来安排。';
 
   @override
-  String get cvAppsTitle => '哪些应用最让你停不下来？';
+  String get cvAppsTitle => '哪些应用让你分心？';
 
   @override
   String get cvAppsSubReal => '这些是本机上的应用，想选几个都可以。';
@@ -1013,7 +1013,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get cvStTitle => '你每天大约用多久手机？';
+  String get cvStTitle => '你每天的屏幕时间';
 
   @override
   String get cvStSub => '大概估一下就好，这些只保存在你的手机上。';
@@ -1075,6 +1075,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String cvPhraseOtherNamed(String thing) {
     return '更多时间给$thing';
   }
+
+  @override
+  String get cvReflectTitle => '我们了解到';
 
   @override
   String cvReflectApps(String goal, String apps) {
@@ -1415,7 +1418,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get signUpSubtitle => '开始养成更从容的屏幕习惯。';
 
   @override
-  String get logInTitle => '欢迎回来';
+  String get logInTitle => '登录你的账户';
 
   @override
   String get logInSubtitle => '登录以继续你的连续记录。';
@@ -3181,17 +3184,17 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String stHow1(String app) {
-    return '不知不觉，你打开了 $app。';
+    return '你又打开了$app';
   }
 
   @override
-  String get stHow2 => '你开始刷个不停，但这一次……';
+  String get stHow2 => '你开始刷屏，但…';
 
   @override
   String get stHow3 => 'Pausey 会温和地让它暂停。';
 
   @override
-  String get stHow4 => '还会在额度用完前提醒你。';
+  String get stHow4 => '并在到限前提醒你';
 
   @override
   String get stYourApp => '你的应用';
@@ -3203,7 +3206,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get stNudgeGeneric => '今日额度快用完了';
 
   @override
-  String get stPermTitle => '为了帮你改变习惯，Pausey 需要几项权限。';
+  String get stPermTitle => '开启几项权限';
 
   @override
   String get stPermUsageTitle => '屏幕使用时间';

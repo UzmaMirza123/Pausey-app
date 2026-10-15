@@ -25,10 +25,22 @@ class ObBackGate {
 
 /// Where a stage sits in the flow; provided by OnboardingFlow.
 class ObFlowScope extends InheritedWidget {
-  const ObFlowScope({super.key, required this.chapter, required this.canBack, required this.onBack, this.backGate, required super.child});
+  const ObFlowScope({
+    super.key,
+    required this.dotsAt,
+    required this.dotsFrom,
+    required this.canBack,
+    required this.onBack,
+    this.backGate,
+    required super.child,
+  });
 
-  /// 0, 1 or 2 for the three progress dots; null hides them (welcome).
-  final int? chapter;
+  /// Running step for the 3 progress dots (it continues from the 4 intro screens:
+  /// one step per screen, 1 → 2 → 3 → 1 …); null hides them.
+  final int? dotsAt;
+
+  /// Step the dots glide in from (the previous screen).
+  final int dotsFrom;
   final bool canBack;
   final VoidCallback onBack;
 
@@ -38,7 +50,7 @@ class ObFlowScope extends InheritedWidget {
   static ObFlowScope? of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<ObFlowScope>();
 
   @override
-  bool updateShouldNotify(ObFlowScope old) => old.chapter != chapter || old.canBack != canBack;
+  bool updateShouldNotify(ObFlowScope old) => old.dotsAt != dotsAt || old.dotsFrom != dotsFrom || old.canBack != canBack;
 }
 
 /// One onboarding stage: scrollable content with the 20px gutter, and a footer
@@ -53,6 +65,7 @@ class ObPage extends StatelessWidget {
     this.onSecondary,
     this.showArrow = true,
     this.center = false,
+    this.dotsStep = 0,
   });
 
   final List<Widget> children;
@@ -65,71 +78,94 @@ class ObPage extends StatelessWidget {
   /// Vertically centre short content (welcome, reflection).
   final bool center;
 
+  /// Extra dot steps inside one stage (each story beat counts as a screen).
+  final int dotsStep;
+
   @override
   Widget build(BuildContext context) {
     final scope = ObFlowScope.of(context);
     final c = context.colors;
     final content = Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: children);
+    // Same layout and motion as the intro screens' footer: while stages change the
+    // content slides, the footer stays still, the dots glide and the buttons cross-fade.
+    final at = scope?.dotsAt;
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: GlowBackground(
-        child: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, box) => SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 28, AppSpacing.gutter, 16),
-                    child: Center(
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: 480, minHeight: center ? box.maxHeight - 44 : 0),
-                        child: center ? Center(child: content) : content,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          FlowSwitch.fade(context, const GlowBackground(child: SizedBox.shrink())),
+          SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: FlowSwitch.content(
+                    context,
+                    LayoutBuilder(
+                      builder: (context, box) => SingleChildScrollView(
+                        padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 28, AppSpacing.gutter, 16),
+                        child: Center(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: 480, minHeight: center ? box.maxHeight - 44 : 0),
+                            child: center ? Center(child: content) : content,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 8, AppSpacing.gutter, 12),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 480),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (scope?.chapter != null) ...[
-                        TweenAnimationBuilder<double>(
-                          tween: Tween(end: scope!.chapter!.toDouble()),
-                          duration: ObMotion.of(context, ObMotion.page),
-                          curve: Curves.easeInOutCubic,
-                          builder: (_, v, _) => FlowDots(position: v),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 16, AppSpacing.gutter, 6),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 480),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          height: 5,
+                          child: at == null
+                              ? null
+                              : FlowSwitch.dots(context, FlowDotsGlide(from: (scope!.dotsFrom + dotsStep).toDouble(), to: (at + dotsStep).toDouble())),
                         ),
-                        const SizedBox(height: 16),
-                      ],
-                      Row(
-                        children: [
-                          if (scope?.canBack ?? false) ...[
-                            BackCircleButton(onPressed: scope!.onBack, size: 56),
-                            const SizedBox(width: 12),
-                          ],
-                          Expanded(child: PrimaryButton(label: primaryLabel, onPressed: onPrimary, showArrow: showArrow, height: 56)),
-                        ],
-                      ),
-                      if (secondaryLabel != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 6),
-                          child: TextButton(
-                            onPressed: onSecondary,
-                            style: TextButton.styleFrom(minimumSize: const Size(48, 44)),
-                            child: Text(secondaryLabel!, style: AppText.link.copyWith(color: c.textSecondary)),
+                        const SizedBox(height: 18),
+                        FlowSwitch.fade(
+                          context,
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  if (scope?.canBack ?? false) ...[BackCircleButton(onPressed: scope!.onBack), const SizedBox(width: 10)],
+                                  Expanded(
+                                    child: PrimaryButton(label: primaryLabel, onPressed: onPrimary, showArrow: showArrow),
+                                  ),
+                                ],
+                              ),
+                              // Same height on every screen, so the dots never move.
+                              SizedBox(
+                                height: 36,
+                                child: secondaryLabel == null
+                                    ? null
+                                    : Align(
+                                        alignment: Alignment.bottomCenter,
+                                        child: TextButton(
+                                          onPressed: onSecondary,
+                                          style: TextButton.styleFrom(minimumSize: const Size(48, 32), tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                                          child: Text(secondaryLabel!, style: AppText.link.copyWith(color: c.textSecondary)),
+                                        ),
+                                      ),
+                              ),
+                            ],
                           ),
                         ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

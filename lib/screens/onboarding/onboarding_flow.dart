@@ -34,8 +34,16 @@ class OnboardingFlow extends StatefulWidget {
   static const stageCount = 11;
   static const _accountStage = 9;
 
-  /// Progress dot (chapter) for each stage; null = no dots (welcome).
-  static int? chapterOf(int stage) => stage == 0 ? null : (stage <= 4 ? 0 : (stage <= 7 ? 1 : 2));
+  /// Screens before the first stage (the 4 intro screens).
+  static const introScreens = 4;
+
+  /// Extra screens inside the "How it works" story (4 beats = 4 screens).
+  static const _storyExtra = 3;
+  static const _storyStage = 6;
+
+  /// Running step for the progress dots, continuing from the intro screens: every
+  /// screen moves the active dot one step (1 → 2 → 3 → 1 …), like the first 4 screens.
+  static int dotsAt(int stage) => introScreens - 1 + stage + (stage > _storyStage ? _storyExtra : 0);
 
   @override
   State<OnboardingFlow> createState() => _OnboardingFlowState();
@@ -49,12 +57,18 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   final _dialPager = PageController();
   bool _forward = true;
 
+  /// Step the dots glide in from (the screen before). Coming from the intro, the
+  /// first question glides on from its last screen.
+  late int _dotsFrom;
+
   @override
   void initState() {
     super.initState();
     _s.load();
     if (widget.initialStage != null) _s.stage = widget.initialStage!;
     _s.stage = _s.stage.clamp(OnboardingFlow.firstStage, OnboardingFlow.stageCount - 1);
+    final at = OnboardingFlow.dotsAt(_s.stage);
+    _dotsFrom = _s.stage == OnboardingFlow.firstStage ? at - 1 : at;
   }
 
   bool get _signedIn => AuthService.instance.value is! SignedOut;
@@ -69,7 +83,11 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     if (to >= OnboardingFlow.stageCount) return;
     if (to == 7) _s.suggestPlan(); // fill the starter plan from the answers
     _gate.handler = null;
-    setState(() => _forward = to > _s.stage);
+    setState(() {
+      _forward = to > _s.stage;
+      // One step forward or back, as on the intro screens.
+      _dotsFrom = OnboardingFlow.dotsAt(to) + (_forward ? -1 : 1);
+    });
     _s.update((s) => s.stage = to);
   }
 
@@ -102,7 +120,14 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         5 => ReflectionStage(onNext: _next),
         6 => HowItHelpsStage(onNext: _next),
         // "Set your daily screen-time goal" (the original onboarding screen) in place of the starter plan.
-        7 => OnboardingPageScope(index: 1, controller: _dialPager, onBack: _back, child: Onboarding7Screen(onNext: _next, onSkip: _next)),
+        7 => OnboardingPageScope(
+            index: 1,
+            controller: _dialPager,
+            onBack: _back,
+            dotsAt: OnboardingFlow.dotsAt(i),
+            dotsFrom: _dotsFrom,
+            child: Onboarding7Screen(onNext: _next, onSkip: _next),
+          ),
         8 => PermissionsStage(onNext: _next),
         9 => AccountStage(onNext: _next),
         // "You're all set!" (the original last onboarding screen) in place of "Your first step starts here".
@@ -110,6 +135,8 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             index: 2,
             controller: _dialPager,
             onBack: _back,
+            dotsAt: OnboardingFlow.dotsAt(i),
+            dotsFrom: _dotsFrom,
             child: Onboarding9Screen(onNext: _enter, onSkip: () => _go(OnboardingFlow.firstStage)),
           ),
       };
@@ -127,17 +154,15 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         duration: reduced ? Duration.zero : ObMotion.page,
         switchInCurve: Curves.easeOutCubic,
         switchOutCurve: Curves.easeInCubic,
+        // Each page fades/slides its own content and keeps its footer still (FlowSwitchScope).
         transitionBuilder: (child, a) {
           final incoming = child.key == ValueKey(i);
           final dir = (_forward ? 1 : -1) * (incoming ? 1 : -1);
-          return FadeTransition(
-            opacity: a,
-            child: SlideTransition(position: Tween(begin: Offset(0.06 * dir, 0), end: Offset.zero).animate(a), child: child),
-          );
+          return FlowSwitchScope(animation: a, slide: Offset(0.06 * dir, 0), incoming: incoming, child: child);
         },
         child: KeyedSubtree(
           key: ValueKey(i),
-          child: ObFlowScope(chapter: OnboardingFlow.chapterOf(i), canBack: i > OnboardingFlow.firstStage || widget.onBackFromStart != null, onBack: _back, backGate: _gate, child: _stage(i)),
+          child: ObFlowScope(dotsAt: OnboardingFlow.dotsAt(i), dotsFrom: _dotsFrom, canBack: i > OnboardingFlow.firstStage || widget.onBackFromStart != null, onBack: _back, backGate: _gate, child: _stage(i)),
         ),
       ),
     );

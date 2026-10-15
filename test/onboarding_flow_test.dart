@@ -75,7 +75,7 @@ void main() {
     await _tap(t, 'Show me how');
 
     // "How it works" story: 4 beats, the user's first app in the headline.
-    expect(find.text('Without noticing, you open Instagram.'), findsOneWidget);
+    expect(find.text('You open Instagram again'), findsOneWidget);
     await _tap(t, 'Next');
     // Back steps to the previous beat first, not the previous stage.
     await t.tap(find.byType(BackCircleButton));
@@ -89,7 +89,7 @@ void main() {
     await _tap(t, 'Build my plan');
 
     // "Set your daily screen-time goal" now replaces the starter-plan screen.
-    expect(find.text('Set your daily screen-time goal'), findsOneWidget);
+    expect(find.text('Your daily screen goal'), findsOneWidget);
     expect(RestrictionRepo.instance.hasOwnRules('com.instagram.android'), isFalse); // nothing applied yet
     await _tap(t, '3h');
     expect(LocalStore.instance.answers['dailyGoalHours'], 3);
@@ -101,6 +101,15 @@ void main() {
     expect(find.text("Don't have an account?"), findsOneWidget);
     expect(find.bySemanticsLabel('Continue with Google'), findsOneWidget);
     expect(find.bySemanticsLabel('Continue with Apple'), findsOneWidget);
+    expect(find.text('Log into your account'), findsOneWidget);
+    // Sign up → "Log in" comes back to this same single form (no second log-in screen).
+    await _tap(t, 'Sign up');
+    expect(find.text('Create your account'), findsOneWidget);
+    await _tap(t, 'Log in');
+    await t.pump(const Duration(milliseconds: 600));
+    expect(find.text('Create your account'), findsNothing);
+    expect(find.text('Log into your account'), findsOneWidget);
+    expect(find.text('Continue with Google'), findsNothing); // only the round buttons
     await _tap(t, 'Continue as guest');
     // Guest is asked what to call them ("Your name" field, no "optional").
     expect(find.text('What should we call you?'), findsWidgets);
@@ -133,7 +142,7 @@ void main() {
     });
     await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {})));
     await t.pumpAndSettle();
-    expect(find.text('Roughly how long are you on your phone each day?'), findsOneWidget);
+    expect(find.text('Your daily screen time'), findsOneWidget);
     await t.tap(find.byType(BackCircleButton));
     await t.pumpAndSettle();
     expect(OnboardingState.instance.stage, 3);
@@ -143,7 +152,7 @@ void main() {
     var back = false;
     await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {}, onBackFromStart: () => back = true)));
     await t.pump(const Duration(seconds: 1));
-    expect(find.text('Ever picked up your phone for a minute and stayed much longer?'), findsOneWidget);
+    expect(find.text('Lose track of time?'), findsOneWidget);
     await t.tap(find.byType(BackCircleButton));
     await t.pump(const Duration(milliseconds: 500));
     expect(back, isTrue);

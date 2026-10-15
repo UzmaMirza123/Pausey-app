@@ -15,6 +15,8 @@ class OnboardingPageScope extends InheritedWidget {
     required this.index,
     required this.controller,
     required this.onBack,
+    this.dotsAt,
+    this.dotsFrom,
     required super.child,
   });
 
@@ -22,11 +24,86 @@ class OnboardingPageScope extends InheritedWidget {
   final PageController controller;
   final VoidCallback onBack;
 
+  /// Used when the page is not inside a PageView (the conversational flow): the
+  /// running step for the dots, and the step they glide in from.
+  final int? dotsAt;
+  final int? dotsFrom;
+
   static OnboardingPageScope? maybeOf(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<OnboardingPageScope>();
 
   @override
-  bool updateShouldNotify(OnboardingPageScope old) => old.index != index || old.controller != controller;
+  bool updateShouldNotify(OnboardingPageScope old) =>
+      old.index != index || old.controller != controller || old.dotsAt != dotsAt || old.dotsFrom != dotsFrom;
+}
+
+/// The page change in the conversational flow. Pages read it so that, like the
+/// first 4 screens, the content slides while the footer stays still: the dots
+/// glide to the next step and the buttons cross-fade.
+class FlowSwitchScope extends InheritedWidget {
+  const FlowSwitchScope({super.key, required this.animation, required this.slide, required this.incoming, required super.child});
+
+  final Animation<double> animation;
+
+  /// Where the content slides in from (fraction of its size).
+  final Offset slide;
+
+  /// false for the page that is leaving.
+  final bool incoming;
+
+  static FlowSwitchScope? maybeOf(BuildContext context) => context.dependOnInheritedWidgetOfExactType<FlowSwitchScope>();
+
+  @override
+  bool updateShouldNotify(FlowSwitchScope old) => old.animation != animation || old.slide != slide || old.incoming != incoming;
+}
+
+/// Helpers for the parts of a page during a [FlowSwitchScope] change. Outside the
+/// flow they return the child unchanged.
+class FlowSwitch {
+  const FlowSwitch._();
+
+  /// Content: fades and slides.
+  static Widget content(BuildContext context, Widget child) {
+    final s = FlowSwitchScope.maybeOf(context);
+    if (s == null) return child;
+    return FadeTransition(
+      opacity: s.animation,
+      child: SlideTransition(
+        position: Tween(begin: s.slide, end: Offset.zero).animate(s.animation),
+        child: child,
+      ),
+    );
+  }
+
+  /// Background and buttons: fade only (they stay in place).
+  static Widget fade(BuildContext context, Widget child) {
+    final s = FlowSwitchScope.maybeOf(context);
+    return s == null ? child : FadeTransition(opacity: s.animation, child: child);
+  }
+
+  /// Dots: only the incoming page draws them, so they never double up.
+  static Widget dots(BuildContext context, Widget child) {
+    final s = FlowSwitchScope.maybeOf(context);
+    return s == null || s.incoming ? child : Opacity(opacity: 0, child: child);
+  }
+}
+
+/// [FlowDots] that glide from step [from] to step [to] (and on to any later [to]).
+class FlowDotsGlide extends StatelessWidget {
+  const FlowDotsGlide({super.key, required this.from, required this.to});
+  final double from;
+  final double to;
+
+  @override
+  Widget build(BuildContext context) {
+    final reduced = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: from, end: to),
+      duration: reduced ? Duration.zero : const Duration(milliseconds: 480), // same as the intro pages
+      curve: Curves.easeInOutCubic,
+      builder: (_, v, _) => FlowDots(position: v),
+    );
+  }
 }
 
 /// Three dots that follow the page position. Each new screen moves the active

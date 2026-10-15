@@ -54,7 +54,8 @@ class ReflectionStage extends StatelessWidget {
       primaryLabel: l.cvShowMeHow,
       onPrimary: onNext,
       children: [
-        ObReveal(child: ObTitle(headline)),
+        ObReveal(child: ObTitle(l.cvReflectTitle)),
+        ObReveal(child: ObSubtitle(headline)),
         if (st != null) ...[const SizedBox(height: 16), ObReveal(index: 1, child: Align(alignment: AlignmentDirectional.centerStart, child: ObTag(st, icon: Icons.schedule_rounded)))],
         const SizedBox(height: 22),
         ObReveal(index: 2, child: ObReply(l.cvReflectHelp)),
@@ -157,6 +158,7 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
       onTap: _next,
       child: ObPage(
         center: true,
+        dotsStep: _beat, // every beat is its own screen for the dots
         primaryLabel: _beat < _beats - 1 ? l.cvNext : l.cvBuildPlan,
         onPrimary: _next,
         children: [

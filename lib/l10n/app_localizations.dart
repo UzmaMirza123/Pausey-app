@@ -727,7 +727,7 @@ abstract class AppLocalizations {
   /// No description provided for @ob7Title.
   ///
   /// In en, this message translates to:
-  /// **'Set your daily screen-time goal'**
+  /// **'Your daily screen goal'**
   String get ob7Title;
 
   /// No description provided for @ob7Subtitle.
@@ -1819,7 +1819,7 @@ abstract class AppLocalizations {
   /// No description provided for @cvRelateTitle.
   ///
   /// In en, this message translates to:
-  /// **'Ever picked up your phone for a minute and stayed much longer?'**
+  /// **'Lose track of time?'**
   String get cvRelateTitle;
 
   /// No description provided for @cvRelateOften.
@@ -1867,7 +1867,7 @@ abstract class AppLocalizations {
   /// No description provided for @cvGoalTitle.
   ///
   /// In en, this message translates to:
-  /// **'What would you like more time for?'**
+  /// **'More time for what?'**
   String get cvGoalTitle;
 
   /// No description provided for @cvGoalFocus.
@@ -1951,7 +1951,7 @@ abstract class AppLocalizations {
   /// No description provided for @cvAppsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Which apps pull you in the most?'**
+  /// **'Which apps distract you?'**
   String get cvAppsTitle;
 
   /// No description provided for @cvAppsSubReal.
@@ -1993,7 +1993,7 @@ abstract class AppLocalizations {
   /// No description provided for @cvStTitle.
   ///
   /// In en, this message translates to:
-  /// **'Roughly how long are you on your phone each day?'**
+  /// **'Your daily screen time'**
   String get cvStTitle;
 
   /// No description provided for @cvStSub.
@@ -2109,6 +2109,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'more time for {thing}'**
   String cvPhraseOtherNamed(String thing);
+
+  /// No description provided for @cvReflectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Here\'s what we heard'**
+  String get cvReflectTitle;
 
   /// No description provided for @cvReflectApps.
   ///
@@ -2737,7 +2743,7 @@ abstract class AppLocalizations {
   /// No description provided for @logInTitle.
   ///
   /// In en, this message translates to:
-  /// **'Welcome back'**
+  /// **'Log into your account'**
   String get logInTitle;
 
   /// No description provided for @logInSubtitle.
@@ -5941,13 +5947,13 @@ abstract class AppLocalizations {
   /// No description provided for @stHow1.
   ///
   /// In en, this message translates to:
-  /// **'Without noticing, you open {app}.'**
+  /// **'You open {app} again'**
   String stHow1(String app);
 
   /// No description provided for @stHow2.
   ///
   /// In en, this message translates to:
-  /// **'Then you start scrolling, but this time…'**
+  /// **'You start scrolling, but…'**
   String get stHow2;
 
   /// No description provided for @stHow3.
@@ -5959,7 +5965,7 @@ abstract class AppLocalizations {
   /// No description provided for @stHow4.
   ///
   /// In en, this message translates to:
-  /// **'And nudges you before your limit runs out.'**
+  /// **'Nudges before time\'s up'**
   String get stHow4;
 
   /// No description provided for @stYourApp.
@@ -5983,7 +5989,7 @@ abstract class AppLocalizations {
   /// No description provided for @stPermTitle.
   ///
   /// In en, this message translates to:
-  /// **'To change your habits, Pausey needs a few permissions.'**
+  /// **'Allow a few permissions'**
   String get stPermTitle;
 
   /// No description provided for @stPermUsageTitle.

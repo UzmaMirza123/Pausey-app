@@ -340,7 +340,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get ob6Others => 'अन्य';
 
   @override
-  String get ob7Title => 'अपना दैनिक स्क्रीन-टाइम लक्ष्य तय करें';
+  String get ob7Title => 'आपका रोज़ का स्क्रीन लक्ष्य';
 
   @override
   String get ob7Subtitle =>
@@ -938,8 +938,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get cvSkipForNow => 'अभी छोड़ें';
 
   @override
-  String get cvRelateTitle =>
-      'कभी एक मिनट के लिए फ़ोन उठाया और बहुत देर तक लगे रहे?';
+  String get cvRelateTitle => 'समय का पता नहीं चलता?';
 
   @override
   String get cvRelateOften => 'हमेशा';
@@ -965,7 +964,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get cvRelateCta => 'ये मैं हूँ';
 
   @override
-  String get cvGoalTitle => 'आप किस चीज़ के लिए ज़्यादा समय चाहते हैं?';
+  String get cvGoalTitle => 'किस चीज़ के लिए ज़्यादा समय?';
 
   @override
   String get cvGoalFocus => 'बेहतर फ़ोकस';
@@ -1012,7 +1011,7 @@ class AppLocalizationsHi extends AppLocalizations {
       'समझ गए। हम सब कुछ उसी के हिसाब से तैयार करेंगे।';
 
   @override
-  String get cvAppsTitle => 'कौन-से ऐप्स आपको सबसे ज़्यादा खींचते हैं?';
+  String get cvAppsTitle => 'कौन-से ऐप्स ध्यान भटकाते हैं?';
 
   @override
   String get cvAppsSubReal => 'ये इस फ़ोन के ऐप्स हैं। जितने चाहें चुनें।';
@@ -1040,7 +1039,7 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String get cvStTitle => 'आप रोज़ लगभग कितनी देर फ़ोन पर रहते हैं?';
+  String get cvStTitle => 'आपका रोज़ का स्क्रीन टाइम';
 
   @override
   String get cvStSub => 'अंदाज़ा काफ़ी है। यह आपके फ़ोन पर ही रहता है।';
@@ -1106,6 +1105,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String cvPhraseOtherNamed(String thing) {
     return '$thing के लिए ज़्यादा समय';
   }
+
+  @override
+  String get cvReflectTitle => 'हमने यह समझा';
 
   @override
   String cvReflectApps(String goal, String apps) {
@@ -1468,7 +1470,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get signUpSubtitle => 'स्क्रीन की शांत आदतें बनाना शुरू करें।';
 
   @override
-  String get logInTitle => 'वापसी पर स्वागत है';
+  String get logInTitle => 'अपने अकाउंट में लॉग इन करें';
 
   @override
   String get logInSubtitle => 'अपनी स्ट्रीक जारी रखने के लिए लॉग इन करें।';
@@ -3262,17 +3264,17 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String stHow1(String app) {
-    return 'बिना सोचे, आप $app खोल लेते हैं।';
+    return 'आप फिर से $app खोलते हैं';
   }
 
   @override
-  String get stHow2 => 'फिर आप स्क्रॉल करने लगते हैं, पर इस बार…';
+  String get stHow2 => 'आप स्क्रॉल करने लगते हैं, पर…';
 
   @override
   String get stHow3 => 'Pausey उसे धीरे से रोक देता है।';
 
   @override
-  String get stHow4 => 'और आपकी सीमा खत्म होने से पहले आपको याद दिलाता है।';
+  String get stHow4 => 'लिमिट से पहले याद दिलाता है';
 
   @override
   String get stYourApp => 'अपना ऐप';
@@ -3284,8 +3286,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get stNudgeGeneric => 'आपकी रोज़ की सीमा लगभग पूरी';
 
   @override
-  String get stPermTitle =>
-      'आपकी आदतें बदलने के लिए Pausey को कुछ अनुमतियाँ चाहिए।';
+  String get stPermTitle => 'कुछ अनुमतियाँ दें';
 
   @override
   String get stPermUsageTitle => 'स्क्रीन टाइम';

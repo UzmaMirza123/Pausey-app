@@ -322,32 +322,45 @@ class OnboardingScaffold extends StatelessWidget {
     final scope = OnboardingPageScope.maybeOf(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: GlowBackground(
-        blobs: blobs,
-        starsAsset: starsAsset,
-        child: SafeArea(
-          child: Column(
-            children: [
-              OnboardingHeader(onSkip: onSkip, showSkip: showSkip),
-              // Body fits any screen: shrinks on short phones, centres on tall ones,
-              // and stays a readable width on tablets.
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, box) => SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Center(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 480),
-                        child: FitToViewport(viewportHeight: box.maxHeight, child: body),
-                      ),
+      // Inside the conversational flow the background fades and the content slides,
+      // while the footer stays still (see FlowSwitchScope).
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          FlowSwitch.fade(context, GlowBackground(blobs: blobs, starsAsset: starsAsset, child: const SizedBox.shrink())),
+          SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: FlowSwitch.content(
+                    context,
+                    Column(
+                      children: [
+                        OnboardingHeader(onSkip: onSkip, showSkip: showSkip),
+                        // Body fits any screen: shrinks on short phones, centres on tall ones,
+                        // and stays a readable width on tablets.
+                        Expanded(
+                          child: LayoutBuilder(
+                            builder: (context, box) => SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: Center(
+                                child: ConstrainedBox(
+                                  constraints: const BoxConstraints(maxWidth: 480),
+                                  child: FitToViewport(viewportHeight: box.maxHeight, child: body),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-              scope == null ? _staticFooter() : _FlowFooter(scope: scope, button: button, footerExtra: footerExtra),
-            ],
+                scope == null ? _staticFooter() : _FlowFooter(scope: scope, button: button, footerExtra: footerExtra),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -388,10 +401,16 @@ class _FlowFooter extends StatelessWidget {
       animation: scope.controller,
       builder: (context, _) {
         final c = scope.controller;
-        final pos = c.hasClients && c.position.haveDimensions ? c.page ?? scope.index.toDouble() : scope.index.toDouble();
+        final paged = c.hasClients && c.position.haveDimensions;
+        final pos = paged ? c.page ?? scope.index.toDouble() : scope.index.toDouble();
         final delta = pos - scope.index;
         final nearest = pos.round() == scope.index;
         final fade = (1 - delta.abs() * 1.6).clamp(0.0, 1.0);
+        // Outside a PageView (the conversational flow) the dots glide in from the previous step.
+        final at = scope.dotsAt;
+        final Widget dots = !paged && at != null
+            ? FlowSwitch.dots(context, FlowDotsGlide(from: (scope.dotsFrom ?? at).toDouble(), to: at.toDouble()))
+            : FlowDots(position: pos);
         return Transform.translate(
           // cancel the page's slide so the footer stays in place
           offset: Offset(delta * width, 0),
@@ -401,39 +420,42 @@ class _FlowFooter extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 // Only the nearest page draws the dots, so they never double up.
-                SizedBox(height: 5, child: nearest ? FlowDots(position: pos) : null),
+                SizedBox(height: 5, child: nearest ? dots : null),
                 const SizedBox(height: 18),
                 IgnorePointer(
                   ignoring: !nearest,
                   child: Opacity(
                     opacity: fade,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: rowWidth,
-                          child: Row(
-                            children: [
-                              if (scope.index > 0) ...[
-                                BackCircleButton(onPressed: scope.onBack),
-                                const SizedBox(width: 10),
+                    child: FlowSwitch.fade(
+                      context,
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            width: rowWidth,
+                            child: Row(
+                              children: [
+                                if (scope.index > 0) ...[
+                                  BackCircleButton(onPressed: scope.onBack),
+                                  const SizedBox(width: 10),
+                                ],
+                                Expanded(child: button),
                               ],
-                              Expanded(child: button),
-                            ],
+                            ),
                           ),
-                        ),
-                        // Same height on every page (text or not), so the dots
-                        // and buttons never jump while pages change.
-                        SizedBox(
-                          height: 36,
-                          child: footerExtra == null
-                              ? null
-                              : Padding(
-                                  padding: const EdgeInsets.only(top: 12),
-                                  child: Align(alignment: Alignment.topCenter, child: footerExtra),
-                                ),
-                        ),
-                      ],
+                          // Same height on every page (text or not), so the dots
+                          // and buttons never jump while pages change.
+                          SizedBox(
+                            height: 36,
+                            child: footerExtra == null
+                                ? null
+                                : Padding(
+                                    padding: const EdgeInsets.only(top: 12),
+                                    child: Align(alignment: Alignment.topCenter, child: footerExtra),
+                                  ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

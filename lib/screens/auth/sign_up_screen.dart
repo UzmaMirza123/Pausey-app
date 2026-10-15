@@ -16,7 +16,11 @@ String? validateEmail(BuildContext context, String? v) =>
 
 /// Email sign-up: name, email, password (with strength meter), confirm, terms.
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+  const SignUpScreen({super.key, this.backToLogIn = false});
+
+  /// Opened from a log-in form: "Log in" goes back to that same form instead of
+  /// opening another one.
+  final bool backToLogIn;
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -72,19 +76,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: [
               AuthTopBar(onBack: () => Navigator.pop(context), trailing: const ThemeToggleButton()),
               Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 8, AppSpacing.gutter, 24),
+                child: AuthCentered(
                   child: Form(
                     key: _form,
                     child: AutofillGroup(
                       child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          EnterUp(child: Text(l.signUpTitle, style: AppText.h1.copyWith(color: c.textPrimary))),
-                          const SizedBox(height: 6),
+                          const Center(child: AuthIllustration(art: AuthArt.signUp)),
+                          const SizedBox(height: 14),
+                          EnterUp(
+                            child: Semantics(
+                              header: true,
+                              child: Text(l.signUpTitle, textAlign: TextAlign.center, style: AppText.h1.copyWith(color: c.textPrimary)),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
                           EnterUp(
                             delay: const Duration(milliseconds: 80),
-                            child: Text(l.signUpSubtitle, style: AppText.body.copyWith(color: c.textSecondary)),
+                            child: Text(l.signUpSubtitle, textAlign: TextAlign.center, style: AppText.body.copyWith(color: c.textSecondary)),
                           ),
                           const SizedBox(height: 26),
                           AuthErrorBanner(message: _error),
@@ -154,7 +165,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             children: [
                               Text(l.haveAccount, style: AppText.caption.copyWith(fontSize: 14, color: c.textSecondary)),
                               TextButton(
-                                onPressed: () => Navigator.of(context).pushReplacement(authRoute(const LogInScreen())),
+                                onPressed: () => widget.backToLogIn
+                                    ? Navigator.of(context).pop()
+                                    : Navigator.of(context).pushReplacement(authRoute(const LogInScreen())),
                                 child: Text(l.logIn, style: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet)),
                               ),
                             ],

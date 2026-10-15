@@ -340,7 +340,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get ob6Others => 'دیگر';
 
   @override
-  String get ob7Title => 'روزانہ اسکرین ٹائم کا ہدف مقرر کریں';
+  String get ob7Title => 'آپ کا روزانہ اسکرین ہدف';
 
   @override
   String get ob7Subtitle =>
@@ -939,8 +939,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get cvSkipForNow => 'ابھی چھوڑیں';
 
   @override
-  String get cvRelateTitle =>
-      'کبھی ایک منٹ کے لیے فون اٹھایا اور بہت دیر تک لگے رہے؟';
+  String get cvRelateTitle => 'وقت کا پتا نہیں چلتا؟';
 
   @override
   String get cvRelateOften => 'ہر وقت';
@@ -966,7 +965,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get cvRelateCta => 'یہ تو میں ہوں';
 
   @override
-  String get cvGoalTitle => 'آپ کس چیز کے لیے زیادہ وقت چاہتے ہیں؟';
+  String get cvGoalTitle => 'کس چیز کے لیے مزید وقت؟';
 
   @override
   String get cvGoalFocus => 'بہتر توجہ';
@@ -1013,8 +1012,7 @@ class AppLocalizationsUr extends AppLocalizations {
       'سمجھ گئے۔ ہم سب کچھ اسی کے مطابق ترتیب دیں گے۔';
 
   @override
-  String get cvAppsTitle =>
-      'کون سی ایپس آپ کو سب سے زیادہ اپنی طرف کھینچتی ہیں؟';
+  String get cvAppsTitle => 'کون سی ایپس توجہ بٹاتی ہیں؟';
 
   @override
   String get cvAppsSubReal => 'یہ اس فون کی ایپس ہیں۔ جتنی چاہیں منتخب کریں۔';
@@ -1042,7 +1040,7 @@ class AppLocalizationsUr extends AppLocalizations {
   }
 
   @override
-  String get cvStTitle => 'آپ روزانہ تقریباً کتنی دیر فون پر رہتے ہیں؟';
+  String get cvStTitle => 'آپ کا روزانہ اسکرین ٹائم';
 
   @override
   String get cvStSub => 'اندازہ کافی ہے۔ یہ معلومات آپ کے فون پر ہی رہتی ہے۔';
@@ -1108,6 +1106,9 @@ class AppLocalizationsUr extends AppLocalizations {
   String cvPhraseOtherNamed(String thing) {
     return '$thing کے لیے زیادہ وقت';
   }
+
+  @override
+  String get cvReflectTitle => 'ہم نے یہ سمجھا';
 
   @override
   String cvReflectApps(String goal, String apps) {
@@ -1470,7 +1471,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get signUpSubtitle => 'اسکرین کی بہتر عادتیں بنانا شروع کریں۔';
 
   @override
-  String get logInTitle => 'خوش آمدید';
+  String get logInTitle => 'اپنے اکاؤنٹ میں لاگ اِن کریں';
 
   @override
   String get logInSubtitle => 'اپنی اسٹریک جاری رکھنے کے لیے لاگ اِن کریں۔';
@@ -3268,17 +3269,17 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String stHow1(String app) {
-    return 'بغیر سوچے، آپ $app کھول لیتے ہیں۔';
+    return 'آپ پھر سے $app کھولتے ہیں';
   }
 
   @override
-  String get stHow2 => 'پھر آپ اسکرول کرنے لگتے ہیں، لیکن اس بار…';
+  String get stHow2 => 'آپ اسکرول شروع کرتے ہیں، مگر…';
 
   @override
   String get stHow3 => 'Pausey نرمی سے اسے روک دیتا ہے۔';
 
   @override
-  String get stHow4 => 'اور حد ختم ہونے سے پہلے آپ کو یاد دلاتا ہے۔';
+  String get stHow4 => 'حد سے پہلے یاد دہانی';
 
   @override
   String get stYourApp => 'اپنی ایپ';
@@ -3290,8 +3291,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get stNudgeGeneric => 'آپ کی روزانہ حد تقریباً پوری';
 
   @override
-  String get stPermTitle =>
-      'آپ کی عادتیں بدلنے کے لیے Pausey کو چند اجازتیں چاہییں۔';
+  String get stPermTitle => 'چند اجازتیں دیں';
 
   @override
   String get stPermUsageTitle => 'اسکرین ٹائم';

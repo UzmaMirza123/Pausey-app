@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../data/restrictions/restriction_repo.dart';
 import '../../../services/auth_service.dart';
@@ -8,7 +7,7 @@ import '../../../utils/app_theme.dart';
 import '../../../utils/l10n.dart';
 import '../../../widgets/common.dart';
 import '../../../widgets/ui_kit.dart';
-import '../../auth/auth_widgets.dart';
+import '../../auth/log_in_screen.dart' show LogInForm, LogInFormState;
 import '../../auth/sign_up_screen.dart';
 import '../onboarding_state.dart';
 import '../widgets/ob_kit.dart';
@@ -82,13 +81,7 @@ class PermissionsStage extends StatelessWidget {
               card(1, icon: Icons.hourglass_bottom_rounded, title: l.stPermUsageTitle, why: l.stPermUsageWhy, on: st.usageAccess, onAsk: bridge.openUsageAccessSettings),
               card(2, icon: Icons.layers_rounded, title: l.stPermOverlayTitle, why: l.stPermOverlayWhy, on: st.overlay, onAsk: bridge.openOverlaySettings),
               card(3, icon: Icons.notifications_none_rounded, title: l.stPermNotifTitle, why: l.stPermNotifWhy, on: st.notifications, onAsk: _askNotifications),
-              const SizedBox(height: 18),
-              ObReveal(
-                index: 4,
-                child: Text(l.stPermMore, style: AppText.cardTitle.copyWith(fontSize: 20, fontWeight: FontWeight.w800, color: c.textPrimary)),
-              ),
-              const SizedBox(height: 12),
-              card(5, icon: Icons.accessibility_new_rounded, title: l.stPermA11yTitle, why: l.stPermA11yWhy, on: st.accessibility, onAsk: () => _askAccessibility(context)),
+              card(4, icon: Icons.accessibility_new_rounded, title: l.stPermA11yTitle, why: l.stPermA11yWhy, on: st.accessibility, onAsk: () => _askAccessibility(context)),
               ObReveal(
                 index: 5,
                 child: Padding(
@@ -233,42 +226,12 @@ class AccountStage extends StatefulWidget {
 }
 
 class _AccountStageState extends State<AccountStage> {
-  final _form = GlobalKey<FormState>();
-  final _email = TextEditingController();
-  final _pass = TextEditingController();
-  String? _busy; // email | google | apple | guest
-  String? _error;
+  final _login = GlobalKey<LogInFormState>();
+  bool _busy = false;
 
-  @override
-  void dispose() {
-    _email.dispose();
-    _pass.dispose();
-    super.dispose();
-  }
-
-  Future<void> _run(String which, Future<void> Function() action) async {
-    FocusScope.of(context).unfocus();
-    setState(() {
-      _busy = which;
-      _error = null;
-    });
-    try {
-      await action();
-      if (mounted && AuthService.instance.value is! SignedOut) widget.onNext();
-    } catch (e) {
-      if (mounted) setState(() => _error = authErrorText(context, e));
-    } finally {
-      if (mounted) setState(() => _busy = null);
-    }
-  }
-
-  void _logIn() {
-    if (!_form.currentState!.validate()) return;
-    _run('email', () => AuthService.instance.logInWithEmail(email: _email.text, password: _pass.text));
-  }
-
+  /// "Don't have an account? Sign up": its "Log in" link comes back to this same form.
   Future<void> _signUp() async {
-    await pushUntilSignedIn(context, const SignUpScreen());
+    await pushUntilSignedIn(context, const SignUpScreen(backToLogIn: true));
     if (mounted && AuthService.instance.value is! SignedOut) widget.onNext();
   }
 
@@ -277,127 +240,27 @@ class _AccountStageState extends State<AccountStage> {
     final name = await _askName(context);
     if (name == null || !mounted) return;
     _s.update((s) => s.name = name);
-    await _run('guest', () => AuthService.instance.continueAsGuest(name: name));
+    await _login.currentState?.run('guest', () => AuthService.instance.continueAsGuest(name: name));
   }
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final c = context.colors;
-    final auth = AuthService.instance;
     return ObPage(
+      center: true,
       primaryLabel: l.cvContinueGuest,
       showArrow: false,
-      onPrimary: _busy == null ? _guest : null,
+      onPrimary: _busy ? null : _guest,
       children: [
-        ObReveal(child: ObTitle(l.logInTitle)),
-        ObReveal(index: 1, child: ObSubtitle(l.logInSubtitle)),
-        const SizedBox(height: 22),
-        AuthErrorBanner(message: _error),
-        Form(
-          key: _form,
-          child: AutofillGroup(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              ObReveal(
-                index: 2,
-                child: AuthField(
-                  controller: _email,
-                  label: l.email,
-                  icon: Icons.mail_outline_rounded,
-                  keyboardType: TextInputType.emailAddress,
-                  autofillHints: const [AutofillHints.email],
-                  validator: (v) => validateEmail(context, v),
-                ),
-              ),
-              const SizedBox(height: 14),
-              ObReveal(
-                index: 3,
-                child: AuthField(
-                  controller: _pass,
-                  label: l.password,
-                  icon: Icons.lock_outline_rounded,
-                  obscure: true,
-                  textInputAction: TextInputAction.done,
-                  autofillHints: const [AutofillHints.password],
-                  onSubmitted: (_) => _logIn(),
-                  validator: (v) => (v ?? '').isEmpty ? l.errPasswordShort : null,
-                ),
-              ),
-            ]),
-          ),
-        ),
-        const SizedBox(height: 18),
-        ObReveal(index: 4, child: BusyButton(label: l.logIn, busy: _busy == 'email', onPressed: _busy == null ? _logIn : () {})),
-        const SizedBox(height: 8),
-        ObReveal(
-          index: 5,
-          child: Wrap(
-            alignment: WrapAlignment.center,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              Text(l.cvNoAccount, style: AppText.rowSub.copyWith(fontSize: 14, color: c.textSecondary)),
-              TextButton(
-                onPressed: _busy == null ? _signUp : null,
-                style: TextButton.styleFrom(minimumSize: const Size(48, 44)),
-                child: Text(l.signUp, style: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet)),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        const ObReveal(index: 6, child: OrDivider()),
-        const SizedBox(height: 18),
-        ObReveal(
-          index: 7,
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            _SocialCircle(
-              label: l.continueWithGoogle,
-              busy: _busy == 'google',
-              onTap: _busy == null ? () => _run('google', auth.signInWithGoogle) : null,
-              child: SvgPicture.asset('assets/svg/google_g.svg', width: 24, height: 24),
-            ),
-            const SizedBox(width: 22),
-            _SocialCircle(
-              label: l.continueWithApple,
-              busy: _busy == 'apple',
-              onTap: _busy == null ? () => _run('apple', auth.signInWithApple) : null,
-              child: Icon(Icons.apple, size: 28, color: c.textPrimary),
-            ),
-          ]),
+        LogInForm(
+          key: _login,
+          onSignedIn: widget.onNext,
+          onSignUp: _signUp,
+          onBusyChanged: (b) {
+            if (mounted) setState(() => _busy = b);
+          },
         ),
       ],
-    );
-  }
-}
-
-/// Round Google / Apple sign-in button.
-class _SocialCircle extends StatelessWidget {
-  const _SocialCircle({required this.label, required this.child, required this.onTap, this.busy = false});
-  final String label;
-  final Widget child;
-  final VoidCallback? onTap;
-  final bool busy;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final dark = context.isDark;
-    return Semantics(
-      button: true,
-      label: label,
-      excludeSemantics: true,
-      child: Material(
-        color: dark ? c.glassFill : Colors.white,
-        shape: CircleBorder(side: BorderSide(color: c.glassBorder)),
-        child: InkWell(
-          customBorder: const CircleBorder(),
-          onTap: busy ? null : onTap,
-          child: SizedBox.square(
-            dimension: 60,
-            child: Center(child: busy ? const SizedBox.square(dimension: 22, child: CircularProgressIndicator(strokeWidth: 2.4)) : child),
-          ),
-        ),
-      ),
     );
   }
 }

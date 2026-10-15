@@ -341,7 +341,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get ob6Others => 'Sonstiges';
 
   @override
-  String get ob7Title => 'Lege dein tägliches Bildschirmzeit-Ziel fest';
+  String get ob7Title => 'Dein tägliches Bildschirmziel';
 
   @override
   String get ob7Subtitle =>
@@ -951,8 +951,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get cvSkipForNow => 'Erst mal überspringen';
 
   @override
-  String get cvRelateTitle =>
-      'Schon mal kurz zum Handy gegriffen und viel länger geblieben?';
+  String get cvRelateTitle => 'Die Zeit vergessen?';
 
   @override
   String get cvRelateOften => 'Ständig';
@@ -978,7 +977,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get cvRelateCta => 'Das bin ich';
 
   @override
-  String get cvGoalTitle => 'Wofür hättest du gern mehr Zeit?';
+  String get cvGoalTitle => 'Mehr Zeit wofür?';
 
   @override
   String get cvGoalFocus => 'Besserer Fokus';
@@ -1025,7 +1024,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get cvGoalReplyOther => 'Verstanden. Wir richten alles danach aus.';
 
   @override
-  String get cvAppsTitle => 'Welche Apps ziehen dich am meisten rein?';
+  String get cvAppsTitle => 'Welche Apps lenken dich ab?';
 
   @override
   String get cvAppsSubReal =>
@@ -1054,7 +1053,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get cvStTitle => 'Wie lange bist du ungefähr täglich am Handy?';
+  String get cvStTitle => 'Deine tägliche Bildschirmzeit';
 
   @override
   String get cvStSub => 'Eine Schätzung reicht. Das bleibt auf deinem Handy.';
@@ -1121,6 +1120,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String cvPhraseOtherNamed(String thing) {
     return 'mehr Zeit für $thing';
   }
+
+  @override
+  String get cvReflectTitle => 'Das haben wir verstanden';
 
   @override
   String cvReflectApps(String goal, String apps) {
@@ -1484,7 +1486,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get signUpSubtitle => 'Starte mit ruhigeren Bildschirmgewohnheiten.';
 
   @override
-  String get logInTitle => 'Willkommen zurück';
+  String get logInTitle => 'In dein Konto einloggen';
 
   @override
   String get logInSubtitle => 'Melde dich an, um deine Serie fortzusetzen.';
@@ -3306,17 +3308,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String stHow1(String app) {
-    return 'Ganz nebenbei öffnest du $app.';
+    return 'Du öffnest wieder $app';
   }
 
   @override
-  String get stHow2 => 'Du fängst an zu scrollen, aber diesmal …';
+  String get stHow2 => 'Du scrollst los, aber…';
 
   @override
   String get stHow3 => 'Pausey pausiert sie ganz sanft.';
 
   @override
-  String get stHow4 => 'Und erinnert dich, bevor dein Limit erreicht ist.';
+  String get stHow4 => 'Und erinnert vor dem Limit';
 
   @override
   String get stYourApp => 'deine App';
@@ -3328,8 +3330,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get stNudgeGeneric => 'Fast am Tageslimit';
 
   @override
-  String get stPermTitle =>
-      'Damit sich deine Gewohnheiten ändern, braucht Pausey ein paar Berechtigungen.';
+  String get stPermTitle => 'Erlaube ein paar Berechtigungen';
 
   @override
   String get stPermUsageTitle => 'Bildschirmzeit';

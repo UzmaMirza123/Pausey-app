@@ -1,62 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../services/auth_service.dart';
 import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glow_background.dart';
+import '../onboarding/widgets/ob_kit.dart' show ObReveal;
 import 'auth_welcome_screen.dart';
 import 'auth_widgets.dart';
 import 'sign_up_screen.dart';
 
-/// Email log-in, plus Apple/Google and "Forgot password?".
-class LogInScreen extends StatefulWidget {
+/// Log-in screen (from the welcome screen or sign-up): the same single
+/// [LogInForm] as in onboarding, centred.
+class LogInScreen extends StatelessWidget {
   const LogInScreen({super.key});
 
   @override
-  State<LogInScreen> createState() => _LogInScreenState();
-}
-
-class _LogInScreenState extends State<LogInScreen> {
-  final _form = GlobalKey<FormState>();
-  final _email = TextEditingController();
-  final _pass = TextEditingController();
-  String? _busy; // 'email' | 'apple' | 'google'
-  String? _error;
-
-  @override
-  void dispose() {
-    _email.dispose();
-    _pass.dispose();
-    super.dispose();
-  }
-
-  Future<void> _run(String which, Future<void> Function() action) async {
-    FocusScope.of(context).unfocus();
-    setState(() {
-      _busy = which;
-      _error = null;
-    });
-    try {
-      await action();
-      if (mounted) Navigator.of(context).popUntil((r) => r.isFirst);
-    } catch (e) {
-      if (mounted) setState(() => _error = authErrorText(context, e));
-    } finally {
-      if (mounted) setState(() => _busy = null);
-    }
-  }
-
-  void _logIn() {
-    if (!_form.currentState!.validate()) return;
-    _run('email', () => AuthService.instance.logInWithEmail(email: _email.text, password: _pass.text));
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final l = context.l10n;
-    final c = context.colors;
-    final auth = AuthService.instance;
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: GlowBackground(
@@ -65,92 +26,211 @@ class _LogInScreenState extends State<LogInScreen> {
             children: [
               AuthTopBar(onBack: () => Navigator.pop(context), trailing: const ThemeToggleButton()),
               Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 8, AppSpacing.gutter, 24),
-                  child: Form(
-                    key: _form,
-                    child: AutofillGroup(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          EnterUp(child: Text(l.logInTitle, style: AppText.h1.copyWith(color: c.textPrimary))),
-                          const SizedBox(height: 6),
-                          EnterUp(
-                            delay: const Duration(milliseconds: 80),
-                            child: Text(l.logInSubtitle, style: AppText.body.copyWith(color: c.textSecondary)),
-                          ),
-                          const SizedBox(height: 26),
-                          AuthErrorBanner(message: _error),
-                          EnterUp(
-                            delay: const Duration(milliseconds: 140),
-                            child: AuthField(
-                              controller: _email,
-                              label: l.email,
-                              icon: Icons.mail_outline_rounded,
-                              keyboardType: TextInputType.emailAddress,
-                              autofillHints: const [AutofillHints.email],
-                              validator: (v) => validateEmail(context, v),
-                            ),
-                          ),
-                          const SizedBox(height: 14),
-                          EnterUp(
-                            delay: const Duration(milliseconds: 200),
-                            child: AuthField(
-                              controller: _pass,
-                              label: l.password,
-                              icon: Icons.lock_outline_rounded,
-                              obscure: true,
-                              textInputAction: TextInputAction.done,
-                              autofillHints: const [AutofillHints.password],
-                              onSubmitted: (_) => _logIn(),
-                              validator: (v) => (v ?? '').isEmpty ? l.errPasswordShort : null,
-                            ),
-                          ),
-                          Align(
-                            alignment: AlignmentDirectional.centerEnd,
-                            child: TextButton(
-                              onPressed: () => _showReset(context, _email.text),
-                              child: Text(l.forgotPassword, style: AppText.option.copyWith(color: AppPalette.violet)),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          BusyButton(label: l.logIn, busy: _busy == 'email', onPressed: _busy == null ? _logIn : () {}),
-                          const SizedBox(height: 20),
-                          const OrDivider(),
-                          const SizedBox(height: 20),
-                          SocialButton(
-                            kind: SocialKind.apple,
-                            label: l.continueWithApple,
-                            loading: _busy == 'apple',
-                            onPressed: _busy == null ? () => _run('apple', auth.signInWithApple) : null,
-                          ),
-                          const SizedBox(height: 12),
-                          SocialButton(
-                            kind: SocialKind.google,
-                            label: l.continueWithGoogle,
-                            loading: _busy == 'google',
-                            onPressed: _busy == null ? () => _run('google', auth.signInWithGoogle) : null,
-                          ),
-                          const SizedBox(height: 16),
-                          Wrap(
-                            alignment: WrapAlignment.center,
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              Text(l.noAccount, style: AppText.caption.copyWith(fontSize: 14, color: c.textSecondary)),
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pushReplacement(authRoute(const SignUpScreen())),
-                                child: Text(l.signUp, style: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet)),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                child: AuthCentered(
+                  child: LogInForm(
+                    onSignedIn: () => Navigator.of(context).popUntil((r) => r.isFirst),
+                    onSignUp: () => Navigator.of(context).pushReplacement(authRoute(const SignUpScreen())),
                   ),
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Scrolls when needed, otherwise keeps [child] in the middle of the screen.
+class AuthCentered extends StatelessWidget {
+  const AuthCentered({super.key, required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, box) => SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 8, AppSpacing.gutter, 24),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: box.maxHeight - 32),
+        child: Center(
+          child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 480), child: child),
+        ),
+      ),
+    ),
+  );
+}
+
+/// The one log-in form, used in onboarding and on [LogInScreen]: illustration,
+/// email + password, "Forgot password?", Log in, "Don't have an account? Sign up",
+/// and round Google / Apple buttons.
+class LogInForm extends StatefulWidget {
+  const LogInForm({super.key, required this.onSignedIn, required this.onSignUp, this.onBusyChanged});
+
+  /// Called after a successful sign-in.
+  final VoidCallback onSignedIn;
+  final VoidCallback onSignUp;
+  final ValueChanged<bool>? onBusyChanged;
+
+  @override
+  State<LogInForm> createState() => LogInFormState();
+}
+
+class LogInFormState extends State<LogInForm> {
+  final _form = GlobalKey<FormState>();
+  final _email = TextEditingController();
+  final _pass = TextEditingController();
+  String? _busy; // email | google | apple | guest
+  String? _error;
+
+  bool get busy => _busy != null;
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _pass.dispose();
+    super.dispose();
+  }
+
+  /// Runs a sign-in; shows its error in the banner. Also used for "Continue as guest".
+  Future<void> run(String which, Future<void> Function() action) async {
+    FocusScope.of(context).unfocus();
+    setState(() {
+      _busy = which;
+      _error = null;
+    });
+    widget.onBusyChanged?.call(true);
+    try {
+      await action();
+      if (mounted && AuthService.instance.value is! SignedOut) widget.onSignedIn();
+    } catch (e) {
+      if (mounted) setState(() => _error = authErrorText(context, e));
+    } finally {
+      if (mounted) setState(() => _busy = null);
+      widget.onBusyChanged?.call(false);
+    }
+  }
+
+  void _logIn() {
+    if (!_form.currentState!.validate()) return;
+    run('email', () => AuthService.instance.logInWithEmail(email: _email.text, password: _pass.text));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final c = context.colors;
+    final auth = AuthService.instance;
+    return Form(
+      key: _form,
+      child: AutofillGroup(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Center(child: AuthIllustration(art: AuthArt.logIn)),
+            const SizedBox(height: 14),
+            ObReveal(
+              child: Semantics(
+                header: true,
+                child: Text(
+                  l.logInTitle,
+                  textAlign: TextAlign.center,
+                  style: AppText.h1.copyWith(color: c.textPrimary),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            ObReveal(
+              index: 1,
+              child: Text(
+                l.logInSubtitle,
+                textAlign: TextAlign.center,
+                style: AppText.body.copyWith(color: c.textSecondary),
+              ),
+            ),
+            const SizedBox(height: 22),
+            AuthErrorBanner(message: _error),
+            ObReveal(
+              index: 2,
+              child: AuthField(
+                controller: _email,
+                label: l.email,
+                icon: Icons.mail_outline_rounded,
+                keyboardType: TextInputType.emailAddress,
+                autofillHints: const [AutofillHints.email],
+                validator: (v) => validateEmail(context, v),
+              ),
+            ),
+            const SizedBox(height: 14),
+            ObReveal(
+              index: 3,
+              child: AuthField(
+                controller: _pass,
+                label: l.password,
+                icon: Icons.lock_outline_rounded,
+                obscure: true,
+                textInputAction: TextInputAction.done,
+                autofillHints: const [AutofillHints.password],
+                onSubmitted: (_) => _logIn(),
+                validator: (v) => (v ?? '').isEmpty ? l.errPasswordShort : null,
+              ),
+            ),
+            Align(
+              alignment: AlignmentDirectional.centerEnd,
+              child: TextButton(
+                onPressed: () => _showReset(context, _email.text),
+                child: Text(l.forgotPassword, style: AppText.option.copyWith(color: AppPalette.violet)),
+              ),
+            ),
+            const SizedBox(height: 4),
+            ObReveal(
+              index: 4,
+              child: BusyButton(label: l.logIn, busy: _busy == 'email', onPressed: _busy == null ? _logIn : () {}),
+            ),
+            const SizedBox(height: 8),
+            ObReveal(
+              index: 5,
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Text(l.cvNoAccount, style: AppText.rowSub.copyWith(fontSize: 14, color: c.textSecondary)),
+                  TextButton(
+                    onPressed: _busy == null ? widget.onSignUp : null,
+                    style: TextButton.styleFrom(minimumSize: const Size(48, 44)),
+                    child: Text(
+                      l.signUp,
+                      style: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            const ObReveal(index: 6, child: OrDivider()),
+            const SizedBox(height: 18),
+            ObReveal(
+              index: 7,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SocialCircle(
+                    label: l.continueWithGoogle,
+                    busy: _busy == 'google',
+                    onTap: _busy == null ? () => run('google', auth.signInWithGoogle) : null,
+                    child: SvgPicture.asset('assets/svg/google_g.svg', width: 24, height: 24),
+                  ),
+                  const SizedBox(width: 22),
+                  SocialCircle(
+                    label: l.continueWithApple,
+                    busy: _busy == 'apple',
+                    onTap: _busy == null ? () => run('apple', auth.signInWithApple) : null,
+                    child: Icon(Icons.apple, size: 28, color: c.textPrimary),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

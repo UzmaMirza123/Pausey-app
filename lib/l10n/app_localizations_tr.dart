@@ -340,7 +340,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get ob6Others => 'Diğer';
 
   @override
-  String get ob7Title => 'Günlük ekran süresi hedefini belirle';
+  String get ob7Title => 'Günlük ekran hedefin';
 
   @override
   String get ob7Subtitle =>
@@ -938,8 +938,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get cvSkipForNow => 'Şimdilik atla';
 
   @override
-  String get cvRelateTitle =>
-      'Telefonu bir dakikalığına alıp çok daha uzun kaldığınız oldu mu?';
+  String get cvRelateTitle => 'Zamanı unutuyor musun?';
 
   @override
   String get cvRelateOften => 'Sürekli';
@@ -965,7 +964,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get cvRelateCta => 'Bu benim';
 
   @override
-  String get cvGoalTitle => 'Neye daha fazla zaman ayırmak istersiniz?';
+  String get cvGoalTitle => 'Ne için daha çok zaman?';
 
   @override
   String get cvGoalFocus => 'Daha iyi odak';
@@ -1013,7 +1012,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Anlaşıldı. Her şeyi buna göre şekillendireceğiz.';
 
   @override
-  String get cvAppsTitle => 'Sizi en çok hangi uygulamalar içine çekiyor?';
+  String get cvAppsTitle => 'Hangi uygulamalar dikkatini dağıtıyor?';
 
   @override
   String get cvAppsSubReal =>
@@ -1042,7 +1041,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get cvStTitle => 'Günde aşağı yukarı ne kadar telefondasınız?';
+  String get cvStTitle => 'Günlük ekran süren';
 
   @override
   String get cvStSub => 'Tahmin yeterli. Bu bilgi telefonunuzda kalır.';
@@ -1108,6 +1107,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String cvPhraseOtherNamed(String thing) {
     return '$thing için daha fazla zaman';
   }
+
+  @override
+  String get cvReflectTitle => 'Anladığımız şu';
 
   @override
   String cvReflectApps(String goal, String apps) {
@@ -1471,7 +1473,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Daha sakin ekran alışkanlıkları edinmeye başla.';
 
   @override
-  String get logInTitle => 'Tekrar hoş geldin';
+  String get logInTitle => 'Hesabına giriş yap';
 
   @override
   String get logInSubtitle => 'Serine devam etmek için giriş yap.';
@@ -3259,17 +3261,17 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String stHow1(String app) {
-    return 'Farkında olmadan $app uygulamasını açıyorsun.';
+    return 'Yine $app uygulamasını açıyorsun';
   }
 
   @override
-  String get stHow2 => 'Sonra kaydırmaya başlıyorsun ama bu sefer…';
+  String get stHow2 => 'Kaydırmaya başlıyorsun, ama…';
 
   @override
   String get stHow3 => 'Pausey onu nazikçe duraklatır.';
 
   @override
-  String get stHow4 => 'Ve sınırın dolmadan seni uyarır.';
+  String get stHow4 => 'Ve süre dolmadan uyarır';
 
   @override
   String get stYourApp => 'uygulamanı';
@@ -3281,8 +3283,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get stNudgeGeneric => 'Günlük sınırına az kaldı';
 
   @override
-  String get stPermTitle =>
-      'Alışkanlıklarını değiştirmek için Pausey\'nin birkaç izne ihtiyacı var.';
+  String get stPermTitle => 'Birkaç izin ver';
 
   @override
   String get stPermUsageTitle => 'Ekran süresi';

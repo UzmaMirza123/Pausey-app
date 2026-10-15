@@ -334,7 +334,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get ob6Others => '기타';
 
   @override
-  String get ob7Title => '하루 스크린 타임 목표 설정';
+  String get ob7Title => '하루 화면 시간 목표';
 
   @override
   String get ob7Subtitle => '언제든지 변경할 수 있어요. 한도에 가까워지면 알려 드릴게요.';
@@ -923,7 +923,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get cvSkipForNow => '지금은 건너뛰기';
 
   @override
-  String get cvRelateTitle => '잠깐만 보려고 휴대폰을 들었다가 한참 머문 적 있나요?';
+  String get cvRelateTitle => '시간 가는 줄 모르나요?';
 
   @override
   String get cvRelateOften => '항상 그래요';
@@ -947,7 +947,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get cvRelateCta => '딱 제 얘기예요';
 
   @override
-  String get cvGoalTitle => '어떤 일에 시간을 더 쓰고 싶나요?';
+  String get cvGoalTitle => '무엇에 시간을 쓸까요?';
 
   @override
   String get cvGoalFocus => '더 나은 집중';
@@ -989,7 +989,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get cvGoalReplyOther => '알겠어요. 그에 맞춰 준비할게요.';
 
   @override
-  String get cvAppsTitle => '어떤 앱에 가장 많이 빠져드나요?';
+  String get cvAppsTitle => '어떤 앱이 방해되나요?';
 
   @override
   String get cvAppsSubReal => '이 휴대폰에 있는 앱이에요. 원하는 만큼 골라 주세요.';
@@ -1016,7 +1016,7 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get cvStTitle => '하루에 휴대폰을 대략 얼마나 쓰나요?';
+  String get cvStTitle => '하루 화면 사용 시간';
 
   @override
   String get cvStSub => '대략이면 돼요. 이 정보는 휴대폰에만 남아요.';
@@ -1078,6 +1078,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String cvPhraseOtherNamed(String thing) {
     return '$thing에 쓸 시간';
   }
+
+  @override
+  String get cvReflectTitle => '이렇게 이해했어요';
 
   @override
   String cvReflectApps(String goal, String apps) {
@@ -1426,7 +1429,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get signUpSubtitle => '더 차분한 화면 습관을 시작하세요.';
 
   @override
-  String get logInTitle => '다시 오신 것을 환영합니다';
+  String get logInTitle => '계정에 로그인하세요';
 
   @override
   String get logInSubtitle => '로그인하고 연속 기록을 이어가세요.';
@@ -3194,17 +3197,17 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String stHow1(String app) {
-    return '나도 모르게 $app을(를) 열어요.';
+    return '또 $app을(를) 열어요';
   }
 
   @override
-  String get stHow2 => '스크롤을 시작하지만, 이번에는…';
+  String get stHow2 => '스크롤을 시작하지만…';
 
   @override
   String get stHow3 => 'Pausey가 부드럽게 멈춰 줘요.';
 
   @override
-  String get stHow4 => '한도가 끝나기 전에 미리 알려 줘요.';
+  String get stHow4 => '한도 전에 알려줘요';
 
   @override
   String get stYourApp => '자주 쓰는 앱';
@@ -3216,7 +3219,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get stNudgeGeneric => '오늘 한도가 거의 다 됐어요';
 
   @override
-  String get stPermTitle => '습관을 바꾸려면 Pausey에 몇 가지 권한이 필요해요.';
+  String get stPermTitle => '몇 가지 권한을 허용하세요';
 
   @override
   String get stPermUsageTitle => '스크린 타임';

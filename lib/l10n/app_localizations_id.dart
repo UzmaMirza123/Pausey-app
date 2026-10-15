@@ -341,7 +341,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get ob6Others => 'Lainnya';
 
   @override
-  String get ob7Title => 'Tetapkan target waktu layar harian';
+  String get ob7Title => 'Target layar harianmu';
 
   @override
   String get ob7Subtitle =>
@@ -944,8 +944,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get cvSkipForNow => 'Lewati dulu';
 
   @override
-  String get cvRelateTitle =>
-      'Pernah buka ponsel sebentar, tapi malah lama sekali?';
+  String get cvRelateTitle => 'Sering lupa waktu?';
 
   @override
   String get cvRelateOften => 'Sering sekali';
@@ -971,7 +970,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get cvRelateCta => 'Itu saya';
 
   @override
-  String get cvGoalTitle => 'Kamu ingin punya lebih banyak waktu untuk apa?';
+  String get cvGoalTitle => 'Waktu lebih untuk apa?';
 
   @override
   String get cvGoalFocus => 'Fokus lebih baik';
@@ -1019,7 +1018,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get cvGoalReplyOther => 'Oke. Kami sesuaikan semuanya dengan itu.';
 
   @override
-  String get cvAppsTitle => 'Aplikasi mana yang paling sering menyita waktumu?';
+  String get cvAppsTitle => 'Aplikasi mana paling mengganggu?';
 
   @override
   String get cvAppsSubReal =>
@@ -1048,7 +1047,7 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get cvStTitle => 'Kira-kira berapa lama kamu main ponsel setiap hari?';
+  String get cvStTitle => 'Waktu layar harianmu';
 
   @override
   String get cvStSub => 'Perkiraan saja cukup. Ini tetap di ponselmu.';
@@ -1115,6 +1114,9 @@ class AppLocalizationsId extends AppLocalizations {
   String cvPhraseOtherNamed(String thing) {
     return 'lebih banyak waktu untuk $thing';
   }
+
+  @override
+  String get cvReflectTitle => 'Ini yang kami tangkap';
 
   @override
   String cvReflectApps(String goal, String apps) {
@@ -1479,7 +1481,7 @@ class AppLocalizationsId extends AppLocalizations {
       'Mulai bangun kebiasaan layar yang lebih tenang.';
 
   @override
-  String get logInTitle => 'Selamat datang kembali';
+  String get logInTitle => 'Masuk ke akunmu';
 
   @override
   String get logInSubtitle => 'Masuk untuk melanjutkan streak-mu.';
@@ -3270,17 +3272,17 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String stHow1(String app) {
-    return 'Tanpa sadar, kamu membuka $app.';
+    return 'Kamu buka $app lagi';
   }
 
   @override
-  String get stHow2 => 'Lalu kamu mulai menggulir, tapi kali ini…';
+  String get stHow2 => 'Kamu mulai scroll, tapi…';
 
   @override
   String get stHow3 => 'Pausey menjedanya dengan lembut.';
 
   @override
-  String get stHow4 => 'Dan mengingatkanmu sebelum batasmu habis.';
+  String get stHow4 => 'Dan mengingatkan sebelum batas';
 
   @override
   String get stYourApp => 'aplikasimu';
@@ -3292,8 +3294,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get stNudgeGeneric => 'Hampir mencapai batas harianmu';
 
   @override
-  String get stPermTitle =>
-      'Untuk mengubah kebiasaanmu, Pausey perlu beberapa izin.';
+  String get stPermTitle => 'Izinkan beberapa akses';
 
   @override
   String get stPermUsageTitle => 'Waktu layar';

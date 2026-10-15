@@ -339,7 +339,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ob6Others => 'Другое';
 
   @override
-  String get ob7Title => 'Задайте дневную цель экранного времени';
+  String get ob7Title => 'Дневная цель экранного времени';
 
   @override
   String get ob7Subtitle =>
@@ -940,8 +940,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get cvSkipForNow => 'Пропустить пока';
 
   @override
-  String get cvRelateTitle =>
-      'Бывало, что брали телефон на минутку, а застревали надолго?';
+  String get cvRelateTitle => 'Теряете счёт времени?';
 
   @override
   String get cvRelateOften => 'Постоянно';
@@ -967,7 +966,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get cvRelateCta => 'Это про меня';
 
   @override
-  String get cvGoalTitle => 'На что вам хотелось бы больше времени?';
+  String get cvGoalTitle => 'Больше времени на что?';
 
   @override
   String get cvGoalFocus => 'Больше концентрации';
@@ -1013,7 +1012,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get cvGoalReplyOther => 'Понятно. Подстроим всё под это.';
 
   @override
-  String get cvAppsTitle => 'Какие приложения затягивают вас сильнее всего?';
+  String get cvAppsTitle => 'Какие приложения отвлекают?';
 
   @override
   String get cvAppsSubReal =>
@@ -1042,8 +1041,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get cvStTitle =>
-      'Сколько примерно времени в день вы проводите в телефоне?';
+  String get cvStTitle => 'Ваше экранное время в день';
 
   @override
   String get cvStSub => 'Можно примерно. Это останется на вашем телефоне.';
@@ -1109,6 +1107,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String cvPhraseOtherNamed(String thing) {
     return 'больше времени на $thing';
   }
+
+  @override
+  String get cvReflectTitle => 'Вот что мы поняли';
 
   @override
   String cvReflectApps(String goal, String apps) {
@@ -1470,7 +1471,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get signUpSubtitle => 'Начните формировать спокойные привычки.';
 
   @override
-  String get logInTitle => 'С возвращением';
+  String get logInTitle => 'Войдите в аккаунт';
 
   @override
   String get logInSubtitle => 'Войдите, чтобы продолжить серию.';
@@ -3284,17 +3285,17 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String stHow1(String app) {
-    return 'Сами того не замечая, вы открываете $app.';
+    return 'Вы снова открываете $app';
   }
 
   @override
-  String get stHow2 => 'Вы начинаете листать ленту, но в этот раз…';
+  String get stHow2 => 'Вы листаете ленту, но…';
 
   @override
   String get stHow3 => 'Pausey мягко ставит его на паузу.';
 
   @override
-  String get stHow4 => 'И напоминает, пока лимит ещё не исчерпан.';
+  String get stHow4 => 'И напомнит до лимита';
 
   @override
   String get stYourApp => 'своё приложение';
@@ -3306,8 +3307,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get stNudgeGeneric => 'Дневной лимит почти исчерпан';
 
   @override
-  String get stPermTitle =>
-      'Чтобы изменить привычки, Pausey нужно несколько разрешений.';
+  String get stPermTitle => 'Дайте пару разрешений';
 
   @override
   String get stPermUsageTitle => 'Экранное время';
