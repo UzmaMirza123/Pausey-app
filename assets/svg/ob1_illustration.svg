@@ -6,13 +6,13 @@
 <g id="SVG">
 <g id="Group" opacity="0.55">
 <g id="Vector">
-<path d="M12 59H40C44.4153 59 48 62.5847 48 67V79C48 83.4153 44.4153 87 40 87H12C7.58468 87 4 83.4153 4 79V67C4 62.5847 7.58468 59 12 59Z" fill="#FF6B6B" fill-opacity="0.2"/>
-<path d="M12 59H40C44.4153 59 48 62.5847 48 67V79C48 83.4153 44.4153 87 40 87H12C7.58468 87 4 83.4153 4 79V67C4 62.5847 7.58468 59 12 59V59" stroke="#FF6B6B" stroke-opacity="0.35"/>
+<path d="M12 59H40C44.4153 59 48 62.5847 48 67V79C48 83.4153 44.4153 87 40 87H12C7.58468 87 4 83.4153 4 79V67C4 62.5847 7.58468 59 12 59Z" fill="#A78BFA" fill-opacity="0.2"/>
+<path d="M12 59H40C44.4153 59 48 62.5847 48 67V79C48 83.4153 44.4153 87 40 87H12C7.58468 87 4 83.4153 4 79V67C4 62.5847 7.58468 59 12 59V59" stroke="#A78BFA" stroke-opacity="0.35"/>
 </g>
-<path id="Vector_2" d="M10 73C10 76.3115 12.6885 79 16 79C19.3115 79 22 76.3115 22 73C22 69.6885 19.3115 67 16 67C12.6885 67 10 69.6885 10 73Z" fill="#FF6B6B" fill-opacity="0.5"/>
+<path id="Vector_2" d="M10 73C10 76.3115 12.6885 79 16 79C19.3115 79 22 76.3115 22 73C22 69.6885 19.3115 67 16 67C12.6885 67 10 69.6885 10 73Z" fill="#A78BFA" fill-opacity="0.5"/>
 <path id="Vector_3" d="M27.5 67H40.5C41.3279 67 42 67.6721 42 68.5C42 69.3279 41.3279 70 40.5 70H27.5C26.6721 70 26 69.3279 26 68.5C26 67.6721 26.6721 67 27.5 67V67Z" fill="white" fill-opacity="0.3"/>
 <path id="Vector_4" d="M27.5 73H35.5C36.3279 73 37 73.6721 37 74.5C37 75.3279 36.3279 76 35.5 76H27.5C26.6721 76 26 75.3279 26 74.5C26 73.6721 26.6721 73 27.5 73V73Z" fill="white" fill-opacity="0.2"/>
-<path id="Vector_5" d="M4 59L48 87" stroke="#FF6B6B" stroke-opacity="0.6" stroke-width="1.5" stroke-linecap="round"/>
+<path id="Vector_5" d="M4 59L48 87" stroke="#A78BFA" stroke-opacity="0.6" stroke-width="1.5" stroke-linecap="round"/>
 </g>
 <g id="Group_2" opacity="0.5">
 <g id="Vector_6">

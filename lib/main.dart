@@ -9,7 +9,9 @@ import 'screens/auth/auth_welcome_screen.dart';
 import 'data/app_repo.dart';
 import 'data/restrictions/restriction_repo.dart';
 import 'screens/shell/app_shell.dart';
+import 'screens/onboarding/intro_flow.dart';
 import 'screens/onboarding/onboarding_flow.dart';
+import 'screens/onboarding/onboarding_state.dart';
 import 'screens/splash_screen.dart';
 import 'services/auth_service.dart';
 import 'services/installed_apps.dart';
@@ -119,14 +121,20 @@ class _Root extends StatefulWidget {
   State<_Root> createState() => _RootState();
 }
 
-enum _Stage { splash, onboarding, app }
+enum _Stage { splash, intro, onboarding, app }
 
 class _RootState extends State<_Root> {
   _Stage _stage = _Stage.splash;
 
   void _afterSplash() => setState(() {
     final signedIn = AuthService.instance.value is! SignedOut;
-    _stage = (signedIn || LocalStore.instance.onboardingDone) ? _Stage.app : _Stage.onboarding;
+    if (signedIn || LocalStore.instance.onboardingDone) {
+      _stage = _Stage.app;
+    } else {
+      // The 4 intro screens come first, unless the user already started the questions (resume there).
+      OnboardingState.instance.load();
+      _stage = OnboardingState.instance.stage > 0 ? _Stage.onboarding : _Stage.intro;
+    }
   });
 
   Future<void> _afterOnboarding(ObFirstAction? action) async {
@@ -140,6 +148,7 @@ class _RootState extends State<_Root> {
   Widget build(BuildContext context) {
     final Widget child = switch (_stage) {
       _Stage.splash => SplashScreen(onFinished: _afterSplash),
+      _Stage.intro => IntroFlow(onFinished: () => setState(() => _stage = _Stage.onboarding)),
       _Stage.onboarding => OnboardingFlow(onFinished: _afterOnboarding),
       _Stage.app => ValueListenableBuilder<Session>(
         valueListenable: AuthService.instance,
