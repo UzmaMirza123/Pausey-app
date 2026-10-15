@@ -44,7 +44,11 @@ void main() {
     t.view.devicePixelRatio = 3;
     addTearDown(t.view.reset);
     ObFirstAction? result;
-    await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (a) => result = a)));
+    var finished = false;
+    await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (a) {
+      result = a;
+      finished = true;
+    })));
     await t.pumpAndSettle();
 
     // No welcome screen any more: the first question comes straight away.
@@ -106,8 +110,13 @@ void main() {
     expect(AuthService.instance.value, isA<GuestSession>());
     expect(AuthService.instance.value.displayName, 'Uzma');
 
-    await _tap(t, 'Start my first focus session');
-    expect(result, ObFirstAction.focus);
+    // "You're all set!" with the user's real goal (3h) and app count (2).
+    expect(find.text("You're all set!"), findsOneWidget);
+    expect(find.text('3h'), findsOneWidget);
+    expect(find.text('2'), findsOneWidget);
+    await _tap(t, 'Enter Pausey');
+    expect(finished, isTrue);
+    expect(result, isNull); // opens Home
     expect(AppRepo.instance.apps.map((a) => a.id), ['Instagram', 'TikTok']);
     expect(AppRepo.instance.apps.every((a) => a.locked && a.scheduled), isTrue);
     expect(AppRepo.instance.schedule.startMinutes, 22 * 60);

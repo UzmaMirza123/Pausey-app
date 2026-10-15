@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
 import '../../widgets/onboarding_nav.dart';
 import 'onboarding_7_screen.dart';
+import 'onboarding_9_screen.dart';
 import 'onboarding_state.dart';
 import 'stages/about_you.dart';
 import 'stages/set_up.dart';
@@ -85,11 +86,13 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     super.dispose();
   }
 
-  Future<void> _finish(ObFirstAction action) async {
+  /// "Enter Pausey": apply the plan and open the app on Home.
+  Future<void> _enter() async {
     await _s.applyPlan();
     await _s.reset();
-    widget.onFinished?.call(action);
+    widget.onFinished?.call(null);
   }
+
 
   Widget _stage(int i) => switch (i) {
         1 => RelateStage(onNext: _next),
@@ -102,7 +105,13 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         7 => OnboardingPageScope(index: 1, controller: _dialPager, onBack: _back, child: Onboarding7Screen(onNext: _next, onSkip: _next)),
         8 => PermissionsStage(onNext: _next),
         9 => AccountStage(onNext: _next),
-        _ => ReadyStage(onFinish: _finish),
+        // "You're all set!" (the original last onboarding screen) in place of "Your first step starts here".
+        _ => OnboardingPageScope(
+            index: 2,
+            controller: _dialPager,
+            onBack: _back,
+            child: Onboarding9Screen(onNext: _enter, onSkip: () => _go(OnboardingFlow.firstStage)),
+          ),
       };
 
   @override
