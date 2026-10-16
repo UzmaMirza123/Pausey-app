@@ -11,8 +11,9 @@ import '../../block/widgets/applock_ui.dart' show InstalledIcon;
 import '../onboarding_state.dart';
 import '../widgets/ob_kit.dart';
 import '../widgets/ob_text_motion.dart';
-import '../widgets/ob_time_life.dart';
+import '../widgets/ob_art.dart';
 import '../widgets/story_phone.dart';
+import 'about_you.dart' show appsList;
 
 OnboardingState get _s => OnboardingState.instance;
 
@@ -38,55 +39,50 @@ String screenTimeLabel(AppLocalizations l, ObScreenTime t) => switch (t) {
 // Stage 6 — Reflection built only from the answers
 // -----------------------------------------------------------------------------
 
-/// "Your life in dots": the share of the next 50 waking years the phone could
-/// take at today's pace, and a hold-to-take-them-back moment.
-class ReflectionStage extends StatefulWidget {
+/// What Pausey understood, built only from the answers.
+class ReflectionStage extends StatelessWidget {
   const ReflectionStage({super.key, required this.onNext});
   final VoidCallback onNext;
-
-  /// Waking hours in a day, and the years ahead the grid stands for.
-  static const wakingHours = 16.0, yearsAhead = 50;
-
-  @override
-  State<ReflectionStage> createState() => _ReflectionStageState();
-}
-
-class _ReflectionStageState extends State<ReflectionStage> {
-  bool _reclaimed = false;
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final hours = _s.dailyHours.clamp(0.5, ReflectionStage.wakingHours);
-    final years = hours / 24 * ReflectionStage.yearsAhead;
-    final yearsText = years >= 10 ? years.round().toString() : years.toStringAsFixed(1);
+    final c = context.colors;
+    final phrase = goalPhrase(l, _s);
+    final headline = _s.apps.isEmpty ? l.cvReflectNoApps(phrase) : l.cvReflectApps(phrase, appsList(l, _s.apps));
+    final measured = _s.measuredMinutes;
+    final st = measured != null
+        ? l.cvReflectMeasured(fmtMinutes(measured, h: l.unitH, m: l.unitM))
+        : (_s.screenTime != null && _s.screenTime != ObScreenTime.notSure ? l.cvReflectEstimate(screenTimeLabel(l, _s.screenTime!)) : null);
     return ObPage(
       center: true,
       primaryLabel: l.cvShowMeHow,
-      onPrimary: widget.onNext,
+      onPrimary: onNext,
       children: [
-        ObTitle(l.cvLifeTitle(yearsText), align: TextAlign.center),
-        ObFadeUp(
-          delay: const Duration(milliseconds: 420),
-          child: ObSubtitle(l.cvLifeSub(fmtMinutes((hours * 60).round(), h: l.unitH, m: l.unitM)), align: TextAlign.center),
-        ),
-        const SizedBox(height: 22),
-        ObFadeUp(
-          delay: const Duration(milliseconds: 500),
-          child: LifeReclaim(
-            phoneFraction: hours / ReflectionStage.wakingHours,
-            holdLabel: l.cvLifeHold,
-            doneLabel: l.cvLifeDone,
-            reclaimed: _reclaimed,
-            onReclaimed: () => setState(() => _reclaimed = true),
+        const ObArt(ObArtKind.reflect, maxHeight: 230),
+        const SizedBox(height: 12),
+        // What Pausey understood writes itself in, word by word.
+        ObRevealText(headline, style: AppText.cardTitle.copyWith(fontSize: 19, height: 1.35, color: c.textPrimary)),
+        if (st != null) ...[
+          const SizedBox(height: 16),
+          ObFadeUp(
+            delay: const Duration(milliseconds: 700),
+            child: PCard(
+              child: Row(children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(color: AppPalette.accent.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(AppRadius.icon)),
+                  child: const Icon(Icons.bar_chart_rounded, color: AppPalette.accent),
+                ),
+                const SizedBox(width: 12),
+                Expanded(child: Text(st, style: AppText.rowTitle.copyWith(color: c.textPrimary))),
+              ]),
+            ),
           ),
-        ),
-        const SizedBox(height: 16),
-        AnimatedOpacity(
-          opacity: _reclaimed ? 1 : 0,
-          duration: ObMotion.of(context, ObMotion.content),
-          child: Text(l.cvReflectHelp, textAlign: TextAlign.center, style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w500, height: 1.45, color: context.colors.textSecondary)),
-        ),
+        ],
+        const SizedBox(height: 14),
+        ObFadeUp(delay: const Duration(milliseconds: 1000), child: ObReply(l.cvReflectHelp)),
       ],
     );
   }

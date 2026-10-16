@@ -1261,7 +1261,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cvPermSub =>
-      'Masing-masing membuka pengaturan Android. Aktifkan di sana, lalu kembali.';
+      'Ini membantu Pausey bekerja dan memberimu pengalaman terbaik.';
 
   @override
   String get cvPermUnsupported =>
@@ -1400,36 +1400,14 @@ class AppLocalizationsId extends AppLocalizations {
   String get cvFinishLimits => 'Selesaikan atur batas aplikasi';
 
   @override
-  String cvPermCount(int done, int total) {
-    return '$done dari $total diizinkan';
-  }
+  String get cvJourneyTitle => 'Mulai perjalanan Pausey-mu';
 
   @override
-  String get cvAppsTrayEmpty => 'Ketuk aplikasi yang menarikmu';
+  String get cvJourneySub =>
+      'Buat akun untuk menyinkronkan progresmu, atau lanjut sebagai tamu.';
 
   @override
-  String cvAppsTray(int count) {
-    return 'Aplikasi untuk dijeda: $count';
-  }
-
-  @override
-  String cvLifeTitle(String years) {
-    return '$years tahun di ponsel';
-  }
-
-  @override
-  String cvLifeSub(String time) {
-    return 'Dengan $time sehari, selama 50 tahun ke depan. Tiap titik adalah bagian dari waktu sadarmu.';
-  }
-
-  @override
-  String get cvLifeHold => 'Tahan untuk mengambilnya kembali';
-
-  @override
-  String get cvLifeDone => 'Sudah kembali. Ayo jaga.';
-
-  @override
-  String get cvPermAllowed => 'diizinkan';
+  String get cvOrContinueWith => 'atau lanjut dengan';
 
   @override
   String get appName => 'Pausey';

@@ -1217,7 +1217,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cvPermTitle => 'いくつかの許可が必要です';
 
   @override
-  String get cvPermSub => 'それぞれ Android の設定が開きます。そこでオンにして戻ってきてください。';
+  String get cvPermSub => 'Pauseyがしっかり働き、最高の体験を届けるために使います。';
 
   @override
   String get cvPermUnsupported =>
@@ -1344,36 +1344,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cvFinishLimits => 'アプリの制限設定を完了する';
 
   @override
-  String cvPermCount(int done, int total) {
-    return '$total件中$done件を許可';
-  }
+  String get cvJourneyTitle => 'Pauseyの旅をはじめよう';
 
   @override
-  String get cvAppsTrayEmpty => 'つい開いてしまうアプリをタップ';
+  String get cvJourneySub => 'アカウントを作って進み具合を同期するか、ゲストで続けましょう。';
 
   @override
-  String cvAppsTray(int count) {
-    return '一時停止するアプリ：$count';
-  }
-
-  @override
-  String cvLifeTitle(String years) {
-    return 'スマホに$years年';
-  }
-
-  @override
-  String cvLifeSub(String time) {
-    return '1日$timeで、これからの50年。1つの点が起きている時間のひとかけらです。';
-  }
-
-  @override
-  String get cvLifeHold => '長押しして取り戻そう';
-
-  @override
-  String get cvLifeDone => '取り戻しました。守っていきましょう。';
-
-  @override
-  String get cvPermAllowed => '許可済み';
+  String get cvOrContinueWith => 'または次で続ける';
 
   @override
   String get appName => 'Pausey';

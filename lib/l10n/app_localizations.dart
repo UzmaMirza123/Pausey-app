@@ -2353,7 +2353,7 @@ abstract class AppLocalizations {
   /// No description provided for @cvPermSub.
   ///
   /// In en, this message translates to:
-  /// **'Each one opens Android settings. Turn it on there, then come back.'**
+  /// **'These help Pausey work its magic and give you the best experience.'**
   String get cvPermSub;
 
   /// No description provided for @cvPermUnsupported.
@@ -2584,53 +2584,23 @@ abstract class AppLocalizations {
   /// **'Finish setting up app limits'**
   String get cvFinishLimits;
 
-  /// No description provided for @cvPermCount.
+  /// No description provided for @cvJourneyTitle.
   ///
   /// In en, this message translates to:
-  /// **'{done} of {total} allowed'**
-  String cvPermCount(int done, int total);
+  /// **'Start your Pausey journey'**
+  String get cvJourneyTitle;
 
-  /// No description provided for @cvAppsTrayEmpty.
+  /// No description provided for @cvJourneySub.
   ///
   /// In en, this message translates to:
-  /// **'Tap the apps that pull you in'**
-  String get cvAppsTrayEmpty;
+  /// **'Create an account to sync your progress, or continue as a guest.'**
+  String get cvJourneySub;
 
-  /// No description provided for @cvAppsTray.
+  /// No description provided for @cvOrContinueWith.
   ///
   /// In en, this message translates to:
-  /// **'Apps to pause: {count}'**
-  String cvAppsTray(int count);
-
-  /// No description provided for @cvLifeTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'{years} years on your phone'**
-  String cvLifeTitle(String years);
-
-  /// No description provided for @cvLifeSub.
-  ///
-  /// In en, this message translates to:
-  /// **'At {time} a day, over the next 50 years. Each dot is a slice of your waking life.'**
-  String cvLifeSub(String time);
-
-  /// No description provided for @cvLifeHold.
-  ///
-  /// In en, this message translates to:
-  /// **'Hold to take them back'**
-  String get cvLifeHold;
-
-  /// No description provided for @cvLifeDone.
-  ///
-  /// In en, this message translates to:
-  /// **'Taken back. Let\'s protect it.'**
-  String get cvLifeDone;
-
-  /// No description provided for @cvPermAllowed.
-  ///
-  /// In en, this message translates to:
-  /// **'allowed'**
-  String get cvPermAllowed;
+  /// **'or continue with'**
+  String get cvOrContinueWith;
 
   /// No description provided for @appName.
   ///

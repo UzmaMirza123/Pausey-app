@@ -1271,7 +1271,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get cvPermSub =>
-      'Cada uno abre los ajustes de Android. Actívalo ahí y vuelve.';
+      'Ayudan a Pausey a hacer su magia y darte la mejor experiencia.';
 
   @override
   String get cvPermUnsupported =>
@@ -1407,36 +1407,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cvFinishLimits => 'Terminar de configurar límites';
 
   @override
-  String cvPermCount(int done, int total) {
-    return '$done de $total permitidos';
-  }
+  String get cvJourneyTitle => 'Empieza tu viaje con Pausey';
 
   @override
-  String get cvAppsTrayEmpty => 'Toca las apps que te atrapan';
+  String get cvJourneySub =>
+      'Crea una cuenta para sincronizar tu progreso o sigue como invitado.';
 
   @override
-  String cvAppsTray(int count) {
-    return 'Apps para pausar: $count';
-  }
-
-  @override
-  String cvLifeTitle(String years) {
-    return '$years años en tu teléfono';
-  }
-
-  @override
-  String cvLifeSub(String time) {
-    return 'A $time al día, en los próximos 50 años. Cada punto es parte de tu vida despierto.';
-  }
-
-  @override
-  String get cvLifeHold => 'Mantén pulsado para recuperarlos';
-
-  @override
-  String get cvLifeDone => 'Recuperado. Vamos a protegerlo.';
-
-  @override
-  String get cvPermAllowed => 'permitidos';
+  String get cvOrContinueWith => 'o continúa con';
 
   @override
   String get appName => 'Pausey';

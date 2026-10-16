@@ -7,7 +7,6 @@ import 'package:pausey/data/restrictions/restriction_repo.dart';
 import 'package:pausey/main.dart';
 import 'package:pausey/screens/onboarding/onboarding_flow.dart';
 import 'package:pausey/screens/onboarding/onboarding_state.dart';
-import 'package:pausey/screens/onboarding/widgets/ob_time_life.dart';
 import 'package:pausey/services/auth_service.dart';
 import 'package:pausey/services/local_store.dart';
 import 'package:pausey/widgets/onboarding_nav.dart';
@@ -58,7 +57,6 @@ void main() {
     // with its first answer already selected.
     expect(find.text('Your time is yours.'), findsNothing);
     expect(OnboardingState.instance.relate, ObRelate.sometimes);
-    // Tapping a stop under the slider picks it (the orb speeds up).
     await _tap(t, 'All the time');
     expect(OnboardingState.instance.relate, ObRelate.often);
     expect(find.text("You're not alone. Phones are designed to keep us there."), findsOneWidget);
@@ -72,20 +70,16 @@ void main() {
     expect(OnboardingState.instance.apps.map((a) => a.id), ['Instagram']);
     await _tap(t, 'TikTok');
     expect(OnboardingState.instance.apps.map((a) => a.id), ['Instagram', 'TikTok']);
-    expect(find.text('Apps to pause: 2'), findsOneWidget);
+    expect(find.text("Noted: Instagram and TikTok. We'll start with these."), findsOneWidget);
     await _tap(t, 'Next');
 
-    // Screen time: drag the ruler from 3h up past 6h.
-    await t.drag(find.byType(TimeRuler), const Offset(-220, 0));
-    for (var i = 0; i < 8; i++) {
-      await t.pump(const Duration(milliseconds: 200));
-    }
+    await _tap(t, 'More than 6 hours');
     expect(OnboardingState.instance.screenTime, ObScreenTime.over6);
     await _tap(t, 'Next');
 
-    // Reflection: the years the phone could take, from the real answer.
-    expect(find.bySemanticsLabel(RegExp(r'years on your phone')), findsOneWidget);
-    expect(find.text('Hold to take them back'), findsWidgets);
+    // Reflection uses the real answers.
+    expect(find.bySemanticsLabel('You want better sleep, but Instagram and TikTok keep pulling you in.'), findsOneWidget);
+    expect(find.text('About More than 6 hours a day (your estimate)'), findsOneWidget);
     await _tap(t, 'Show me how');
 
     // "How it works" story: 4 beats, the user's first app in the headline.
@@ -111,19 +105,16 @@ void main() {
 
     await _tap(t, 'Continue'); // permissions (not Android in tests)
 
-    // Log-in screen: email, sign up link, Google/Apple circles, then guest.
-    expect(find.text("Don't have an account?"), findsOneWidget);
-    expect(find.bySemanticsLabel('Continue with Google'), findsOneWidget);
-    expect(find.bySemanticsLabel('Continue with Apple'), findsOneWidget);
-    expect(find.text('Log into your account'), findsOneWidget);
-    // Sign up → "Log in" comes back to this same single form (no second log-in screen).
-    await _tap(t, 'Sign up');
-    expect(find.text('Create your account'), findsOneWidget);
+    // "Start your Pausey journey": Google, Apple, guest, and links to log in / sign up.
+    expect(find.bySemanticsLabel('Start your Pausey journey'), findsOneWidget);
+    expect(find.text('Continue with Google'), findsOneWidget);
+    expect(find.text('Continue with Apple'), findsOneWidget);
+    // Log in opens its own screen (Google | Apple side by side, guest option).
     await _tap(t, 'Log in');
-    await t.pump(const Duration(milliseconds: 600));
-    expect(find.text('Create your account'), findsNothing);
     expect(find.text('Log into your account'), findsOneWidget);
-    expect(find.text('Continue with Google'), findsNothing); // only the round buttons
+    expect(find.text('or continue with'), findsOneWidget);
+    expect(find.bySemanticsLabel('Continue with Google'), findsOneWidget);
+    // Guest from the log-in screen closes it and asks for a name.
     await _tap(t, 'Continue as guest');
     // Guest is asked what to call them ("Your name" field, no "optional").
     expect(find.text('What should we call you?'), findsWidgets);

@@ -7,10 +7,11 @@ import '../../../utils/app_theme.dart';
 import '../../../utils/l10n.dart';
 import '../../../widgets/common.dart';
 import '../../../widgets/ui_kit.dart';
-import '../../auth/log_in_screen.dart' show LogInForm, LogInFormState;
+import '../../auth/auth_widgets.dart';
+import '../../auth/log_in_screen.dart' show LogInScreen;
 import '../../auth/sign_up_screen.dart';
 import '../onboarding_state.dart';
-import '../widgets/ob_clean_kit.dart';
+import '../widgets/ob_art.dart';
 import '../widgets/ob_kit.dart';
 import '../widgets/ob_text_motion.dart';
 import 'about_you.dart' show appsList;
@@ -69,8 +70,6 @@ class PermissionsStage extends StatelessWidget {
       builder: (context, _) {
         final st = repo.status;
         final strict = _strictMakers.any(st.manufacturer.contains);
-        // Same order as the hero's bubbles: usage, overlay, notifications, accessibility (+ battery).
-        final states = [st.usageAccess, st.overlay, st.notifications, st.accessibility, if (strict) st.batteryUnrestricted];
         var n = 0;
         Widget card({required IconData icon, required String title, required String why, required bool on, required VoidCallback onAsk, bool optional = false}) =>
             ObFadeUp(
@@ -83,16 +82,16 @@ class PermissionsStage extends StatelessWidget {
           primaryLabel: st.canEnforce || !st.supported ? l.continueLabel : l.cvContinueAnyway,
           onPrimary: onNext,
           children: [
-            // Same order as the question screens: hero → title → subtitle → content.
-            ObFadeUp(child: Center(child: PermissionRing(states: st.supported ? states : [for (final _ in states) false], centerLabel: l.cvPermAllowed))),
-            const SizedBox(height: 12),
+            // Same order as the question screens: illustration → title → subtitle → content.
+            const ObArt(ObArtKind.perm),
+            const SizedBox(height: 10),
             ObTitle(l.stPermTitle, align: TextAlign.center),
             ObFadeUp(
               delay: const Duration(milliseconds: 420),
-              child: ObSubtitle(st.supported ? l.cvPermPrivacy : l.cvPermUnsupported, align: TextAlign.center),
+              child: ObSubtitle(st.supported ? l.cvPermSub : l.cvPermUnsupported, align: TextAlign.center),
             ),
             if (st.supported) ...[
-              const SizedBox(height: 22),
+              const SizedBox(height: 20),
               card(icon: Icons.hourglass_bottom_rounded, title: l.stPermUsageTitle, why: l.stPermUsageWhy, on: st.usageAccess, onAsk: bridge.openUsageAccessSettings),
               card(icon: Icons.layers_rounded, title: l.stPermOverlayTitle, why: l.stPermOverlayWhy, on: st.overlay, onAsk: bridge.openOverlaySettings),
               card(icon: Icons.notifications_none_rounded, title: l.stPermNotifTitle, why: l.stPermNotifWhy, on: st.notifications, onAsk: _askNotifications),
@@ -107,6 +106,23 @@ class PermissionsStage extends StatelessWidget {
               ),
               if (strict)
                 card(icon: Icons.battery_saver_rounded, title: l.cvPermBatteryTitle, why: l.cvPermBatteryWhy, on: st.batteryUnrestricted, onAsk: bridge.openBatterySettings, optional: true),
+              // Privacy promise at the end, as its own soft card.
+              ObFadeUp(
+                delay: const Duration(milliseconds: 600),
+                index: n + 1,
+                child: Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: AppPalette.accent.withValues(alpha: context.isDark ? 0.14 : 0.07),
+                    borderRadius: BorderRadius.circular(AppRadius.tile),
+                  ),
+                  child: Row(children: [
+                    const Icon(Icons.lock_outline_rounded, size: 20, color: AppPalette.accent),
+                    const SizedBox(width: 10),
+                    Expanded(child: Text(l.cvPermPrivacy, style: AppText.rowSub.copyWith(height: 1.4, color: c.textSecondary))),
+                  ]),
+                ),
+              ),
             ],
           ],
         );
@@ -247,6 +263,8 @@ class _AccessibilityWhyDialog extends StatelessWidget {
 // Stage 10 — Log in (email), sign up, Google / Apple, or continue as guest
 // -----------------------------------------------------------------------------
 
+/// "Start your Pausey journey": Google, Apple or guest, plus links to log in or
+/// sign up (each opens its own screen and comes back here when done).
 class AccountStage extends StatefulWidget {
   const AccountStage({super.key, required this.onNext});
   final VoidCallback onNext;
@@ -256,13 +274,22 @@ class AccountStage extends StatefulWidget {
 }
 
 class _AccountStageState extends State<AccountStage> {
-  final _login = GlobalKey<LogInFormState>();
-  bool _busy = false;
+  String? _busy; // google | apple | guest
+  String? _error;
 
-  /// "Don't have an account? Sign up": its "Log in" link comes back to this same form.
-  Future<void> _signUp() async {
-    await pushUntilSignedIn(context, const SignUpScreen(backToLogIn: true));
-    if (mounted && AuthService.instance.value is! SignedOut) widget.onNext();
+  Future<void> _run(String which, Future<void> Function() action) async {
+    setState(() {
+      _busy = which;
+      _error = null;
+    });
+    try {
+      await action();
+      if (mounted && AuthService.instance.value is! SignedOut) widget.onNext();
+    } catch (e) {
+      if (mounted) setState(() => _error = authErrorText(context, e));
+    } finally {
+      if (mounted) setState(() => _busy = null);
+    }
   }
 
   /// "Continue as guest" first asks what to call the user.
@@ -270,25 +297,76 @@ class _AccountStageState extends State<AccountStage> {
     final name = await _askName(context);
     if (name == null || !mounted) return;
     _s.update((s) => s.name = name);
-    await _login.currentState?.run('guest', () => AuthService.instance.continueAsGuest(name: name));
+    await _run('guest', () => AuthService.instance.continueAsGuest(name: name));
+  }
+
+  Future<void> _open(Widget page) async {
+    await pushUntilSignedIn(context, page);
+    if (mounted && AuthService.instance.value is! SignedOut) widget.onNext();
   }
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
+    final c = context.colors;
+    final auth = AuthService.instance;
+    final free = _busy == null;
+    Widget link(String text, VoidCallback onTap) => TextButton(
+          onPressed: free ? onTap : null,
+          style: TextButton.styleFrom(minimumSize: const Size(48, 44), padding: const EdgeInsets.symmetric(horizontal: 10)),
+          child: Text(text, style: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet)),
+        );
     return ObPage(
       center: true,
-      primaryLabel: l.cvContinueGuest,
-      showArrow: false,
-      onPrimary: _busy ? null : _guest,
+      primaryLabel: l.continueLabel,
+      onPrimary: free ? _guest : null,
       children: [
-        LogInForm(
-          key: _login,
-          onSignedIn: widget.onNext,
-          onSignUp: _signUp,
-          onBusyChanged: (b) {
-            if (mounted) setState(() => _busy = b);
-          },
+        const ObArt(ObArtKind.journey),
+        const SizedBox(height: 10),
+        ObTitle(l.cvJourneyTitle, align: TextAlign.center),
+        ObFadeUp(delay: const Duration(milliseconds: 400), child: ObSubtitle(l.cvJourneySub, align: TextAlign.center)),
+        const SizedBox(height: 20),
+        AuthErrorBanner(message: _error),
+        ObFadeUp(
+          delay: const Duration(milliseconds: 500),
+          child: SocialButton(kind: SocialKind.google, label: l.continueWithGoogle, loading: _busy == 'google', onPressed: free ? () => _run('google', auth.signInWithGoogle) : null),
+        ),
+        const SizedBox(height: 12),
+        ObFadeUp(
+          delay: const Duration(milliseconds: 500),
+          index: 1,
+          child: SocialButton(kind: SocialKind.apple, label: l.continueWithApple, loading: _busy == 'apple', onPressed: free ? () => _run('apple', auth.signInWithApple) : null),
+        ),
+        const SizedBox(height: 12),
+        ObFadeUp(
+          delay: const Duration(milliseconds: 500),
+          index: 2,
+          child: OutlinedButton.icon(
+            onPressed: free ? _guest : null,
+            icon: _busy == 'guest'
+                ? const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2.2))
+                : const Icon(Icons.person_rounded, size: 20, color: AppPalette.accent),
+            label: Text(l.cvContinueGuest, style: AppText.button.copyWith(color: AppPalette.accent)),
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size.fromHeight(54),
+              backgroundColor: AppPalette.accent.withValues(alpha: context.isDark ? 0.14 : 0.07),
+              side: BorderSide(color: AppPalette.accent.withValues(alpha: 0.45)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.tile)),
+            ),
+          ),
+        ),
+        const SizedBox(height: 14),
+        ObFadeUp(
+          delay: const Duration(milliseconds: 500),
+          index: 3,
+          child: Column(children: [
+            Text(l.haveAccount, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(fontSize: 14, color: c.textSecondary)),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              link(l.logIn, () => _open(LogInScreen(onGuest: _guest))),
+              Text('|', style: AppText.rowSub.copyWith(color: c.textMuted)),
+              link(l.signUp, () => _open(const SignUpScreen())),
+            ]),
+          ]),
         ),
       ],
     );

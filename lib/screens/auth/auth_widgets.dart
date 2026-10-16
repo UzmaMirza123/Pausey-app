@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../services/auth_service.dart';
 import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
-import '../onboarding/widgets/ob_clean_kit.dart' show AuthHero;
+import '../onboarding/widgets/ob_art.dart';
 
 /// Translated message for an [AuthFailure].
 String authErrorText(BuildContext context, Object error) {
@@ -302,13 +302,13 @@ class AuthTopBar extends StatelessWidget {
 /// Which screen an [AuthIllustration] sits on.
 enum AuthArt { logIn, signUp }
 
-/// Calm animated Pausey mark on top of the log-in and sign-up screens.
+/// Character illustration on top of the log-in and sign-up screens.
 class AuthIllustration extends StatelessWidget {
   const AuthIllustration({super.key, required this.art});
   final AuthArt art;
 
   @override
-  Widget build(BuildContext context) => const AuthHero();
+  Widget build(BuildContext context) => ObArt(art == AuthArt.logIn ? ObArtKind.login : ObArtKind.signup);
 }
 
 /// Round Google / Apple sign-in button.

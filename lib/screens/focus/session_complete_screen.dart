@@ -9,6 +9,7 @@ import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glow_background.dart';
 import '../../widgets/ui_kit.dart';
+import '../onboarding/widgets/ob_art.dart' show ObConfetti;
 import 'widgets/focus_widgets.dart';
 
 /// Shown after a focus session ends (finished or stopped early).
@@ -238,7 +239,10 @@ class _Badge extends StatelessWidget {
         curve: Curves.easeOutBack,
         builder: (context, t, _) => Stack(
           alignment: Alignment.center,
+          clipBehavior: Clip.none,
           children: [
+            // Goal reached: one burst of confetti (Lottie) behind the badge.
+            const Positioned(top: -90, child: ObConfetti(size: 360)),
             for (final r in [190.0, 160.0])
               Container(
                 width: r * t.clamp(0, 1),

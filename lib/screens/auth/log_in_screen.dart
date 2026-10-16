@@ -14,7 +14,10 @@ import 'sign_up_screen.dart';
 /// Log-in screen (from the welcome screen or sign-up): the same single
 /// [LogInForm] as in onboarding, centred.
 class LogInScreen extends StatelessWidget {
-  const LogInScreen({super.key});
+  const LogInScreen({super.key, this.onGuest});
+
+  /// From onboarding: "Continue as guest" closes this screen and runs it.
+  final VoidCallback? onGuest;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,12 @@ class LogInScreen extends StatelessWidget {
                   child: LogInForm(
                     onSignedIn: () => Navigator.of(context).popUntil((r) => r.isFirst),
                     onSignUp: () => Navigator.of(context).pushReplacement(authRoute(const SignUpScreen())),
+                    onGuest: onGuest == null
+                        ? null
+                        : () {
+                            Navigator.of(context).pop();
+                            onGuest!();
+                          },
                   ),
                 ),
               ),
@@ -64,11 +73,14 @@ class AuthCentered extends StatelessWidget {
 /// email + password, "Forgot password?", Log in, "Don't have an account? Sign up",
 /// and round Google / Apple buttons.
 class LogInForm extends StatefulWidget {
-  const LogInForm({super.key, required this.onSignedIn, required this.onSignUp, this.onBusyChanged});
+  const LogInForm({super.key, required this.onSignedIn, required this.onSignUp, this.onBusyChanged, this.onGuest});
 
   /// Called after a successful sign-in.
   final VoidCallback onSignedIn;
   final VoidCallback onSignUp;
+
+  /// Shows "Continue as guest" (onboarding only).
+  final VoidCallback? onGuest;
   final ValueChanged<bool>? onBusyChanged;
 
   @override
@@ -187,9 +199,62 @@ class LogInFormState extends State<LogInForm> {
               index: 4,
               child: BusyButton(label: l.logIn, busy: _busy == 'email', onPressed: _busy == null ? _logIn : () {}),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 18),
+            // "or continue with" and the two sign-in buttons side by side.
             ObReveal(
               index: 5,
+              child: Row(children: [
+                Expanded(child: Divider(color: c.divider)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(l.cvOrContinueWith, style: AppText.rowSub.copyWith(color: c.textMuted)),
+                ),
+                Expanded(child: Divider(color: c.divider)),
+              ]),
+            ),
+            const SizedBox(height: 14),
+            ObReveal(
+              index: 6,
+              child: Row(children: [
+                Expanded(
+                  child: _SocialPill(
+                    label: 'Google',
+                    semanticLabel: l.continueWithGoogle,
+                    busy: _busy == 'google',
+                    onTap: _busy == null ? () => run('google', auth.signInWithGoogle) : null,
+                    icon: SvgPicture.asset('assets/svg/google_g.svg', width: 20, height: 20),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _SocialPill(
+                    label: 'Apple',
+                    semanticLabel: l.continueWithApple,
+                    busy: _busy == 'apple',
+                    onTap: _busy == null ? () => run('apple', auth.signInWithApple) : null,
+                    icon: Icon(Icons.apple, size: 22, color: c.textPrimary),
+                  ),
+                ),
+              ]),
+            ),
+            if (widget.onGuest != null) ...[
+              const SizedBox(height: 12),
+              ObReveal(
+                index: 7,
+                child: TextButton(
+                  onPressed: _busy == null ? widget.onGuest : null,
+                  style: TextButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                    backgroundColor: AppPalette.accent.withValues(alpha: context.isDark ? 0.14 : 0.07),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.chip)),
+                  ),
+                  child: Text(l.cvContinueGuest, style: AppText.option.copyWith(fontWeight: FontWeight.w700, color: AppPalette.accent)),
+                ),
+              ),
+            ],
+            const SizedBox(height: 6),
+            ObReveal(
+              index: 8,
               child: Wrap(
                 alignment: WrapAlignment.center,
                 crossAxisAlignment: WrapCrossAlignment.center,
@@ -198,34 +263,7 @@ class LogInFormState extends State<LogInForm> {
                   TextButton(
                     onPressed: _busy == null ? widget.onSignUp : null,
                     style: TextButton.styleFrom(minimumSize: const Size(48, 44)),
-                    child: Text(
-                      l.signUp,
-                      style: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            const ObReveal(index: 6, child: OrDivider()),
-            const SizedBox(height: 18),
-            ObReveal(
-              index: 7,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SocialCircle(
-                    label: l.continueWithGoogle,
-                    busy: _busy == 'google',
-                    onTap: _busy == null ? () => run('google', auth.signInWithGoogle) : null,
-                    child: SvgPicture.asset('assets/svg/google_g.svg', width: 24, height: 24),
-                  ),
-                  const SizedBox(width: 22),
-                  SocialCircle(
-                    label: l.continueWithApple,
-                    busy: _busy == 'apple',
-                    onTap: _busy == null ? () => run('apple', auth.signInWithApple) : null,
-                    child: Icon(Icons.apple, size: 28, color: c.textPrimary),
+                    child: Text(l.signUp, style: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet)),
                   ),
                 ],
               ),
@@ -346,6 +384,47 @@ class _ResetSheetState extends State<_ResetSheet> {
                   if (!_sent) BusyButton(label: l.sendLink, busy: _busy, onPressed: _send),
                 ],
               ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Half-width "Google" / "Apple" sign-in button.
+class _SocialPill extends StatelessWidget {
+  const _SocialPill({required this.label, required this.semanticLabel, required this.icon, required this.onTap, this.busy = false});
+  final String label, semanticLabel;
+  final Widget icon;
+  final VoidCallback? onTap;
+  final bool busy;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final dark = context.isDark;
+    final r = BorderRadius.circular(AppRadius.chip);
+    return Semantics(
+      button: true,
+      label: semanticLabel,
+      excludeSemantics: true,
+      child: Material(
+        color: dark ? c.glassFill : Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: r, side: BorderSide(color: c.glassBorder)),
+        child: InkWell(
+          borderRadius: r,
+          onTap: busy ? null : onTap,
+          child: SizedBox(
+            height: 50,
+            child: Center(
+              child: busy
+                  ? const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2.2))
+                  : Row(mainAxisSize: MainAxisSize.min, children: [
+                      icon,
+                      const SizedBox(width: 8),
+                      Text(label, style: AppText.option.copyWith(fontWeight: FontWeight.w700, color: c.textPrimary)),
+                    ]),
             ),
           ),
         ),

@@ -1215,7 +1215,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cvPermTitle => '需要几项权限才能运行';
 
   @override
-  String get cvPermSub => '每项都会打开 Android 设置。在那里开启后再返回。';
+  String get cvPermSub => '这些权限让 Pausey 正常工作，为你带来最佳体验。';
 
   @override
   String get cvPermUnsupported => '应用限额和暂停页适用于 Android 手机，其余功能在这里也能使用。';
@@ -1340,36 +1340,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cvFinishLimits => '完成应用限额设置';
 
   @override
-  String cvPermCount(int done, int total) {
-    return '已允许 $done/$total';
-  }
+  String get cvJourneyTitle => '开始你的 Pausey 之旅';
 
   @override
-  String get cvAppsTrayEmpty => '点按让你停不下来的应用';
+  String get cvJourneySub => '创建账户以同步进度，或以访客身份继续。';
 
   @override
-  String cvAppsTray(int count) {
-    return '要暂停的应用：$count';
-  }
-
-  @override
-  String cvLifeTitle(String years) {
-    return '手机上的 $years 年';
-  }
-
-  @override
-  String cvLifeSub(String time) {
-    return '按每天 $time 计算，未来 50 年。每个点都是你清醒生活的一部分。';
-  }
-
-  @override
-  String get cvLifeHold => '长按把它们拿回来';
-
-  @override
-  String get cvLifeDone => '已拿回，一起守住它。';
-
-  @override
-  String get cvPermAllowed => '已允许';
+  String get cvOrContinueWith => '或通过以下方式继续';
 
   @override
   String get appName => 'Pausey';

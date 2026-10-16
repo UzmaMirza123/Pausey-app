@@ -1255,7 +1255,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get cvPermSub =>
-      'Her biri Android ayarlarını açar. Orada açın, sonra geri dönün.';
+      'Bunlar Pausey\'nin işini yapmasını ve sana en iyi deneyimi sunmasını sağlar.';
 
   @override
   String get cvPermUnsupported =>
@@ -1393,36 +1393,14 @@ class AppLocalizationsTr extends AppLocalizations {
   String get cvFinishLimits => 'Uygulama sınırlarını tamamla';
 
   @override
-  String cvPermCount(int done, int total) {
-    return '$total izinden $done tanesi verildi';
-  }
+  String get cvJourneyTitle => 'Pausey yolculuğuna başla';
 
   @override
-  String get cvAppsTrayEmpty => 'Seni içine çeken uygulamalara dokun';
+  String get cvJourneySub =>
+      'İlerlemeni eşitlemek için hesap oluştur ya da misafir olarak devam et.';
 
   @override
-  String cvAppsTray(int count) {
-    return 'Duraklatılacak uygulamalar: $count';
-  }
-
-  @override
-  String cvLifeTitle(String years) {
-    return 'Telefonda $years yıl';
-  }
-
-  @override
-  String cvLifeSub(String time) {
-    return 'Günde $time ile önümüzdeki 50 yılda. Her nokta uyanık hayatından bir parça.';
-  }
-
-  @override
-  String get cvLifeHold => 'Geri almak için basılı tut';
-
-  @override
-  String get cvLifeDone => 'Geri alındı. Hadi koruyalım.';
-
-  @override
-  String get cvPermAllowed => 'izin verildi';
+  String get cvOrContinueWith => 'veya şununla devam et';
 
   @override
   String get appName => 'Pausey';

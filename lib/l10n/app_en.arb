@@ -732,7 +732,7 @@
   "cvPlanNote": "Nothing is switched on yet. It starts only when you finish setup, and you can change it any time.",
   "cvUsePlan": "Use this plan",
   "cvPermTitle": "A few permissions make this work",
-  "cvPermSub": "Each one opens Android settings. Turn it on there, then come back.",
+  "cvPermSub": "These help Pausey work its magic and give you the best experience.",
   "cvPermUnsupported": "App limits and pause screens work on Android phones. Everything else works here too.",
   "cvPermUsageTitle": "Usage access",
   "cvPermUsageWhy": "Lets Pausey see how long each app is open today and which app is on screen.",
@@ -802,45 +802,9 @@
   "cvReadyChange": "You can change all of this later.",
   "cvStartFirstFocus": "Start my first focus session",
   "cvFinishLimits": "Finish setting up app limits",
-  "cvPermCount": "{done} of {total} allowed",
-  "@cvPermCount": {
-    "placeholders": {
-      "done": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
-  "cvAppsTrayEmpty": "Tap the apps that pull you in",
-  "cvAppsTray": "Apps to pause: {count}",
-  "@cvAppsTray": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-  "cvLifeTitle": "{years} years on your phone",
-  "@cvLifeTitle": {
-    "placeholders": {
-      "years": {
-        "type": "String"
-      }
-    }
-  },
-  "cvLifeSub": "At {time} a day, over the next 50 years. Each dot is a slice of your waking life.",
-  "@cvLifeSub": {
-    "placeholders": {
-      "time": {
-        "type": "String"
-      }
-    }
-  },
-  "cvLifeHold": "Hold to take them back",
-  "cvLifeDone": "Taken back. Let's protect it.",
-  "cvPermAllowed": "allowed",
+  "cvJourneyTitle": "Start your Pausey journey",
+  "cvJourneySub": "Create an account to sync your progress, or continue as a guest.",
+  "cvOrContinueWith": "or continue with",
   "appName": "Pausey",
   "tagline": "Take back your time",
   "versionLabel": "Version 2.0 · App Store Edition",

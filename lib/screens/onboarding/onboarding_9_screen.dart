@@ -9,6 +9,7 @@ import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glow_background.dart';
+import 'widgets/ob_art.dart';
 import 'widgets/ob_text_motion.dart';
 
 // Colours used only on this screen (from the Figma frame).
@@ -93,7 +94,15 @@ class _Onboarding9ScreenState extends State<Onboarding9Screen> with SingleTicker
       ),
       body: Column(
         children: [
-          _Hero(controller: _intro),
+          // A burst of confetti (Lottie) celebrates the finished setup.
+          Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: [
+              _Hero(controller: _intro),
+              const Positioned(top: -60, child: ObConfetti(size: 380)),
+            ],
+          ),
           _FadeUp(
             animation: _interval(0.55, 0.9),
             child: Column(
