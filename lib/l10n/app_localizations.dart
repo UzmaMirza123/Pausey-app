@@ -1969,13 +1969,13 @@ abstract class AppLocalizations {
   /// No description provided for @cvAppsSubReal.
   ///
   /// In en, this message translates to:
-  /// **'These are apps on this phone. Pick as many as you like.'**
+  /// **'The apps you use most on this phone. All of them will be paused; tap ✕ to keep one free.'**
   String get cvAppsSubReal;
 
   /// No description provided for @cvAppsSubPopular.
   ///
   /// In en, this message translates to:
-  /// **'Popular apps that often take up time. Pick any that apply.'**
+  /// **'The apps you use most on this phone. All of them will be paused; tap ✕ to keep one free.'**
   String get cvAppsSubPopular;
 
   /// No description provided for @cvAppsSearch.
@@ -2601,6 +2601,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'or continue with'**
   String get cvOrContinueWith;
+
+  /// No description provided for @cvUsageNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not used today'**
+  String get cvUsageNone;
+
+  /// No description provided for @cvUsageUnder1.
+  ///
+  /// In en, this message translates to:
+  /// **'Less than 1m today'**
+  String get cvUsageUnder1;
+
+  /// No description provided for @cvUsageToday.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} today'**
+  String cvUsageToday(String time);
+
+  /// No description provided for @cvAppsSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 app selected} other{{count} apps selected}}'**
+  String cvAppsSelected(int count);
+
+  /// No description provided for @cvAppsUsageNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow screen time access so Pausey can show the apps you use most.'**
+  String get cvAppsUsageNeeded;
+
+  /// No description provided for @cvRemoveApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {app}'**
+  String cvRemoveApp(String app);
+
+  /// No description provided for @cvNotifAskTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get a nudge before time\'s up?'**
+  String get cvNotifAskTitle;
+
+  /// No description provided for @cvNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get cvNotNow;
 
   /// No description provided for @appName.
   ///

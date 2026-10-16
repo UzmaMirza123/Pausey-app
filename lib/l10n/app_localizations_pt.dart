@@ -1035,11 +1035,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get cvAppsSubReal =>
-      'Estes são os apps deste celular. Escolha quantos quiser.';
+      'Os apps que você mais usa neste celular. Todos serão pausados; toque em ✕ para deixar um livre.';
 
   @override
   String get cvAppsSubPopular =>
-      'Apps populares que costumam tomar tempo. Escolha os que se aplicam.';
+      'Os apps que você mais usa neste celular. Todos serão pausados; toque em ✕ para deixar um livre.';
 
   @override
   String get cvAppsSearch => 'Buscar apps';
@@ -1416,6 +1416,43 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get cvOrContinueWith => 'ou continue com';
+
+  @override
+  String get cvUsageNone => 'Não usado hoje';
+
+  @override
+  String get cvUsageUnder1 => 'Menos de 1 min hoje';
+
+  @override
+  String cvUsageToday(String time) {
+    return '$time hoje';
+  }
+
+  @override
+  String cvAppsSelected(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count apps selecionados',
+      one: '1 app selecionado',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get cvAppsUsageNeeded =>
+      'Permita o acesso ao tempo de tela para o Pausey mostrar os apps que você mais usa.';
+
+  @override
+  String cvRemoveApp(String app) {
+    return 'Remover $app';
+  }
+
+  @override
+  String get cvNotifAskTitle => 'Quer um aviso antes do tempo acabar?';
+
+  @override
+  String get cvNotNow => 'Agora não';
 
   @override
   String get appName => 'Pausey';

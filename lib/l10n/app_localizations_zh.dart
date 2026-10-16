@@ -995,10 +995,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cvAppsTitle => '哪些应用让你分心？';
 
   @override
-  String get cvAppsSubReal => '这些是本机上的应用，想选几个都可以。';
+  String get cvAppsSubReal => '这台手机上你最常用的应用。它们都会被暂停；点 ✕ 可保留某个应用。';
 
   @override
-  String get cvAppsSubPopular => '这些是常让人花掉时间的热门应用，选出适合你的。';
+  String get cvAppsSubPopular => '这台手机上你最常用的应用。它们都会被暂停；点 ✕ 可保留某个应用。';
 
   @override
   String get cvAppsSearch => '搜索应用';
@@ -1347,6 +1347,36 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get cvOrContinueWith => '或通过以下方式继续';
+
+  @override
+  String get cvUsageNone => '今天未使用';
+
+  @override
+  String get cvUsageUnder1 => '今天不到 1 分钟';
+
+  @override
+  String cvUsageToday(String time) {
+    return '今天 $time';
+  }
+
+  @override
+  String cvAppsSelected(int count) {
+    return '已选择 $count 个应用';
+  }
+
+  @override
+  String get cvAppsUsageNeeded => '允许访问屏幕使用时间，Pausey 才能显示你最常用的应用。';
+
+  @override
+  String cvRemoveApp(String app) {
+    return '移除 $app';
+  }
+
+  @override
+  String get cvNotifAskTitle => '在时间用完前提醒你？';
+
+  @override
+  String get cvNotNow => '以后再说';
 
   @override
   String get appName => 'Pausey';

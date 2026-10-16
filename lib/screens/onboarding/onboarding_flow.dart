@@ -39,7 +39,7 @@ class OnboardingFlow extends StatefulWidget {
 
   /// Extra screens inside the "How it works" story (4 beats = 4 screens).
   static const _storyExtra = 3;
-  static const _storyStage = 6;
+  static const _storyStage = 7;
 
   /// Running step for the progress dots, continuing from the intro screens: every
   /// screen moves the active dot one step (1 → 2 → 3 → 1 …), like the first 4 screens.
@@ -82,7 +82,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       return;
     }
     if (to >= OnboardingFlow.stageCount) return;
-    if (to == 7) _s.suggestPlan(); // fill the starter plan from the answers
+    if (to == 8) _s.suggestPlan(); // fill the starter plan from the answers
     _gate.handler = null;
     setState(() {
       _forward = to > _s.stage;
@@ -117,11 +117,13 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         1 => RelateStage(onNext: _next),
         2 => GoalStage(onNext: _next),
         3 => AppsStage(onNext: _next),
-        4 => ScreenTimeStage(onNext: _next),
-        5 => ReflectionStage(onNext: _next),
-        6 => HowItHelpsStage(onNext: _next),
+        // Screen time + display over other apps, right after picking the apps.
+        4 => PermissionsStage(onNext: _next),
+        5 => ScreenTimeStage(onNext: _next),
+        6 => ReflectionStage(onNext: _next),
+        7 => HowItHelpsStage(onNext: _next),
         // "Set your daily screen-time goal" (the original onboarding screen) in place of the starter plan.
-        7 => OnboardingPageScope(
+        8 => OnboardingPageScope(
             index: 1,
             controller: _dialPager,
             onBack: _back,
@@ -129,7 +131,6 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             dotsFrom: _dotsFrom,
             child: Onboarding7Screen(onNext: _next, onSkip: _next),
           ),
-        8 => PermissionsStage(onNext: _next),
         9 => AccountStage(onNext: _next),
         // "You're all set!" (the original last onboarding screen) in place of "Your first step starts here".
         _ => OnboardingPageScope(

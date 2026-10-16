@@ -1022,11 +1022,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get cvAppsSubReal =>
-      'Bunlar bu telefondaki uygulamalar. İstediğiniz kadar seçin.';
+      'Bu telefonda en çok kullandığın uygulamalar. Hepsi duraklatılacak; birini serbest bırakmak için ✕\'e dokun.';
 
   @override
   String get cvAppsSubPopular =>
-      'Çoğu zaman vakit alan popüler uygulamalar. Size uyanları seçin.';
+      'Bu telefonda en çok kullandığın uygulamalar. Hepsi duraklatılacak; birini serbest bırakmak için ✕\'e dokun.';
 
   @override
   String get cvAppsSearch => 'Uygulama ara';
@@ -1401,6 +1401,37 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get cvOrContinueWith => 'veya şununla devam et';
+
+  @override
+  String get cvUsageNone => 'Bugün kullanılmadı';
+
+  @override
+  String get cvUsageUnder1 => 'Bugün 1 dk\'dan az';
+
+  @override
+  String cvUsageToday(String time) {
+    return 'Bugün $time';
+  }
+
+  @override
+  String cvAppsSelected(int count) {
+    return '$count uygulama seçildi';
+  }
+
+  @override
+  String get cvAppsUsageNeeded =>
+      'Pausey\'nin en çok kullandığın uygulamaları göstermesi için ekran süresi erişimine izin ver.';
+
+  @override
+  String cvRemoveApp(String app) {
+    return '$app kaldır';
+  }
+
+  @override
+  String get cvNotifAskTitle => 'Süre dolmadan hatırlatalım mı?';
+
+  @override
+  String get cvNotNow => 'Şimdi değil';
 
   @override
   String get appName => 'Pausey';

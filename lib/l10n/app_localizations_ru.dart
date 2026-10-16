@@ -1022,11 +1022,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get cvAppsSubReal =>
-      'Это приложения на этом телефоне. Выберите сколько угодно.';
+      'Приложения, которыми вы пользуетесь чаще всего. Все будут на паузе; нажмите ✕, чтобы оставить одно.';
 
   @override
   String get cvAppsSubPopular =>
-      'Популярные приложения, которые часто отнимают время. Выберите подходящие.';
+      'Приложения, которыми вы пользуетесь чаще всего. Все будут на паузе; нажмите ✕, чтобы оставить одно.';
 
   @override
   String get cvAppsSearch => 'Поиск приложений';
@@ -1399,6 +1399,37 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get cvOrContinueWith => 'или продолжить через';
+
+  @override
+  String get cvUsageNone => 'Сегодня не использовалось';
+
+  @override
+  String get cvUsageUnder1 => 'Сегодня меньше 1 мин';
+
+  @override
+  String cvUsageToday(String time) {
+    return 'Сегодня $time';
+  }
+
+  @override
+  String cvAppsSelected(int count) {
+    return 'Выбрано приложений: $count';
+  }
+
+  @override
+  String get cvAppsUsageNeeded =>
+      'Разрешите доступ к экранному времени, чтобы Pausey показал самые используемые приложения.';
+
+  @override
+  String cvRemoveApp(String app) {
+    return 'Убрать $app';
+  }
+
+  @override
+  String get cvNotifAskTitle => 'Напомнить, пока время не вышло?';
+
+  @override
+  String get cvNotNow => 'Не сейчас';
 
   @override
   String get appName => 'Pausey';

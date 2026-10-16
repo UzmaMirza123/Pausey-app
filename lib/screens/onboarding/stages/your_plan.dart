@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../../../data/restrictions/restriction_repo.dart';
+import '../../../services/native_bridge.dart';
 import '../../../utils/app_theme.dart';
 import '../../../utils/l10n.dart';
 import '../../../services/installed_apps.dart';
@@ -131,9 +133,28 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
 
   void _next() {
     if (_left) return;
-    if (_beat < _beats - 1) return setState(() => _beat++);
+    if (_beat < _beats - 1) {
+      setState(() => _beat++);
+      // "Nudges before time's up": ask for notifications right here, once.
+      if (_beat == _beats - 1) WidgetsBinding.instance.addPostFrameCallback((_) => _askNotifications());
+      return;
+    }
     _left = true;
     widget.onNext();
+  }
+
+  bool _askedNotifications = false;
+
+  Future<void> _askNotifications() async {
+    if (_askedNotifications || !mounted) return;
+    final st = RestrictionRepo.instance.status;
+    if (!st.supported || st.notifications) return;
+    _askedNotifications = true;
+    final allow = await showDialog<bool>(context: context, builder: (_) => const _NotificationAsk());
+    if (allow == true) {
+      await NativeBridge.instance.requestNotifications();
+      await RestrictionRepo.instance.refresh();
+    }
   }
 
   void _stepBack() => setState(() => _beat = math.max(0, _beat - 1));
@@ -381,6 +402,40 @@ class _TimeButton extends StatelessWidget {
           ]),
         ),
       ),
+    );
+  }
+}
+
+/// Popup on the "nudges" story beat: allow notifications so Pausey can nudge
+/// before a limit runs out.
+class _NotificationAsk extends StatelessWidget {
+  const _NotificationAsk();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final c = context.colors;
+    return AlertDialog(
+      backgroundColor: context.isDark ? const Color(0xFF17142F) : Colors.white,
+      surfaceTintColor: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.card)),
+      icon: const Center(child: IconBadge(icon: Icons.notifications_active_rounded, color: Tone.violet, size: 52)),
+      title: Text(l.cvNotifAskTitle, textAlign: TextAlign.center, style: AppText.cardTitle.copyWith(fontSize: 20, color: c.textPrimary)),
+      content: Text(l.stPermNotifWhy, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(fontSize: 14, height: 1.5, color: c.textSecondary)),
+      actionsAlignment: MainAxisAlignment.center,
+      actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          style: TextButton.styleFrom(foregroundColor: c.textSecondary, minimumSize: const Size(64, 44)),
+          child: Text(l.cvNotNow),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(context, true),
+          style: FilledButton.styleFrom(backgroundColor: AppPalette.accent, foregroundColor: Colors.white, minimumSize: const Size(110, 44), shape: const StadiumBorder()),
+          child: Text(l.alAllow),
+        ),
+      ],
     );
   }
 }

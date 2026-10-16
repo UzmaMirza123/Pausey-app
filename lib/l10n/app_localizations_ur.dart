@@ -1021,11 +1021,12 @@ class AppLocalizationsUr extends AppLocalizations {
   String get cvAppsTitle => 'کون سی ایپس توجہ بٹاتی ہیں؟';
 
   @override
-  String get cvAppsSubReal => 'یہ اس فون کی ایپس ہیں۔ جتنی چاہیں منتخب کریں۔';
+  String get cvAppsSubReal =>
+      'اس فون پر آپ کی سب سے زیادہ استعمال ہونے والی ایپس۔ یہ سب روکی جائیں گی؛ کسی کو آزاد رکھنے کے لیے ✕ دبائیں۔';
 
   @override
   String get cvAppsSubPopular =>
-      'مقبول ایپس جو اکثر وقت لے لیتی ہیں۔ جو آپ پر لاگو ہوں، منتخب کریں۔';
+      'اس فون پر آپ کی سب سے زیادہ استعمال ہونے والی ایپس۔ یہ سب روکی جائیں گی؛ کسی کو آزاد رکھنے کے لیے ✕ دبائیں۔';
 
   @override
   String get cvAppsSearch => 'ایپس تلاش کریں';
@@ -1399,6 +1400,37 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get cvOrContinueWith => 'یا اس کے ساتھ جاری رکھیں';
+
+  @override
+  String get cvUsageNone => 'آج استعمال نہیں ہوئی';
+
+  @override
+  String get cvUsageUnder1 => 'آج 1 منٹ سے کم';
+
+  @override
+  String cvUsageToday(String time) {
+    return 'آج $time';
+  }
+
+  @override
+  String cvAppsSelected(int count) {
+    return '$count ایپس منتخب';
+  }
+
+  @override
+  String get cvAppsUsageNeeded =>
+      'اسکرین ٹائم کی اجازت دیں تاکہ Pausey آپ کی سب سے زیادہ استعمال ہونے والی ایپس دکھا سکے۔';
+
+  @override
+  String cvRemoveApp(String app) {
+    return '$app ہٹائیں';
+  }
+
+  @override
+  String get cvNotifAskTitle => 'وقت ختم ہونے سے پہلے یاد دہانی چاہیے؟';
+
+  @override
+  String get cvNotNow => 'ابھی نہیں';
 
   @override
   String get appName => 'Pausey';

@@ -1028,11 +1028,11 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cvAppsSubReal =>
-      'Ini aplikasi di ponsel ini. Pilih sebanyak yang kamu mau.';
+      'Aplikasi yang paling sering kamu pakai di ponsel ini. Semua akan dijeda; ketuk ✕ untuk membiarkan satu bebas.';
 
   @override
   String get cvAppsSubPopular =>
-      'Aplikasi populer yang sering menyita waktu. Pilih yang sesuai.';
+      'Aplikasi yang paling sering kamu pakai di ponsel ini. Semua akan dijeda; ketuk ✕ untuk membiarkan satu bebas.';
 
   @override
   String get cvAppsSearch => 'Cari aplikasi';
@@ -1408,6 +1408,37 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cvOrContinueWith => 'atau lanjut dengan';
+
+  @override
+  String get cvUsageNone => 'Belum dipakai hari ini';
+
+  @override
+  String get cvUsageUnder1 => 'Kurang dari 1 mnt hari ini';
+
+  @override
+  String cvUsageToday(String time) {
+    return '$time hari ini';
+  }
+
+  @override
+  String cvAppsSelected(int count) {
+    return '$count aplikasi dipilih';
+  }
+
+  @override
+  String get cvAppsUsageNeeded =>
+      'Izinkan akses waktu layar agar Pausey bisa menampilkan aplikasi yang paling sering kamu pakai.';
+
+  @override
+  String cvRemoveApp(String app) {
+    return 'Hapus $app';
+  }
+
+  @override
+  String get cvNotifAskTitle => 'Mau diingatkan sebelum waktunya habis?';
+
+  @override
+  String get cvNotNow => 'Nanti saja';
 
   @override
   String get appName => 'Pausey';

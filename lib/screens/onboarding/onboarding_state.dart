@@ -53,6 +53,9 @@ class OnboardingState extends ChangeNotifier {
 
   /// The first app was pre-selected once (so it isn't re-added after the user clears it).
   bool appsDefaulted = false;
+
+  /// The app list was built from the phone's real usage (rebuilt once when access arrives later).
+  bool appsFromUsage = false;
   ObScreenTime? screenTime;
 
   /// Exact daily screen time from the ruler (minutes); [screenTime] is its range.
@@ -84,6 +87,7 @@ class OnboardingState extends ChangeNotifier {
       goalOther = j['goalOther'] as String? ?? '';
       apps = [for (final a in (j['apps'] as List? ?? const [])) ObApp.fromJson(Map<String, dynamic>.from(a as Map))];
       appsDefaulted = j['appsDefaulted'] as bool? ?? false;
+      appsFromUsage = j['appsFromUsage'] as bool? ?? false;
       screenTime = _enum(ObScreenTime.values, j['screenTime']);
       screenMinutes = j['screenMinutes'] as int?;
       measuredMinutes = j['measured'] as int?;
@@ -162,6 +166,7 @@ class OnboardingState extends ChangeNotifier {
           'goalOther': goalOther,
           'apps': [for (final a in apps) a.toJson()],
           'appsDefaulted': appsDefaulted,
+          'appsFromUsage': appsFromUsage,
           'screenTime': screenTime?.name,
           'screenMinutes': screenMinutes,
           'measured': measuredMinutes,
@@ -245,6 +250,7 @@ class OnboardingState extends ChangeNotifier {
     goalOther = '';
     apps = [];
     appsDefaulted = false;
+    appsFromUsage = false;
     screenTime = null;
     screenMinutes = null;
     measuredMinutes = null;

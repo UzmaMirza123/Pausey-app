@@ -549,8 +549,8 @@
   "cvGoalReplyHabits": "Small steps add up. We'll keep them easy.",
   "cvGoalReplyOther": "Got it. We'll shape things around that.",
   "cvAppsTitle": "Which apps distract you?",
-  "cvAppsSubReal": "These are apps on this phone. Pick as many as you like.",
-  "cvAppsSubPopular": "Popular apps that often take up time. Pick any that apply.",
+  "cvAppsSubReal": "The apps you use most on this phone. All of them will be paused; tap ✕ to keep one free.",
+  "cvAppsSubPopular": "The apps you use most on this phone. All of them will be paused; tap ✕ to keep one free.",
   "cvAppsSearch": "Search apps",
   "cvAppsReply": "Noted: {apps}. We'll start with these.",
   "@cvAppsReply": {
@@ -805,6 +805,35 @@
   "cvJourneyTitle": "Start your Pausey journey",
   "cvJourneySub": "Create an account to sync your progress, or continue as a guest.",
   "cvOrContinueWith": "or continue with",
+  "cvUsageNone": "Not used today",
+  "cvUsageUnder1": "Less than 1m today",
+  "cvUsageToday": "{time} today",
+  "@cvUsageToday": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "cvAppsSelected": "{count, plural, =1{1 app selected} other{{count} apps selected}}",
+  "@cvAppsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cvAppsUsageNeeded": "Allow screen time access so Pausey can show the apps you use most.",
+  "cvRemoveApp": "Remove {app}",
+  "@cvRemoveApp": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "cvNotifAskTitle": "Get a nudge before time's up?",
+  "cvNotNow": "Not now",
   "appName": "Pausey",
   "tagline": "Take back your time",
   "versionLabel": "Version 2.0 · App Store Edition",

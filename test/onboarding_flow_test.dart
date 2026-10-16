@@ -66,12 +66,22 @@ void main() {
     expect(find.textContaining('evenings wind down'), findsOneWidget);
     await _tap(t, 'Next');
 
-    // The first app is pre-selected.
-    expect(OnboardingState.instance.apps.map((a) => a.id), ['Instagram']);
-    await _tap(t, 'TikTok');
+    // The apps to pause are listed already; ✕ leaves one out.
+    expect(OnboardingState.instance.apps.map((a) => a.id), ['Instagram', 'TikTok', 'YouTube', 'Facebook', 'Snapchat']);
+    expect(find.text('5 apps selected'), findsOneWidget);
+    for (final name in ['YouTube', 'Facebook', 'Snapchat']) {
+      final x = find.bySemanticsLabel('Remove $name');
+      await t.ensureVisible(x);
+      await t.tap(x);
+      for (var i = 0; i < 3; i++) {
+        await t.pump(const Duration(milliseconds: 200));
+      }
+    }
     expect(OnboardingState.instance.apps.map((a) => a.id), ['Instagram', 'TikTok']);
-    expect(find.text("Noted: Instagram and TikTok. We'll start with these."), findsOneWidget);
+    expect(find.text('2 apps selected'), findsOneWidget);
     await _tap(t, 'Next');
+
+    await _tap(t, 'Continue'); // permissions (not Android in tests)
 
     await _tap(t, 'More than 6 hours');
     expect(OnboardingState.instance.screenTime, ObScreenTime.over6);
@@ -88,7 +98,7 @@ void main() {
     // Back steps to the previous beat first, not the previous stage.
     await t.tap(find.byType(BackCircleButton));
     await t.pump(const Duration(milliseconds: 600));
-    expect(OnboardingState.instance.stage, 6);
+    expect(OnboardingState.instance.stage, 7);
     await _tap(t, 'Next');
     await _tap(t, 'Next');
     expect(find.text('Almost at your Instagram limit'), findsOneWidget);
@@ -102,8 +112,6 @@ void main() {
     await _tap(t, '3h');
     expect(LocalStore.instance.answers['dailyGoalHours'], 3);
     await _tap(t, 'Continue');
-
-    await _tap(t, 'Continue'); // permissions (not Android in tests)
 
     // "Start your Pausey journey": Google, Apple, guest, and links to log in / sign up.
     expect(find.bySemanticsLabel('Start your Pausey journey'), findsOneWidget);
@@ -142,7 +150,7 @@ void main() {
 
   testWidgets('progress resumes on the saved stage and back goes one step', (t) async {
     OnboardingState.instance.update((s) {
-      s.stage = 4;
+      s.stage = 5;
       s.goal = ObGoal.focus;
     });
     await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {})));
@@ -154,7 +162,7 @@ void main() {
     for (var i = 0; i < 10; i++) {
       await t.pump(const Duration(milliseconds: 200));
     }
-    expect(OnboardingState.instance.stage, 3);
+    expect(OnboardingState.instance.stage, 4);
   }, variant: notAndroid);
 
   testWidgets('back on the first question returns to the intro screens', (t) async {

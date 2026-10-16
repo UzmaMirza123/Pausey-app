@@ -996,10 +996,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cvAppsTitle => '気が散るアプリは？';
 
   @override
-  String get cvAppsSubReal => 'この端末のアプリです。いくつでも選べます。';
+  String get cvAppsSubReal => 'このスマホでよく使うアプリです。すべて一時停止されます。✕で外せます。';
 
   @override
-  String get cvAppsSubPopular => '時間を取られがちな人気アプリです。当てはまるものを選んでください。';
+  String get cvAppsSubPopular => 'このスマホでよく使うアプリです。すべて一時停止されます。✕で外せます。';
 
   @override
   String get cvAppsSearch => 'アプリを検索';
@@ -1351,6 +1351,36 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get cvOrContinueWith => 'または次で続ける';
+
+  @override
+  String get cvUsageNone => '今日は未使用';
+
+  @override
+  String get cvUsageUnder1 => '今日は1分未満';
+
+  @override
+  String cvUsageToday(String time) {
+    return '今日 $time';
+  }
+
+  @override
+  String cvAppsSelected(int count) {
+    return '$count個のアプリを選択';
+  }
+
+  @override
+  String get cvAppsUsageNeeded => 'スクリーンタイムへのアクセスを許可すると、よく使うアプリを表示できます。';
+
+  @override
+  String cvRemoveApp(String app) {
+    return '$appを外す';
+  }
+
+  @override
+  String get cvNotifAskTitle => '時間切れの前にお知らせしますか？';
+
+  @override
+  String get cvNotNow => '今はしない';
 
   @override
   String get appName => 'Pausey';

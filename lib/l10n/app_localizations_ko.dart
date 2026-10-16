@@ -998,10 +998,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get cvAppsTitle => '어떤 앱이 방해되나요?';
 
   @override
-  String get cvAppsSubReal => '이 휴대폰에 있는 앱이에요. 원하는 만큼 골라 주세요.';
+  String get cvAppsSubReal =>
+      '이 휴대폰에서 가장 많이 쓰는 앱이에요. 모두 일시정지되며, ✕를 눌러 제외할 수 있어요.';
 
   @override
-  String get cvAppsSubPopular => '시간을 많이 잡아먹는 인기 앱이에요. 해당하는 걸 골라 주세요.';
+  String get cvAppsSubPopular =>
+      '이 휴대폰에서 가장 많이 쓰는 앱이에요. 모두 일시정지되며, ✕를 눌러 제외할 수 있어요.';
 
   @override
   String get cvAppsSearch => '앱 검색';
@@ -1358,6 +1360,36 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get cvOrContinueWith => '또는 다음으로 계속';
+
+  @override
+  String get cvUsageNone => '오늘 사용 안 함';
+
+  @override
+  String get cvUsageUnder1 => '오늘 1분 미만';
+
+  @override
+  String cvUsageToday(String time) {
+    return '오늘 $time';
+  }
+
+  @override
+  String cvAppsSelected(int count) {
+    return '앱 $count개 선택됨';
+  }
+
+  @override
+  String get cvAppsUsageNeeded => '화면 사용 시간 접근을 허용하면 가장 많이 쓰는 앱을 보여 드려요.';
+
+  @override
+  String cvRemoveApp(String app) {
+    return '$app 제거';
+  }
+
+  @override
+  String get cvNotifAskTitle => '시간이 끝나기 전에 알려 드릴까요?';
+
+  @override
+  String get cvNotNow => '나중에';
 
   @override
   String get appName => 'Pausey';

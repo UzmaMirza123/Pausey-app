@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../data/models.dart';
+import '../../../data/restrictions/restriction_repo.dart';
 import '../../../services/installed_apps.dart';
 import '../../../services/native_bridge.dart';
 import '../../../utils/app_theme.dart';
@@ -160,7 +162,7 @@ class _GoalStageState extends State<GoalStage> {
 }
 
 // -----------------------------------------------------------------------------
-// Stage 4 — Apps that pull you in
+// Stage 4 — Apps: the ones this phone uses most, all to be paused; ✕ removes one
 // -----------------------------------------------------------------------------
 
 String appsList(AppLocalizations l, List<ObApp> apps) {
@@ -174,23 +176,46 @@ class AppsStage extends StatefulWidget {
   const AppsStage({super.key, required this.onNext});
   final VoidCallback onNext;
 
+  /// How many apps are offered at most.
+  static const maxApps = 8;
+
   @override
   State<AppsStage> createState() => _AppsStageState();
 }
 
 class _AppsStageState extends State<AppsStage> {
   InstalledAppsCache get _cache => InstalledAppsCache.instance;
-  String _query = '';
+  RestrictionRepo get _repo => RestrictionRepo.instance;
 
-  /// After the entrance, rows that appear from the search show at once (no delay).
-  bool _entered = false;
+  /// Today's minutes per package (null = no usage access / not Android).
+  Map<String, int>? _usage;
+  bool _usageLoaded = false;
 
   @override
   void initState() {
     super.initState();
     _cache.ensureLoaded();
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      if (mounted) setState(() => _entered = true);
+    _repo.addListener(_onStatus);
+    _loadUsage();
+  }
+
+  @override
+  void dispose() {
+    _repo.removeListener(_onStatus);
+    super.dispose();
+  }
+
+  /// Coming back from Android settings with usage access now on: read usage again.
+  void _onStatus() {
+    if (_repo.status.usageAccess && _usage == null) _loadUsage();
+  }
+
+  Future<void> _loadUsage() async {
+    final m = await NativeBridge.instance.usageToday(const []);
+    if (!mounted) return;
+    setState(() {
+      _usage = m;
+      _usageLoaded = true;
     });
   }
 
@@ -200,85 +225,97 @@ class _AppsStageState extends State<AppsStage> {
     return ObApp(id: name ?? a.packageName, label: name ?? a.label, packageName: a.packageName);
   }
 
-  void _toggle(ObApp a) => _s.update((s) {
-        final list = [...s.apps];
-        if (!list.remove(a)) list.add(a);
-        s.apps = list;
+  /// The apps to pause: most used today first, then well-known distracting apps on this phone.
+  List<ObApp> _candidates() {
+    if (!_cache.supported) {
+      return [
+        for (final name in const ['Instagram', 'TikTok', 'YouTube', 'Facebook', 'Snapchat'])
+          ObApp(id: name, label: name, packageName: ManagedApp.knownPackages[name]),
+      ];
+    }
+    final usage = _usage ?? const <String, int>{};
+    final known = ManagedApp.knownPackages.values.toSet();
+    final apps = [
+      for (final a in _cache.apps)
+        if (a.packageName != 'com.pausey.pausey' && (usage.containsKey(a.packageName) || known.contains(a.packageName))) a,
+    ]..sort((a, b) {
+        final ua = usage[a.packageName] ?? -1, ub = usage[b.packageName] ?? -1;
+        if (ua != ub) return ub.compareTo(ua);
+        final ka = known.contains(a.packageName) ? 0 : 1, kb = known.contains(b.packageName) ? 0 : 1;
+        return ka != kb ? ka - kb : a.label.toLowerCase().compareTo(b.label.toLowerCase());
       });
+    return [for (final a in apps.take(AppsStage.maxApps)) _fromInstalled(a)];
+  }
+
+  void _remove(ObApp a) => _s.update((s) => s.apps = [...s.apps]..remove(a));
+
+  String? _usageLine(AppLocalizations l, ObApp a) {
+    if (_usage == null) return null;
+    final m = _usage![a.packageName];
+    if (m == null) return l.cvUsageNone;
+    if (m < 1) return l.cvUsageUnder1;
+    return l.cvUsageToday(fmtMinutes(m, h: l.unitH, m: l.unitM));
+  }
+
+  Widget _icon(ObApp a) {
+    final bytes = a.packageName == null ? null : _cache.iconFor(a.packageName!);
+    return bytes != null
+        ? ClipRRect(borderRadius: BorderRadius.circular(11), child: Image.memory(bytes, width: 44, height: 44, gaplessPlayback: true))
+        : AppGlyph(a.id, size: 44);
+  }
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final c = context.colors;
     return ListenableBuilder(
-      listenable: Listenable.merge([_s, _cache]),
+      listenable: Listenable.merge([_s, _cache, _repo]),
       builder: (context, _) {
-        // On a phone only its installed apps are offered; never a made-up list.
         final android = _cache.supported;
-        final installed = _cache.apps;
-        final real = android && _cache.loaded;
-        final loading = android && !_cache.loaded && !_cache.failed;
+        final ready = !android || (_cache.loaded && _usageLoaded);
         final failed = android && !_cache.loaded && _cache.failed && !_cache.loading;
-        final List<(ObApp, Widget)> all;
-        if (real) {
-          final known = ManagedApp.knownPackages.values.toSet();
-          final sorted = [...installed]..sort((a, b) {
-              final ka = known.contains(a.packageName) ? 0 : 1, kb = known.contains(b.packageName) ? 0 : 1;
-              return ka != kb ? ka - kb : a.label.toLowerCase().compareTo(b.label.toLowerCase());
-            });
-          all = [
-            for (final a in sorted)
-              (
-                _fromInstalled(a),
-                a.icon == null ? AppGlyph(a.packageName, size: 36) : ClipRRect(borderRadius: BorderRadius.circular(9), child: Image.memory(a.icon!, width: 36, height: 36, gaplessPlayback: true)),
-              ),
-          ];
-        } else if (android) {
-          all = const [];
-        } else {
-          all = [
-            for (final name in const ['Instagram', 'TikTok', 'YouTube', 'Facebook', 'Twitter / X', 'Snapchat', 'Reddit', 'Netflix', 'WhatsApp'])
-              (ObApp(id: name, label: name, packageName: ManagedApp.knownPackages[name]), AppGlyph(name, size: 36)),
-          ];
-        }
-        final q = _query.toLowerCase();
-        final rows = q.isEmpty ? all : [for (final r in all) if (r.$1.label.toLowerCase().contains(q)) r];
-        final picked = _s.apps;
-        // One app is pre-selected the first time the list shows (the user can change it).
-        if (!_s.appsDefaulted && all.isNotEmpty) {
-          final first = all.first.$1;
+        final needsAccess = android && _usageLoaded && _usage == null;
+        // Fill the list once (and once more if usage access arrives later).
+        if (ready && (!_s.appsDefaulted || (!_s.appsFromUsage && _usage != null && android))) {
+          final fromUsage = _usage != null;
+          final list = _candidates();
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (_s.appsDefaulted) return;
+            if (!mounted || (_s.appsDefaulted && (_s.appsFromUsage || !fromUsage))) return;
             _s.update((s) {
               s.appsDefaulted = true;
-              if (s.apps.isEmpty) s.apps = [first];
+              s.appsFromUsage = fromUsage;
+              s.apps = list;
             });
           });
         }
+        final picked = _s.apps;
         return ObPage(
           center: true,
           primaryLabel: picked.isEmpty ? l.cvSkipForNow : l.cvNext,
           onPrimary: widget.onNext,
           children: [
             _head(ObArtKind.apps, l.cvAppsTitle, android ? l.cvAppsSubReal : l.cvAppsSubPopular),
-            if (real)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 14),
-                child: TextField(
-                  onChanged: (v) => setState(() => _query = v.trim()),
-                  style: AppText.rowTitle.copyWith(color: c.textPrimary),
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search_rounded, color: c.textMuted),
-                    hintText: l.cvAppsSearch,
-                    filled: true,
-                    fillColor: context.isDark ? c.glassFill : Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadius.chip), borderSide: BorderSide(color: c.glassBorder)),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadius.chip), borderSide: const BorderSide(color: AppPalette.accent)),
+            if (needsAccess)
+              ObFadeUp(
+                delay: _answersDelay,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 14),
+                  child: PCard(
+                    child: Row(children: [
+                      const Icon(Icons.hourglass_bottom_rounded, color: AppPalette.accent),
+                      const SizedBox(width: 12),
+                      Expanded(child: Text(l.cvAppsUsageNeeded, style: AppText.rowSub.copyWith(height: 1.4, color: c.textSecondary))),
+                      const SizedBox(width: 8),
+                      FilledButton(
+                        onPressed: NativeBridge.instance.openUsageAccessSettings,
+                        style: FilledButton.styleFrom(backgroundColor: AppPalette.accent, shape: const StadiumBorder(), minimumSize: const Size(72, 40)),
+                        child: Text(l.alAllow),
+                      ),
+                    ]),
                   ),
                 ),
               ),
-            if (loading || _cache.loading && !real)
+            if (!ready && !failed)
               const Padding(padding: EdgeInsets.all(24), child: Center(child: CircularProgressIndicator(strokeWidth: 2.5)))
             else if (failed)
               PCard(
@@ -292,18 +329,116 @@ class _AppsStageState extends State<AppsStage> {
                   ),
                 ]),
               )
-            else
-              for (final (i, (app, icon)) in rows.indexed)
-                ObFadeUp(
-                  key: ValueKey(app.id),
-                  delay: _entered ? Duration.zero : _answersDelay,
-                  index: _entered ? 0 : (i < 8 ? i : 8),
-                  child: ObAnswer(multi: true, leading: icon, label: app.label, selected: picked.contains(app), onTap: () => _toggle(app)),
+            else ...[
+              ObFadeUp(
+                delay: _answersDelay,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: context.isDark ? c.glassFill : Colors.white,
+                    borderRadius: BorderRadius.circular(AppRadius.card),
+                    border: Border.all(color: c.glassBorder),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Column(children: [
+                    for (final (i, a) in picked.indexed)
+                      _BlockRow(
+                        key: ValueKey(a.id),
+                        icon: _icon(a),
+                        title: a.label,
+                        subtitle: _usageLine(l, a),
+                        removeLabel: l.cvRemoveApp(a.label),
+                        divider: i < picked.length - 1,
+                        onRemove: () => _remove(a),
+                      ),
+                  ]),
                 ),
-            ObFadeUp(delay: _replyDelay, child: ObReply(picked.isEmpty ? null : l.cvAppsReply(appsList(l, picked)))),
+              ),
+              const SizedBox(height: 14),
+              ObFadeUp(
+                delay: _replyDelay,
+                child: Text(l.cvAppsSelected(picked.length), textAlign: TextAlign.center, style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w500, color: c.textSecondary)),
+              ),
+            ],
           ],
         );
       },
+    );
+  }
+}
+
+/// One app that will be paused: icon, name, today's use and a ✕ to leave it out.
+/// The row folds away smoothly when removed.
+class _BlockRow extends StatefulWidget {
+  const _BlockRow({super.key, required this.icon, required this.title, required this.subtitle, required this.removeLabel, required this.divider, required this.onRemove});
+  final Widget icon;
+  final String title;
+  final String? subtitle;
+  final String removeLabel;
+  final bool divider;
+  final VoidCallback onRemove;
+
+  @override
+  State<_BlockRow> createState() => _BlockRowState();
+}
+
+class _BlockRowState extends State<_BlockRow> {
+  bool _gone = false;
+
+  void _tap() {
+    if (_gone) return;
+    HapticFeedback.selectionClick();
+    final d = ObMotion.of(context, const Duration(milliseconds: 260));
+    setState(() => _gone = true);
+    Future.delayed(d, () {
+      if (mounted) widget.onRemove();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final d = ObMotion.of(context, const Duration(milliseconds: 260));
+    return AnimatedSize(
+      duration: d,
+      curve: Curves.easeInOutCubic,
+      child: _gone
+          ? const SizedBox(width: double.infinity)
+          : AnimatedOpacity(
+              opacity: _gone ? 0 : 1,
+              duration: d,
+              child: Container(
+                decoration: BoxDecoration(border: widget.divider ? Border(bottom: BorderSide(color: c.divider)) : null),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Row(children: [
+                  widget.icon,
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+                      Text(widget.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w700, color: c.textPrimary)),
+                      if (widget.subtitle != null) ...[
+                        const SizedBox(height: 2),
+                        Text(widget.subtitle!, style: AppText.rowSub.copyWith(color: c.textMuted)),
+                      ],
+                    ]),
+                  ),
+                  const SizedBox(width: 8),
+                  Semantics(
+                    button: true,
+                    label: widget.removeLabel,
+                    excludeSemantics: true,
+                    child: Material(
+                      color: context.isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFF1EFFA),
+                      shape: const CircleBorder(),
+                      child: InkWell(
+                        customBorder: const CircleBorder(),
+                        onTap: _tap,
+                        child: SizedBox.square(dimension: 40, child: Icon(Icons.close_rounded, size: 20, color: c.textPrimary)),
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
+            ),
     );
   }
 }

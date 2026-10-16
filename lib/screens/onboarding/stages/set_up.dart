@@ -40,23 +40,11 @@ class PermissionsStage extends StatelessWidget {
   const PermissionsStage({super.key, required this.onNext});
   final VoidCallback onNext;
 
-  static const _strictMakers = ['xiaomi', 'redmi', 'poco', 'oppo', 'realme', 'vivo', 'oneplus', 'huawei', 'honor'];
-
   /// Already on: Pausey can't switch a permission off itself, so explain where to do it.
   static void _explainOff(BuildContext context) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(context.l10n.stPermOnHint), behavior: SnackBarBehavior.floating));
-  }
-
-  static Future<void> _askNotifications() async {
-    await NativeBridge.instance.requestNotifications();
-    await RestrictionRepo.instance.refresh();
-  }
-
-  static Future<void> _askAccessibility(BuildContext context) async {
-    final ok = await showDialog<bool>(context: context, builder: (_) => const _AccessibilityWhyDialog());
-    if (ok == true) await NativeBridge.instance.openAccessibilitySettings();
   }
 
   @override
@@ -69,7 +57,6 @@ class PermissionsStage extends StatelessWidget {
       listenable: repo,
       builder: (context, _) {
         final st = repo.status;
-        final strict = _strictMakers.any(st.manufacturer.contains);
         var n = 0;
         Widget card({required IconData icon, required String title, required String why, required bool on, required VoidCallback onAsk, bool optional = false}) =>
             ObFadeUp(
@@ -79,7 +66,7 @@ class PermissionsStage extends StatelessWidget {
             );
         return ObPage(
           center: true,
-          primaryLabel: st.canEnforce || !st.supported ? l.continueLabel : l.cvContinueAnyway,
+          primaryLabel: (st.usageAccess && st.overlay) || !st.supported ? l.continueLabel : l.cvContinueAnyway,
           onPrimary: onNext,
           children: [
             // Same order as the question screens: illustration → title → subtitle → content.
@@ -94,18 +81,6 @@ class PermissionsStage extends StatelessWidget {
               const SizedBox(height: 20),
               card(icon: Icons.hourglass_bottom_rounded, title: l.stPermUsageTitle, why: l.stPermUsageWhy, on: st.usageAccess, onAsk: bridge.openUsageAccessSettings),
               card(icon: Icons.layers_rounded, title: l.stPermOverlayTitle, why: l.stPermOverlayWhy, on: st.overlay, onAsk: bridge.openOverlaySettings),
-              card(icon: Icons.notifications_none_rounded, title: l.stPermNotifTitle, why: l.stPermNotifWhy, on: st.notifications, onAsk: _askNotifications),
-              card(icon: Icons.accessibility_new_rounded, title: l.stPermA11yTitle, why: l.stPermA11yWhy, on: st.accessibility, onAsk: () => _askAccessibility(context)),
-              ObFadeUp(
-                delay: const Duration(milliseconds: 600),
-                index: n,
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 12),
-                  child: Text(l.stPermA11yNote, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(fontSize: 12, height: 1.45, color: c.textMuted)),
-                ),
-              ),
-              if (strict)
-                card(icon: Icons.battery_saver_rounded, title: l.cvPermBatteryTitle, why: l.cvPermBatteryWhy, on: st.batteryUnrestricted, onAsk: bridge.openBatterySettings, optional: true),
               // Privacy promise at the end, as its own soft card.
               ObFadeUp(
                 delay: const Duration(milliseconds: 600),
@@ -133,7 +108,7 @@ class PermissionsStage extends StatelessWidget {
 
 /// One permission: icon, what it's for, and a switch that mirrors the real state.
 /// Off → opens the right Android screen. On → explains how to turn it off there.
-/// Turned on, the card tints teal so the user sees their progress at a glance.
+/// Only the switch shows the state; the card itself stays the same.
 class _PermToggleCard extends StatelessWidget {
   const _PermToggleCard({
     required this.icon,
@@ -170,18 +145,12 @@ class _PermToggleCard extends StatelessWidget {
               padding: const EdgeInsetsDirectional.fromSTEB(14, 14, 10, 14),
               decoration: BoxDecoration(
                 borderRadius: r,
-                color: on ? AppPalette.teal.withValues(alpha: dark ? 0.14 : 0.09) : (dark ? c.glassFill : Colors.white),
-                border: Border.all(color: on ? AppPalette.teal.withValues(alpha: 0.55) : c.glassBorder, width: on ? 1.4 : 1),
-                boxShadow: [
-                  BoxShadow(color: (on ? AppPalette.teal : AppPalette.accent).withValues(alpha: dark ? 0.10 : 0.08), blurRadius: 18, offset: const Offset(0, 6)),
-                ],
+                color: dark ? c.glassFill : Colors.white,
+                border: Border.all(color: c.glassBorder),
+                boxShadow: [BoxShadow(color: AppPalette.accent.withValues(alpha: dark ? 0.10 : 0.08), blurRadius: 18, offset: const Offset(0, 6))],
               ),
               child: Row(children: [
-                AnimatedSwitcher(
-                  duration: ObMotion.of(context, ObMotion.content),
-                  transitionBuilder: (child, a) => ScaleTransition(scale: CurvedAnimation(parent: a, curve: Curves.easeOutBack), child: child),
-                  child: IconBadge(key: ValueKey(on), icon: on ? Icons.check_rounded : icon, color: on ? Tone.green : Tone.violet),
-                ),
+                IconBadge(icon: icon, color: Tone.violet),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -200,61 +169,6 @@ class _PermToggleCard extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-/// Shown before opening Accessibility settings: what it is used for, and what it is never used for.
-class _AccessibilityWhyDialog extends StatelessWidget {
-  const _AccessibilityWhyDialog();
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final c = context.colors;
-    final dark = context.isDark;
-    return AlertDialog(
-      backgroundColor: dark ? const Color(0xFF17142F) : Colors.white,
-      surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.card)),
-      icon: const Center(child: IconBadge(icon: Icons.accessibility_new_rounded, color: Tone.violet, size: 48)),
-      title: Text(l.stA11yDialogTitle, style: AppText.cardTitle.copyWith(fontSize: 20, color: c.textPrimary)),
-      content: SingleChildScrollView(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-          Text(l.stA11yDialogBody, style: AppText.rowSub.copyWith(fontSize: 14, height: 1.5, color: c.textSecondary)),
-          const SizedBox(height: 16),
-          Text(l.stA11yNot, style: AppText.rowSub.copyWith(fontSize: 14, fontWeight: FontWeight.w800, color: c.textPrimary)),
-          const SizedBox(height: 8),
-          for (final s in [l.stA11yNot1, l.stA11yNot2, l.stA11yNot3])
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 1),
-                  width: 18,
-                  height: 18,
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: AppPalette.accent.withValues(alpha: 0.14)),
-                  child: const Icon(Icons.close_rounded, size: 12, color: AppPalette.accent),
-                ),
-                const SizedBox(width: 10),
-                Expanded(child: Text(s, style: AppText.rowSub.copyWith(fontSize: 14, height: 1.4, color: c.textPrimary))),
-              ]),
-            ),
-        ]),
-      ),
-      actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context, false),
-          style: TextButton.styleFrom(foregroundColor: c.textSecondary, minimumSize: const Size(64, 44)),
-          child: Text(l.cancel),
-        ),
-        FilledButton(
-          onPressed: () => Navigator.pop(context, true),
-          style: FilledButton.styleFrom(backgroundColor: AppPalette.accent, foregroundColor: Colors.white, minimumSize: const Size(96, 44), shape: const StadiumBorder()),
-          child: Text(l.continueLabel),
-        ),
-      ],
     );
   }
 }
