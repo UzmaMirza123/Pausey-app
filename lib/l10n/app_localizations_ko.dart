@@ -1356,6 +1356,33 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get cvAppsTrayEmpty => '자꾸 빠져드는 앱을 탭하세요';
+
+  @override
+  String cvAppsTray(int count) {
+    return '일시정지할 앱: $count';
+  }
+
+  @override
+  String cvLifeTitle(String years) {
+    return '휴대폰에 $years년';
+  }
+
+  @override
+  String cvLifeSub(String time) {
+    return '하루 $time씩, 앞으로 50년 동안. 점 하나가 깨어 있는 삶의 한 조각이에요.';
+  }
+
+  @override
+  String get cvLifeHold => '길게 눌러 되찾기';
+
+  @override
+  String get cvLifeDone => '되찾았어요. 이제 지켜요.';
+
+  @override
+  String get cvPermAllowed => '허용됨';
+
+  @override
   String get appName => 'Pausey';
 
   @override

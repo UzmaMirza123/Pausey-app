@@ -1397,6 +1397,33 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get cvAppsTrayEmpty => 'Нажмите на приложения, которые затягивают';
+
+  @override
+  String cvAppsTray(int count) {
+    return 'Приложений на паузу: $count';
+  }
+
+  @override
+  String cvLifeTitle(String years) {
+    return '$years лет в телефоне';
+  }
+
+  @override
+  String cvLifeSub(String time) {
+    return 'При $time в день за следующие 50 лет. Каждая точка — часть вашей жизни без сна.';
+  }
+
+  @override
+  String get cvLifeHold => 'Удерживайте, чтобы вернуть их';
+
+  @override
+  String get cvLifeDone => 'Возвращено. Давайте это сохраним.';
+
+  @override
+  String get cvPermAllowed => 'разрешено';
+
+  @override
   String get appName => 'Pausey';
 
   @override

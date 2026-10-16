@@ -1395,6 +1395,33 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String get cvAppsTrayEmpty => 'जो ऐप्स आपको खींचते हैं, उन पर टैप करें';
+
+  @override
+  String cvAppsTray(int count) {
+    return 'रोकने वाले ऐप्स: $count';
+  }
+
+  @override
+  String cvLifeTitle(String years) {
+    return 'फ़ोन पर $years साल';
+  }
+
+  @override
+  String cvLifeSub(String time) {
+    return 'रोज़ $time के हिसाब से, अगले 50 सालों में। हर बिंदु आपकी जागती ज़िंदगी का एक हिस्सा है।';
+  }
+
+  @override
+  String get cvLifeHold => 'वापस लेने के लिए दबाए रखें';
+
+  @override
+  String get cvLifeDone => 'वापस मिल गया। अब इसे बचाएं।';
+
+  @override
+  String get cvPermAllowed => 'अनुमति';
+
+  @override
   String get appName => 'Pausey';
 
   @override

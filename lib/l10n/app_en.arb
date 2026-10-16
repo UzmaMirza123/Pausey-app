@@ -813,6 +813,34 @@
       }
     }
   },
+  "cvAppsTrayEmpty": "Tap the apps that pull you in",
+  "cvAppsTray": "Apps to pause: {count}",
+  "@cvAppsTray": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cvLifeTitle": "{years} years on your phone",
+  "@cvLifeTitle": {
+    "placeholders": {
+      "years": {
+        "type": "String"
+      }
+    }
+  },
+  "cvLifeSub": "At {time} a day, over the next 50 years. Each dot is a slice of your waking life.",
+  "@cvLifeSub": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "cvLifeHold": "Hold to take them back",
+  "cvLifeDone": "Taken back. Let's protect it.",
+  "cvPermAllowed": "allowed",
   "appName": "Pausey",
   "tagline": "Take back your time",
   "versionLabel": "Version 2.0 · App Store Edition",

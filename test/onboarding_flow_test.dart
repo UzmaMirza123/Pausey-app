@@ -7,6 +7,7 @@ import 'package:pausey/data/restrictions/restriction_repo.dart';
 import 'package:pausey/main.dart';
 import 'package:pausey/screens/onboarding/onboarding_flow.dart';
 import 'package:pausey/screens/onboarding/onboarding_state.dart';
+import 'package:pausey/screens/onboarding/widgets/ob_time_life.dart';
 import 'package:pausey/services/auth_service.dart';
 import 'package:pausey/services/local_store.dart';
 import 'package:pausey/widgets/onboarding_nav.dart';
@@ -56,10 +57,10 @@ void main() {
     // No welcome screen any more: the first question comes straight away,
     // with its first answer already selected.
     expect(find.text('Your time is yours.'), findsNothing);
-    expect(OnboardingState.instance.relate, ObRelate.often);
-    expect(find.text("You're not alone. Phones are designed to keep us there."), findsOneWidget);
-    await _tap(t, 'Sometimes');
+    expect(OnboardingState.instance.relate, ObRelate.sometimes);
+    // Tapping a stop under the slider picks it (the orb speeds up).
     await _tap(t, 'All the time');
+    expect(OnboardingState.instance.relate, ObRelate.often);
     expect(find.text("You're not alone. Phones are designed to keep us there."), findsOneWidget);
     await _tap(t, "That's me");
 
@@ -70,15 +71,21 @@ void main() {
     // The first app is pre-selected.
     expect(OnboardingState.instance.apps.map((a) => a.id), ['Instagram']);
     await _tap(t, 'TikTok');
-    expect(find.text("Noted: Instagram and TikTok. We'll start with these."), findsOneWidget);
+    expect(OnboardingState.instance.apps.map((a) => a.id), ['Instagram', 'TikTok']);
+    expect(find.text('Apps to pause: 2'), findsOneWidget);
     await _tap(t, 'Next');
 
-    await _tap(t, 'More than 6 hours');
+    // Screen time: drag the ruler from 3h up past 6h.
+    await t.drag(find.byType(TimeRuler), const Offset(-220, 0));
+    for (var i = 0; i < 8; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
+    expect(OnboardingState.instance.screenTime, ObScreenTime.over6);
     await _tap(t, 'Next');
 
-    // Reflection uses the real answers.
-    expect(find.bySemanticsLabel('You want better sleep, but Instagram and TikTok keep pulling you in.'), findsOneWidget);
-    expect(find.text('About More than 6 hours a day (your estimate)'), findsOneWidget);
+    // Reflection: the years the phone could take, from the real answer.
+    expect(find.bySemanticsLabel(RegExp(r'years on your phone')), findsOneWidget);
+    expect(find.text('Hold to take them back'), findsWidgets);
     await _tap(t, 'Show me how');
 
     // "How it works" story: 4 beats, the user's first app in the headline.
@@ -151,7 +158,7 @@ void main() {
     for (var i = 0; i < 10; i++) {
       await t.pump(const Duration(milliseconds: 200));
     }
-    expect(find.bySemanticsLabel('Your daily screen time'), findsOneWidget);
+    expect(find.bySemanticsLabel('Your daily screen time'), findsWidgets);
     await t.tap(find.byType(BackCircleButton));
     for (var i = 0; i < 10; i++) {
       await t.pump(const Duration(milliseconds: 200));

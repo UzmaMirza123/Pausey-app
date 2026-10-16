@@ -1345,6 +1345,33 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get cvAppsTrayEmpty => '点按让你停不下来的应用';
+
+  @override
+  String cvAppsTray(int count) {
+    return '要暂停的应用：$count';
+  }
+
+  @override
+  String cvLifeTitle(String years) {
+    return '手机上的 $years 年';
+  }
+
+  @override
+  String cvLifeSub(String time) {
+    return '按每天 $time 计算，未来 50 年。每个点都是你清醒生活的一部分。';
+  }
+
+  @override
+  String get cvLifeHold => '长按把它们拿回来';
+
+  @override
+  String get cvLifeDone => '已拿回，一起守住它。';
+
+  @override
+  String get cvPermAllowed => '已允许';
+
+  @override
   String get appName => 'Pausey';
 
   @override

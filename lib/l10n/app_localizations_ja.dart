@@ -1349,6 +1349,33 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get cvAppsTrayEmpty => 'つい開いてしまうアプリをタップ';
+
+  @override
+  String cvAppsTray(int count) {
+    return '一時停止するアプリ：$count';
+  }
+
+  @override
+  String cvLifeTitle(String years) {
+    return 'スマホに$years年';
+  }
+
+  @override
+  String cvLifeSub(String time) {
+    return '1日$timeで、これからの50年。1つの点が起きている時間のひとかけらです。';
+  }
+
+  @override
+  String get cvLifeHold => '長押しして取り戻そう';
+
+  @override
+  String get cvLifeDone => '取り戻しました。守っていきましょう。';
+
+  @override
+  String get cvPermAllowed => '許可済み';
+
+  @override
   String get appName => 'Pausey';
 
   @override

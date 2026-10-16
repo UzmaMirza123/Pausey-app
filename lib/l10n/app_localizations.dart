@@ -2590,6 +2590,48 @@ abstract class AppLocalizations {
   /// **'{done} of {total} allowed'**
   String cvPermCount(int done, int total);
 
+  /// No description provided for @cvAppsTrayEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the apps that pull you in'**
+  String get cvAppsTrayEmpty;
+
+  /// No description provided for @cvAppsTray.
+  ///
+  /// In en, this message translates to:
+  /// **'Apps to pause: {count}'**
+  String cvAppsTray(int count);
+
+  /// No description provided for @cvLifeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{years} years on your phone'**
+  String cvLifeTitle(String years);
+
+  /// No description provided for @cvLifeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'At {time} a day, over the next 50 years. Each dot is a slice of your waking life.'**
+  String cvLifeSub(String time);
+
+  /// No description provided for @cvLifeHold.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to take them back'**
+  String get cvLifeHold;
+
+  /// No description provided for @cvLifeDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Taken back. Let\'s protect it.'**
+  String get cvLifeDone;
+
+  /// No description provided for @cvPermAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'allowed'**
+  String get cvPermAllowed;
+
   /// No description provided for @appName.
   ///
   /// In en, this message translates to:

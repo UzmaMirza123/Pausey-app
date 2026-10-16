@@ -1379,6 +1379,33 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get cvAppsTrayEmpty => 'اضغط على التطبيقات التي تشدّك';
+
+  @override
+  String cvAppsTray(int count) {
+    return 'تطبيقات للإيقاف: $count';
+  }
+
+  @override
+  String cvLifeTitle(String years) {
+    return '$years سنوات على هاتفك';
+  }
+
+  @override
+  String cvLifeSub(String time) {
+    return 'بمعدل $time يوميًا، خلال الخمسين عامًا القادمة. كل نقطة جزء من حياتك اليقظة.';
+  }
+
+  @override
+  String get cvLifeHold => 'اضغط مطولًا لاستعادتها';
+
+  @override
+  String get cvLifeDone => 'استعدتها. لنحمِها معًا.';
+
+  @override
+  String get cvPermAllowed => 'مسموح';
+
+  @override
   String get appName => 'Pausey';
 
   @override

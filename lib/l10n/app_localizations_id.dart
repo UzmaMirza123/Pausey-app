@@ -1405,6 +1405,33 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get cvAppsTrayEmpty => 'Ketuk aplikasi yang menarikmu';
+
+  @override
+  String cvAppsTray(int count) {
+    return 'Aplikasi untuk dijeda: $count';
+  }
+
+  @override
+  String cvLifeTitle(String years) {
+    return '$years tahun di ponsel';
+  }
+
+  @override
+  String cvLifeSub(String time) {
+    return 'Dengan $time sehari, selama 50 tahun ke depan. Tiap titik adalah bagian dari waktu sadarmu.';
+  }
+
+  @override
+  String get cvLifeHold => 'Tahan untuk mengambilnya kembali';
+
+  @override
+  String get cvLifeDone => 'Sudah kembali. Ayo jaga.';
+
+  @override
+  String get cvPermAllowed => 'diizinkan';
+
+  @override
   String get appName => 'Pausey';
 
   @override

@@ -7,31 +7,66 @@ import '../../../utils/app_theme.dart';
 import '../../../utils/l10n.dart';
 import '../../../widgets/ui_kit.dart';
 import '../onboarding_state.dart';
-import '../widgets/ob_choice.dart';
-import '../widgets/ob_heroes.dart';
+import '../widgets/ob_clean_kit.dart';
 import '../widgets/ob_kit.dart';
+import '../widgets/ob_relate_goal.dart';
 import '../widgets/ob_text_motion.dart';
+import '../widgets/ob_time_life.dart';
 
 OnboardingState get _s => OnboardingState.instance;
 
-/// Same order on every question: hero illustration → title → subtitle → answers.
-/// Answers rise in one by one after the title (see ObFadeUp).
-const _answersDelay = Duration(milliseconds: 550);
+/// Same calm order on every question: title → subtitle → one interactive
+/// centrepiece → a single line from Pausey. Nothing else on the screen.
+const _centreDelay = Duration(milliseconds: 500);
+const _captionDelay = Duration(milliseconds: 900);
 
-/// Pausey's reply bubble comes last, after the answers.
-const _replyDelay = Duration(milliseconds: 950);
+/// Pausey's short answer under the centrepiece; cross-fades when it changes.
+class _Caption extends StatelessWidget {
+  const _Caption(this.text);
+  final String? text;
 
-/// Hero illustration on top of a question screen: 172 high, less on short phones
-/// so the answers stay in view.
-Widget _hero(Widget child) => ObHeroBox(child: child);
+  @override
+  Widget build(BuildContext context) {
+    final t = text;
+    return ObFadeUp(
+      delay: _captionDelay,
+      child: AnimatedSwitcher(
+        duration: ObMotion.of(context, ObMotion.content),
+        // The old line leaves quickly so two lines never sit on top of each other.
+        reverseDuration: ObMotion.of(context, const Duration(milliseconds: 120)),
+        transitionBuilder: (child, a) => FadeTransition(
+          opacity: a,
+          child: SlideTransition(position: Tween(begin: const Offset(0, 0.2), end: Offset.zero).animate(a), child: child),
+        ),
+        child: t == null
+            ? const SizedBox(key: ValueKey('none'), height: 20, width: double.infinity)
+            : Semantics(
+                liveRegion: true,
+                key: ValueKey(t),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(t, textAlign: TextAlign.center, style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w500, height: 1.45, color: context.colors.textSecondary)),
+                ),
+              ),
+      ),
+    );
+  }
+}
+
+Widget _head(String title, String sub) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      ObTitle(title, align: TextAlign.center),
+      ObFadeUp(delay: const Duration(milliseconds: 420), child: ObSubtitle(sub, align: TextAlign.center)),
+    ]);
 
 // -----------------------------------------------------------------------------
-// Stage 2 — Recognition ("Ever picked up your phone for a minute…")
+// Stage 2 — "Lose track of time?": drag the slider, the orb speeds up
 // -----------------------------------------------------------------------------
 
 class RelateStage extends StatelessWidget {
   const RelateStage({super.key, required this.onNext});
   final VoidCallback onNext;
+
+  static const _order = [ObRelate.rarely, ObRelate.sometimes, ObRelate.often];
 
   @override
   Widget build(BuildContext context) {
@@ -51,23 +86,17 @@ class RelateStage extends StatelessWidget {
           primaryLabel: r == ObRelate.rarely ? l.cvNext : l.cvRelateCta,
           onPrimary: r == null ? null : onNext,
           children: [
-            _hero(RelateHero(answer: r)),
-            const SizedBox(height: 12),
-            ObTitle(l.cvRelateTitle, align: TextAlign.center),
-            ObFadeUp(delay: const Duration(milliseconds: 420), child: ObSubtitle(l.cvRelateSub, align: TextAlign.center)),
-            const SizedBox(height: 22),
-            for (final (i, (v, label, shape)) in [
-              (ObRelate.often, l.cvRelateOften, ObBlobShape.wobble),
-              (ObRelate.sometimes, l.cvRelateSometimes, ObBlobShape.round),
-              (ObRelate.rarely, l.cvRelateRarely, ObBlobShape.triangle),
-            ].indexed)
-              ObFadeUp(
-                delay: _answersDelay,
-                index: i,
-                child: _gap(ObChoiceTile(label: label, character: shape, index: i, selected: r == v, onTap: () => _s.update((s) => s.relate = v))),
+            _head(l.cvRelateTitle, l.cvRelateSub),
+            const SizedBox(height: 18),
+            ObFadeUp(
+              delay: _centreDelay,
+              child: RelateDial(
+                value: _order.indexOf(r ?? ObRelate.sometimes),
+                labels: [l.cvRelateRarely, l.cvRelateSometimes, l.cvRelateOften],
+                onChanged: (i) => _s.update((s) => s.relate = _order[i]),
               ),
-            const SizedBox(height: 8),
-            ObFadeUp(delay: _replyDelay, child: ObReply(reply)),
+            ),
+            _Caption(reply),
           ],
         );
       },
@@ -76,7 +105,7 @@ class RelateStage extends StatelessWidget {
 }
 
 // -----------------------------------------------------------------------------
-// Stage 3 — Goal
+// Stage 3 — Goal: tap a floating bubble
 // -----------------------------------------------------------------------------
 
 String goalReply(AppLocalizations l, ObGoal g) => switch (g) {
@@ -114,34 +143,34 @@ class _GoalStageState extends State<GoalStage> {
       builder: (context, _) {
         final g = _s.goal;
         final options = [
-          (ObGoal.focus, ObBlobShape.round, l.cvGoalFocus),
-          (ObGoal.sleep, ObBlobShape.cloud, l.cvGoalSleep),
-          (ObGoal.scrolling, ObBlobShape.wobble, l.cvGoalScrolling),
-          (ObGoal.me, ObBlobShape.drop, l.cvGoalMe),
-          (ObGoal.habits, ObBlobShape.triangle, l.cvGoalHabits),
-          (ObGoal.other, ObBlobShape.squircle, l.cvGoalOther),
+          (ObGoal.focus, Icons.center_focus_strong_rounded, l.cvGoalFocus),
+          (ObGoal.sleep, Icons.bedtime_rounded, l.cvGoalSleep),
+          (ObGoal.scrolling, Icons.swipe_vertical_rounded, l.cvGoalScrolling),
+          (ObGoal.me, Icons.self_improvement_rounded, l.cvGoalMe),
+          (ObGoal.habits, Icons.eco_rounded, l.cvGoalHabits),
+          (ObGoal.other, Icons.edit_rounded, l.cvGoalOther),
         ];
+        final sel = g == null ? null : options.indexWhere((o) => o.$1 == g);
         return ObPage(
           center: true,
           primaryLabel: l.cvNext,
           onPrimary: g == null ? null : widget.onNext,
           children: [
-            _hero(GoalHero(goal: g)),
-            const SizedBox(height: 12),
-            ObTitle(l.cvGoalTitle, align: TextAlign.center),
-            ObFadeUp(delay: const Duration(milliseconds: 420), child: ObSubtitle(l.cvGoalSub, align: TextAlign.center)),
-            const SizedBox(height: 22),
-            for (final (i, (v, shape, label)) in options.indexed)
-              ObFadeUp(
-                delay: _answersDelay,
-                index: i,
-                child: _gap(ObChoiceTile(label: label, character: shape, index: i, selected: g == v, onTap: () => _s.update((s) => s.goal = v))),
+            _head(l.cvGoalTitle, l.cvGoalSub),
+            const SizedBox(height: 14),
+            ObFadeUp(
+              delay: _centreDelay,
+              child: BubblePicker(
+                options: [for (final o in options) BubbleOption(icon: o.$2, label: o.$3)],
+                selected: sel,
+                onSelect: (i) => _s.update((s) => s.goal = options[i].$1),
               ),
+            ),
             AnimatedSize(
               duration: ObMotion.of(context, ObMotion.content),
               child: g == ObGoal.other
                   ? Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
+                      padding: const EdgeInsets.only(top: 8, bottom: 10),
                       child: TextField(
                         controller: _other,
                         autofocus: _s.goalOther.isEmpty,
@@ -164,7 +193,7 @@ class _GoalStageState extends State<GoalStage> {
                     )
                   : const SizedBox(width: double.infinity),
             ),
-            ObFadeUp(delay: _replyDelay, child: ObReply(g == null ? null : goalReply(l, g))),
+            _Caption(g == null ? null : goalReply(l, g)),
           ],
         );
       },
@@ -173,7 +202,7 @@ class _GoalStageState extends State<GoalStage> {
 }
 
 // -----------------------------------------------------------------------------
-// Stage 4 — Apps that pull you in
+// Stage 4 — Apps: tap icons, they fly into the lock tray
 // -----------------------------------------------------------------------------
 
 String appsList(AppLocalizations l, List<ObApp> apps) {
@@ -195,16 +224,10 @@ class _AppsStageState extends State<AppsStage> {
   InstalledAppsCache get _cache => InstalledAppsCache.instance;
   String _query = '';
 
-  /// After the entrance, rows that appear from the search show at once (no delay).
-  bool _entered = false;
-
   @override
   void initState() {
     super.initState();
     _cache.ensureLoaded();
-    Future.delayed(const Duration(milliseconds: 1600), () {
-      if (mounted) setState(() => _entered = true);
-    });
   }
 
   /// Installed app → stable id (catalogue name when it's a known app, so Home shows its icon).
@@ -232,7 +255,6 @@ class _AppsStageState extends State<AppsStage> {
         final real = android && _cache.loaded;
         final loading = android && !_cache.loaded && !_cache.failed;
         final failed = android && !_cache.loaded && _cache.failed && !_cache.loading;
-        // Every offered app (unfiltered); the list below shows the ones matching the search.
         final List<(ObApp, Widget)> all;
         if (real) {
           final known = ManagedApp.knownPackages.values.toSet();
@@ -242,28 +264,22 @@ class _AppsStageState extends State<AppsStage> {
             });
           all = [
             for (final a in sorted)
-                (
-                  _fromInstalled(a),
-                  a.icon == null
-                      ? AppGlyph(a.packageName, size: 36)
-                      : ClipRRect(borderRadius: BorderRadius.circular(9), child: Image.memory(a.icon!, width: 36, height: 36, gaplessPlayback: true)),
-                ),
+              (
+                _fromInstalled(a),
+                a.icon == null ? AppGlyph(a.packageName, size: 48) : Image.memory(a.icon!, width: 48, height: 48, gaplessPlayback: true),
+              ),
           ];
         } else if (android) {
           all = const [];
         } else {
           all = [
             for (final name in const ['Instagram', 'TikTok', 'YouTube', 'Facebook', 'Twitter / X', 'Snapchat', 'Reddit', 'Netflix', 'WhatsApp'])
-              (ObApp(id: name, label: name, packageName: ManagedApp.knownPackages[name]), AppGlyph(name, size: 36)),
+              (ObApp(id: name, label: name, packageName: ManagedApp.knownPackages[name]), AppGlyph(name, size: 48)),
           ];
         }
         final q = _query.toLowerCase();
         final rows = q.isEmpty ? all : [for (final r in all) if (r.$1.label.toLowerCase().contains(q)) r];
         final picked = _s.apps;
-        // Hero: the picked apps first (in the order picked, they get the lock badges), then
-        // the others — from the full list, so the search box never moves the locks.
-        final pickedRows = [for (final a in picked) ...all.where((r) => r.$1 == a)];
-        final heroRows = [...pickedRows, ...all.where((r) => !picked.contains(r.$1))].take(8).toList();
         // One app is pre-selected the first time the list shows (the user can change it).
         if (!_s.appsDefaulted && all.isNotEmpty) {
           final first = all.first.$1;
@@ -275,23 +291,17 @@ class _AppsStageState extends State<AppsStage> {
             });
           });
         }
+        final byId = {for (final r in all) r.$1.id: r.$1};
         return ObPage(
           center: true,
           primaryLabel: picked.isEmpty ? l.cvSkipForNow : l.cvNext,
           onPrimary: widget.onNext,
           children: [
-            _hero(AppsHero(
-              // Picked apps first, so their icons get the lock badges.
-              icons: [for (final (app, icon) in heroRows) KeyedSubtree(key: ValueKey(app.id), child: icon)],
-              selectedCount: pickedRows.length.clamp(0, heroRows.length),
-            )),
-            const SizedBox(height: 12),
-            ObTitle(l.cvAppsTitle, align: TextAlign.center),
-            ObFadeUp(delay: const Duration(milliseconds: 420), child: ObSubtitle(android ? l.cvAppsSubReal : l.cvAppsSubPopular, align: TextAlign.center)),
+            _head(l.cvAppsTitle, android ? l.cvAppsSubReal : l.cvAppsSubPopular),
             const SizedBox(height: 18),
             if (real)
               Padding(
-                padding: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.only(bottom: 14),
                 child: TextField(
                   onChanged: (v) => setState(() => _query = v.trim()),
                   style: AppText.rowTitle.copyWith(color: c.textPrimary),
@@ -321,14 +331,18 @@ class _AppsStageState extends State<AppsStage> {
                 ]),
               )
             else
-              for (final (i, (app, icon)) in rows.indexed)
-                ObFadeUp(
-                  key: ValueKey(app.id),
-                  delay: _entered ? Duration.zero : _answersDelay,
-                  index: _entered ? 0 : (i < 8 ? i : 8),
-                  child: _gap(ObChoiceTile(multi: true, leading: icon, index: i, label: app.label, selected: picked.contains(app), onTap: () => _toggle(app))),
+              ObFadeUp(
+                delay: _centreDelay,
+                child: AppPickGrid(
+                  apps: [for (final (app, icon) in rows) AppPick(id: app.id, label: app.label, icon: icon)],
+                  selected: {for (final a in picked) a.id},
+                  trayLabel: picked.isEmpty ? l.cvAppsTrayEmpty : l.cvAppsTray(picked.length),
+                  onToggle: (id) {
+                    final app = byId[id];
+                    if (app != null) _toggle(app);
+                  },
                 ),
-            ObFadeUp(delay: _replyDelay, child: ObReply(picked.isEmpty ? null : l.cvAppsReply(appsList(l, picked)))),
+              ),
           ],
         );
       },
@@ -337,7 +351,7 @@ class _AppsStageState extends State<AppsStage> {
 }
 
 // -----------------------------------------------------------------------------
-// Stage 5 — Daily screen time (estimate, or measured when usage access is on)
+// Stage 5 — Daily screen time: drag the ruler (or "Not sure")
 // -----------------------------------------------------------------------------
 
 class ScreenTimeStage extends StatefulWidget {
@@ -368,6 +382,7 @@ class _ScreenTimeStageState extends State<ScreenTimeStage> {
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
+    final c = context.colors;
     return ListenableBuilder(
       listenable: _s,
       builder: (context, _) {
@@ -381,53 +396,43 @@ class _ScreenTimeStageState extends State<ScreenTimeStage> {
           null => null,
         };
         final measured = _s.measuredMinutes;
+        final notSure = v == ObScreenTime.notSure;
         return ObPage(
           center: true,
           primaryLabel: v == null ? l.cvSkipForNow : l.cvNext,
           onPrimary: widget.onNext,
           children: [
-            _hero(ScreenTimeHero(value: v, unit: l.unitH)),
-            const SizedBox(height: 12),
-            ObTitle(l.cvStTitle, align: TextAlign.center),
-            ObFadeUp(delay: const Duration(milliseconds: 420), child: ObSubtitle(l.cvStSub, align: TextAlign.center)),
-            if (measured != null) ...[
-              const SizedBox(height: 16),
-              ObReveal(
-                index: 1,
-                child: PCard(
-                  child: Row(children: [
-                    const Icon(Icons.phone_android_rounded, color: AppPalette.accent),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        l.cvStMeasured(fmtMinutes(measured, h: l.unitH, m: l.unitM)),
-                        style: AppText.rowTitle.copyWith(color: context.colors.textPrimary),
-                      ),
-                    ),
-                  ]),
+            _head(l.cvStTitle, measured != null ? l.cvStMeasured(fmtMinutes(measured, h: l.unitH, m: l.unitM)) : l.cvStSub),
+            const SizedBox(height: 22),
+            ObFadeUp(
+              delay: _centreDelay,
+              child: AnimatedOpacity(
+                opacity: notSure ? 0.45 : 1,
+                duration: ObMotion.of(context, ObMotion.content),
+                child: TimeRuler(
+                  minutes: _s.screenMinutes ?? 180,
+                  semanticsLabel: l.cvStTitle,
+                  format: (m) => fmtMinutes(m, h: l.unitH, m: l.unitM),
+                  onChanged: (m) => _s.update((s) => s.setScreenMinutes(m)),
                 ),
               ),
-            ],
-            const SizedBox(height: 20),
-            for (final (i, (opt, label, shape)) in [
-              (ObScreenTime.under2, l.cvStUnder2, ObBlobShape.triangle),
-              (ObScreenTime.h2to4, l.cvSt2to4, ObBlobShape.cloud),
-              (ObScreenTime.h4to6, l.cvSt4to6, ObBlobShape.round),
-              (ObScreenTime.over6, l.cvStOver6, ObBlobShape.wobble),
-              (ObScreenTime.notSure, l.cvStNotSure, ObBlobShape.squircle),
-            ].indexed)
-              ObFadeUp(
-                delay: _answersDelay,
-                index: i,
-                child: _gap(ObChoiceTile(label: label, character: shape, index: i, selected: v == opt, onTap: () => _s.update((s) => s.screenTime = opt))),
+            ),
+            ObFadeUp(
+              delay: _centreDelay,
+              child: Center(
+                child: TextButton.icon(
+                  onPressed: () => _s.update((s) => s.screenTime = notSure ? s.bucketFor(s.screenMinutes ?? 180) : ObScreenTime.notSure),
+                  icon: Icon(notSure ? Icons.check_circle_rounded : Icons.help_outline_rounded, size: 18, color: notSure ? AppPalette.accent : c.textMuted),
+                  label: Text(l.cvStNotSure, style: AppText.label.copyWith(color: notSure ? AppPalette.accent : c.textSecondary)),
+                  style: TextButton.styleFrom(minimumSize: const Size(48, 44)),
+                ),
               ),
-            ObFadeUp(delay: _replyDelay, child: ObReply(reply)),
+            ),
+            const SizedBox(height: 6),
+            _Caption(reply),
           ],
         );
       },
     );
   }
 }
-
-/// Space under each answer tile (ObAnswer had it built in).
-Widget _gap(Widget tile) => Padding(padding: const EdgeInsets.only(bottom: 10), child: tile);

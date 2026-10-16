@@ -5,15 +5,14 @@ import 'package:flutter/material.dart';
 import '../../../utils/app_theme.dart';
 import '../../../utils/l10n.dart';
 import '../../../services/installed_apps.dart';
-import '../../../widgets/flat_scene.dart';
 import '../../../widgets/time_picker.dart';
 import '../../../widgets/ui_kit.dart';
 import '../../block/widgets/applock_ui.dart' show InstalledIcon;
 import '../onboarding_state.dart';
 import '../widgets/ob_kit.dart';
 import '../widgets/ob_text_motion.dart';
+import '../widgets/ob_time_life.dart';
 import '../widgets/story_phone.dart';
-import 'about_you.dart' show appsList;
 
 OnboardingState get _s => OnboardingState.instance;
 
@@ -39,34 +38,55 @@ String screenTimeLabel(AppLocalizations l, ObScreenTime t) => switch (t) {
 // Stage 6 — Reflection built only from the answers
 // -----------------------------------------------------------------------------
 
-class ReflectionStage extends StatelessWidget {
+/// "Your life in dots": the share of the next 50 waking years the phone could
+/// take at today's pace, and a hold-to-take-them-back moment.
+class ReflectionStage extends StatefulWidget {
   const ReflectionStage({super.key, required this.onNext});
   final VoidCallback onNext;
+
+  /// Waking hours in a day, and the years ahead the grid stands for.
+  static const wakingHours = 16.0, yearsAhead = 50;
+
+  @override
+  State<ReflectionStage> createState() => _ReflectionStageState();
+}
+
+class _ReflectionStageState extends State<ReflectionStage> {
+  bool _reclaimed = false;
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    final phrase = goalPhrase(l, _s);
-    final headline = _s.apps.isEmpty ? l.cvReflectNoApps(phrase) : l.cvReflectApps(phrase, appsList(l, _s.apps));
-    final st = _s.measuredMinutes != null
-        ? l.cvReflectMeasured(fmtMinutes(_s.measuredMinutes!, h: l.unitH, m: l.unitM))
-        : (_s.screenTime != null && _s.screenTime != ObScreenTime.notSure ? l.cvReflectEstimate(screenTimeLabel(l, _s.screenTime!)) : null);
+    final hours = _s.dailyHours.clamp(0.5, ReflectionStage.wakingHours);
+    final years = hours / 24 * ReflectionStage.yearsAhead;
+    final yearsText = years >= 10 ? years.round().toString() : years.toStringAsFixed(1);
     return ObPage(
       center: true,
       primaryLabel: l.cvShowMeHow,
-      onPrimary: onNext,
+      onPrimary: widget.onNext,
       children: [
-        // An illustration of a message for the user, then what Pausey understood.
-        const Center(child: FlatScene(kind: SceneKind.message, width: 270)),
-        const SizedBox(height: 8),
-        // What Pausey understood "writes" itself in, word by word.
-        ObRevealText(headline, delay: const Duration(milliseconds: 350), header: false, style: AppText.cardTitle.copyWith(height: 1.4, color: context.colors.textPrimary)),
-        if (st != null) ...[
-          const SizedBox(height: 16),
-          ObFadeUp(delay: const Duration(milliseconds: 900), child: Align(child: ObTag(st, icon: Icons.schedule_rounded))),
-        ],
+        ObTitle(l.cvLifeTitle(yearsText), align: TextAlign.center),
+        ObFadeUp(
+          delay: const Duration(milliseconds: 420),
+          child: ObSubtitle(l.cvLifeSub(fmtMinutes((hours * 60).round(), h: l.unitH, m: l.unitM)), align: TextAlign.center),
+        ),
         const SizedBox(height: 22),
-        ObFadeUp(delay: const Duration(milliseconds: 1100), child: ObReply(l.cvReflectHelp)),
+        ObFadeUp(
+          delay: const Duration(milliseconds: 500),
+          child: LifeReclaim(
+            phoneFraction: hours / ReflectionStage.wakingHours,
+            holdLabel: l.cvLifeHold,
+            doneLabel: l.cvLifeDone,
+            reclaimed: _reclaimed,
+            onReclaimed: () => setState(() => _reclaimed = true),
+          ),
+        ),
+        const SizedBox(height: 16),
+        AnimatedOpacity(
+          opacity: _reclaimed ? 1 : 0,
+          duration: ObMotion.of(context, ObMotion.content),
+          child: Text(l.cvReflectHelp, textAlign: TextAlign.center, style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w500, height: 1.45, color: context.colors.textSecondary)),
+        ),
       ],
     );
   }

@@ -139,9 +139,19 @@ EN = {
  "cvStartFirstFocus": "Start my first focus session",
  "cvFinishLimits": "Finish setting up app limits",
  "cvPermCount": "{done} of {total} allowed",
+ "cvAppsTrayEmpty": "Tap the apps that pull you in",
+ "cvAppsTray": "Apps to pause: {count}",
+ "cvLifeTitle": "{years} years on your phone",
+ "cvLifeSub": "At {time} a day, over the next 50 years. Each dot is a slice of your waking life.",
+ "cvLifeHold": "Hold to take them back",
+ "cvLifeDone": "Taken back. Let's protect it.",
+ "cvPermAllowed": "allowed",
 }
 _s = {"type": "String"}
 META = {
+ "cvAppsTray": {"placeholders": {"count": {"type": "int"}}},
+ "cvLifeTitle": {"placeholders": {"years": {"type": "String"}}},
+ "cvLifeSub": {"placeholders": {"time": {"type": "String"}}},
  "cvPermCount": {"placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},
  "cvAppsReply": {"placeholders": {"apps": _s}},
  "cvAnd": {"placeholders": {"a": _s, "b": _s}},

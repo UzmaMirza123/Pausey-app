@@ -1414,6 +1414,33 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get cvAppsTrayEmpty => 'Tocca le app che ti catturano';
+
+  @override
+  String cvAppsTray(int count) {
+    return 'App da mettere in pausa: $count';
+  }
+
+  @override
+  String cvLifeTitle(String years) {
+    return '$years anni al telefono';
+  }
+
+  @override
+  String cvLifeSub(String time) {
+    return 'A $time al giorno, nei prossimi 50 anni. Ogni punto è un pezzo della tua vita da sveglio.';
+  }
+
+  @override
+  String get cvLifeHold => 'Tieni premuto per riprenderli';
+
+  @override
+  String get cvLifeDone => 'Ripreso. Ora proteggiamolo.';
+
+  @override
+  String get cvPermAllowed => 'consentiti';
+
+  @override
   String get appName => 'Pausey';
 
   @override

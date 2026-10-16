@@ -10,7 +10,7 @@ import '../../../widgets/ui_kit.dart';
 import '../../auth/log_in_screen.dart' show LogInForm, LogInFormState;
 import '../../auth/sign_up_screen.dart';
 import '../onboarding_state.dart';
-import '../widgets/ob_heroes.dart';
+import '../widgets/ob_clean_kit.dart';
 import '../widgets/ob_kit.dart';
 import '../widgets/ob_text_motion.dart';
 import 'about_you.dart' show appsList;
@@ -71,7 +71,6 @@ class PermissionsStage extends StatelessWidget {
         final strict = _strictMakers.any(st.manufacturer.contains);
         // Same order as the hero's bubbles: usage, overlay, notifications, accessibility (+ battery).
         final states = [st.usageAccess, st.overlay, st.notifications, st.accessibility, if (strict) st.batteryUnrestricted];
-        final done = states.where((on) => on).length;
         var n = 0;
         Widget card({required IconData icon, required String title, required String why, required bool on, required VoidCallback onAsk, bool optional = false}) =>
             ObFadeUp(
@@ -85,7 +84,7 @@ class PermissionsStage extends StatelessWidget {
           onPrimary: onNext,
           children: [
             // Same order as the question screens: hero → title → subtitle → content.
-            ObHeroBox(child: PermissionsHero(granted: st.supported ? done : 0, total: states.length, states: st.supported ? states : null)),
+            ObFadeUp(child: Center(child: PermissionRing(states: st.supported ? states : [for (final _ in states) false], centerLabel: l.cvPermAllowed))),
             const SizedBox(height: 12),
             ObTitle(l.stPermTitle, align: TextAlign.center),
             ObFadeUp(
@@ -93,9 +92,7 @@ class PermissionsStage extends StatelessWidget {
               child: ObSubtitle(st.supported ? l.cvPermPrivacy : l.cvPermUnsupported, align: TextAlign.center),
             ),
             if (st.supported) ...[
-              const SizedBox(height: 14),
-              ObFadeUp(delay: const Duration(milliseconds: 500), child: Center(child: _PermProgress(done: done, total: states.length))),
-              const SizedBox(height: 18),
+              const SizedBox(height: 22),
               card(icon: Icons.hourglass_bottom_rounded, title: l.stPermUsageTitle, why: l.stPermUsageWhy, on: st.usageAccess, onAsk: bridge.openUsageAccessSettings),
               card(icon: Icons.layers_rounded, title: l.stPermOverlayTitle, why: l.stPermOverlayWhy, on: st.overlay, onAsk: bridge.openOverlaySettings),
               card(icon: Icons.notifications_none_rounded, title: l.stPermNotifTitle, why: l.stPermNotifWhy, on: st.notifications, onAsk: _askNotifications),
@@ -114,45 +111,6 @@ class PermissionsStage extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-/// "2 of 4 allowed" pill with a small bar that fills as permissions are turned on.
-class _PermProgress extends StatelessWidget {
-  const _PermProgress({required this.done, required this.total});
-  final int done, total;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final all = total > 0 && done >= total;
-    final color = all ? AppPalette.teal : AppPalette.accent;
-    return AnimatedContainer(
-      duration: ObMotion.of(context, ObMotion.content),
-      padding: const EdgeInsets.fromLTRB(12, 7, 14, 7),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: context.isDark ? 0.18 : 0.10),
-        borderRadius: BorderRadius.circular(AppRadius.chip),
-        border: Border.all(color: color.withValues(alpha: 0.35)),
-      ),
-      child: Row(mainAxisSize: MainAxisSize.min, children: [
-        SizedBox(
-          width: 44,
-          height: 6,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(99),
-            child: TweenAnimationBuilder<double>(
-              tween: Tween(end: total == 0 ? 0 : done / total),
-              duration: ObMotion.of(context, const Duration(milliseconds: 500)),
-              curve: Curves.easeOutCubic,
-              builder: (_, v, _) => LinearProgressIndicator(value: v, backgroundColor: c.dotInactive, color: color, minHeight: 6),
-            ),
-          ),
-        ),
-        const SizedBox(width: 8),
-        Text(context.l10n.cvPermCount(done, total), style: AppText.label.copyWith(color: c.textPrimary)),
-      ]),
     );
   }
 }

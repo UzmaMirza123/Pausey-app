@@ -55,6 +55,9 @@ class OnboardingState extends ChangeNotifier {
   bool appsDefaulted = false;
   ObScreenTime? screenTime;
 
+  /// Exact daily screen time from the ruler (minutes); [screenTime] is its range.
+  int? screenMinutes;
+
   /// Minutes measured on the phone today (only when usage access was already on).
   int? measuredMinutes;
   String name = '';
@@ -82,6 +85,7 @@ class OnboardingState extends ChangeNotifier {
       apps = [for (final a in (j['apps'] as List? ?? const [])) ObApp.fromJson(Map<String, dynamic>.from(a as Map))];
       appsDefaulted = j['appsDefaulted'] as bool? ?? false;
       screenTime = _enum(ObScreenTime.values, j['screenTime']);
+      screenMinutes = j['screenMinutes'] as int?;
       measuredMinutes = j['measured'] as int?;
       name = j['name'] as String? ?? '';
       final p = Map<String, dynamic>.from(j['plan'] as Map? ?? const {});
@@ -109,10 +113,37 @@ class OnboardingState extends ChangeNotifier {
   /// Each question starts with its first answer selected (the user can change it).
   void selectDefaults() {
     if (relate != null && goal != null && screenTime != null) return;
-    relate ??= ObRelate.values.first;
+    relate ??= ObRelate.sometimes;
     goal ??= ObGoal.values.first;
-    screenTime ??= ObScreenTime.values.first;
+    if (screenTime == null) setScreenMinutes(screenMinutes ?? 180);
     _save();
+  }
+
+  /// Range for an exact daily screen time.
+  ObScreenTime bucketFor(int minutes) => minutes < 120
+      ? ObScreenTime.under2
+      : minutes < 240
+          ? ObScreenTime.h2to4
+          : minutes < 360
+              ? ObScreenTime.h4to6
+              : ObScreenTime.over6;
+
+  void setScreenMinutes(int minutes) {
+    screenMinutes = minutes;
+    screenTime = bucketFor(minutes);
+  }
+
+  /// Hours a day on the phone: measured, else the ruler, else the middle of the range.
+  double get dailyHours {
+    final m = measuredMinutes ?? screenMinutes;
+    if (m != null && screenTime != ObScreenTime.notSure) return m / 60;
+    return switch (screenTime) {
+      ObScreenTime.under2 => 1.5,
+      ObScreenTime.h2to4 => 3,
+      ObScreenTime.h4to6 => 5,
+      ObScreenTime.over6 => 7,
+      _ => 3.5,
+    };
   }
 
   /// Change something and save.
@@ -132,6 +163,7 @@ class OnboardingState extends ChangeNotifier {
           'apps': [for (final a in apps) a.toJson()],
           'appsDefaulted': appsDefaulted,
           'screenTime': screenTime?.name,
+          'screenMinutes': screenMinutes,
           'measured': measuredMinutes,
           'name': name,
           'plan': {
@@ -214,6 +246,7 @@ class OnboardingState extends ChangeNotifier {
     apps = [];
     appsDefaulted = false;
     screenTime = null;
+    screenMinutes = null;
     measuredMinutes = null;
     name = '';
     planEdited = false;

@@ -1398,6 +1398,33 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get cvAppsTrayEmpty => 'Seni içine çeken uygulamalara dokun';
+
+  @override
+  String cvAppsTray(int count) {
+    return 'Duraklatılacak uygulamalar: $count';
+  }
+
+  @override
+  String cvLifeTitle(String years) {
+    return 'Telefonda $years yıl';
+  }
+
+  @override
+  String cvLifeSub(String time) {
+    return 'Günde $time ile önümüzdeki 50 yılda. Her nokta uyanık hayatından bir parça.';
+  }
+
+  @override
+  String get cvLifeHold => 'Geri almak için basılı tut';
+
+  @override
+  String get cvLifeDone => 'Geri alındı. Hadi koruyalım.';
+
+  @override
+  String get cvPermAllowed => 'izin verildi';
+
+  @override
   String get appName => 'Pausey';
 
   @override
