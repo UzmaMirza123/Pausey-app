@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../utils/app_theme.dart';
 import '../../widgets/common.dart';
+import 'widgets/ob_text_motion.dart';
 import 'widgets/intro_motion.dart';
 import '../../widgets/glow_background.dart';
 import '../../utils/l10n.dart';
@@ -57,11 +58,7 @@ class Onboarding4Screen extends StatelessWidget {
             const IntroEnter(scale: true, child: _Illustration()),
             IntroEnter(
               index: 1,
-              child: Text(
-                context.l10n.ob4Title,
-                textAlign: TextAlign.center,
-                style: AppText.h1.copyWith(color: c.textPrimary),
-              ),
+              child: ObRevealText(context.l10n.ob4Title, style: AppText.h1.copyWith(color: c.textPrimary)),
             ),
             const SizedBox(height: 12),
             IntroEnter(

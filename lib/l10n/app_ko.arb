@@ -410,6 +410,7 @@
   "cvReadyChange": "이 모든 건 나중에 바꿀 수 있어요.",
   "cvStartFirstFocus": "첫 집중 세션 시작",
   "cvFinishLimits": "앱 제한 설정 마치기",
+  "cvPermCount": "{total}개 중 {done}개 허용",
   "appName": "Pausey",
   "tagline": "나의 시간을 되찾으세요",
   "versionLabel": "버전 2.0 · App Store 에디션",

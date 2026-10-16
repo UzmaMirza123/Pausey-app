@@ -49,7 +49,9 @@ void main() {
       result = a;
       finished = true;
     })));
-    await t.pumpAndSettle();
+    for (var i = 0; i < 10; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
 
     // No welcome screen any more: the first question comes straight away,
     // with its first answer already selected.
@@ -75,12 +77,12 @@ void main() {
     await _tap(t, 'Next');
 
     // Reflection uses the real answers.
-    expect(find.text('You want better sleep, but Instagram and TikTok keep pulling you in.'), findsOneWidget);
+    expect(find.bySemanticsLabel('You want better sleep, but Instagram and TikTok keep pulling you in.'), findsOneWidget);
     expect(find.text('About More than 6 hours a day (your estimate)'), findsOneWidget);
     await _tap(t, 'Show me how');
 
     // "How it works" story: 4 beats, the user's first app in the headline.
-    expect(find.text('You open Instagram again'), findsOneWidget);
+    expect(find.bySemanticsLabel('You open Instagram again'), findsOneWidget);
     await _tap(t, 'Next');
     // Back steps to the previous beat first, not the previous stage.
     await t.tap(find.byType(BackCircleButton));
@@ -94,7 +96,7 @@ void main() {
     await _tap(t, 'Build my plan');
 
     // "Set your daily screen-time goal" now replaces the starter-plan screen.
-    expect(find.text('Your daily screen goal'), findsOneWidget);
+    expect(find.bySemanticsLabel('Your daily screen goal'), findsOneWidget);
     expect(RestrictionRepo.instance.hasOwnRules('com.instagram.android'), isFalse); // nothing applied yet
     await _tap(t, '3h');
     expect(LocalStore.instance.answers['dailyGoalHours'], 3);
@@ -125,7 +127,7 @@ void main() {
     expect(AuthService.instance.value.displayName, 'Uzma');
 
     // "You're all set!" with the user's real goal (3h) and app count (2).
-    expect(find.text("You're all set!"), findsOneWidget);
+    expect(find.bySemanticsLabel("You're all set!"), findsOneWidget);
     expect(find.text('3h'), findsOneWidget);
     expect(find.text('2'), findsOneWidget);
     await _tap(t, 'Enter Pausey');
@@ -146,10 +148,14 @@ void main() {
       s.goal = ObGoal.focus;
     });
     await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {})));
-    await t.pumpAndSettle();
-    expect(find.text('Your daily screen time'), findsOneWidget);
+    for (var i = 0; i < 10; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
+    expect(find.bySemanticsLabel('Your daily screen time'), findsOneWidget);
     await t.tap(find.byType(BackCircleButton));
-    await t.pumpAndSettle();
+    for (var i = 0; i < 10; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
     expect(OnboardingState.instance.stage, 3);
   }, variant: notAndroid);
 
@@ -157,7 +163,7 @@ void main() {
     var back = false;
     await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {}, onBackFromStart: () => back = true)));
     await t.pump(const Duration(seconds: 1));
-    expect(find.text('Lose track of time?'), findsOneWidget);
+    expect(find.bySemanticsLabel('Lose track of time?'), findsOneWidget);
     await t.tap(find.byType(BackCircleButton));
     await t.pump(const Duration(milliseconds: 500));
     expect(back, isTrue);

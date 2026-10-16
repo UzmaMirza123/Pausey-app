@@ -410,6 +410,7 @@
   "cvReadyChange": "Bunların hepsini sonra değiştirebilirsiniz.",
   "cvStartFirstFocus": "İlk odak seansımı başlat",
   "cvFinishLimits": "Uygulama sınırlarını tamamla",
+  "cvPermCount": "{total} izinden {done} tanesi verildi",
   "appName": "Pausey",
   "tagline": "Zamanını geri al",
   "versionLabel": "Sürüm 2.0 · App Store Sürümü",

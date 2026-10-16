@@ -11,6 +11,7 @@ import '../../../widgets/ui_kit.dart';
 import '../../block/widgets/applock_ui.dart' show InstalledIcon;
 import '../onboarding_state.dart';
 import '../widgets/ob_kit.dart';
+import '../widgets/ob_text_motion.dart';
 import '../widgets/story_phone.dart';
 import 'about_you.dart' show appsList;
 
@@ -57,10 +58,15 @@ class ReflectionStage extends StatelessWidget {
       children: [
         // An illustration of a message for the user, then what Pausey understood.
         const Center(child: FlatScene(kind: SceneKind.message, width: 270)),
-        ObReveal(child: ObSubtitle(headline, align: TextAlign.center)),
-        if (st != null) ...[const SizedBox(height: 16), ObReveal(index: 1, child: Align(child: ObTag(st, icon: Icons.schedule_rounded)))],
+        const SizedBox(height: 8),
+        // What Pausey understood "writes" itself in, word by word.
+        ObRevealText(headline, delay: const Duration(milliseconds: 350), header: false, style: AppText.cardTitle.copyWith(height: 1.4, color: context.colors.textPrimary)),
+        if (st != null) ...[
+          const SizedBox(height: 16),
+          ObFadeUp(delay: const Duration(milliseconds: 900), child: Align(child: ObTag(st, icon: Icons.schedule_rounded))),
+        ],
         const SizedBox(height: 22),
-        ObReveal(index: 2, child: ObReply(l.cvReflectHelp)),
+        ObFadeUp(delay: const Duration(milliseconds: 1100), child: ObReply(l.cvReflectHelp)),
       ],
     );
   }
@@ -167,25 +173,16 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
             child: Text(l.stHowCaption, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: c.textMuted)),
           ),
           const SizedBox(height: 8),
-          // All headlines are laid out (invisible) so the phone never jumps between beats.
+          // All headlines are laid out (invisible) so the phone never jumps between beats;
+          // the current one writes itself in word by word, again on every beat.
           ObReveal(
             index: 1,
             child: Stack(alignment: Alignment.topCenter, children: [
-              for (final (i, h) in headlines.indexed)
+              for (final h in headlines)
                 ExcludeSemantics(
-                  excluding: i != _beat,
-                  child: AnimatedOpacity(
-                    opacity: i == _beat ? 1 : 0,
-                    duration: ObMotion.of(context, i == _beat ? const Duration(milliseconds: 420) : const Duration(milliseconds: 200)),
-                    curve: Curves.easeOut,
-                    child: AnimatedSlide(
-                      offset: i == _beat ? Offset.zero : Offset(0, i < _beat ? -0.08 : 0.08),
-                      duration: ObMotion.of(context, const Duration(milliseconds: 420)),
-                      curve: Curves.easeOutCubic,
-                      child: Semantics(liveRegion: i == _beat, child: ObTitle(h, align: TextAlign.center)),
-                    ),
-                  ),
+                  child: Opacity(opacity: 0, child: Text(h, textAlign: TextAlign.center, style: AppText.h1)),
                 ),
+              Semantics(liveRegion: true, child: ObTitle(headlines[_beat], align: TextAlign.center)),
             ]),
           ),
           const SizedBox(height: 18),

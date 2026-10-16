@@ -410,6 +410,7 @@
   "cvReadyChange": "Kamu bisa mengubah semua ini nanti.",
   "cvStartFirstFocus": "Mulai sesi fokus pertamaku",
   "cvFinishLimits": "Selesaikan atur batas aplikasi",
+  "cvPermCount": "{done} dari {total} diizinkan",
   "appName": "Pausey",
   "tagline": "Ambil kembali waktumu",
   "versionLabel": "Versi 2.0 · Edisi App Store",

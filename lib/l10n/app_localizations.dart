@@ -2584,6 +2584,12 @@ abstract class AppLocalizations {
   /// **'Finish setting up app limits'**
   String get cvFinishLimits;
 
+  /// No description provided for @cvPermCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} allowed'**
+  String cvPermCount(int done, int total);
+
   /// No description provided for @appName.
   ///
   /// In en, this message translates to:

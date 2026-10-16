@@ -10,7 +10,9 @@ import '../../../widgets/ui_kit.dart';
 import '../../auth/log_in_screen.dart' show LogInForm, LogInFormState;
 import '../../auth/sign_up_screen.dart';
 import '../onboarding_state.dart';
+import '../widgets/ob_heroes.dart';
 import '../widgets/ob_kit.dart';
+import '../widgets/ob_text_motion.dart';
 import 'about_you.dart' show appsList;
 import 'your_plan.dart' show goalPhrase;
 
@@ -66,37 +68,48 @@ class PermissionsStage extends StatelessWidget {
       listenable: repo,
       builder: (context, _) {
         final st = repo.status;
-        Widget card(int i, {required IconData icon, required String title, required String why, required bool on, required VoidCallback onAsk, bool optional = false}) => ObReveal(
-              index: i,
+        final strict = _strictMakers.any(st.manufacturer.contains);
+        // Same order as the hero's bubbles: usage, overlay, notifications, accessibility (+ battery).
+        final states = [st.usageAccess, st.overlay, st.notifications, st.accessibility, if (strict) st.batteryUnrestricted];
+        final done = states.where((on) => on).length;
+        var n = 0;
+        Widget card({required IconData icon, required String title, required String why, required bool on, required VoidCallback onAsk, bool optional = false}) =>
+            ObFadeUp(
+              delay: const Duration(milliseconds: 600),
+              index: n++,
               child: _PermToggleCard(icon: icon, title: title, why: why, on: on, optional: optional, onAsk: onAsk, onExplainOff: () => _explainOff(context)),
             );
         return ObPage(
+          center: true,
           primaryLabel: st.canEnforce || !st.supported ? l.continueLabel : l.cvContinueAnyway,
           onPrimary: onNext,
           children: [
-            ObReveal(child: ObTitle(l.stPermTitle, align: TextAlign.center)),
-            if (!st.supported) ObReveal(index: 1, child: ObSubtitle(l.cvPermUnsupported, align: TextAlign.center)),
-            const SizedBox(height: 22),
+            // Same order as the question screens: hero → title → subtitle → content.
+            ObHeroBox(child: PermissionsHero(granted: st.supported ? done : 0, total: states.length, states: st.supported ? states : null)),
+            const SizedBox(height: 12),
+            ObTitle(l.stPermTitle, align: TextAlign.center),
+            ObFadeUp(
+              delay: const Duration(milliseconds: 420),
+              child: ObSubtitle(st.supported ? l.cvPermPrivacy : l.cvPermUnsupported, align: TextAlign.center),
+            ),
             if (st.supported) ...[
-              card(1, icon: Icons.hourglass_bottom_rounded, title: l.stPermUsageTitle, why: l.stPermUsageWhy, on: st.usageAccess, onAsk: bridge.openUsageAccessSettings),
-              card(2, icon: Icons.layers_rounded, title: l.stPermOverlayTitle, why: l.stPermOverlayWhy, on: st.overlay, onAsk: bridge.openOverlaySettings),
-              card(3, icon: Icons.notifications_none_rounded, title: l.stPermNotifTitle, why: l.stPermNotifWhy, on: st.notifications, onAsk: _askNotifications),
-              card(4, icon: Icons.accessibility_new_rounded, title: l.stPermA11yTitle, why: l.stPermA11yWhy, on: st.accessibility, onAsk: () => _askAccessibility(context)),
-              ObReveal(
-                index: 5,
+              const SizedBox(height: 14),
+              ObFadeUp(delay: const Duration(milliseconds: 500), child: Center(child: _PermProgress(done: done, total: states.length))),
+              const SizedBox(height: 18),
+              card(icon: Icons.hourglass_bottom_rounded, title: l.stPermUsageTitle, why: l.stPermUsageWhy, on: st.usageAccess, onAsk: bridge.openUsageAccessSettings),
+              card(icon: Icons.layers_rounded, title: l.stPermOverlayTitle, why: l.stPermOverlayWhy, on: st.overlay, onAsk: bridge.openOverlaySettings),
+              card(icon: Icons.notifications_none_rounded, title: l.stPermNotifTitle, why: l.stPermNotifWhy, on: st.notifications, onAsk: _askNotifications),
+              card(icon: Icons.accessibility_new_rounded, title: l.stPermA11yTitle, why: l.stPermA11yWhy, on: st.accessibility, onAsk: () => _askAccessibility(context)),
+              ObFadeUp(
+                delay: const Duration(milliseconds: 600),
+                index: n,
                 child: Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 4, 12),
-                  child: Text(l.stPermA11yNote, style: AppText.rowSub.copyWith(fontSize: 12, height: 1.45, color: c.textMuted)),
+                  child: Text(l.stPermA11yNote, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(fontSize: 12, height: 1.45, color: c.textMuted)),
                 ),
               ),
-              if (_strictMakers.any(st.manufacturer.contains))
-                card(6, icon: Icons.battery_saver_rounded, title: l.cvPermBatteryTitle, why: l.cvPermBatteryWhy, on: st.batteryUnrestricted, onAsk: bridge.openBatterySettings, optional: true),
-              const SizedBox(height: 4),
-              Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Icon(Icons.lock_outline_rounded, size: 16, color: c.textMuted),
-                const SizedBox(width: 8),
-                Expanded(child: Text(l.cvPermPrivacy, style: AppText.rowSub.copyWith(color: c.textMuted))),
-              ]),
+              if (strict)
+                card(icon: Icons.battery_saver_rounded, title: l.cvPermBatteryTitle, why: l.cvPermBatteryWhy, on: st.batteryUnrestricted, onAsk: bridge.openBatterySettings, optional: true),
             ],
           ],
         );
@@ -105,8 +118,48 @@ class PermissionsStage extends StatelessWidget {
   }
 }
 
+/// "2 of 4 allowed" pill with a small bar that fills as permissions are turned on.
+class _PermProgress extends StatelessWidget {
+  const _PermProgress({required this.done, required this.total});
+  final int done, total;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final all = total > 0 && done >= total;
+    final color = all ? AppPalette.teal : AppPalette.accent;
+    return AnimatedContainer(
+      duration: ObMotion.of(context, ObMotion.content),
+      padding: const EdgeInsets.fromLTRB(12, 7, 14, 7),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: context.isDark ? 0.18 : 0.10),
+        borderRadius: BorderRadius.circular(AppRadius.chip),
+        border: Border.all(color: color.withValues(alpha: 0.35)),
+      ),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        SizedBox(
+          width: 44,
+          height: 6,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(99),
+            child: TweenAnimationBuilder<double>(
+              tween: Tween(end: total == 0 ? 0 : done / total),
+              duration: ObMotion.of(context, const Duration(milliseconds: 500)),
+              curve: Curves.easeOutCubic,
+              builder: (_, v, _) => LinearProgressIndicator(value: v, backgroundColor: c.dotInactive, color: color, minHeight: 6),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(context.l10n.cvPermCount(done, total), style: AppText.label.copyWith(color: c.textPrimary)),
+      ]),
+    );
+  }
+}
+
 /// One permission: icon, what it's for, and a switch that mirrors the real state.
 /// Off → opens the right Android screen. On → explains how to turn it off there.
+/// Turned on, the card tints teal so the user sees their progress at a glance.
 class _PermToggleCard extends StatelessWidget {
   const _PermToggleCard({
     required this.icon,
@@ -126,32 +179,51 @@ class _PermToggleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final c = context.colors;
+    final dark = context.isDark;
     void tap() => on ? onExplainOff() : onAsk();
+    final r = BorderRadius.circular(AppRadius.tile);
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: MergeSemantics(
-        child: PCard(
-          onTap: tap,
-          padding: const EdgeInsetsDirectional.fromSTEB(16, 14, 10, 14),
-          child: Row(children: [
-            AnimatedSwitcher(
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            onTap: tap,
+            borderRadius: r,
+            child: AnimatedContainer(
               duration: ObMotion.of(context, ObMotion.content),
-              child: IconBadge(key: ValueKey(on), icon: on ? Icons.check_rounded : icon, color: on ? Tone.green : Tone.violet),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Wrap(spacing: 6, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: [
-                  Text(title, style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w700, color: c.textPrimary)),
-                  if (optional && !on) ObTag(l.cvOptional, color: Tone.blue),
-                ]),
-                const SizedBox(height: 3),
-                Text(why, style: AppText.rowSub.copyWith(height: 1.4, color: c.textSecondary)),
+              curve: Curves.easeOutCubic,
+              padding: const EdgeInsetsDirectional.fromSTEB(14, 14, 10, 14),
+              decoration: BoxDecoration(
+                borderRadius: r,
+                color: on ? AppPalette.teal.withValues(alpha: dark ? 0.14 : 0.09) : (dark ? c.glassFill : Colors.white),
+                border: Border.all(color: on ? AppPalette.teal.withValues(alpha: 0.55) : c.glassBorder, width: on ? 1.4 : 1),
+                boxShadow: [
+                  BoxShadow(color: (on ? AppPalette.teal : AppPalette.accent).withValues(alpha: dark ? 0.10 : 0.08), blurRadius: 18, offset: const Offset(0, 6)),
+                ],
+              ),
+              child: Row(children: [
+                AnimatedSwitcher(
+                  duration: ObMotion.of(context, ObMotion.content),
+                  transitionBuilder: (child, a) => ScaleTransition(scale: CurvedAnimation(parent: a, curve: Curves.easeOutBack), child: child),
+                  child: IconBadge(key: ValueKey(on), icon: on ? Icons.check_rounded : icon, color: on ? Tone.green : Tone.violet),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Wrap(spacing: 6, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: [
+                      Text(title, style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w700, color: c.textPrimary)),
+                      if (optional && !on) ObTag(l.cvOptional, color: Tone.blue),
+                    ]),
+                    const SizedBox(height: 3),
+                    Text(why, style: AppText.rowSub.copyWith(height: 1.4, color: c.textSecondary)),
+                  ]),
+                ),
+                const SizedBox(width: 6),
+                PSwitch(value: on, onChanged: (_) => tap()),
               ]),
             ),
-            const SizedBox(width: 6),
-            PSwitch(value: on, onChanged: (_) => tap()),
-          ]),
+          ),
         ),
       ),
     );

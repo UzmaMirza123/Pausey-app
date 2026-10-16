@@ -8,6 +8,7 @@ import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glow_background.dart';
+import 'widgets/ob_text_motion.dart';
 
 /// Lavender-grey used for body copy on this screen in dark mode (#7B749E).
 const _lavender = Color(0xFF7B749E);
@@ -84,11 +85,7 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              context.l10n.ob7Title,
-              textAlign: TextAlign.center,
-              style: AppText.h1.copyWith(color: c.textPrimary, height: 32.5 / 30),
-            ),
+            ObRevealText(context.l10n.ob7Title, style: AppText.h1.copyWith(color: c.textPrimary, height: 32.5 / 30)),
             const SizedBox(height: 8),
             SizedBox(
               height: 82.25,

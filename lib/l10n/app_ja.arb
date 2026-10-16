@@ -410,6 +410,7 @@
   "cvReadyChange": "これらはすべて、あとから変更できます。",
   "cvStartFirstFocus": "最初の集中セッションを始める",
   "cvFinishLimits": "アプリの制限設定を完了する",
+  "cvPermCount": "{total}件中{done}件を許可",
   "appName": "Pausey",
   "tagline": "自分の時間を取り戻そう",
   "versionLabel": "バージョン 2.0 · App Store 版",

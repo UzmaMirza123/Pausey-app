@@ -1400,6 +1400,11 @@ class AppLocalizationsId extends AppLocalizations {
   String get cvFinishLimits => 'Selesaikan atur batas aplikasi';
 
   @override
+  String cvPermCount(int done, int total) {
+    return '$done dari $total diizinkan';
+  }
+
+  @override
   String get appName => 'Pausey';
 
   @override

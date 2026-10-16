@@ -9,6 +9,7 @@ import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glow_background.dart';
+import 'widgets/ob_text_motion.dart';
 
 // Colours used only on this screen (from the Figma frame).
 const _amber = Color(0xFFF59E0B);
@@ -98,9 +99,8 @@ class _Onboarding9ScreenState extends State<Onboarding9Screen> with SingleTicker
             child: Column(
               children: [
                 const SizedBox(height: 16),
-                Text(
+                ObRevealText(
                   context.l10n.ob9Title,
-                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: AppText.fontFamily,
                     fontSize: 28,

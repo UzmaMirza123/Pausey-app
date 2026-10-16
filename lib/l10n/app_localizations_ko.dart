@@ -1351,6 +1351,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get cvFinishLimits => '앱 제한 설정 마치기';
 
   @override
+  String cvPermCount(int done, int total) {
+    return '$total개 중 $done개 허용';
+  }
+
+  @override
   String get appName => 'Pausey';
 
   @override

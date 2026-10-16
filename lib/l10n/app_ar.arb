@@ -410,6 +410,7 @@
   "cvReadyChange": "يمكنك تغيير كل هذا لاحقًا.",
   "cvStartFirstFocus": "ابدأ أول جلسة تركيز",
   "cvFinishLimits": "أكمل إعداد حدود التطبيقات",
+  "cvPermCount": "تم السماح بـ {done} من {total}",
   "appName": "Pausey",
   "tagline": "استعد وقتك",
   "versionLabel": "الإصدار 2.0 · إصدار App Store",

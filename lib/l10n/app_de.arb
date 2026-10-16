@@ -410,6 +410,7 @@
   "cvReadyChange": "Du kannst all das später ändern.",
   "cvStartFirstFocus": "Ersten Fokus starten",
   "cvFinishLimits": "App-Limits fertig einrichten",
+  "cvPermCount": "{done} von {total} erlaubt",
   "appName": "Pausey",
   "tagline": "Hol dir deine Zeit zurück",
   "versionLabel": "Version 2.0 · App-Store-Edition",

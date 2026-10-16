@@ -410,6 +410,7 @@
   "cvReadyChange": "Всё это можно изменить позже.",
   "cvStartFirstFocus": "Начать первую фокус-сессию",
   "cvFinishLimits": "Завершить настройку лимитов",
+  "cvPermCount": "Разрешено: {done} из {total}",
   "appName": "Pausey",
   "tagline": "Верните своё время",
   "versionLabel": "Версия 2.0 · Издание App Store",

@@ -410,6 +410,7 @@
   "cvReadyChange": "这些之后都可以修改。",
   "cvStartFirstFocus": "开始我的第一次专注",
   "cvFinishLimits": "完成应用限额设置",
+  "cvPermCount": "已允许 {done}/{total}",
   "appName": "Pausey",
   "tagline": "夺回你的时间",
   "versionLabel": "版本 2.0 · App Store 版",

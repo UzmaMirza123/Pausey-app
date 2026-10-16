@@ -4,6 +4,7 @@ import '../../../utils/app_theme.dart';
 import '../../../widgets/common.dart';
 import '../../../widgets/glow_background.dart';
 import '../../../widgets/onboarding_nav.dart';
+import 'ob_text_motion.dart';
 
 /// Shared motion values for the onboarding. All of them collapse to zero when the
 /// phone's "Remove animations" accessibility setting is on.
@@ -177,9 +178,9 @@ class ObTitle extends StatelessWidget {
   final String text;
   final TextAlign align;
 
+  /// Words reveal one by one (fade, rise and un-blur), like the intro screens.
   @override
-  Widget build(BuildContext context) =>
-      Semantics(header: true, child: Text(text, textAlign: align, style: AppText.h1.copyWith(color: context.colors.textPrimary)));
+  Widget build(BuildContext context) => ObRevealText(text, align: align, style: AppText.h1.copyWith(color: context.colors.textPrimary));
 }
 
 class ObSubtitle extends StatelessWidget {

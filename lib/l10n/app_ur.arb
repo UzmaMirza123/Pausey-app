@@ -410,6 +410,7 @@
   "cvReadyChange": "آپ یہ سب بعد میں بدل سکتے ہیں۔",
   "cvStartFirstFocus": "میرا پہلا فوکس سیشن شروع کریں",
   "cvFinishLimits": "ایپ کی حدیں سیٹ کرنا مکمل کریں",
+  "cvPermCount": "{total} میں سے {done} کی اجازت",
   "appName": "Pausey",
   "tagline": "اپنا وقت واپس لیں",
   "versionLabel": "ورژن 2.0 · ایپ اسٹور ایڈیشن",

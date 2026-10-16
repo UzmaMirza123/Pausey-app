@@ -1340,6 +1340,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cvFinishLimits => '完成应用限额设置';
 
   @override
+  String cvPermCount(int done, int total) {
+    return '已允许 $done/$total';
+  }
+
+  @override
   String get appName => 'Pausey';
 
   @override

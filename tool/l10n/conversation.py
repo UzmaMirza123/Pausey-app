@@ -137,9 +137,11 @@ S = {
  "cvReadyChange": ["You can change all of this later.", "آپ یہ سب بعد میں بدل سکتے ہیں۔", "يمكنك تغيير كل هذا لاحقًا.", "आप यह सब बाद में बदल सकते हैं।", "Puedes cambiar todo esto después.", "Vous pourrez tout modifier plus tard.", "Du kannst all das später ändern.", "Você pode mudar tudo isso depois.", "Kamu bisa mengubah semua ini nanti.", "Всё это можно изменить позже.", "これらはすべて、あとから変更できます。", "이 모든 건 나중에 바꿀 수 있어요.", "Bunların hepsini sonra değiştirebilirsiniz.", "Puoi cambiare tutto più tardi.", "这些之后都可以修改。"],
  "cvStartFirstFocus": ["Start my first focus session", "میرا پہلا فوکس سیشن شروع کریں", "ابدأ أول جلسة تركيز", "मेरा पहला फ़ोकस सत्र शुरू करें", "Empezar mi primera sesión", "Lancer ma première session", "Ersten Fokus starten", "Começar minha primeira sessão", "Mulai sesi fokus pertamaku", "Начать первую фокус-сессию", "最初の集中セッションを始める", "첫 집중 세션 시작", "İlk odak seansımı başlat", "Inizia la mia prima sessione", "开始我的第一次专注"],
  "cvFinishLimits": ["Finish setting up app limits", "ایپ کی حدیں سیٹ کرنا مکمل کریں", "أكمل إعداد حدود التطبيقات", "ऐप सीमाएं सेट करना पूरा करें", "Terminar de configurar límites", "Terminer les limites d'applis", "App-Limits fertig einrichten", "Concluir limites de apps", "Selesaikan atur batas aplikasi", "Завершить настройку лимитов", "アプリの制限設定を完了する", "앱 제한 설정 마치기", "Uygulama sınırlarını tamamla", "Completa i limiti delle app", "完成应用限额设置"],
+ "cvPermCount": ["{done} of {total} allowed", "{total} میں سے {done} کی اجازت", "تم السماح بـ {done} من {total}", "{total} में से {done} की अनुमति", "{done} de {total} permitidos", "{done} sur {total} autorisés", "{done} von {total} erlaubt", "{done} de {total} permitidas", "{done} dari {total} diizinkan", "Разрешено: {done} из {total}", "{total}件中{done}件を許可", "{total}개 중 {done}개 허용", "{total} izinden {done} tanesi verildi", "{done} su {total} consentiti", "已允许 {done}/{total}"],
 }
 _s = {"type": "String"}
 META = {
+ "cvPermCount": {"placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},
  "cvAppsReply": {"placeholders": {"apps": _s}},
  "cvAnd": {"placeholders": {"a": _s, "b": _s}},
  "cvAndMore": {"placeholders": {"a": _s, "b": _s, "count": {"type": "int"}}},

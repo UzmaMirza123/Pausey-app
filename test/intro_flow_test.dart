@@ -24,16 +24,16 @@ void main() {
       }
     }
 
-    expect(find.text('Reduce Screen Addiction'), findsOneWidget);
+    expect(find.bySemanticsLabel('Reduce Screen Addiction'), findsOneWidget);
     await next('Continue');
-    expect(find.text('Lock Distracting Apps'), findsOneWidget);
+    expect(find.bySemanticsLabel('Lock Distracting Apps'), findsOneWidget);
     // Screen 2's button is now "Next" and goes straight on (no app-picker sheet).
     expect(find.text('Select Apps'), findsNothing);
     await next('Next');
-    expect(find.text('Stay Focused Every Day'), findsOneWidget);
+    expect(find.bySemanticsLabel('Stay Focused Every Day'), findsOneWidget);
     expect(find.byType(BottomSheet), findsNothing);
     await next('Continue');
-    expect(find.text('Track Your Progress'), findsOneWidget);
+    expect(find.bySemanticsLabel('Track Your Progress'), findsOneWidget);
     await next('Continue');
     expect(done, isTrue);
   });

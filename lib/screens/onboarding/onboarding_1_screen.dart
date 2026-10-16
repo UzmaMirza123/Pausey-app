@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
+import 'widgets/ob_text_motion.dart';
 import 'widgets/intro_motion.dart';
 
 /// Figma: OnBoarding 1 — "Reduce Screen Addiction" (727:41056).
@@ -33,11 +34,7 @@ class Onboarding1Screen extends StatelessWidget {
             const SizedBox(height: 6),
             IntroEnter(
               index: 1,
-              child: Text(
-                l.ob1Title,
-                textAlign: TextAlign.center,
-                style: AppText.h1.copyWith(color: c.textPrimary),
-              ),
+              child: ObRevealText(l.ob1Title, style: AppText.h1.copyWith(color: c.textPrimary)),
             ),
             const SizedBox(height: 13),
             IntroEnter(

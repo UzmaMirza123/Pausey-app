@@ -410,6 +410,7 @@
   "cvReadyChange": "आप यह सब बाद में बदल सकते हैं।",
   "cvStartFirstFocus": "मेरा पहला फ़ोकस सत्र शुरू करें",
   "cvFinishLimits": "ऐप सीमाएं सेट करना पूरा करें",
+  "cvPermCount": "{total} में से {done} की अनुमति",
   "appName": "Pausey",
   "tagline": "अपना समय वापस पाएं",
   "versionLabel": "संस्करण 2.0 · ऐप स्टोर संस्करण",

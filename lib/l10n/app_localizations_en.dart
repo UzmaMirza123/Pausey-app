@@ -1403,6 +1403,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cvFinishLimits => 'Finish setting up app limits';
 
   @override
+  String cvPermCount(int done, int total) {
+    return '$done of $total allowed';
+  }
+
+  @override
   String get appName => 'Pausey';
 
   @override

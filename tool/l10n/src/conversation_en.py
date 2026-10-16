@@ -138,9 +138,11 @@ EN = {
  "cvReadyChange": "You can change all of this later.",
  "cvStartFirstFocus": "Start my first focus session",
  "cvFinishLimits": "Finish setting up app limits",
+ "cvPermCount": "{done} of {total} allowed",
 }
 _s = {"type": "String"}
 META = {
+ "cvPermCount": {"placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},
  "cvAppsReply": {"placeholders": {"apps": _s}},
  "cvAnd": {"placeholders": {"a": _s, "b": _s}},
  "cvAndMore": {"placeholders": {"a": _s, "b": _s, "count": {"type": "int"}}},

@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../utils/app_theme.dart';
 import '../../widgets/common.dart';
+import 'widgets/ob_text_motion.dart';
 import 'widgets/intro_motion.dart';
 import '../../widgets/glow_background.dart';
 import '../../utils/l10n.dart';
@@ -86,11 +87,7 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
             const SizedBox(height: 4),
             IntroEnter(
               index: 1,
-              child: Text(
-                context.l10n.ob3Title,
-                textAlign: TextAlign.center,
-                style: AppText.h1.copyWith(color: c.textPrimary),
-              ),
+              child: ObRevealText(context.l10n.ob3Title, style: AppText.h1.copyWith(color: c.textPrimary)),
             ),
             const SizedBox(height: 13),
             IntroEnter(

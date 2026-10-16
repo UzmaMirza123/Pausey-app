@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
+import 'widgets/ob_text_motion.dart';
 import 'widgets/intro_motion.dart';
 
 /// Figma: OnBoarding 2 — "Lock Distracting Apps" (727:42272).
@@ -50,9 +51,8 @@ class Onboarding2Screen extends StatelessWidget {
               index: 1,
               child: Column(
                 children: [
-                  Text(
+                  ObRevealText(
                     l.ob2Title,
-                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: AppText.fontFamily,
                       fontSize: 26,
