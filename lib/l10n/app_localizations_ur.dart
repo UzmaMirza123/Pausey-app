@@ -1399,9 +1399,6 @@ class AppLocalizationsUr extends AppLocalizations {
       'اپنی پیش رفت محفوظ رکھنے کے لیے اکاؤنٹ بنائیں، یا بطور مہمان جاری رکھیں۔';
 
   @override
-  String get cvOrContinueWith => 'یا اس کے ساتھ جاری رکھیں';
-
-  @override
   String get cvUsageNone => 'آج استعمال نہیں ہوئی';
 
   @override
@@ -1431,6 +1428,22 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get cvNotNow => 'ابھی نہیں';
+
+  @override
+  String get cvA11yTitle => 'بس ایک آخری بات';
+
+  @override
+  String get cvA11ySub =>
+      'ایکسیسبلٹی آن کریں تاکہ Pausey دیکھ سکے کون سی ایپ کھلی ہے اور کتنی دیر۔ پھر یہ آپ کی ایپس کو بلاک، ان بلاک اور شیڈول کر سکے گا۔';
+
+  @override
+  String get cvA11yReads => 'Pausey صرف یہ پڑھتا ہے:';
+
+  @override
+  String get cvA11yRead1 => 'ایپس کے نام';
+
+  @override
+  String get cvA11yRead2 => 'ہر ایپ میں گزارا گیا وقت';
 
   @override
   String get appName => 'Pausey';

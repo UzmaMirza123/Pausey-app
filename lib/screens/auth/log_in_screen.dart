@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../services/auth_service.dart';
 import '../../utils/app_theme.dart';
@@ -131,7 +130,6 @@ class LogInFormState extends State<LogInForm> {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final c = context.colors;
-    final auth = AuthService.instance;
     return Form(
       key: _form,
       child: AutofillGroup(
@@ -160,95 +158,80 @@ class LogInFormState extends State<LogInForm> {
                 style: AppText.body.copyWith(color: c.textSecondary),
               ),
             ),
-            const SizedBox(height: 22),
+            const SizedBox(height: 20),
             AuthErrorBanner(message: _error),
-            ObReveal(
-              index: 2,
-              child: AuthField(
-                controller: _email,
-                label: l.email,
-                icon: Icons.mail_outline_rounded,
-                keyboardType: TextInputType.emailAddress,
-                autofillHints: const [AutofillHints.email],
-                validator: (v) => validateEmail(context, v),
-              ),
-            ),
-            const SizedBox(height: 14),
-            ObReveal(
-              index: 3,
-              child: AuthField(
-                controller: _pass,
-                label: l.password,
-                icon: Icons.lock_outline_rounded,
-                obscure: true,
-                textInputAction: TextInputAction.done,
-                autofillHints: const [AutofillHints.password],
-                onSubmitted: (_) => _logIn(),
-                validator: (v) => (v ?? '').isEmpty ? l.errPasswordShort : null,
-              ),
-            ),
-            Align(
-              alignment: AlignmentDirectional.centerEnd,
-              child: TextButton(
-                onPressed: () => _showReset(context, _email.text),
-                child: Text(l.forgotPassword, style: AppText.option.copyWith(color: AppPalette.violet)),
-              ),
-            ),
-            const SizedBox(height: 4),
-            ObReveal(
-              index: 4,
-              child: BusyButton(label: l.logIn, busy: _busy == 'email', onPressed: _busy == null ? _logIn : () {}),
-            ),
-            const SizedBox(height: 18),
-            // "or continue with" and the two sign-in buttons side by side.
-            ObReveal(
-              index: 5,
-              child: Row(children: [
-                Expanded(child: Divider(color: c.divider)),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(l.cvOrContinueWith, style: AppText.rowSub.copyWith(color: c.textMuted)),
-                ),
-                Expanded(child: Divider(color: c.divider)),
-              ]),
-            ),
-            const SizedBox(height: 14),
-            ObReveal(
-              index: 6,
-              child: Row(children: [
-                Expanded(
-                  child: _SocialPill(
-                    label: 'Google',
-                    semanticLabel: l.continueWithGoogle,
-                    busy: _busy == 'google',
-                    onTap: _busy == null ? () => run('google', auth.signInWithGoogle) : null,
-                    icon: SvgPicture.asset('assets/svg/google_g.svg', width: 20, height: 20),
+            // Email, password and Log in together on one soft card.
+            Container(
+              padding: const EdgeInsets.fromLTRB(16, 18, 16, 16),
+              decoration: BoxDecoration(
+                color: context.isDark ? c.glassFill : Colors.white.withValues(alpha: 0.75),
+                borderRadius: BorderRadius.circular(AppRadius.card),
+                border: Border.all(color: c.glassBorder),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppPalette.accent.withValues(alpha: context.isDark ? 0.12 : 0.08),
+                    blurRadius: 24,
+                    offset: const Offset(0, 8),
                   ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _SocialPill(
-                    label: 'Apple',
-                    semanticLabel: l.continueWithApple,
-                    busy: _busy == 'apple',
-                    onTap: _busy == null ? () => run('apple', auth.signInWithApple) : null,
-                    icon: Icon(Icons.apple, size: 22, color: c.textPrimary),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ObReveal(
+                    index: 2,
+                    child: AuthField(
+                      controller: _email,
+                      label: l.email,
+                      icon: Icons.mail_outline_rounded,
+                      keyboardType: TextInputType.emailAddress,
+                      autofillHints: const [AutofillHints.email],
+                      validator: (v) => validateEmail(context, v),
+                    ),
                   ),
-                ),
-              ]),
+                  const SizedBox(height: 14),
+                  ObReveal(
+                    index: 3,
+                    child: AuthField(
+                      controller: _pass,
+                      label: l.password,
+                      icon: Icons.lock_outline_rounded,
+                      obscure: true,
+                      textInputAction: TextInputAction.done,
+                      autofillHints: const [AutofillHints.password],
+                      onSubmitted: (_) => _logIn(),
+                      validator: (v) => (v ?? '').isEmpty ? l.errPasswordShort : null,
+                    ),
+                  ),
+                  Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: TextButton(
+                      onPressed: () => _showReset(context, _email.text),
+                      child: Text(l.forgotPassword, style: AppText.option.copyWith(color: AppPalette.violet)),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  ObReveal(
+                    index: 4,
+                    child: BusyButton(label: l.logIn, busy: _busy == 'email', onPressed: _busy == null ? _logIn : () {}),
+                  ),
+                ],
+              ),
             ),
             if (widget.onGuest != null) ...[
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               ObReveal(
                 index: 7,
-                child: TextButton(
+                child: OutlinedButton.icon(
                   onPressed: _busy == null ? widget.onGuest : null,
-                  style: TextButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
+                  icon: const Icon(Icons.person_rounded, size: 20, color: AppPalette.accent),
+                  label: Text(l.cvContinueGuest, style: AppText.button.copyWith(color: AppPalette.accent)),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(54),
                     backgroundColor: AppPalette.accent.withValues(alpha: context.isDark ? 0.14 : 0.07),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.chip)),
+                    side: BorderSide(color: AppPalette.accent.withValues(alpha: 0.45)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.tile)),
                   ),
-                  child: Text(l.cvContinueGuest, style: AppText.option.copyWith(fontWeight: FontWeight.w700, color: AppPalette.accent)),
                 ),
               ),
             ],
@@ -263,7 +246,10 @@ class LogInFormState extends State<LogInForm> {
                   TextButton(
                     onPressed: _busy == null ? widget.onSignUp : null,
                     style: TextButton.styleFrom(minimumSize: const Size(48, 44)),
-                    child: Text(l.signUp, style: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet)),
+                    child: Text(
+                      l.signUp,
+                      style: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet),
+                    ),
                   ),
                 ],
               ),
@@ -365,7 +351,9 @@ class _ResetSheetState extends State<_ResetSheet> {
                               children: [
                                 const Icon(Icons.mark_email_read_outlined, color: AppPalette.teal),
                                 const SizedBox(width: 12),
-                                Expanded(child: Text(l.resetSent, style: AppText.option.copyWith(color: c.textPrimary))),
+                                Expanded(
+                                  child: Text(l.resetSent, style: AppText.option.copyWith(color: c.textPrimary)),
+                                ),
                               ],
                             ),
                           )
@@ -384,47 +372,6 @@ class _ResetSheetState extends State<_ResetSheet> {
                   if (!_sent) BusyButton(label: l.sendLink, busy: _busy, onPressed: _send),
                 ],
               ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Half-width "Google" / "Apple" sign-in button.
-class _SocialPill extends StatelessWidget {
-  const _SocialPill({required this.label, required this.semanticLabel, required this.icon, required this.onTap, this.busy = false});
-  final String label, semanticLabel;
-  final Widget icon;
-  final VoidCallback? onTap;
-  final bool busy;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final dark = context.isDark;
-    final r = BorderRadius.circular(AppRadius.chip);
-    return Semantics(
-      button: true,
-      label: semanticLabel,
-      excludeSemantics: true,
-      child: Material(
-        color: dark ? c.glassFill : Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: r, side: BorderSide(color: c.glassBorder)),
-        child: InkWell(
-          borderRadius: r,
-          onTap: busy ? null : onTap,
-          child: SizedBox(
-            height: 50,
-            child: Center(
-              child: busy
-                  ? const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2.2))
-                  : Row(mainAxisSize: MainAxisSize.min, children: [
-                      icon,
-                      const SizedBox(width: 8),
-                      Text(label, style: AppText.option.copyWith(fontWeight: FontWeight.w700, color: c.textPrimary)),
-                    ]),
             ),
           ),
         ),

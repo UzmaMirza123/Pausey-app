@@ -2596,12 +2596,6 @@ abstract class AppLocalizations {
   /// **'Create an account to sync your progress, or continue as a guest.'**
   String get cvJourneySub;
 
-  /// No description provided for @cvOrContinueWith.
-  ///
-  /// In en, this message translates to:
-  /// **'or continue with'**
-  String get cvOrContinueWith;
-
   /// No description provided for @cvUsageNone.
   ///
   /// In en, this message translates to:
@@ -2649,6 +2643,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not now'**
   String get cvNotNow;
+
+  /// No description provided for @cvA11yTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'One last thing'**
+  String get cvA11yTitle;
+
+  /// No description provided for @cvA11ySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on Accessibility so Pausey can see which app is open and for how long. Then it can block, unblock and schedule your apps.'**
+  String get cvA11ySub;
+
+  /// No description provided for @cvA11yReads.
+  ///
+  /// In en, this message translates to:
+  /// **'Pausey only reads:'**
+  String get cvA11yReads;
+
+  /// No description provided for @cvA11yRead1.
+  ///
+  /// In en, this message translates to:
+  /// **'App names'**
+  String get cvA11yRead1;
+
+  /// No description provided for @cvA11yRead2.
+  ///
+  /// In en, this message translates to:
+  /// **'Time spent in each app'**
+  String get cvA11yRead2;
 
   /// No description provided for @appName.
   ///

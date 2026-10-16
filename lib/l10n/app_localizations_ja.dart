@@ -1350,9 +1350,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cvJourneySub => 'アカウントを作って進み具合を同期するか、ゲストで続けましょう。';
 
   @override
-  String get cvOrContinueWith => 'または次で続ける';
-
-  @override
   String get cvUsageNone => '今日は未使用';
 
   @override
@@ -1381,6 +1378,22 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get cvNotNow => '今はしない';
+
+  @override
+  String get cvA11yTitle => '最後にひとつ';
+
+  @override
+  String get cvA11ySub =>
+      'ユーザー補助をオンにすると、開いているアプリと使用時間がわかり、アプリのブロック・解除・スケジュールができます。';
+
+  @override
+  String get cvA11yReads => 'Pauseyが読み取るのは：';
+
+  @override
+  String get cvA11yRead1 => 'アプリ名';
+
+  @override
+  String get cvA11yRead2 => '各アプリの使用時間';
 
   @override
   String get appName => 'Pausey';

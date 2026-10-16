@@ -1410,9 +1410,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Create an account to sync your progress, or continue as a guest.';
 
   @override
-  String get cvOrContinueWith => 'or continue with';
-
-  @override
   String get cvUsageNone => 'Not used today';
 
   @override
@@ -1448,6 +1445,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cvNotNow => 'Not now';
+
+  @override
+  String get cvA11yTitle => 'One last thing';
+
+  @override
+  String get cvA11ySub =>
+      'Turn on Accessibility so Pausey can see which app is open and for how long. Then it can block, unblock and schedule your apps.';
+
+  @override
+  String get cvA11yReads => 'Pausey only reads:';
+
+  @override
+  String get cvA11yRead1 => 'App names';
+
+  @override
+  String get cvA11yRead2 => 'Time spent in each app';
 
   @override
   String get appName => 'Pausey';

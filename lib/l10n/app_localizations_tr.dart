@@ -1400,9 +1400,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'İlerlemeni eşitlemek için hesap oluştur ya da misafir olarak devam et.';
 
   @override
-  String get cvOrContinueWith => 'veya şununla devam et';
-
-  @override
   String get cvUsageNone => 'Bugün kullanılmadı';
 
   @override
@@ -1432,6 +1429,22 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get cvNotNow => 'Şimdi değil';
+
+  @override
+  String get cvA11yTitle => 'Son bir şey';
+
+  @override
+  String get cvA11ySub =>
+      'Pausey\'nin hangi uygulamanın ne kadar açık olduğunu görmesi için Erişilebilirlik\'i aç. Böylece uygulamalarını engelleyebilir, açabilir ve planlayabilir.';
+
+  @override
+  String get cvA11yReads => 'Pausey yalnızca şunları okur:';
+
+  @override
+  String get cvA11yRead1 => 'Uygulama adları';
+
+  @override
+  String get cvA11yRead2 => 'Her uygulamada geçen süre';
 
   @override
   String get appName => 'Pausey';

@@ -106,6 +106,93 @@ class PermissionsStage extends StatelessWidget {
   }
 }
 
+/// "One last thing": Accessibility, so Pausey sees which app is open and for how
+/// long, and can block, unblock and schedule apps. Says plainly what it reads.
+class AccessibilityStage extends StatelessWidget {
+  const AccessibilityStage({super.key, required this.onNext});
+  final VoidCallback onNext;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final c = context.colors;
+    final repo = RestrictionRepo.instance;
+    Widget line(IconData icon, Color color, String text) => Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Container(
+              margin: const EdgeInsets.only(top: 1),
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(shape: BoxShape.circle, color: color.withValues(alpha: 0.15)),
+              child: Icon(icon, size: 13, color: color),
+            ),
+            const SizedBox(width: 10),
+            Expanded(child: Text(text, style: AppText.rowSub.copyWith(fontSize: 14, height: 1.4, color: c.textPrimary))),
+          ]),
+        );
+    return ListenableBuilder(
+      listenable: repo,
+      builder: (context, _) {
+        final st = repo.status;
+        return ObPage(
+          center: true,
+          primaryLabel: l.continueLabel,
+          onPrimary: onNext,
+          children: [
+            const ObArt(ObArtKind.perm),
+            const SizedBox(height: 10),
+            ObTitle(l.cvA11yTitle, align: TextAlign.center),
+            ObFadeUp(delay: const Duration(milliseconds: 400), child: ObSubtitle(l.cvA11ySub, align: TextAlign.center)),
+            const SizedBox(height: 20),
+            if (st.supported)
+              ObFadeUp(
+                delay: const Duration(milliseconds: 550),
+                child: _PermToggleCard(
+                  icon: Icons.accessibility_new_rounded,
+                  title: l.stPermA11yTitle,
+                  why: l.stPermA11yWhy,
+                  on: st.accessibility,
+                  onAsk: NativeBridge.instance.openAccessibilitySettings,
+                  onExplainOff: () => PermissionsStage._explainOff(context),
+                ),
+              ),
+            // What it reads, and what it never does.
+            ObFadeUp(
+              delay: const Duration(milliseconds: 600),
+              index: 1,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+                decoration: BoxDecoration(
+                  color: AppPalette.accent.withValues(alpha: context.isDark ? 0.14 : 0.07),
+                  borderRadius: BorderRadius.circular(AppRadius.tile),
+                ),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(l.cvA11yReads, style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w800, color: c.textPrimary)),
+                  line(Icons.check_rounded, AppPalette.teal, l.cvA11yRead1),
+                  line(Icons.check_rounded, AppPalette.teal, l.cvA11yRead2),
+                  const SizedBox(height: 12),
+                  Text(l.stA11yNot, style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w800, color: c.textPrimary)),
+                  for (final s in [l.stA11yNot1, l.stA11yNot2, l.stA11yNot3]) line(Icons.close_rounded, AppPalette.accent, s),
+                ]),
+              ),
+            ),
+            if (st.supported)
+              ObFadeUp(
+                delay: const Duration(milliseconds: 600),
+                index: 2,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(4, 12, 4, 0),
+                  child: Text(l.stPermA11yNote, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(fontSize: 12, height: 1.45, color: c.textMuted)),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 /// One permission: icon, what it's for, and a switch that mirrors the real state.
 /// Off → opens the right Android screen. On → explains how to turn it off there.
 /// Only the switch shows the state; the card itself stays the same.
@@ -278,7 +365,7 @@ class _AccountStageState extends State<AccountStage> {
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               link(l.logIn, () => _open(LogInScreen(onGuest: _guest))),
               Text('|', style: AppText.rowSub.copyWith(color: c.textMuted)),
-              link(l.signUp, () => _open(const SignUpScreen())),
+              link(l.signUp, () => _open(SignUpScreen(onGuest: _guest))),
             ]),
           ]),
         ),

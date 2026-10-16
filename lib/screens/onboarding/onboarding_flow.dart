@@ -31,8 +31,8 @@ class OnboardingFlow extends StatefulWidget {
   /// Preview/testing: start on this stage instead of the saved one.
   final int? initialStage;
 
-  static const stageCount = 11;
-  static const _accountStage = 9;
+  static const stageCount = 12;
+  static const _accountStage = 10;
 
   /// Screens before the first stage (the 4 intro screens).
   static const introScreens = 4;
@@ -116,10 +116,10 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   Widget _stage(int i) => switch (i) {
         1 => RelateStage(onNext: _next),
         2 => GoalStage(onNext: _next),
-        3 => AppsStage(onNext: _next),
-        // Screen time + display over other apps, right after picking the apps.
+        3 => ScreenTimeStage(onNext: _next),
+        // Usage access + display over other apps, so the next screen can show the most-used apps.
         4 => PermissionsStage(onNext: _next),
-        5 => ScreenTimeStage(onNext: _next),
+        5 => AppsStage(onNext: _next),
         6 => ReflectionStage(onNext: _next),
         7 => HowItHelpsStage(onNext: _next),
         // "Set your daily screen-time goal" (the original onboarding screen) in place of the starter plan.
@@ -131,7 +131,9 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             dotsFrom: _dotsFrom,
             child: Onboarding7Screen(onNext: _next, onSkip: _next),
           ),
-        9 => AccountStage(onNext: _next),
+        // "One last thing": Accessibility, right after the daily goal.
+        9 => AccessibilityStage(onNext: _next),
+        10 => AccountStage(onNext: _next),
         // "You're all set!" (the original last onboarding screen) in place of "Your first step starts here".
         _ => OnboardingPageScope(
             index: 2,
@@ -164,7 +166,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         },
         child: KeyedSubtree(
           key: ValueKey(i),
-          child: ObFlowScope(dotsAt: OnboardingFlow.dotsAt(i), dotsFrom: _dotsFrom, canBack: i > OnboardingFlow.firstStage || widget.onBackFromStart != null, onBack: _back, backGate: _gate, child: _stage(i)),
+          child: ObFlowScope(dotsAt: OnboardingFlow.dotsAt(i), dotsFrom: _dotsFrom, onSkip: _next, canBack: i > OnboardingFlow.firstStage || widget.onBackFromStart != null, onBack: _back, backGate: _gate, child: _stage(i)),
         ),
       ),
     );

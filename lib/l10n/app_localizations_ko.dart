@@ -1359,9 +1359,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get cvJourneySub => '계정을 만들어 진행 상황을 동기화하거나 게스트로 계속하세요.';
 
   @override
-  String get cvOrContinueWith => '또는 다음으로 계속';
-
-  @override
   String get cvUsageNone => '오늘 사용 안 함';
 
   @override
@@ -1390,6 +1387,22 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get cvNotNow => '나중에';
+
+  @override
+  String get cvA11yTitle => '마지막 한 가지';
+
+  @override
+  String get cvA11ySub =>
+      '접근성을 켜면 Pausey가 어떤 앱이 얼마나 열려 있는지 알 수 있어요. 그래서 앱을 차단·해제·예약할 수 있어요.';
+
+  @override
+  String get cvA11yReads => 'Pausey가 읽는 것은:';
+
+  @override
+  String get cvA11yRead1 => '앱 이름';
+
+  @override
+  String get cvA11yRead2 => '앱별 사용 시간';
 
   @override
   String get appName => 'Pausey';

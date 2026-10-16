@@ -140,7 +140,6 @@ EN = {
  "cvFinishLimits": "Finish setting up app limits",
  "cvJourneyTitle": "Start your Pausey journey",
  "cvJourneySub": "Create an account to sync your progress, or continue as a guest.",
- "cvOrContinueWith": "or continue with",
  "cvPermSub": "These help Pausey work its magic and give you the best experience.",
  "cvUsageNone": "Not used today",
  "cvUsageUnder1": "Less than 1m today",
@@ -150,6 +149,11 @@ EN = {
  "cvRemoveApp": "Remove {app}",
  "cvNotifAskTitle": "Get a nudge before time's up?",
  "cvNotNow": "Not now",
+ "cvA11yTitle": "One last thing",
+ "cvA11ySub": "Turn on Accessibility so Pausey can see which app is open and for how long. Then it can block, unblock and schedule your apps.",
+ "cvA11yReads": "Pausey only reads:",
+ "cvA11yRead1": "App names",
+ "cvA11yRead2": "Time spent in each app",
 }
 _s = {"type": "String"}
 META = {

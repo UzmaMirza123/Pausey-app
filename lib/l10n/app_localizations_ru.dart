@@ -1398,9 +1398,6 @@ class AppLocalizationsRu extends AppLocalizations {
       'Создайте аккаунт, чтобы синхронизировать прогресс, или продолжите как гость.';
 
   @override
-  String get cvOrContinueWith => 'или продолжить через';
-
-  @override
   String get cvUsageNone => 'Сегодня не использовалось';
 
   @override
@@ -1430,6 +1427,22 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get cvNotNow => 'Не сейчас';
+
+  @override
+  String get cvA11yTitle => 'И последнее';
+
+  @override
+  String get cvA11ySub =>
+      'Включите специальные возможности, чтобы Pausey видел, какое приложение открыто и сколько времени. Тогда он сможет блокировать, разблокировать и планировать ваши приложения.';
+
+  @override
+  String get cvA11yReads => 'Pausey видит только:';
+
+  @override
+  String get cvA11yRead1 => 'Названия приложений';
+
+  @override
+  String get cvA11yRead2 => 'Время в каждом приложении';
 
   @override
   String get appName => 'Pausey';

@@ -1380,9 +1380,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cvJourneySub => 'أنشئ حسابًا لمزامنة تقدّمك، أو تابع كضيف.';
 
   @override
-  String get cvOrContinueWith => 'أو تابع باستخدام';
-
-  @override
   String get cvUsageNone => 'لم يُستخدم اليوم';
 
   @override
@@ -1412,6 +1409,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cvNotNow => 'ليس الآن';
+
+  @override
+  String get cvA11yTitle => 'شيء أخير';
+
+  @override
+  String get cvA11ySub =>
+      'فعّل إمكانية الوصول ليعرف Pausey التطبيق المفتوح ومدة استخدامه، فيتمكن من حظر تطبيقاتك وإلغاء حظرها وجدولتها.';
+
+  @override
+  String get cvA11yReads => 'يقرأ Pausey فقط:';
+
+  @override
+  String get cvA11yRead1 => 'أسماء التطبيقات';
+
+  @override
+  String get cvA11yRead2 => 'الوقت المستغرق في كل تطبيق';
 
   @override
   String get appName => 'Pausey';

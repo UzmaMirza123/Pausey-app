@@ -1398,9 +1398,6 @@ class AppLocalizationsHi extends AppLocalizations {
       'अपनी प्रगति सिंक करने के लिए अकाउंट बनाएं, या मेहमान के रूप में जारी रखें।';
 
   @override
-  String get cvOrContinueWith => 'या इससे जारी रखें';
-
-  @override
   String get cvUsageNone => 'आज इस्तेमाल नहीं हुआ';
 
   @override
@@ -1430,6 +1427,22 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get cvNotNow => 'अभी नहीं';
+
+  @override
+  String get cvA11yTitle => 'बस एक आखिरी बात';
+
+  @override
+  String get cvA11ySub =>
+      'एक्सेसिबिलिटी चालू करें ताकि Pausey देख सके कौन-सा ऐप खुला है और कितनी देर। फिर यह आपके ऐप्स को ब्लॉक, अनब्लॉक और शेड्यूल कर सकेगा।';
+
+  @override
+  String get cvA11yReads => 'Pausey सिर्फ़ यह पढ़ता है:';
+
+  @override
+  String get cvA11yRead1 => 'ऐप्स के नाम';
+
+  @override
+  String get cvA11yRead2 => 'हर ऐप में बिताया गया समय';
 
   @override
   String get appName => 'Pausey';

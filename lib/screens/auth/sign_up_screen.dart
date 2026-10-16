@@ -16,7 +16,10 @@ String? validateEmail(BuildContext context, String? v) =>
 
 /// Email sign-up: name, email, password (with strength meter), confirm, terms.
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key, this.backToLogIn = false});
+  const SignUpScreen({super.key, this.backToLogIn = false, this.onGuest});
+
+  /// From onboarding: passed on to the log-in screen so it keeps "Continue as guest".
+  final VoidCallback? onGuest;
 
   /// Opened from a log-in form: "Log in" goes back to that same form instead of
   /// opening another one.
@@ -167,7 +170,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               TextButton(
                                 onPressed: () => widget.backToLogIn
                                     ? Navigator.of(context).pop()
-                                    : Navigator.of(context).pushReplacement(authRoute(const LogInScreen())),
+                                    : Navigator.of(context).pushReplacement(authRoute(LogInScreen(onGuest: widget.onGuest))),
                                 child: Text(l.logIn, style: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet)),
                               ),
                             ],

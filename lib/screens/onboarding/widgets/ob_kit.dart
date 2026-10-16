@@ -32,6 +32,7 @@ class ObFlowScope extends InheritedWidget {
     required this.dotsFrom,
     required this.canBack,
     required this.onBack,
+    this.onSkip,
     this.backGate,
     required super.child,
   });
@@ -44,6 +45,9 @@ class ObFlowScope extends InheritedWidget {
   final int dotsFrom;
   final bool canBack;
   final VoidCallback onBack;
+
+  /// "Skip" in the header (moves on to the next screen).
+  final VoidCallback? onSkip;
 
   /// Checked by [onBack] before leaving the stage (see [ObBackGate]).
   final ObBackGate? backGate;
@@ -99,12 +103,14 @@ class ObPage extends StatelessWidget {
           SafeArea(
             child: Column(
               children: [
+                // Same header as the intro screens: theme switch and Skip.
+                FlowSwitch.content(context, OnboardingHeader(onSkip: scope?.onSkip, showSkip: scope?.onSkip != null)),
                 Expanded(
                   child: FlowSwitch.content(
                     context,
                     LayoutBuilder(
                       builder: (context, box) => SingleChildScrollView(
-                        padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 28, AppSpacing.gutter, 16),
+                        padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 8, AppSpacing.gutter, 16),
                         child: Center(
                           child: ConstrainedBox(
                             constraints: BoxConstraints(maxWidth: 480, minHeight: center ? box.maxHeight - 44 : 0),

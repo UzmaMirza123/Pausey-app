@@ -1407,9 +1407,6 @@ class AppLocalizationsId extends AppLocalizations {
       'Buat akun untuk menyinkronkan progresmu, atau lanjut sebagai tamu.';
 
   @override
-  String get cvOrContinueWith => 'atau lanjut dengan';
-
-  @override
   String get cvUsageNone => 'Belum dipakai hari ini';
 
   @override
@@ -1439,6 +1436,22 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cvNotNow => 'Nanti saja';
+
+  @override
+  String get cvA11yTitle => 'Satu hal terakhir';
+
+  @override
+  String get cvA11ySub =>
+      'Aktifkan Aksesibilitas agar Pausey tahu aplikasi mana yang terbuka dan berapa lama. Lalu ia bisa memblokir, membuka blokir, dan menjadwalkan aplikasimu.';
+
+  @override
+  String get cvA11yReads => 'Pausey hanya membaca:';
+
+  @override
+  String get cvA11yRead1 => 'Nama aplikasi';
+
+  @override
+  String get cvA11yRead2 => 'Waktu di tiap aplikasi';
 
   @override
   String get appName => 'Pausey';

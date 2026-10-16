@@ -66,6 +66,13 @@ void main() {
     expect(find.textContaining('evenings wind down'), findsOneWidget);
     await _tap(t, 'Next');
 
+
+    await _tap(t, 'More than 6 hours');
+    expect(OnboardingState.instance.screenTime, ObScreenTime.over6);
+    await _tap(t, 'Next');
+
+    await _tap(t, 'Continue'); // permissions (not Android in tests)
+
     // The apps to pause are listed already; ✕ leaves one out.
     expect(OnboardingState.instance.apps.map((a) => a.id), ['Instagram', 'TikTok', 'YouTube', 'Facebook', 'Snapchat']);
     expect(find.text('5 apps selected'), findsOneWidget);
@@ -79,12 +86,6 @@ void main() {
     }
     expect(OnboardingState.instance.apps.map((a) => a.id), ['Instagram', 'TikTok']);
     expect(find.text('2 apps selected'), findsOneWidget);
-    await _tap(t, 'Next');
-
-    await _tap(t, 'Continue'); // permissions (not Android in tests)
-
-    await _tap(t, 'More than 6 hours');
-    expect(OnboardingState.instance.screenTime, ObScreenTime.over6);
     await _tap(t, 'Next');
 
     // Reflection uses the real answers.
@@ -113,15 +114,20 @@ void main() {
     expect(LocalStore.instance.answers['dailyGoalHours'], 3);
     await _tap(t, 'Continue');
 
+    // "One last thing": accessibility, with what Pausey reads and never reads.
+    expect(find.bySemanticsLabel('One last thing'), findsOneWidget);
+    expect(find.text('App names'), findsOneWidget);
+    await _tap(t, 'Continue');
+
     // "Start your Pausey journey": Google, Apple, guest, and links to log in / sign up.
     expect(find.bySemanticsLabel('Start your Pausey journey'), findsOneWidget);
     expect(find.text('Continue with Google'), findsOneWidget);
     expect(find.text('Continue with Apple'), findsOneWidget);
-    // Log in opens its own screen (Google | Apple side by side, guest option).
+    // Sign up → Log in still offers "Continue as guest" (no Google/Apple there).
+    await _tap(t, 'Sign up');
     await _tap(t, 'Log in');
     expect(find.text('Log into your account'), findsOneWidget);
-    expect(find.text('or continue with'), findsOneWidget);
-    expect(find.bySemanticsLabel('Continue with Google'), findsOneWidget);
+    expect(find.text('Continue with Google'), findsNothing);
     // Guest from the log-in screen closes it and asks for a name.
     await _tap(t, 'Continue as guest');
     // Guest is asked what to call them ("Your name" field, no "optional").
@@ -150,7 +156,7 @@ void main() {
 
   testWidgets('progress resumes on the saved stage and back goes one step', (t) async {
     OnboardingState.instance.update((s) {
-      s.stage = 5;
+      s.stage = 3;
       s.goal = ObGoal.focus;
     });
     await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {})));
@@ -162,7 +168,7 @@ void main() {
     for (var i = 0; i < 10; i++) {
       await t.pump(const Duration(milliseconds: 200));
     }
-    expect(OnboardingState.instance.stage, 4);
+    expect(OnboardingState.instance.stage, 2);
   }, variant: notAndroid);
 
   testWidgets('back on the first question returns to the intro screens', (t) async {

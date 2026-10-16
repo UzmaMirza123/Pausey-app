@@ -1346,9 +1346,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cvJourneySub => '创建账户以同步进度，或以访客身份继续。';
 
   @override
-  String get cvOrContinueWith => '或通过以下方式继续';
-
-  @override
   String get cvUsageNone => '今天未使用';
 
   @override
@@ -1377,6 +1374,21 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get cvNotNow => '以后再说';
+
+  @override
+  String get cvA11yTitle => '最后一件事';
+
+  @override
+  String get cvA11ySub => '开启无障碍功能，Pausey 才能知道打开的是哪个应用、用了多久，从而帮你屏蔽、解除屏蔽和安排应用。';
+
+  @override
+  String get cvA11yReads => 'Pausey 只读取：';
+
+  @override
+  String get cvA11yRead1 => '应用名称';
+
+  @override
+  String get cvA11yRead2 => '每个应用的使用时长';
 
   @override
   String get appName => 'Pausey';
