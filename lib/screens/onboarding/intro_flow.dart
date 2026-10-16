@@ -56,10 +56,10 @@ class _IntroFlowState extends State<IntroFlow> {
         physics: const NeverScrollableScrollPhysics(),
         children: [
           for (final (i, page) in [
-            Onboarding1Screen(onNext: _next, onSkip: widget.onFinished),
-            Onboarding2Screen(onNext: _next, onSkip: widget.onFinished),
-            Onboarding3Screen(onNext: _next, onSkip: widget.onFinished),
-            Onboarding4Screen(onNext: _next, onSkip: widget.onFinished),
+            Onboarding1Screen(onNext: _next, onSkip: _next),
+            Onboarding2Screen(onNext: _next, onSkip: _next),
+            Onboarding3Screen(onNext: _next, onSkip: _next),
+            Onboarding4Screen(onNext: _next, onSkip: _next),
           ].indexed)
             OnboardingPageScope(index: i, controller: _pager, onBack: _back, child: page),
         ],

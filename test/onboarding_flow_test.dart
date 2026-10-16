@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pausey/data/app_repo.dart';
 import 'package:pausey/data/restrictions/restriction_repo.dart';
 import 'package:pausey/main.dart';
+import 'package:pausey/screens/onboarding/intro_flow.dart';
+import 'package:pausey/screens/onboarding/onboarding_2_screen.dart';
 import 'package:pausey/screens/onboarding/onboarding_flow.dart';
 import 'package:pausey/screens/onboarding/onboarding_state.dart';
 import 'package:pausey/services/auth_service.dart';
@@ -179,5 +181,17 @@ void main() {
     await t.tap(find.byType(BackCircleButton));
     await t.pump(const Duration(milliseconds: 500));
     expect(back, isTrue);
+  }, variant: notAndroid);
+
+  testWidgets('Skip on an intro screen skips only that screen', (t) async {
+    var finished = false;
+    await t.pumpWidget(PauseyApp(home: IntroFlow(onFinished: () => finished = true)));
+    await t.pump(const Duration(seconds: 1));
+    await t.tap(find.text('Skip'));
+    for (var i = 0; i < 6; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
+    expect(finished, isFalse);
+    expect(find.byType(Onboarding2Screen), findsOneWidget);
   }, variant: notAndroid);
 }

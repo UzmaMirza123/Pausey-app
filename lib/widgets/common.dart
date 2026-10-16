@@ -10,10 +10,13 @@ import '../utils/l10n.dart';
 /// Header row on every onboarding screen: theme switch (sun/moon) and "Skip",
 /// both on the right.
 class OnboardingHeader extends StatelessWidget {
-  const OnboardingHeader({super.key, this.onSkip, this.showSkip = true});
+  const OnboardingHeader({super.key, this.onSkip, this.showSkip = true, this.leading});
 
   final VoidCallback? onSkip;
   final bool showSkip;
+
+  /// Optional widget on the start side (e.g. the Pausey wordmark).
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +27,7 @@ class OnboardingHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           const SizedBox(height: 30),
+          if (leading != null) ...[leading!, const Spacer()],
           const ThemeToggleButton(),
           if (showSkip) ...[
             const SizedBox(width: 6),
@@ -303,6 +307,7 @@ class OnboardingScaffold extends StatelessWidget {
     this.blobs = Blob.onboarding,
     this.starsAsset = 'assets/svg/ob1_stars.svg',
     this.footerExtra,
+    this.headerLeading,
   });
 
   final Widget body;
@@ -316,6 +321,9 @@ class OnboardingScaffold extends StatelessWidget {
 
   /// Optional small text under the button (e.g. "You can change this later").
   final Widget? footerExtra;
+
+  /// Optional widget at the start of the header row.
+  final Widget? headerLeading;
 
   @override
   Widget build(BuildContext context) {
@@ -336,7 +344,7 @@ class OnboardingScaffold extends StatelessWidget {
                     context,
                     Column(
                       children: [
-                        OnboardingHeader(onSkip: onSkip, showSkip: showSkip),
+                        OnboardingHeader(onSkip: onSkip, showSkip: showSkip, leading: headerLeading),
                         // Body fits any screen: shrinks on short phones, centres on tall ones,
                         // and stays a readable width on tablets.
                         Expanded(

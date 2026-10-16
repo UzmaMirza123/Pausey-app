@@ -1,11 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
+import '../../widgets/pausey_logo.dart';
 import 'widgets/ob_text_motion.dart';
 import 'widgets/intro_motion.dart';
 
@@ -22,6 +20,14 @@ class Onboarding1Screen extends StatelessWidget {
     final l = context.l10n;
     return OnboardingScaffold(
       onSkip: onSkip,
+      headerLeading: IntroEnter(
+        rise: 8,
+        // The brand name always reads left to right, also in Urdu / Arabic.
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: PauseyWordmark(t: 1, style: AppText.logo.copyWith(fontSize: 22, height: 1.1, letterSpacing: -0.6, color: c.textPrimary)),
+        ),
+      ),
       dotsIndex: 0,
       starsAsset: 'assets/svg/ob1_stars.svg',
       button: PrimaryButton(label: l.continueLabel, onPressed: onNext),
@@ -29,9 +35,9 @@ class Onboarding1Screen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
         child: Column(
           children: [
-            const SizedBox(height: 24),
-            const IntroEnter(scale: true, child: IntroFloat(child: _Illustration())),
-            const SizedBox(height: 6),
+            const SizedBox(height: 8),
+            const _Illustration(),
+            const SizedBox(height: 14),
             IntroEnter(
               index: 1,
               child: ObRevealText(l.ob1Title, style: AppText.h1.copyWith(color: c.textPrimary)),
@@ -58,14 +64,14 @@ class Onboarding1Screen extends StatelessWidget {
                     Expanded(
                       child: IntroEnter(
                         index: 3,
-                        child: _StatCard(value: '4h 12m', caption: l.ob1StatAvg, color: AppPalette.accent),
+                        child: _StatCard(to: 252, format: (v) => '${v ~/ 60}h ${(v % 60).floor()}m', caption: l.ob1StatAvg, color: AppPalette.accent),
                       ),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: IntroEnter(
                         index: 4,
-                        child: _StatCard(value: '73%', caption: l.ob1StatSocial, color: AppPalette.gold),
+                        child: _StatCard(to: 73, format: (v) => '${v.round()}%', caption: l.ob1StatSocial, color: AppPalette.gold, delay: 0.1),
                       ),
                     ),
                   ],
@@ -80,56 +86,111 @@ class Onboarding1Screen extends StatelessWidget {
   }
 }
 
-/// 300×300 hero: soft blue glow, violet disc and the phone/lock illustration.
-class _Illustration extends StatelessWidget {
+/// Hero: the girl on the bean bag with her robot buddy. A soft purple glow
+/// breathes behind her while she rises in and then floats gently.
+class _Illustration extends StatefulWidget {
   const _Illustration();
 
   @override
+  State<_Illustration> createState() => _IllustrationState();
+}
+
+class _IllustrationState extends State<_Illustration> with SingleTickerProviderStateMixin {
+  late final _glow = AnimationController(vsync: this, duration: const Duration(milliseconds: 4200));
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final still = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+    if (still) {
+      _glow.value = 0.5;
+    } else if (!_glow.isAnimating) {
+      _glow.repeat(reverse: true);
+    }
+  }
+
+  @override
+  void dispose() {
+    _glow.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
-      height: 300,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Positioned.fill(
-            child: ImageFiltered(
-              imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    center: const Alignment(0, 0.1),
-                    colors: [AppPalette.blue.withValues(alpha: 0.22), AppPalette.blue.withValues(alpha: 0)],
-                    stops: const [0, 0.68],
+    // Smaller on short phones so the text and stats stay in view.
+    final h = (MediaQuery.sizeOf(context).height * 0.34).clamp(200.0, 300.0);
+    return ExcludeSemantics(
+      child: SizedBox(
+        height: h,
+        width: double.infinity,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            AnimatedBuilder(
+              animation: _glow,
+              builder: (_, _) {
+                final t = Curves.easeInOut.transform(_glow.value);
+                return Transform.scale(
+                  scale: 0.92 + 0.08 * t,
+                  child: Container(
+                    width: h * 0.95,
+                    height: h * 0.95,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        colors: [
+                          AppPalette.accent.withValues(alpha: 0.10 + 0.08 * t),
+                          AppPalette.accent.withValues(alpha: 0),
+                        ],
+                        stops: const [0.2, 1],
+                      ),
+                    ),
                   ),
-                ),
+                );
+              },
+            ),
+            IntroEnter(
+              scale: true,
+              rise: 24,
+              child: IntroFloat(
+                amplitude: 6,
+                period: const Duration(milliseconds: 3800),
+                child: Image.asset('assets/onboarding/ob_intro1.png', height: h, fit: BoxFit.contain, filterQuality: FilterQuality.medium),
               ),
             ),
-          ),
-          Container(
-            width: 224,
-            height: 224,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [AppPalette.accent.withValues(alpha: 0.16), AppPalette.violet.withValues(alpha: 0.07)],
-              ),
-            ),
-          ),
-          SvgPicture.asset('assets/svg/ob1_illustration.svg', width: 240, height: 280),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
 
-class _StatCard extends StatelessWidget {
-  const _StatCard({required this.value, required this.caption, required this.color});
+/// Numbers in the stat cards count up once as the card appears.
+class _CountUp extends StatelessWidget {
+  const _CountUp({required this.to, required this.format, required this.style, this.delay = 0});
+  final double to;
+  final String Function(double v) format;
+  final TextStyle style;
+  final double delay;
 
-  final String value;
+  @override
+  Widget build(BuildContext context) {
+    if (MediaQuery.maybeDisableAnimationsOf(context) ?? false) return Text(format(to), style: style);
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: const Duration(milliseconds: 1500),
+      curve: Interval(delay, 1, curve: Curves.easeOutCubic),
+      builder: (_, t, _) => Text(format(to * t), style: style),
+    );
+  }
+}
+
+class _StatCard extends StatelessWidget {
+  const _StatCard({required this.to, required this.format, required this.caption, required this.color, this.delay = 0});
+
+  final double to;
+  final String Function(double v) format;
+  final double delay;
   final String caption;
   final Color color;
 
@@ -144,7 +205,7 @@ class _StatCard extends StatelessWidget {
         children: [
           FittedBox(
             fit: BoxFit.scaleDown,
-            child: Text(value, style: AppText.stat.copyWith(color: color)),
+            child: Semantics(label: format(to), child: ExcludeSemantics(child: _CountUp(to: to, format: format, delay: delay, style: AppText.stat.copyWith(color: color)))),
           ),
           const SizedBox(height: 2),
           Text(
