@@ -23,6 +23,21 @@ class AppLocalizationsPt extends AppLocalizations {
   String get ob1StatSocial => 'Gasto em redes sociais';
 
   @override
+  String get ob1ArtNote1 => 'Menos rolagem';
+
+  @override
+  String get ob1ArtNote2 => 'Mais você';
+
+  @override
+  String get ob1BookFocus => 'Foco';
+
+  @override
+  String get ob1BookBalance => 'Equilíbrio';
+
+  @override
+  String get ob1BookHappier => 'Você mais feliz';
+
+  @override
   String get ob2SelectApps => 'Selecionar apps';
 
   @override

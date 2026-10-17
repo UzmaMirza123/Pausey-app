@@ -22,6 +22,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ob1StatSocial => '花在社交媒体上';
 
   @override
+  String get ob1ArtNote1 => '少刷屏';
+
+  @override
+  String get ob1ArtNote2 => '多点自己';
+
+  @override
+  String get ob1BookFocus => '专注';
+
+  @override
+  String get ob1BookBalance => '平衡';
+
+  @override
+  String get ob1BookHappier => '更快乐的你';
+
+  @override
   String get ob2SelectApps => '选择应用';
 
   @override

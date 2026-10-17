@@ -148,6 +148,36 @@ abstract class AppLocalizations {
   /// **'Spent on social media'**
   String get ob1StatSocial;
 
+  /// No description provided for @ob1ArtNote1.
+  ///
+  /// In en, this message translates to:
+  /// **'Less scrolling'**
+  String get ob1ArtNote1;
+
+  /// No description provided for @ob1ArtNote2.
+  ///
+  /// In en, this message translates to:
+  /// **'More you'**
+  String get ob1ArtNote2;
+
+  /// No description provided for @ob1BookFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get ob1BookFocus;
+
+  /// No description provided for @ob1BookBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance'**
+  String get ob1BookBalance;
+
+  /// No description provided for @ob1BookHappier.
+  ///
+  /// In en, this message translates to:
+  /// **'Happier You'**
+  String get ob1BookHappier;
+
   /// No description provided for @ob2SelectApps.
   ///
   /// In en, this message translates to:

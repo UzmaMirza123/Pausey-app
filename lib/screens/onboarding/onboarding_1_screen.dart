@@ -118,7 +118,7 @@ class _IllustrationState extends State<_Illustration> with SingleTickerProviderS
   @override
   Widget build(BuildContext context) {
     // Smaller on short phones so the text and stats stay in view.
-    final h = (MediaQuery.sizeOf(context).height * 0.34).clamp(200.0, 300.0);
+    final h = (MediaQuery.sizeOf(context).height * 0.38).clamp(220.0, 340.0);
     return ExcludeSemantics(
       child: SizedBox(
         height: h,
@@ -155,11 +155,130 @@ class _IllustrationState extends State<_Illustration> with SingleTickerProviderS
               child: IntroFloat(
                 amplitude: 6,
                 period: const Duration(milliseconds: 3800),
-                child: Image.asset('assets/onboarding/ob_intro1.png', height: h, fit: BoxFit.contain, filterQuality: FilterQuality.medium),
+                child: _Art(height: h),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// The illustration with its hand-written note ("Less scrolling / More you ♥")
+/// on the left and the labelled books at the bottom right. The words are real
+/// text on top of the picture, so they appear in the app's language. The note
+/// is "written" in once, then the heart pops and the book labels fade in.
+class _Art extends StatefulWidget {
+  const _Art({required this.height});
+  final double height;
+
+  @override
+  State<_Art> createState() => _ArtState();
+}
+
+class _ArtState extends State<_Art> with SingleTickerProviderStateMixin {
+  late final _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 2600));
+
+  // Art canvas, in source pixels; overlay positions below use the same units.
+  static const _srcW = 246.0, _srcH = 262.0;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.maybeDisableAnimationsOf(context) ?? false) {
+      _c.value = 1;
+    } else if (_c.value == 0 && !_c.isAnimating) {
+      _c.forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  double _at(double a, double b, [Curve curve = Curves.easeOutCubic]) =>
+      curve.transform(((_c.value - a) / (b - a)).clamp(0.0, 1.0));
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final h = widget.height;
+    final u = h / _srcH; // one source pixel on screen
+    final w = _srcW * u;
+    final ink = context.isDark ? const Color(0xFFB9A8FF) : const Color(0xFF6A55D8);
+    final hand = TextStyle(fontFamily: 'Caveat', fontSize: 16.5 * u, height: 0.92, fontWeight: FontWeight.w600, color: ink);
+    final book = AppText.caption.copyWith(fontSize: 8.6 * u, height: 1, fontWeight: FontWeight.w700, color: const Color(0xFF5845B5));
+
+    // Reveals a line of handwriting from where the writing starts.
+    Widget written(Widget child, double t) => ClipRect(
+          child: Align(alignment: AlignmentDirectional.centerStart, widthFactor: t, child: child),
+        );
+
+    Widget label(String text, double cy, double t) => Positioned(
+          left: (201 - 3) * u,
+          width: 44 * u,
+          top: (cy - 6) * u,
+          height: 12 * u,
+          child: Opacity(
+            opacity: t,
+            child: Transform.translate(
+              offset: Offset(0, 3 * u * (1 - t)),
+              child: Transform.rotate(
+                angle: 0.03,
+                child: FittedBox(fit: BoxFit.scaleDown, child: Text(text, maxLines: 1, style: book)),
+              ),
+            ),
+          ),
+        );
+
+    return SizedBox(
+      width: w,
+      height: h,
+      child: AnimatedBuilder(
+        animation: _c,
+        builder: (context, _) {
+          final heart = _at(0.72, 0.95, Curves.elasticOut);
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Positioned.fill(
+                child: Image.asset('assets/onboarding/ob_intro1.png', fit: BoxFit.contain, filterQuality: FilterQuality.medium),
+              ),
+              // Hand-written note, slightly tilted like the mockup.
+              Positioned(
+                left: (12 - 3) * u,
+                top: 26 * u,
+                width: 52 * u,
+                height: 80 * u,
+                child: Transform.rotate(
+                  angle: -0.2,
+                  // Laid out from the left in every language so the note never runs into her hair.
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    textDirection: TextDirection.ltr,
+                    children: [
+                      written(Text(l.ob1ArtNote1, maxLines: 2, style: hand), _at(0.22, 0.55, Curves.easeInOut)),
+                      SizedBox(height: 2 * u),
+                      written(FittedBox(fit: BoxFit.scaleDown, child: Text(l.ob1ArtNote2, maxLines: 1, style: hand)), _at(0.5, 0.75, Curves.easeInOut)),
+                      SizedBox(height: 3 * u),
+                      Padding(
+                        padding: EdgeInsetsDirectional.only(start: 12 * u),
+                        child: Transform.scale(scale: heart, child: Icon(Icons.favorite_border_rounded, size: 11 * u, color: ink)),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              label(l.ob1BookFocus, 210.5, _at(0.4, 0.65)),
+              label(l.ob1BookBalance, 225, _at(0.5, 0.75)),
+              label(l.ob1BookHappier, 242, _at(0.6, 0.85)),
+            ],
+          );
+        },
       ),
     );
   }

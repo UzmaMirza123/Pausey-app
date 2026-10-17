@@ -23,6 +23,21 @@ class AppLocalizationsTr extends AppLocalizations {
   String get ob1StatSocial => 'Sosyal medyada geçen';
 
   @override
+  String get ob1ArtNote1 => 'Daha az kaydırma';
+
+  @override
+  String get ob1ArtNote2 => 'Daha çok sen';
+
+  @override
+  String get ob1BookFocus => 'Odak';
+
+  @override
+  String get ob1BookBalance => 'Denge';
+
+  @override
+  String get ob1BookHappier => 'Daha mutlu sen';
+
+  @override
   String get ob2SelectApps => 'Uygulama Seç';
 
   @override

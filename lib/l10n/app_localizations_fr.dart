@@ -23,6 +23,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get ob1StatSocial => 'Sur les réseaux sociaux';
 
   @override
+  String get ob1ArtNote1 => 'Moins de scroll';
+
+  @override
+  String get ob1ArtNote2 => 'Plus de toi';
+
+  @override
+  String get ob1BookFocus => 'Concentration';
+
+  @override
+  String get ob1BookBalance => 'Équilibre';
+
+  @override
+  String get ob1BookHappier => 'Toi, plus heureux';
+
+  @override
   String get ob2SelectApps => 'Choisir les applis';
 
   @override

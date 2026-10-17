@@ -23,6 +23,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ob1StatSocial => 'Spent on social media';
 
   @override
+  String get ob1ArtNote1 => 'Less scrolling';
+
+  @override
+  String get ob1ArtNote2 => 'More you';
+
+  @override
+  String get ob1BookFocus => 'Focus';
+
+  @override
+  String get ob1BookBalance => 'Balance';
+
+  @override
+  String get ob1BookHappier => 'Happier You';
+
+  @override
   String get ob2SelectApps => 'Select Apps';
 
   @override

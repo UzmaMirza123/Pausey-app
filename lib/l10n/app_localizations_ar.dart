@@ -23,6 +23,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ob1StatSocial => 'يُقضى على وسائل التواصل';
 
   @override
+  String get ob1ArtNote1 => 'تمرير أقل';
+
+  @override
+  String get ob1ArtNote2 => 'المزيد منك';
+
+  @override
+  String get ob1BookFocus => 'تركيز';
+
+  @override
+  String get ob1BookBalance => 'توازن';
+
+  @override
+  String get ob1BookHappier => 'أنت أسعد';
+
+  @override
   String get ob2SelectApps => 'اختر التطبيقات';
 
   @override

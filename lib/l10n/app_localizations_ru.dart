@@ -23,6 +23,21 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ob1StatSocial => 'Уходит на соцсети';
 
   @override
+  String get ob1ArtNote1 => 'Меньше скролла';
+
+  @override
+  String get ob1ArtNote2 => 'Больше тебя';
+
+  @override
+  String get ob1BookFocus => 'Фокус';
+
+  @override
+  String get ob1BookBalance => 'Баланс';
+
+  @override
+  String get ob1BookHappier => 'Счастливее ты';
+
+  @override
   String get ob2SelectApps => 'Выбрать приложения';
 
   @override

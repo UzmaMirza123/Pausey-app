@@ -23,6 +23,21 @@ class AppLocalizationsId extends AppLocalizations {
   String get ob1StatSocial => 'Dihabiskan di media sosial';
 
   @override
+  String get ob1ArtNote1 => 'Kurangi scroll';
+
+  @override
+  String get ob1ArtNote2 => 'Lebih banyak dirimu';
+
+  @override
+  String get ob1BookFocus => 'Fokus';
+
+  @override
+  String get ob1BookBalance => 'Keseimbangan';
+
+  @override
+  String get ob1BookHappier => 'Kamu lebih bahagia';
+
+  @override
   String get ob2SelectApps => 'Pilih Aplikasi';
 
   @override

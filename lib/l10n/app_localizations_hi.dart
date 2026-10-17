@@ -23,6 +23,21 @@ class AppLocalizationsHi extends AppLocalizations {
   String get ob1StatSocial => 'सोशल मीडिया पर बीता';
 
   @override
+  String get ob1ArtNote1 => 'कम स्क्रॉलिंग';
+
+  @override
+  String get ob1ArtNote2 => 'ज़्यादा आप';
+
+  @override
+  String get ob1BookFocus => 'फ़ोकस';
+
+  @override
+  String get ob1BookBalance => 'संतुलन';
+
+  @override
+  String get ob1BookHappier => 'ज़्यादा खुश आप';
+
+  @override
   String get ob2SelectApps => 'ऐप्स चुनें';
 
   @override

@@ -22,6 +22,21 @@ class AppLocalizationsJa extends AppLocalizations {
   String get ob1StatSocial => 'SNSに費やす時間';
 
   @override
+  String get ob1ArtNote1 => 'スクロールは少なく';
+
+  @override
+  String get ob1ArtNote2 => 'もっと自分らしく';
+
+  @override
+  String get ob1BookFocus => '集中';
+
+  @override
+  String get ob1BookBalance => 'バランス';
+
+  @override
+  String get ob1BookHappier => 'もっと幸せな自分';
+
+  @override
   String get ob2SelectApps => 'アプリを選択';
 
   @override

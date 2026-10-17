@@ -22,6 +22,21 @@ class AppLocalizationsKo extends AppLocalizations {
   String get ob1StatSocial => '소셜 미디어에 쓰는 시간';
 
   @override
+  String get ob1ArtNote1 => '스크롤은 적게';
+
+  @override
+  String get ob1ArtNote2 => '더 나답게';
+
+  @override
+  String get ob1BookFocus => '집중';
+
+  @override
+  String get ob1BookBalance => '균형';
+
+  @override
+  String get ob1BookHappier => '더 행복한 나';
+
+  @override
   String get ob2SelectApps => '앱 선택';
 
   @override

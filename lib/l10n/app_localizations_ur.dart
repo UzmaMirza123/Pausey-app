@@ -23,6 +23,21 @@ class AppLocalizationsUr extends AppLocalizations {
   String get ob1StatSocial => 'سوشل میڈیا پر خرچ';
 
   @override
+  String get ob1ArtNote1 => 'کم اسکرولنگ';
+
+  @override
+  String get ob1ArtNote2 => 'زیادہ اپنا آپ';
+
+  @override
+  String get ob1BookFocus => 'توجہ';
+
+  @override
+  String get ob1BookBalance => 'توازن';
+
+  @override
+  String get ob1BookHappier => 'خوش تر آپ';
+
+  @override
   String get ob2SelectApps => 'ایپس منتخب کریں';
 
   @override
