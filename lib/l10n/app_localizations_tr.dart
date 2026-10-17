@@ -3340,7 +3340,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get stHow2 => 'Kaydırmaya başlıyorsun, ama…';
 
   @override
-  String get stHow3 => 'Pausey onu nazikçe duraklatır.';
+  String get stHow3 => 'Pausey onu nazikçe engeller.';
+
+  @override
+  String stBlockedTitle(String app) {
+    return '$app engellendi';
+  }
 
   @override
   String get stHow4 => 'Ve süre dolmadan uyarır';

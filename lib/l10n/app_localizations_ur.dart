@@ -3349,7 +3349,12 @@ class AppLocalizationsUr extends AppLocalizations {
   String get stHow2 => 'آپ اسکرول شروع کرتے ہیں، مگر…';
 
   @override
-  String get stHow3 => 'Pausey نرمی سے اسے روک دیتا ہے۔';
+  String get stHow3 => 'Pausey نرمی سے اسے بلاک کر دیتا ہے۔';
+
+  @override
+  String stBlockedTitle(String app) {
+    return '$app بلاک ہے';
+  }
 
   @override
   String get stHow4 => 'حد سے پہلے یاد دہانی';

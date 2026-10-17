@@ -3260,7 +3260,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get stHow2 => '你开始刷屏，但…';
 
   @override
-  String get stHow3 => 'Pausey 会温和地让它暂停。';
+  String get stHow3 => 'Pausey 会温和地将它屏蔽。';
+
+  @override
+  String stBlockedTitle(String app) {
+    return '$app 已被屏蔽';
+  }
 
   @override
   String get stHow4 => '并在到限前提醒你';

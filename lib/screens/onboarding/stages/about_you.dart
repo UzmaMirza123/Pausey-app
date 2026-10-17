@@ -9,6 +9,7 @@ import '../../../utils/app_theme.dart';
 import '../../../utils/l10n.dart';
 import '../../../widgets/ui_kit.dart';
 import '../onboarding_state.dart';
+import '../widgets/ob_apps_orbit.dart';
 import '../widgets/ob_art.dart';
 import '../widgets/ob_kit.dart';
 import '../widgets/ob_text_motion.dart';
@@ -20,8 +21,10 @@ OnboardingState get _s => OnboardingState.instance;
 const _answersDelay = Duration(milliseconds: 500);
 const _replyDelay = Duration(milliseconds: 900);
 
-Widget _head(ObArtKind art, String title, String sub) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      ObArt(art),
+Widget _head(ObArtKind art, String title, String sub) => _headWith(ObArt(art), title, sub);
+
+Widget _headWith(Widget art, String title, String sub) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      art,
       const SizedBox(height: 10),
       ObTitle(title, align: TextAlign.center),
       ObFadeUp(delay: const Duration(milliseconds: 400), child: ObSubtitle(sub, align: TextAlign.center)),
@@ -294,7 +297,7 @@ class _AppsStageState extends State<AppsStage> {
           primaryLabel: picked.isEmpty ? l.cvSkipForNow : l.cvNext,
           onPrimary: widget.onNext,
           children: [
-            _head(ObArtKind.apps, l.cvAppsTitle, android ? l.cvAppsSubReal : l.cvAppsSubPopular),
+            _headWith(ObAppsOrbit(lockedCount: picked.length), l.cvAppsTitle, android ? l.cvAppsSubReal : l.cvAppsSubPopular),
             if (needsAccess)
               ObFadeUp(
                 delay: _answersDelay,

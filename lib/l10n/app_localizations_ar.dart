@@ -3328,7 +3328,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get stHow2 => 'تبدأ بالتمرير، لكن…';
 
   @override
-  String get stHow3 => 'يوقفه Pausey مؤقتًا بلطف.';
+  String get stHow3 => 'يحظره Pausey بلطف.';
+
+  @override
+  String stBlockedTitle(String app) {
+    return 'تم حظر $app';
+  }
 
   @override
   String get stHow4 => 'وتنبّهك قبل نفاد الوقت';

@@ -3276,7 +3276,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get stHow2 => '스크롤을 시작하지만…';
 
   @override
-  String get stHow3 => 'Pausey가 부드럽게 멈춰 줘요.';
+  String get stHow3 => 'Pausey가 부드럽게 차단해요.';
+
+  @override
+  String stBlockedTitle(String app) {
+    return '$app 차단됨';
+  }
 
   @override
   String get stHow4 => '한도 전에 알려줘요';

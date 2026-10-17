@@ -3363,7 +3363,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get stHow2 => 'Вы листаете ленту, но…';
 
   @override
-  String get stHow3 => 'Pausey мягко ставит его на паузу.';
+  String get stHow3 => 'Pausey мягко блокирует его.';
+
+  @override
+  String stBlockedTitle(String app) {
+    return '$app заблокирован';
+  }
 
   @override
   String get stHow4 => 'И напомнит до лимита';

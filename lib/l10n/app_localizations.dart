@@ -6085,8 +6085,14 @@ abstract class AppLocalizations {
   /// No description provided for @stHow3.
   ///
   /// In en, this message translates to:
-  /// **'Pausey gently pauses it.'**
+  /// **'Pausey gently blocks it.'**
   String get stHow3;
+
+  /// No description provided for @stBlockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{app} is blocked'**
+  String stBlockedTitle(String app);
 
   /// No description provided for @stHow4.
   ///

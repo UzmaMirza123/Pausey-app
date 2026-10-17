@@ -3409,7 +3409,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get stHow2 => 'Vous faites défiler, mais…';
 
   @override
-  String get stHow3 => 'Pausey le met doucement en pause.';
+  String get stHow3 => 'Pausey la bloque en douceur.';
+
+  @override
+  String stBlockedTitle(String app) {
+    return '$app est bloquée';
+  }
 
   @override
   String get stHow4 => 'Et prévient avant la limite';

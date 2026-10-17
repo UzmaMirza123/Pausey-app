@@ -1943,7 +1943,15 @@
     }
   },
   "stHow2": "You start scrolling, but…",
-  "stHow3": "Pausey gently pauses it.",
+  "stHow3": "Pausey gently blocks it.",
+  "stBlockedTitle": "{app} is blocked",
+  "@stBlockedTitle": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
   "stHow4": "Nudges before time's up",
   "stYourApp": "your app",
   "stTapToContinue": "Tap to continue",

@@ -3390,7 +3390,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get stHow2 => 'Empiezas a deslizar, pero…';
 
   @override
-  String get stHow3 => 'Pausey lo pone en pausa con suavidad.';
+  String get stHow3 => 'Pausey la bloquea con suavidad.';
+
+  @override
+  String stBlockedTitle(String app) {
+    return '$app está bloqueada';
+  }
 
   @override
   String get stHow4 => 'Y avisa antes del límite';

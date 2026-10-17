@@ -95,7 +95,7 @@ void main() {
     expect(find.text('About More than 6 hours a day (your estimate)'), findsOneWidget);
     await _tap(t, 'Show me how');
 
-    // "How it works" story: 4 beats, the user's first app in the headline.
+    // "How it works" story: 4 beats, always shown with Instagram.
     expect(find.bySemanticsLabel('You open Instagram again'), findsOneWidget);
     await _tap(t, 'Next');
     // Back steps to the previous beat first, not the previous stage.
@@ -103,10 +103,19 @@ void main() {
     await t.pump(const Duration(milliseconds: 600));
     expect(OnboardingState.instance.stage, 7);
     await _tap(t, 'Next');
-    await _tap(t, 'Next');
+    // Scrolling: the time-left badge counts down from 30:00 and, at 25:00, the nudge comes in by itself.
+    expect(find.textContaining(RegExp(r'^(30|2\d):\d\d$')), findsOneWidget); // ticking down
+    expect(find.text('25:00'), findsNothing);
+    for (var i = 0; i < 30; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
+    expect(find.text('25:00'), findsOneWidget);
+    expect(find.bySemanticsLabel("Nudges before time's up"), findsOneWidget);
     expect(find.text('Almost at your Instagram limit'), findsOneWidget);
-    expect(find.text('55m of 1h used today'), findsOneWidget); // the plan's real limit (6h+ → 1h)
+    expect(find.text('35m of 1h used today'), findsOneWidget); // the plan's real limit (6h+ → 1h), 25m left
     await _tap(t, 'Next');
+    // Then Pausey blocks it.
+    expect(find.text('Instagram is blocked'), findsOneWidget);
     await _tap(t, 'Build my plan');
 
     // "Set your daily screen-time goal" now replaces the starter-plan screen.

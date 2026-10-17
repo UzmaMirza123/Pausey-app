@@ -3351,7 +3351,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get stHow2 => 'Kamu mulai scroll, tapi…';
 
   @override
-  String get stHow3 => 'Pausey menjedanya dengan lembut.';
+  String get stHow3 => 'Pausey memblokirnya dengan lembut.';
+
+  @override
+  String stBlockedTitle(String app) {
+    return '$app diblokir';
+  }
 
   @override
   String get stHow4 => 'Dan mengingatkan sebelum batas';

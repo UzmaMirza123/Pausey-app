@@ -9,7 +9,6 @@ import '../../../utils/l10n.dart';
 import '../../../services/installed_apps.dart';
 import '../../../widgets/time_picker.dart';
 import '../../../widgets/ui_kit.dart';
-import '../../block/widgets/applock_ui.dart' show InstalledIcon;
 import '../onboarding_state.dart';
 import '../widgets/ob_kit.dart';
 import '../widgets/ob_text_motion.dart';
@@ -107,6 +106,12 @@ class HowItHelpsStage extends StatefulWidget {
 
 class _HowItHelpsStageState extends State<HowItHelpsStage> {
   static const _beats = 4;
+
+  /// Beat 1 is scrolling with the time-left badge; beat 2 the nudge; beat 3 the block.
+  static const _scrollBeat = 1, _nudgeBeat = 2;
+
+  /// The story always shows Instagram (fixed icon), whatever apps were picked.
+  static const _storyApp = 'Instagram';
   int _beat = 0;
   ObBackGate? _gate;
 
@@ -136,7 +141,7 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
     if (_beat < _beats - 1) {
       setState(() => _beat++);
       // "Nudges before time's up": ask for notifications right here, once.
-      if (_beat == _beats - 1) WidgetsBinding.instance.addPostFrameCallback((_) => _askNotifications());
+      if (_beat == _nudgeBeat) WidgetsBinding.instance.addPostFrameCallback((_) => _askNotifications());
       return;
     }
     _left = true;
@@ -159,6 +164,11 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
 
   void _stepBack() => setState(() => _beat = math.max(0, _beat - 1));
 
+  /// Badge reached 25:00 left: the nudge comes in by itself.
+  void _countdownDone() {
+    if (_beat == _scrollBeat) _next();
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
@@ -166,11 +176,14 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
     // Back (arrow or system gesture) steps through the beats before leaving the stage.
     if (!_left) _gate?.handler = _beat > 0 ? _stepBack : null;
 
-    final app = _s.apps.isEmpty ? null : _s.apps.first;
-    final appName = app?.label ?? l.stYourApp;
-    final headlines = [l.stHow1(appName), l.stHow2, l.stHow3, l.stHow4];
+    const appName = _storyApp;
+    final headlines = [l.stHow1(appName), l.stHow2, l.stHow4, l.stHow3];
     final limit = math.max(10, _s.planLimitMinutes);
     String fmt(int m) => fmtMinutes(m, h: l.unitH, m: l.unitM);
+    // The badge counts down to 25:00 left (less on very small limits), then the nudge shows.
+    final leftAtNudge = math.min(25, limit - 5);
+    final leftAtStart = math.min(limit, leftAtNudge + 5);
+    final usedAtNudge = limit - leftAtNudge;
 
     final size = MediaQuery.sizeOf(context);
     // Phone size: fits the width, and leaves room for the headline and footer on short screens.
@@ -178,23 +191,10 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
     final byHeight = (size.height - 420) / StoryPhone.aspect;
     final phoneW = math.max(150.0, math.min(byWidth, math.min(300.0, byHeight)));
 
-    Widget appIcon(double s) {
-      if (app == null) {
-        return Container(
-          width: s,
-          height: s,
-          decoration: BoxDecoration(shape: BoxShape.circle, color: context.isDark ? const Color(0xFF1E1A3A) : Colors.white),
-          child: Icon(Icons.apps_rounded, size: s * 0.5, color: AppPalette.accent),
+    Widget appIcon(double s) => ClipRRect(
+          borderRadius: BorderRadius.circular(s * 0.26),
+          child: Image.asset('assets/svg/sheet_instagram.png', width: s, height: s, fit: BoxFit.cover, filterQuality: FilterQuality.medium),
         );
-      }
-      return ListenableBuilder(
-        listenable: InstalledAppsCache.instance,
-        builder: (context, _) {
-          final bytes = InstalledAppsCache.instance.iconFor(app.packageName);
-          return bytes != null ? InstalledIcon(bytes, size: s) : AppGlyph(app.id, size: s);
-        },
-      );
-    }
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -230,10 +230,13 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
                 beat: _beat,
                 width: phoneW,
                 appIcon: appIcon,
-                pausedTitle: l.nativeBlockTitle(app?.label ?? l.cvYourApp),
-                nudgeTitle: app != null ? l.nudgeTitle(app.label) : l.stNudgeGeneric,
-                nudgeText: l.nudgeText(fmt(limit - 5), fmt(limit)),
-                nudgeProgress: (limit - 5) / limit,
+                pausedTitle: l.stBlockedTitle(appName),
+                nudgeTitle: l.nudgeTitle(appName),
+                nudgeText: l.nudgeText(fmt(usedAtNudge), fmt(limit)),
+                nudgeProgress: usedAtNudge / limit,
+                timerFromSeconds: leftAtStart * 60,
+                timerToSeconds: leftAtNudge * 60,
+                onCountdownDone: _countdownDone,
               ),
             ),
           ),

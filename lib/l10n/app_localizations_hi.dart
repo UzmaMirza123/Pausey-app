@@ -3344,7 +3344,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get stHow2 => 'आप स्क्रॉल करने लगते हैं, पर…';
 
   @override
-  String get stHow3 => 'Pausey उसे धीरे से रोक देता है।';
+  String get stHow3 => 'Pausey उसे धीरे से ब्लॉक कर देता है।';
+
+  @override
+  String stBlockedTitle(String app) {
+    return '$app ब्लॉक है';
+  }
 
   @override
   String get stHow4 => 'लिमिट से पहले याद दिलाता है';

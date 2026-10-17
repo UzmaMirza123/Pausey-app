@@ -8,8 +8,9 @@ import '../../../widgets/ui_kit.dart';
 import 'ob_kit.dart';
 
 /// Stylised phone for the "How it works" story. Its screen changes per [beat]:
-/// 0 home screen (arrow + tap on the user's app), 1 a feed scrolling by itself,
-/// 2 Pausey's pause screen sliding up, 3 a limit nudge dropping in from the top.
+/// 0 home screen (arrow + tap on the app), 1 a feed scrolling by itself while a
+/// time-left badge counts down (then [onCountdownDone]), 2 a limit nudge dropping
+/// in from the top, 3 Pausey's "blocked" screen sliding up.
 ///
 class StoryPhone extends StatelessWidget {
   const StoryPhone({
@@ -21,6 +22,9 @@ class StoryPhone extends StatelessWidget {
     required this.nudgeTitle,
     required this.nudgeText,
     required this.nudgeProgress,
+    required this.timerFromSeconds,
+    required this.timerToSeconds,
+    this.onCountdownDone,
   });
 
   final int beat;
@@ -30,6 +34,10 @@ class StoryPhone extends StatelessWidget {
   final Widget Function(double size) appIcon;
   final String pausedTitle, nudgeTitle, nudgeText;
   final double nudgeProgress;
+
+  /// Time left shown on the badge: counts from [timerFromSeconds] down to [timerToSeconds] on beat 1.
+  final int timerFromSeconds, timerToSeconds;
+  final VoidCallback? onCountdownDone;
 
   /// Visible height / width (the bottom of the phone fades out).
   static const aspect = 1.5;
@@ -62,37 +70,61 @@ class StoryPhone extends StatelessWidget {
               opacity: a,
               child: ScaleTransition(scale: Tween(begin: 0.9, end: 1.0).animate(a), child: child),
             ),
-            child: beat == 0 ? _HomeGrid(key: const ValueKey('home'), appIcon: appIcon) : _Feed(key: const ValueKey('feed'), scrolling: beat == 1 || beat == 3),
+            child: beat == 0 ? _HomeGrid(key: const ValueKey('home'), appIcon: appIcon) : _Feed(key: const ValueKey('feed'), scrolling: beat == 1 || beat == 2),
           ),
         ),
-        // 3 — Pausey's pause screen slides up over the feed.
-        Positioned.fill(
-          child: IgnorePointer(
-            child: AnimatedSlide(
-              offset: beat == 2 ? Offset.zero : const Offset(0, 1),
-              duration: d(620),
-              curve: Curves.easeOutCubic,
+        // 2 — time left ticks down at the top while scrolling.
+        Positioned(
+          top: 34,
+          left: 0,
+          right: 0,
+          child: Center(
+            child: AnimatedScale(
+              scale: beat == 1 || beat == 2 ? 1 : 0.6,
+              duration: d(320),
+              curve: Curves.easeOutBack,
               child: AnimatedOpacity(
-                opacity: beat == 2 ? 1 : 0,
-                duration: d(380),
-                child: _PauseScreen(title: pausedTitle, close: l.nativeClose, active: beat == 2),
+                opacity: beat == 1 || beat == 2 ? 1 : 0,
+                duration: d(260),
+                child: _TimerBadge(
+                  running: beat == 1,
+                  finished: beat >= 2,
+                  fromSeconds: timerFromSeconds,
+                  toSeconds: timerToSeconds,
+                  onDone: onCountdownDone,
+                ),
               ),
             ),
           ),
         ),
-        // 4 — the nudge drops in from the top.
+        // 3 — the nudge drops in from the top.
         PositionedDirectional(
-          top: 38,
+          top: 66,
           start: 10,
           end: 10,
           child: AnimatedSlide(
-            offset: beat == 3 ? Offset.zero : const Offset(0, -1.8),
+            offset: beat == 2 ? Offset.zero : const Offset(0, -2.6),
             duration: d(560),
             curve: Curves.easeOutBack,
             child: AnimatedOpacity(
-              opacity: beat == 3 ? 1 : 0,
+              opacity: beat == 2 ? 1 : 0,
               duration: d(300),
               child: _Nudge(title: nudgeTitle, text: nudgeText, progress: nudgeProgress),
+            ),
+          ),
+        ),
+        // 4 — Pausey's "blocked" screen slides up over everything.
+        Positioned.fill(
+          child: IgnorePointer(
+            child: AnimatedSlide(
+              offset: beat == 3 ? Offset.zero : const Offset(0, 1),
+              duration: d(620),
+              curve: Curves.easeOutCubic,
+              child: AnimatedOpacity(
+                opacity: beat == 3 ? 1 : 0,
+                duration: d(380),
+                child: _PauseScreen(title: pausedTitle, close: l.nativeClose, active: beat == 3),
+              ),
             ),
           ),
         ),
@@ -513,7 +545,7 @@ class _FeedState extends State<_Feed> with SingleTickerProviderStateMixin {
 }
 
 // -----------------------------------------------------------------------------
-// Beat 3 — Pausey's pause screen
+// Beat 4 — Pausey's "blocked" screen
 // -----------------------------------------------------------------------------
 
 class _PauseScreen extends StatelessWidget {
@@ -542,7 +574,7 @@ class _PauseScreen extends StatelessWidget {
                 color: AppPalette.accent,
                 boxShadow: [BoxShadow(color: AppPalette.accent.withValues(alpha: 0.55), blurRadius: 26)],
               ),
-              child: const Icon(Icons.pause_rounded, color: Colors.white, size: 32),
+              child: const Icon(Icons.lock_rounded, color: Colors.white, size: 30),
             ),
           ),
           const SizedBox(height: 18),
@@ -617,7 +649,116 @@ class _BreathState extends State<_Breath> with SingleTickerProviderStateMixin {
 }
 
 // -----------------------------------------------------------------------------
-// Beat 4 — "Almost at your limit" nudge
+// Beat 2 — time-left badge counting down
+// -----------------------------------------------------------------------------
+
+/// Pill with an hourglass and the time left (mm:ss). While [running] it counts
+/// from [fromSeconds] down to [toSeconds] in a few seconds, then calls [onDone].
+/// When [finished] it shows [toSeconds] and glows. Animations off: shows the end value.
+class _TimerBadge extends StatefulWidget {
+  const _TimerBadge({required this.running, required this.finished, required this.fromSeconds, required this.toSeconds, this.onDone});
+  final bool running, finished;
+  final int fromSeconds, toSeconds;
+  final VoidCallback? onDone;
+
+  @override
+  State<_TimerBadge> createState() => _TimerBadgeState();
+}
+
+class _TimerBadgeState extends State<_TimerBadge> with TickerProviderStateMixin {
+  late final _count = AnimationController(vsync: this, duration: const Duration(milliseconds: 5000));
+  late final _pulse = AnimationController(vsync: this, duration: const Duration(milliseconds: 900));
+
+  @override
+  void initState() {
+    super.initState();
+    _count.addStatusListener((s) {
+      if (s == AnimationStatus.completed && widget.running && mounted) widget.onDone?.call();
+    });
+  }
+
+  void _sync({bool restart = false}) {
+    final reduced = ObMotion.reduced(context);
+    if (widget.finished || reduced) {
+      _count.stop();
+      _count.value = widget.finished || reduced ? 1 : 0;
+    } else if (widget.running) {
+      if (restart || !_count.isAnimating) _count.forward(from: 0);
+    } else {
+      _count.stop();
+      _count.value = 0;
+    }
+    if (widget.finished && !reduced) {
+      if (!_pulse.isAnimating) _pulse.repeat(reverse: true);
+    } else {
+      _pulse.stop();
+      _pulse.value = 0;
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _sync();
+  }
+
+  @override
+  void didUpdateWidget(_TimerBadge old) {
+    super.didUpdateWidget(old);
+    _sync(restart: widget.running && !old.running);
+  }
+
+  @override
+  void dispose() {
+    _count.dispose();
+    _pulse.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: Listenable.merge([_count, _pulse]),
+      builder: (context, _) {
+        final left = (widget.fromSeconds + (widget.toSeconds - widget.fromSeconds) * _count.value).round();
+        final mm = (left ~/ 60).toString().padLeft(2, '0');
+        final ss = (left % 60).toString().padLeft(2, '0');
+        final glow = widget.finished ? 0.35 + 0.35 * _pulse.value : 0.0;
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: BoxDecoration(
+            color: Color.lerp(const Color(0xE61B1838), AppPalette.accent, widget.finished ? 1 : 0),
+            borderRadius: BorderRadius.circular(AppRadius.chip),
+            boxShadow: [BoxShadow(color: AppPalette.accent.withValues(alpha: 0.25 + glow), blurRadius: 10 + 8 * glow, offset: const Offset(0, 3))],
+          ),
+          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.hourglass_bottom_rounded, size: 13, color: Colors.white),
+                const SizedBox(width: 4),
+                Text(
+                  '$mm:$ss',
+                  style: AppText.rowSub.copyWith(
+                    fontSize: 12.5,
+                    height: 1.1,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Beat 3 — "Almost at your limit" nudge
 // -----------------------------------------------------------------------------
 
 class _Nudge extends StatelessWidget {
