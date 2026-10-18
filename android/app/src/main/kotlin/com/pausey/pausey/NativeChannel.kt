@@ -43,8 +43,12 @@ class NativeChannel(private val activity: ComponentActivity) {
             when (call.method) {
                 "status" -> result.success(status())
                 "openUsageAccess" -> {
-                    open(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-                    returnWhenGranted { UsageReader.hasAccess(ctx) }
+                    // Opened inside Pausey's own task: Android lets an app come back to the front by
+                    // itself only in a few cases, and usage access (unlike overlay or Accessibility)
+                    // gives no such exception. With Settings on top of Pausey in the same task,
+                    // closing it brings Pausey straight back.
+                    openInOwnTask(usageAccessIntent())
+                    returnWhenGranted(inOwnTask = true) { UsageReader.hasAccess(ctx) }
                     result.success(null)
                 }
                 "openOverlay" -> {
@@ -182,7 +186,7 @@ class NativeChannel(private val activity: ComponentActivity) {
      * As soon as it's on, Pausey comes back to the front by itself. Stops early if the user comes
      * back on their own ([onActivityResumed]).
      */
-    private fun returnWhenGranted(granted: () -> Boolean) {
+    private fun returnWhenGranted(inOwnTask: Boolean = false, granted: () -> Boolean) {
         stopWatching()
         if (granted()) return
         val startedAt = SystemClock.elapsedRealtime()
@@ -190,7 +194,7 @@ class NativeChannel(private val activity: ComponentActivity) {
             override fun run() {
                 val on = try { granted() } catch (e: Exception) { false }
                 when {
-                    on -> { stopWatching(); bringBack() }
+                    on -> { stopWatching(); if (inOwnTask) closeOwnTaskSettings() else bringBack() }
                     SystemClock.elapsedRealtime() - startedAt > 120_000 -> stopWatching()
                     else -> main.postDelayed(this, 400)
                 }
@@ -218,6 +222,47 @@ class NativeChannel(private val activity: ComponentActivity) {
         } catch (e: Exception) {
             // Some phones don't let an app come forward on its own; the user simply goes back.
         }
+    }
+
+    /** Pausey's own row in "Usage access" when the phone supports it, else the full list. */
+    private fun usageAccessIntent(): Intent {
+        val direct = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS, Uri.parse("package:${ctx.packageName}"))
+        return if (direct.resolveActivity(ctx.packageManager) != null) direct else Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+    }
+
+    /** Starts a Settings screen from the activity (no NEW_TASK), so it sits on top of Pausey in the same task. */
+    private fun openInOwnTask(i: Intent) {
+        try {
+            @Suppress("DEPRECATION")
+            activity.startActivityForResult(i, REQ_OWN_TASK_SETTINGS)
+        } catch (e: Exception) {
+            try {
+                @Suppress("DEPRECATION")
+                activity.startActivityForResult(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), REQ_OWN_TASK_SETTINGS)
+            } catch (e2: Exception) {
+                open(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+            }
+        }
+    }
+
+    /**
+     * Permission is on: clear the Settings screens above Pausey in its task (CLEAR_TOP), and also
+     * finish the one we started, which works even where starting an activity is not allowed.
+     */
+    private fun closeOwnTaskSettings() {
+        try {
+            activity.startActivity(
+                Intent(activity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP),
+            )
+        } catch (e: Exception) {
+            // fall through to finishActivity
+        }
+        try {
+            activity.finishActivity(REQ_OWN_TASK_SETTINGS)
+        } catch (e: Exception) {
+            // nothing else to do: the user simply goes back
+        }
+        bringBack()
     }
 
     private fun open(i: Intent) {
@@ -269,6 +314,7 @@ class NativeChannel(private val activity: ComponentActivity) {
 
     private companion object {
         const val PREFS = "pausey_native"
+        const val REQ_OWN_TASK_SETTINGS = 0x5A01
         const val KEY_NOTIF_ASKED = "notifAsked"
         const val KEY_NOTIF_BLOCKED = "notifBlocked"
     }

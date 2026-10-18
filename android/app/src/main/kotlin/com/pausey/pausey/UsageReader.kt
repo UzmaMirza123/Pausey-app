@@ -23,6 +23,10 @@ object UsageReader {
             @Suppress("DEPRECATION")
             ops.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), ctx.packageName)
         }
+        // Some phones report MODE_DEFAULT once it's on; then the permission check decides.
+        if (mode == AppOpsManager.MODE_DEFAULT) {
+            return ctx.checkSelfPermission(android.Manifest.permission.PACKAGE_USAGE_STATS) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        }
         return mode == AppOpsManager.MODE_ALLOWED
     }
 
