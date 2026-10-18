@@ -203,23 +203,6 @@ class LogInFormState extends State<LogInForm> {
                 ),
               ],
             ),
-            if (widget.onGuest != null) ...[
-              const SizedBox(height: 16),
-              ObReveal(
-                index: 7,
-                child: OutlinedButton.icon(
-                  onPressed: _busy == null ? widget.onGuest : null,
-                  icon: const Icon(Icons.person_rounded, size: 20, color: AppPalette.accent),
-                  label: Text(l.cvContinueGuest, style: AppText.button.copyWith(color: AppPalette.accent)),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(54),
-                    backgroundColor: AppPalette.accent.withValues(alpha: context.isDark ? 0.14 : 0.07),
-                    side: BorderSide(color: AppPalette.accent.withValues(alpha: 0.45)),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.tile)),
-                  ),
-                ),
-              ),
-            ],
             const SizedBox(height: 6),
             ObReveal(
               index: 8,
@@ -239,6 +222,21 @@ class LogInFormState extends State<LogInForm> {
                 ],
               ),
             ),
+            // "Continue as guest" as a plain text link under "Don't have an account? Sign up".
+            if (widget.onGuest != null)
+              ObReveal(
+                index: 9,
+                child: Center(
+                  child: TextButton(
+                    onPressed: _busy == null ? widget.onGuest : null,
+                    style: TextButton.styleFrom(minimumSize: const Size(48, 44)),
+                    child: Text(
+                      l.cvContinueGuest,
+                      style: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
