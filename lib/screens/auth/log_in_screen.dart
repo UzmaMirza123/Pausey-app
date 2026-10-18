@@ -160,63 +160,48 @@ class LogInFormState extends State<LogInForm> {
             ),
             const SizedBox(height: 20),
             AuthErrorBanner(message: _error),
-            // Email, password and Log in together on one soft card.
-            Container(
-              padding: const EdgeInsets.fromLTRB(16, 18, 16, 16),
-              decoration: BoxDecoration(
-                color: context.isDark ? c.glassFill : Colors.white.withValues(alpha: 0.75),
-                borderRadius: BorderRadius.circular(AppRadius.card),
-                border: Border.all(color: c.glassBorder),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppPalette.accent.withValues(alpha: context.isDark ? 0.12 : 0.08),
-                    blurRadius: 24,
-                    offset: const Offset(0, 8),
+            // Email, password and Log in straight on the background, like the sign-up form.
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ObReveal(
+                  index: 2,
+                  child: AuthField(
+                    controller: _email,
+                    label: l.email,
+                    icon: Icons.mail_outline_rounded,
+                    keyboardType: TextInputType.emailAddress,
+                    autofillHints: const [AutofillHints.email],
+                    validator: (v) => validateEmail(context, v),
                   ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ObReveal(
-                    index: 2,
-                    child: AuthField(
-                      controller: _email,
-                      label: l.email,
-                      icon: Icons.mail_outline_rounded,
-                      keyboardType: TextInputType.emailAddress,
-                      autofillHints: const [AutofillHints.email],
-                      validator: (v) => validateEmail(context, v),
-                    ),
+                ),
+                const SizedBox(height: 14),
+                ObReveal(
+                  index: 3,
+                  child: AuthField(
+                    controller: _pass,
+                    label: l.password,
+                    icon: Icons.lock_outline_rounded,
+                    obscure: true,
+                    textInputAction: TextInputAction.done,
+                    autofillHints: const [AutofillHints.password],
+                    onSubmitted: (_) => _logIn(),
+                    validator: (v) => (v ?? '').isEmpty ? l.errPasswordShort : null,
                   ),
-                  const SizedBox(height: 14),
-                  ObReveal(
-                    index: 3,
-                    child: AuthField(
-                      controller: _pass,
-                      label: l.password,
-                      icon: Icons.lock_outline_rounded,
-                      obscure: true,
-                      textInputAction: TextInputAction.done,
-                      autofillHints: const [AutofillHints.password],
-                      onSubmitted: (_) => _logIn(),
-                      validator: (v) => (v ?? '').isEmpty ? l.errPasswordShort : null,
-                    ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: TextButton(
+                    onPressed: () => _showReset(context, _email.text),
+                    child: Text(l.forgotPassword, style: AppText.option.copyWith(color: AppPalette.violet)),
                   ),
-                  Align(
-                    alignment: AlignmentDirectional.centerEnd,
-                    child: TextButton(
-                      onPressed: () => _showReset(context, _email.text),
-                      child: Text(l.forgotPassword, style: AppText.option.copyWith(color: AppPalette.violet)),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  ObReveal(
-                    index: 4,
-                    child: BusyButton(label: l.logIn, busy: _busy == 'email', onPressed: _busy == null ? _logIn : () {}),
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 4),
+                ObReveal(
+                  index: 4,
+                  child: BusyButton(label: l.logIn, busy: _busy == 'email', onPressed: _busy == null ? _logIn : () {}),
+                ),
+              ],
             ),
             if (widget.onGuest != null) ...[
               const SizedBox(height: 16),
