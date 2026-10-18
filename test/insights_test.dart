@@ -61,8 +61,7 @@ void main() {
     await t.pumpAndSettle();
     expect(find.text('Daily focus, last 30 days'), findsOneWidget);
 
-    await t.tap(find.text('Screen Time').last);
-    await t.pumpAndSettle();
-    expect(find.text('Most used apps'), findsOneWidget);
+    // Analytics only: no Analytics / Screen Time tabs at the top.
+    expect(find.text('Screen Time'), findsNothing);
   });
 }

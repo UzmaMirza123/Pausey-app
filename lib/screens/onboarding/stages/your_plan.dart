@@ -156,7 +156,12 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
     _nudgeShown = false;
     if (_beat == _nudgeBeat) {
       _nudgeTimer = Timer(const Duration(milliseconds: 700), () {
-        if (mounted) setState(() => _nudgeShown = true);
+        if (!mounted) return;
+        setState(() => _nudgeShown = true);
+        // The "Almost at your limit" card stays alone for half a second, then the notification ask.
+        _nudgeTimer = Timer(const Duration(milliseconds: 500), () {
+          if (mounted && _beat == _nudgeBeat) _askNotifications();
+        });
       });
     }
   }
@@ -168,8 +173,6 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
         _beat++;
         _onBeatChanged();
       });
-      // "Nudges before time's up": ask for notifications right here, once.
-      if (_beat == _nudgeBeat) WidgetsBinding.instance.addPostFrameCallback((_) => _askNotifications());
       return;
     }
     _left = true;
