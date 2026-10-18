@@ -31,7 +31,7 @@ class LogInScreen extends StatelessWidget {
                 child: AuthCentered(
                   child: LogInForm(
                     onSignedIn: () => Navigator.of(context).popUntil((r) => r.isFirst),
-                    onSignUp: () => Navigator.of(context).pushReplacement(authRoute(const SignUpScreen())),
+                    onSignUp: () => Navigator.of(context).pushReplacement(authRoute(SignUpScreen(onGuest: onGuest))),
                     onGuest: onGuest == null
                         ? null
                         : () {

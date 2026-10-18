@@ -138,8 +138,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               validator: (v) => (v ?? '').length < 8 ? l.errPasswordShort : null,
                             ),
                           ),
-                          const SizedBox(height: 10),
-                          _StrengthMeter(password: _pass.text),
+                          // The strength meter only takes room while a password is typed,
+                          // so the gap to "Confirm password" matches the other fields.
+                          AnimatedSize(
+                            duration: const Duration(milliseconds: 200),
+                            child: _pass.text.isEmpty
+                                ? const SizedBox(width: double.infinity)
+                                : Padding(padding: const EdgeInsets.only(top: 10), child: _StrengthMeter(password: _pass.text)),
+                          ),
                           const SizedBox(height: 14),
                           EnterUp(
                             delay: const Duration(milliseconds: 320),

@@ -212,4 +212,22 @@ void main() {
     expect(finished, isFalse);
     expect(find.byType(Onboarding2Screen), findsOneWidget);
   }, variant: notAndroid);
+
+  testWidgets('Continue as guest stays on Log in, also after going to Sign up and back', (t) async {
+    t.view.physicalSize = const Size(412 * 3, 915 * 3);
+    t.view.devicePixelRatio = 3;
+    addTearDown(t.view.reset);
+    OnboardingState.instance.update((s) => s.stage = 10);
+    await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {})));
+    for (var i = 0; i < 10; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
+    await _tap(t, 'Log in');
+    expect(find.text('Log into your account'), findsOneWidget);
+    expect(find.text('Continue as guest'), findsOneWidget);
+    await _tap(t, 'Sign up');
+    await _tap(t, 'Log in');
+    expect(find.text('Log into your account'), findsOneWidget);
+    expect(find.text('Continue as guest'), findsOneWidget);
+  }, variant: notAndroid);
 }
