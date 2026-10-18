@@ -103,15 +103,14 @@ void main() {
     await t.tap(find.byType(BackCircleButton));
     await t.pump(const Duration(milliseconds: 600));
     expect(OnboardingState.instance.stage, 7);
-    await _tap(t, 'Next');
-    // Scrolling: the time-left badge counts down from 30:00 and, at 25:00, the nudge comes in by itself.
+    // Tap Next by hand (few frames) to watch the half-second countdown.
+    await t.tap(find.text('Next').last);
+    await t.pump(const Duration(milliseconds: 200));
+    // Scrolling: the time-left badge counts down from 30:00 for half a second, then the nudge comes in by itself.
     expect(find.textContaining(RegExp(r'^(30|2\d):\d\d$')), findsOneWidget); // ticking down
-    expect(find.text('25:00'), findsNothing);
     PrimaryButton next() => t.widget<PrimaryButton>(find.byType(PrimaryButton).last);
     expect(next().onPressed, isNull); // Next waits while the badge counts down
-    for (var i = 0; i < 80 && find.text('25:00').evaluate().isEmpty; i++) {
-      await t.pump(const Duration(milliseconds: 100));
-    }
+    await t.pump(const Duration(milliseconds: 400));
     await t.pump(const Duration(milliseconds: 100));
     expect(find.text('25:00'), findsOneWidget);
     expect(find.bySemanticsLabel("Nudges before time's up"), findsOneWidget);
@@ -143,6 +142,9 @@ void main() {
     expect(find.bySemanticsLabel('Start your Pausey journey'), findsOneWidget);
     expect(find.text('Continue with Google'), findsOneWidget);
     expect(find.text('Continue with Apple'), findsOneWidget);
+    // No Continue / back arrow at the bottom of this screen.
+    expect(find.byType(PrimaryButton), findsNothing);
+    expect(find.byType(BackCircleButton), findsNothing);
     // Sign up → Log in still offers "Continue as guest" (no Google/Apple there).
     await _tap(t, 'Sign up');
     await _tap(t, 'Log in');

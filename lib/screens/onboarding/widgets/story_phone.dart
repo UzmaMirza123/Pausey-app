@@ -653,7 +653,7 @@ class _BreathState extends State<_Breath> with SingleTickerProviderStateMixin {
 // -----------------------------------------------------------------------------
 
 /// Pill with an hourglass and the time left (mm:ss). While [running] it counts
-/// from [fromSeconds] down to [toSeconds] in a few seconds, then calls [onDone].
+/// from [fromSeconds] down to [toSeconds] in half a second, then calls [onDone].
 /// When [finished] it shows [toSeconds] and glows. Animations off: shows the end value.
 class _TimerBadge extends StatefulWidget {
   const _TimerBadge({required this.running, required this.finished, required this.fromSeconds, required this.toSeconds, this.onDone});
@@ -666,7 +666,7 @@ class _TimerBadge extends StatefulWidget {
 }
 
 class _TimerBadgeState extends State<_TimerBadge> with TickerProviderStateMixin {
-  late final _count = AnimationController(vsync: this, duration: const Duration(milliseconds: 5000));
+  late final _count = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
   late final _pulse = AnimationController(vsync: this, duration: const Duration(milliseconds: 900));
 
   @override

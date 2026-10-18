@@ -71,6 +71,7 @@ class ObPage extends StatelessWidget {
     this.showArrow = true,
     this.center = false,
     this.dotsStep = 0,
+    this.showActions = true,
   });
 
   final List<Widget> children;
@@ -85,6 +86,9 @@ class ObPage extends StatelessWidget {
 
   /// Extra dot steps inside one stage (each story beat counts as a screen).
   final int dotsStep;
+
+  /// false: no back arrow and no primary button at the bottom (the screen has its own buttons).
+  final bool showActions;
 
   @override
   Widget build(BuildContext context) {
@@ -140,14 +144,15 @@ class ObPage extends StatelessWidget {
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Row(
-                                children: [
-                                  if (scope?.canBack ?? false) ...[BackCircleButton(onPressed: scope!.onBack), const SizedBox(width: 10)],
-                                  Expanded(
-                                    child: PrimaryButton(label: primaryLabel, onPressed: onPrimary, showArrow: showArrow),
-                                  ),
-                                ],
-                              ),
+                              if (showActions)
+                                Row(
+                                  children: [
+                                    if (scope?.canBack ?? false) ...[BackCircleButton(onPressed: scope!.onBack), const SizedBox(width: 10)],
+                                    Expanded(
+                                      child: PrimaryButton(label: primaryLabel, onPressed: onPrimary, showArrow: showArrow),
+                                    ),
+                                  ],
+                                ),
                               // Same height on every screen, so the dots never move.
                               SizedBox(
                                 height: 36,

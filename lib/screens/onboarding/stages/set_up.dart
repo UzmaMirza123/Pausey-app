@@ -322,6 +322,8 @@ class _AccountStageState extends State<AccountStage> {
         );
     return ObPage(
       center: true,
+      // Google / Apple / guest and the Log in | Sign up links are the actions here.
+      showActions: false,
       primaryLabel: l.continueLabel,
       onPrimary: free ? _guest : null,
       children: [

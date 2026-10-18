@@ -60,9 +60,12 @@ class SettingsScreen extends StatelessWidget {
                               ]),
                             ),
                             const SizedBox(width: 8),
+                            // Guest: "Sign up" (same as on Profile); signed in: Upgrade / Pro as before.
                             InkWell(
-                              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PaywallScreen())),
-                              child: r.premium
+                              onTap: isGuest ? () => openSignUp(context) : () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PaywallScreen())),
+                              child: isGuest
+                                  ? Pill(l.signUp, color: Tone.violet, icon: Icons.person_add_alt_1_rounded)
+                                  : r.premium
                                   ? const Pill('Pro', color: Tone.amber, icon: Icons.workspace_premium_rounded)
                                   : Pill(l.profileUpgrade, color: Tone.violet, icon: Icons.workspace_premium_rounded),
                             ),
