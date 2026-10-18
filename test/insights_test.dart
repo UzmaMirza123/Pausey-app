@@ -44,24 +44,22 @@ void main() {
         home: const Scaffold(body: InsightsScreen()),
       );
 
-  testWidgets('empty state for new users, data after a session, period chips switch', (t) async {
+  testWidgets('Screen Time only, with the Today / Week / Month selection', (t) async {
     t.view.physicalSize = const Size(412 * 3, 2400 * 3);
     t.view.devicePixelRatio = 3;
     addTearDown(t.view.reset);
     await t.pumpWidget(app());
     await t.pumpAndSettle();
-    expect(find.text('Start a focus session'), findsOneWidget);
+    // No Analytics / Screen Time tabs; the Screen Time data shows straight away.
+    expect(find.text('Analytics'), findsNothing);
+    expect(find.text('Most used apps'), findsOneWidget);
 
-    await AppRepo.instance.addSession(s(0, 60));
+    await t.tap(find.byKey(const ValueKey('screen_period')));
     await t.pumpAndSettle();
-    expect(find.text('Start a focus session'), findsNothing);
-    expect(find.text('Weekly focus hours'), findsOneWidget);
-
-    await t.tap(find.byKey(const ValueKey('period_month')));
+    expect(find.text('Today'), findsWidgets);
+    expect(find.text('Month'), findsWidgets);
+    await t.tap(find.text('Month').last);
     await t.pumpAndSettle();
-    expect(find.text('Daily focus, last 30 days'), findsOneWidget);
-
-    // Analytics only: no Analytics / Screen Time tabs at the top.
-    expect(find.text('Screen Time'), findsNothing);
+    expect(find.text('Month'), findsOneWidget);
   });
 }
