@@ -42,9 +42,14 @@ class NativeChannel(private val activity: ComponentActivity) {
         MethodChannel(messenger, "pausey/native").setMethodCallHandler { call, result ->
             when (call.method) {
                 "status" -> result.success(status())
-                "openUsageAccess" -> { open(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)); result.success(null) }
+                "openUsageAccess" -> {
+                    open(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+                    returnWhenGranted { UsageReader.hasAccess(ctx) }
+                    result.success(null)
+                }
                 "openOverlay" -> {
                     open(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:${ctx.packageName}")))
+                    returnWhenGranted { Settings.canDrawOverlays(ctx) }
                     result.success(null)
                 }
                 "openNotifications" -> { open(notificationSettings()); result.success(null) }
@@ -58,6 +63,7 @@ class NativeChannel(private val activity: ComponentActivity) {
                             .putExtra(":settings:fragment_args_key", cn)
                             .putExtra(":settings:show_fragment_args", args),
                     )
+                    returnWhenGranted { PauseyAccessibilityService.isEnabled(ctx) }
                     result.success(null)
                 }
                 "openBattery" -> {
@@ -165,6 +171,53 @@ class NativeChannel(private val activity: ComponentActivity) {
         if (instantDenial) open(notificationSettings())
         notifPending?.success(null)
         notifPending = null
+    }
+
+    // --- Back to Pausey once a permission is switched on ----------------------------------------
+
+    private var watch: Runnable? = null
+
+    /**
+     * After sending the user to a Settings screen, checks [granted] every 400 ms (for up to 2 minutes).
+     * As soon as it's on, Pausey comes back to the front by itself. Stops early if the user comes
+     * back on their own ([onActivityResumed]).
+     */
+    private fun returnWhenGranted(granted: () -> Boolean) {
+        stopWatching()
+        if (granted()) return
+        val startedAt = SystemClock.elapsedRealtime()
+        val r = object : Runnable {
+            override fun run() {
+                val on = try { granted() } catch (e: Exception) { false }
+                when {
+                    on -> { stopWatching(); bringBack() }
+                    SystemClock.elapsedRealtime() - startedAt > 120_000 -> stopWatching()
+                    else -> main.postDelayed(this, 400)
+                }
+            }
+        }
+        watch = r
+        main.postDelayed(r, 600)
+    }
+
+    private fun stopWatching() {
+        watch?.let { main.removeCallbacks(it) }
+        watch = null
+    }
+
+    /** Called by [MainActivity.onResume]: the user is back in Pausey, nothing to wait for. */
+    fun onActivityResumed() = stopWatching()
+
+    private fun bringBack() {
+        try {
+            ctx.startActivity(
+                Intent(ctx, MainActivity::class.java).addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
+                ),
+            )
+        } catch (e: Exception) {
+            // Some phones don't let an app come forward on its own; the user simply goes back.
+        }
     }
 
     private fun open(i: Intent) {

@@ -66,8 +66,9 @@ class PermissionsStage extends StatelessWidget {
             );
         return ObPage(
           center: true,
-          primaryLabel: (st.usageAccess && st.overlay) || !st.supported ? l.continueLabel : l.cvContinueAnyway,
-          onPrimary: onNext,
+          primaryLabel: l.continueLabel,
+          // Continue only works once both are on (when the phone supports them).
+          onPrimary: !st.supported || (st.usageAccess && st.overlay) ? onNext : null,
           children: [
             // Same order as the question screens: illustration → title → subtitle → content.
             const ObArt(ObArtKind.perm),
@@ -138,7 +139,8 @@ class AccessibilityStage extends StatelessWidget {
         return ObPage(
           center: true,
           primaryLabel: l.continueLabel,
-          onPrimary: onNext,
+          // Continue only works once Accessibility is on (when the phone supports it).
+          onPrimary: !st.supported || st.accessibility ? onNext : null,
           children: [
             const ObArt(ObArtKind.perm),
             const SizedBox(height: 10),
