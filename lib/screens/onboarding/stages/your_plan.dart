@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -133,13 +134,40 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
   @override
   void dispose() {
     if (_gate?.handler == _stepBack) _gate?.handler = null;
+    _nudgeTimer?.cancel();
     super.dispose();
+  }
+
+  /// The nudge card has landed on the nudge beat (Next waits for it).
+  bool _nudgeShown = false;
+  Timer? _nudgeTimer;
+
+  /// Next is off while the time-left badge counts down, and on the nudge beat until
+  /// the "Almost at your limit" card is in. Animations off: always on.
+  bool get _canNext {
+    if (ObMotion.reduced(context)) return true;
+    if (_beat == _scrollBeat) return false;
+    if (_beat == _nudgeBeat) return _nudgeShown;
+    return true;
+  }
+
+  void _onBeatChanged() {
+    _nudgeTimer?.cancel();
+    _nudgeShown = false;
+    if (_beat == _nudgeBeat) {
+      _nudgeTimer = Timer(const Duration(milliseconds: 700), () {
+        if (mounted) setState(() => _nudgeShown = true);
+      });
+    }
   }
 
   void _next() {
     if (_left) return;
     if (_beat < _beats - 1) {
-      setState(() => _beat++);
+      setState(() {
+        _beat++;
+        _onBeatChanged();
+      });
       // "Nudges before time's up": ask for notifications right here, once.
       if (_beat == _nudgeBeat) WidgetsBinding.instance.addPostFrameCallback((_) => _askNotifications());
       return;
@@ -162,11 +190,14 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
     }
   }
 
-  void _stepBack() => setState(() => _beat = math.max(0, _beat - 1));
+  void _stepBack() => setState(() {
+        _beat = math.max(0, _beat - 1);
+        _onBeatChanged();
+      });
 
   /// Badge reached 25:00 left: the nudge comes in by itself.
   void _countdownDone() {
-    if (_beat == _scrollBeat) _next();
+    if (_beat == _scrollBeat && !_left) _next();
   }
 
   @override
@@ -199,12 +230,14 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       excludeFromSemantics: true, // the footer button does the same for screen readers
-      onTap: _next,
+      onTap: () {
+        if (_canNext) _next();
+      },
       child: ObPage(
         center: true,
         dotsStep: _beat, // every beat is its own screen for the dots
         primaryLabel: _beat < _beats - 1 ? l.cvNext : l.cvBuildPlan,
-        onPrimary: _next,
+        onPrimary: _canNext ? _next : null,
         children: [
           ObReveal(
             child: Text(l.stHowCaption, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: c.textMuted)),

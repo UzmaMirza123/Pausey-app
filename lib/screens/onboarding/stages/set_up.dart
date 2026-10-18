@@ -68,7 +68,8 @@ class PermissionsStage extends StatelessWidget {
           center: true,
           primaryLabel: l.continueLabel,
           // Continue only works once both are on (when the phone supports them).
-          onPrimary: !st.supported || (st.usageAccess && st.overlay) ? onNext : null,
+          // On an Android phone it stays off even before the first status check comes back.
+          onPrimary: (!st.supported && !bridge.isAndroid) || (st.usageAccess && st.overlay) ? onNext : null,
           children: [
             // Same order as the question screens: illustration → title → subtitle → content.
             const ObArt(ObArtKind.perm),
@@ -140,7 +141,7 @@ class AccessibilityStage extends StatelessWidget {
           center: true,
           primaryLabel: l.continueLabel,
           // Continue only works once Accessibility is on (when the phone supports it).
-          onPrimary: !st.supported || st.accessibility ? onNext : null,
+          onPrimary: (!st.supported && !NativeBridge.instance.isAndroid) || st.accessibility ? onNext : null,
           children: [
             const ObArt(ObArtKind.perm),
             const SizedBox(height: 10),

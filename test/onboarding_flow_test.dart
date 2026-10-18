@@ -11,6 +11,7 @@ import 'package:pausey/screens/onboarding/onboarding_flow.dart';
 import 'package:pausey/screens/onboarding/onboarding_state.dart';
 import 'package:pausey/services/auth_service.dart';
 import 'package:pausey/services/local_store.dart';
+import 'package:pausey/widgets/common.dart';
 import 'package:pausey/widgets/onboarding_nav.dart';
 
 Future<void> _tap(WidgetTester t, String text) async {
@@ -106,11 +107,19 @@ void main() {
     // Scrolling: the time-left badge counts down from 30:00 and, at 25:00, the nudge comes in by itself.
     expect(find.textContaining(RegExp(r'^(30|2\d):\d\d$')), findsOneWidget); // ticking down
     expect(find.text('25:00'), findsNothing);
-    for (var i = 0; i < 30; i++) {
-      await t.pump(const Duration(milliseconds: 200));
+    PrimaryButton next() => t.widget<PrimaryButton>(find.byType(PrimaryButton).last);
+    expect(next().onPressed, isNull); // Next waits while the badge counts down
+    for (var i = 0; i < 80 && find.text('25:00').evaluate().isEmpty; i++) {
+      await t.pump(const Duration(milliseconds: 100));
     }
+    await t.pump(const Duration(milliseconds: 100));
     expect(find.text('25:00'), findsOneWidget);
     expect(find.bySemanticsLabel("Nudges before time's up"), findsOneWidget);
+    expect(next().onPressed, isNull); // …and until the nudge card is in
+    for (var i = 0; i < 4; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
+    expect(next().onPressed, isNotNull);
     expect(find.text('Almost at your Instagram limit'), findsOneWidget);
     expect(find.text('35m of 1h used today'), findsOneWidget); // the plan's real limit (6h+ → 1h), 25m left
     await _tap(t, 'Next');
