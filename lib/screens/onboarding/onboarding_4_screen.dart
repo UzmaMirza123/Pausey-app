@@ -33,6 +33,8 @@ class Onboarding4Screen extends StatelessWidget {
       dotsIndex: 0,
       blobs: _blobs,
       starsAsset: 'assets/svg/ob4_stars.svg',
+      // Sits near the top (less empty space under the header).
+      bodyAlign: 0.15,
       button: PrimaryButton(label: context.l10n.continueLabel, onPressed: onNext),
       // Figma gap button→caption is 18; the scaffold adds 12.
       footerExtra: Padding(
@@ -55,9 +57,10 @@ class Onboarding4Screen extends StatelessWidget {
           children: [
             // Hero spans a little past the side margins, like the other intro screens.
             LayoutBuilder(builder: (context, box) {
-              final w = math.min(box.maxWidth + 32, 400.0);
+              // Taller hero: a bit wider than the margins allow, up to 440.
+              final w = math.min(box.maxWidth + 52, 440.0);
               return SizedBox(
-                height: Ob4ProgressHero.heightFor(w) + 16,
+                height: Ob4ProgressHero.heightFor(w) + 30,
                 child: OverflowBox(
                   maxWidth: w,
                   alignment: Alignment.topCenter,

@@ -19,7 +19,7 @@ import '../../../utils/app_theme.dart';
 const _tau = math.pi * 2;
 
 /// Design space: everything below is laid out on a 360×250 box and scaled.
-const _w = 360.0, _h = 250.0;
+const _w = 360.0, _h = 272.0;
 const _c = Offset(_w / 2, _h / 2);
 
 /// Apps around the lock: (asset, angle in degrees from straight up, clockwise).
@@ -34,14 +34,14 @@ const _apps = <(String, double)>[
 
 /// Faded background tiles: (icon, centre, rotation in degrees).
 const _ghosts = <(IconData, Offset, double)>[
-  (Icons.sports_esports_rounded, Offset(64, 46), -12),
-  (Icons.schedule_rounded, Offset(304, 58), 10),
-  (Icons.chat_bubble_rounded, Offset(44, 188), -10),
-  (Icons.more_horiz_rounded, Offset(318, 186), 8),
+  (Icons.sports_esports_rounded, Offset(50, 42), -12),
+  (Icons.schedule_rounded, Offset(314, 50), 10),
+  (Icons.chat_bubble_rounded, Offset(36, 214), -10),
+  (Icons.more_horiz_rounded, Offset(326, 210), 8),
 ];
 
-const _rApps = 92.0; // apps sit on this circle
-const _tile = 42.0; // app tile size
+const _rApps = 106.0; // apps sit on this circle
+const _tile = 35.0; // app tile size
 const _disc = 36.0; // lock disc radius
 
 Offset _appPos(int i, double t) {
@@ -95,7 +95,7 @@ class _ObLockOrbitHeroState extends State<ObLockOrbitHero> with SingleTickerProv
     final dark = context.isDark;
     return ExcludeSemantics(
       child: LayoutBuilder(builder: (context, box) {
-        final w = math.min(box.maxWidth, 400.0);
+        final w = math.min(box.maxWidth, 420.0);
         final k = w / _w;
         return SizedBox(
           width: w,
@@ -191,8 +191,8 @@ class _ObLockOrbitHeroState extends State<ObLockOrbitHero> with SingleTickerProv
             children: [
               Positioned.fill(child: _AppIcon(id: _apps[i].$1, dark: dark)),
               Positioned(
-                right: -7,
-                bottom: -7,
+                right: -6,
+                bottom: -6,
                 child: Transform.scale(scale: badge, child: _MinusBadge(dark: dark)),
               ),
             ],
@@ -216,26 +216,27 @@ class _BackPainter extends CustomPainter {
     // Purple glow behind everything.
     canvas.drawCircle(
       _c,
-      150,
+      168,
       Paint()
         ..shader = RadialGradient(colors: [
           AppPalette.violet.withValues(alpha: dark ? 0.30 : 0.30),
           AppPalette.violet.withValues(alpha: dark ? 0.10 : 0.10),
           AppPalette.violet.withValues(alpha: 0),
-        ], stops: const [0, 0.5, 1]).createShader(Rect.fromCircle(center: _c, radius: 150)),
+        ], stops: const [0, 0.5, 1]).createShader(Rect.fromCircle(center: _c, radius: 168)),
     );
 
     // Filled soft disc with three thin rings (they open out on entrance).
     canvas.drawCircle(
       _c,
-      82 * (0.7 + 0.3 * rings),
+      94 * (0.7 + 0.3 * rings),
       Paint()..color = (dark ? const Color(0xFF6C5CE0) : const Color(0xFFB9A8FF)).withValues(alpha: (dark ? 0.16 : 0.22) * rings),
     );
     final ringPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.2
+      ..strokeWidth = 0.8
       ..color = (dark ? const Color(0xFFB7A6FF) : Colors.white).withValues(alpha: (dark ? 0.18 : 0.75) * rings);
-    for (final r in [48.0, 62.0, 78.0]) {
+    // Three thin rings with wide gaps between them.
+    for (final r in [46.0, 67.0, 88.0]) {
       canvas.drawCircle(_c, r * (0.7 + 0.3 * rings), ringPaint);
     }
 
@@ -244,7 +245,7 @@ class _BackPainter extends CustomPainter {
       final ph = ((t - 1.4) % 3.0) / 3.0;
       canvas.drawCircle(
         _c,
-        _disc + ph * 60,
+        _disc + ph * 70,
         Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 2 * (1 - ph) + 0.5
@@ -257,7 +258,7 @@ class _BackPainter extends CustomPainter {
     canvas.save();
     canvas.translate(_c.dx, _c.dy);
     canvas.rotate(-0.12);
-    const rx = 150.0, ry = 98.0;
+    const rx = 164.0, ry = 114.0;
     final bead = Paint()..color = (dark ? const Color(0xFFB7A6FF) : const Color(0xFFC9BEFF)).withValues(alpha: (dark ? 0.30 : 0.55) * orbit);
     const n = 120;
     final shift = t * 0.02;
@@ -442,8 +443,8 @@ class _MinusBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 18,
-      height: 18,
+      width: 15,
+      height: 15,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Color(0xFFFF6B7D), Color(0xFFE5304B)]),
@@ -451,7 +452,7 @@ class _MinusBadge extends StatelessWidget {
         boxShadow: [BoxShadow(color: const Color(0xFFE5304B).withValues(alpha: 0.4), blurRadius: 6, offset: const Offset(0, 2))],
       ),
       alignment: Alignment.center,
-      child: Container(width: 7, height: 2.2, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(2))),
+      child: Container(width: 6, height: 2, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(2))),
     );
   }
 }

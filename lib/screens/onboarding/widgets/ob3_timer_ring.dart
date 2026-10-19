@@ -223,10 +223,10 @@ class _Ob3TimerRingState extends State<Ob3TimerRing> with TickerProviderStateMix
                 ),
                 ),
               ),
-              // Day streak.
+              // Day streak (top-left, where the two bubbles were).
               floating(
                 0,
-                const Offset(98, 118),
+                const Offset(110, 44),
                 const Size(78, 62),
                 -8,
                 _Card(
@@ -499,8 +499,9 @@ class _BubblesPainter extends CustomPainter {
   final bool dark;
 
   static const _bubbles = <(Offset, double, Color)>[
-    (Offset(140, 36), 8, Color(0xFFD9D0FF)),
-    (Offset(116, 50), 11, Color(0xFF6CC8FF)),
+    // These two moved up with the streak card.
+    (Offset(176, 10), 7, Color(0xFFD9D0FF)),
+    (Offset(156, 18), 10, Color(0xFF6CC8FF)),
     (Offset(298, 46), 7, Color(0xFF6E8BFF)),
     (Offset(334, 63), 6, Color(0xFFA9C7FF)),
     (Offset(58, 152), 10, Color(0xFF6EE7E0)),

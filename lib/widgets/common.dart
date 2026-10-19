@@ -310,6 +310,7 @@ class OnboardingScaffold extends StatelessWidget {
     this.footerExtra,
     this.headerLeading,
     this.swipeForward = true,
+    this.bodyAlign = 0.5,
   });
 
   final Widget body;
@@ -329,6 +330,9 @@ class OnboardingScaffold extends StatelessWidget {
 
   /// false: a left swipe does not run the button (last screen: it would open the app).
   final bool swipeForward;
+
+  /// Where the body sits when the screen has spare height: 0 = top, 0.5 = centre.
+  final double bodyAlign;
 
   @override
   Widget build(BuildContext context) {
@@ -371,7 +375,7 @@ class OnboardingScaffold extends StatelessWidget {
                               child: Center(
                                 child: ConstrainedBox(
                                   constraints: const BoxConstraints(maxWidth: 480),
-                                  child: FitToViewport(viewportHeight: box.maxHeight, minScale: 1, child: body),
+                                  child: FitToViewport(viewportHeight: box.maxHeight, minScale: 1, align: bodyAlign, child: body),
                                 ),
                               ),
                             ),

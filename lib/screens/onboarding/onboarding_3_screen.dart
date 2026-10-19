@@ -44,6 +44,8 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
       dotsIndex: 0,
       blobs: _blobs,
       starsAsset: 'assets/svg/ob3_stars.svg',
+      // Sits near the top (less empty space under the header).
+      bodyAlign: 0.15,
       button: PrimaryButton(label: context.l10n.continueLabel, onPressed: widget.onNext),
       // Figma gap button→caption is 18; the scaffold adds 12.
       footerExtra: Padding(
@@ -67,9 +69,8 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
             // Hero spans a little past the side margins (like before).
             LayoutBuilder(builder: (context, box) {
               final w = math.min(box.maxWidth + 40, 440.0);
-              // The hero's empty top edge may run under the header, so it sits closer to the top.
               return SizedBox(
-                height: Ob3TimerRing.heightFor(w) - 34,
+                height: Ob3TimerRing.heightFor(w),
                 child: OverflowBox(
                   maxWidth: w,
                   maxHeight: Ob3TimerRing.heightFor(w),
@@ -185,7 +186,7 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
                 ),
               ),
             ),
-            const SizedBox(height: 26),
+            const SizedBox(height: 6),
           ],
         ),
       ),

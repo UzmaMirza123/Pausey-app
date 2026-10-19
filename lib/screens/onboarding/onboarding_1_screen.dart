@@ -319,19 +319,19 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlassCard(
-      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
       color: color.withValues(alpha: 0.1),
       borderColor: color.withValues(alpha: 0.22),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 18, color: color),
-          const SizedBox(height: 3),
+          Icon(icon, size: 22, color: color),
+          const SizedBox(height: 8),
           FittedBox(
             fit: BoxFit.scaleDown,
             child: Semantics(label: format(to), child: ExcludeSemantics(child: _CountUp(to: to, format: format, delay: delay, style: AppText.stat.copyWith(color: color)))),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: 6),
           Text(
             caption,
             textAlign: TextAlign.center,

@@ -227,27 +227,38 @@ class _BackCircleButtonState extends State<BackCircleButton> {
 /// the viewport it is centred vertically. If it still does not fit at
 /// [minScale], it keeps that scale and the parent scroll view scrolls.
 class FitToViewport extends SingleChildRenderObjectWidget {
-  const FitToViewport({super.key, required this.viewportHeight, this.minScale = 0.62, super.child});
+  const FitToViewport({super.key, required this.viewportHeight, this.minScale = 0.62, this.align = 0.5, super.child});
 
   final double viewportHeight;
   final double minScale;
 
+  /// Where the content sits when there is spare height: 0 = top, 0.5 = centre.
+  final double align;
+
   @override
-  RenderObject createRenderObject(BuildContext context) => _RenderFit(viewportHeight, minScale);
+  RenderObject createRenderObject(BuildContext context) => _RenderFit(viewportHeight, minScale, align);
 
   @override
   void updateRenderObject(BuildContext context, RenderObject renderObject) {
     (renderObject as _RenderFit)
       ..viewportHeight = viewportHeight
-      ..minScale = minScale;
+      ..minScale = minScale
+      ..align = align;
   }
 }
 
 class _RenderFit extends RenderProxyBox {
-  _RenderFit(this._viewportHeight, this._minScale);
+  _RenderFit(this._viewportHeight, this._minScale, this._align);
 
   double _viewportHeight;
   double _minScale;
+  double _align;
+
+  set align(double v) {
+    if (v == _align) return;
+    _align = v;
+    markNeedsLayout();
+  }
   double _scale = 1;
   Offset _offset = Offset.zero;
 
@@ -283,7 +294,7 @@ class _RenderFit extends RenderProxyBox {
     final ch = c.size.height;
     final h = math.max(_viewportHeight, ch * _scale);
     size = constraints.constrain(Size(w, h));
-    _offset = Offset(0, (size.height - ch * _scale) / 2);
+    _offset = Offset(0, (size.height - ch * _scale) * _align);
   }
 
   Matrix4 get _transform => Matrix4.identity()

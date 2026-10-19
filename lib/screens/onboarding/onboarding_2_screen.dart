@@ -26,6 +26,8 @@ class Onboarding2Screen extends StatelessWidget {
       onSkip: onSkip,
       dotsIndex: 0,
       starsAsset: 'assets/svg/ob2_stars.svg',
+      // Sits near the top (less empty space under the header).
+      bodyAlign: 0.15,
       button: PrimaryButton(label: l.cvNext, onPressed: onNext),
       footerExtra: Text(
         l.freeToStart,
@@ -43,7 +45,7 @@ class Onboarding2Screen extends StatelessWidget {
         children: [
           const SizedBox(height: 8),
           const IntroEnter(scale: true, child: ObLockOrbitHero()),
-          const SizedBox(height: 20),
+          const SizedBox(height: 34),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
             child: IntroEnter(
