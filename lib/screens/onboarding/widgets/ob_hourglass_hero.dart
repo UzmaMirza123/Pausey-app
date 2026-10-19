@@ -13,6 +13,11 @@ import '../../../utils/l10n.dart';
 
 const _tau = math.pi * 2;
 
+// Soft lavender-purple tones (lighter than the brand purple), like the other illustrations.
+const _ink = Color(0xFF9B82F5);
+const _lilac = Color(0xFFC9B8FF);
+const _deep = Color(0xFFA48BFA);
+
 class ObHourglassHero extends StatefulWidget {
   const ObHourglassHero({super.key});
 
@@ -54,7 +59,7 @@ class _ObHourglassHeroState extends State<ObHourglassHero> with SingleTickerProv
   Widget build(BuildContext context) {
     final dark = context.isDark;
     final l = context.l10n;
-    final h = (MediaQuery.sizeOf(context).height * 0.235).clamp(170.0, 215.0);
+    final h = (MediaQuery.sizeOf(context).height * 0.30).clamp(200.0, 270.0);
     return ExcludeSemantics(
       child: LayoutBuilder(
         builder: (context, box) {
@@ -145,15 +150,15 @@ class _Badge extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, box) {
       final s = box.maxWidth;
-      final fg = filled ? Colors.white : AppPalette.accent;
+      final fg = filled ? Colors.white : _ink;
       return Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: filled ? null : (dark ? const Color(0xFF241F48) : Colors.white),
-          gradient: filled ? const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Color(0xFFA48BFF), AppPalette.accent]) : null,
+          gradient: filled ? const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [_lilac, _deep]) : null,
           border: filled ? null : Border.all(color: AppPalette.violet.withValues(alpha: dark ? 0.25 : 0.18)),
           boxShadow: [
-            BoxShadow(color: AppPalette.accent.withValues(alpha: filled ? 0.55 : (dark ? 0.30 : 0.22)), blurRadius: s * (filled ? 0.55 : 0.4), spreadRadius: s * 0.02),
+            BoxShadow(color: _deep.withValues(alpha: filled ? 0.50 : (dark ? 0.30 : 0.22)), blurRadius: s * (filled ? 0.55 : 0.4), spreadRadius: s * 0.02),
           ],
         ),
         alignment: Alignment.center,
@@ -167,11 +172,11 @@ class _Badge extends StatelessWidget {
                     value: progress,
                     strokeWidth: s * 0.06,
                     strokeCap: StrokeCap.round,
-                    color: AppPalette.accent,
+                    color: _ink,
                     backgroundColor: AppPalette.violet.withValues(alpha: 0.15),
                   ),
                 ),
-                Text(text!, style: AppText.rowTitle.copyWith(fontSize: s * 0.26, height: 1, fontWeight: FontWeight.w800, color: AppPalette.accent)),
+                Text(text!, style: AppText.rowTitle.copyWith(fontSize: s * 0.26, height: 1, fontWeight: FontWeight.w800, color: _ink)),
               ]),
       );
     });
@@ -227,8 +232,8 @@ class _BackdropPainter extends CustomPainter {
     }
     // Two orbit lines (tilted ellipses) with dots travelling along them.
     final orbits = [
-      (rx: w * 0.47, ry: h * 0.24, tilt: -0.10, speed: 1 / 14.0, colors: const [Color(0xFF5B8CFF), Color(0xFFB27BFF)]),
-      (rx: w * 0.40, ry: h * 0.34, tilt: 0.16, speed: -1 / 18.0, colors: const [Color(0xFF5B8CFF), Color(0xFF9B7BFF)]),
+      (rx: w * 0.47, ry: h * 0.24, tilt: -0.10, speed: 1 / 14.0, colors: const [Color(0xFF93AEFF), Color(0xFFC6A9FF)]),
+      (rx: w * 0.40, ry: h * 0.34, tilt: 0.16, speed: -1 / 18.0, colors: const [Color(0xFF93AEFF), Color(0xFFB9A3FF)]),
     ];
     for (final (i, o) in orbits.indexed) {
       canvas.save();
@@ -261,7 +266,7 @@ class _BackdropPainter extends CustomPainter {
     // Twinkling sparkles.
     for (final (i, (dx, dy, r, blue)) in const [(-98.0, -78.0, 9.0, false), (-62.0, -2.0, 7.0, false), (66.0, -8.0, 7.5, false), (84.0, 52.0, 8.0, true)].indexed) {
       final tw = 0.55 + 0.45 * (0.5 + 0.5 * math.sin(t * _tau / 2.4 + i * 1.7));
-      final col = blue ? const Color(0xFF5B8CFF) : AppPalette.violet;
+      final col = blue ? const Color(0xFF93AEFF) : _lilac;
       _sparkle(canvas, center + Offset(dx * k, dy * k), r * k * (0.85 + 0.15 * tw), col.withValues(alpha: 0.9 * tw));
     }
   }
@@ -313,7 +318,7 @@ class _HourglassPainter extends CustomPainter {
     canvas.save();
     canvas.clipPath(glass);
     final sand = Paint()
-      ..shader = const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color(0xFFA27BFF), AppPalette.accent]).createShader(Rect.fromLTWH(0, top, w, g));
+      ..shader = const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [_lilac, _deep]).createShader(Rect.fromLTWH(0, top, w, g));
     final wobble = math.sin(t * _tau / 2.2) * g * 0.006;
     final topLevel = top + (mid - top) * 0.42;
     canvas.drawPath(
@@ -342,7 +347,7 @@ class _HourglassPainter extends CustomPainter {
       Offset(cx, peak),
       Paint()
         ..strokeWidth = 1.3 * k
-        ..color = AppPalette.accent.withValues(alpha: 0.45),
+        ..color = _deep.withValues(alpha: 0.5),
     );
     for (var i = 0; i < 7; i++) {
       final p = (t * 0.8 + i / 7) % 1;
@@ -389,10 +394,10 @@ class _HourglassPainter extends CustomPainter {
       canvas.drawRRect(
         rr.shift(Offset(0, 3 * k)),
         Paint()
-          ..color = AppPalette.accent.withValues(alpha: dark ? 0.55 : 0.35)
+          ..color = _deep.withValues(alpha: dark ? 0.50 : 0.32)
           ..maskFilter = MaskFilter.blur(BlurStyle.normal, 5 * k),
       );
-      canvas.drawRRect(rr, Paint()..shader = const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color(0xFF9F8BFF), Color(0xFF5B3FE0)]).createShader(rr.outerRect));
+      canvas.drawRRect(rr, Paint()..shader = const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color(0xFFCDBEFF), Color(0xFF9C84F5)]).createShader(rr.outerRect));
       canvas.drawRRect(
         RRect.fromRectAndRadius(Rect.fromLTWH(w * 0.10, y + cap * 0.2, w * 0.8, cap * 0.28), Radius.circular(cap)),
         Paint()..color = Colors.white.withValues(alpha: 0.35),

@@ -113,7 +113,7 @@ class ObPage extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          FlowSwitch.fade(context, const GlowBackground(child: SizedBox.shrink())),
+          FlowSwitch.fade(context, GlowBackground(blobs: Blob.withoutBottom(Blob.onboarding), child: const SizedBox.shrink())),
           // Soft leaves in the bottom corners, behind the content and the buttons.
           const Positioned.fill(child: CornerLeaves()),
           SafeArea(

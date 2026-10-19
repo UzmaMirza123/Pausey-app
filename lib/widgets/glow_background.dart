@@ -32,6 +32,10 @@ class Blob {
     Blob(left: -60, bottom: 80, size: 200, color: AppPalette.violet, opacity: 0.09, blur: 35),
   ];
 
+  /// Onboarding: only the top glows (the bottom-corner ones changed colour from
+  /// screen to screen behind the buttons).
+  static List<Blob> withoutBottom(List<Blob> blobs) => [for (final b in blobs) if (b.bottom == null) b];
+
   /// Splash screen glows (blue, violet, teal).
   static const splash = [
     Blob(left: -120, top: -100, size: 420, color: AppPalette.blue, opacity: 0.15, blur: 50),

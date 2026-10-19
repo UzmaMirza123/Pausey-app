@@ -91,8 +91,8 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
             const SizedBox(height: 8),
             ObRevealText(context.l10n.ob7Title, style: AppText.h1.copyWith(color: c.textPrimary, height: 32.5 / 30)),
             const SizedBox(height: 8),
-            SizedBox(
-              height: 82.25,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 18),
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Text(
