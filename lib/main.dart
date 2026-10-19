@@ -5,11 +5,11 @@ import 'package:flutter/services.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'screens/auth/auth_welcome_screen.dart';
 import 'data/app_repo.dart';
 import 'data/restrictions/restriction_repo.dart';
 import 'screens/shell/app_shell.dart';
 import 'screens/onboarding/onboarding_flow.dart';
+import 'screens/onboarding/stages/set_up.dart' show AccountStage;
 import 'screens/splash_screen.dart';
 import 'services/auth_service.dart';
 import 'services/installed_apps.dart';
@@ -121,6 +121,9 @@ class _Root extends StatefulWidget {
 
 enum _Stage { splash, onboarding, app }
 
+/// Signed out after onboarding (e.g. from Settings): the account screen; signing in swaps to the app by itself.
+void _noop() {}
+
 class _RootState extends State<_Root> {
   _Stage _stage = _Stage.splash;
 
@@ -146,7 +149,7 @@ class _RootState extends State<_Root> {
         valueListenable: AuthService.instance,
         builder: (context, session, _) => AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
-          child: session is SignedOut ? const AuthWelcomeScreen(key: ValueKey('auth')) : AppShell(key: ValueKey(session.runtimeType)),
+          child: session is SignedOut ? const AccountStage(key: ValueKey('auth'), onNext: _noop) : AppShell(key: ValueKey(session.runtimeType)),
         ),
       ),
     };

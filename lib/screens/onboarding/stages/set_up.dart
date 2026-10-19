@@ -324,6 +324,9 @@ class _AccountStageState extends State<AccountStage> {
       center: true,
       // Google / Apple / guest and the Log in | Sign up links are the actions here.
       showActions: false,
+      // The only way on is to sign in, sign up or continue as guest: no Skip, no dots.
+      showSkip: false,
+      showDots: false,
       primaryLabel: l.continueLabel,
       onPrimary: free ? _guest : null,
       children: [

@@ -5,7 +5,6 @@ import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glow_background.dart';
-import 'auth_welcome_screen.dart';
 import 'auth_widgets.dart';
 import 'log_in_screen.dart';
 

@@ -6,11 +6,10 @@ import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glow_background.dart';
 import '../onboarding/widgets/ob_kit.dart' show ObReveal;
-import 'auth_welcome_screen.dart';
 import 'auth_widgets.dart';
 import 'sign_up_screen.dart';
 
-/// Log-in screen (from the welcome screen or sign-up): the same single
+/// Log-in screen (from the account screen or sign-up): the same single
 /// [LogInForm] as in onboarding, centred.
 class LogInScreen extends StatelessWidget {
   const LogInScreen({super.key, this.onGuest});

@@ -73,6 +73,8 @@ class ObPage extends StatelessWidget {
     this.center = false,
     this.dotsStep = 0,
     this.showActions = true,
+    this.showSkip = true,
+    this.showDots = true,
   });
 
   final List<Widget> children;
@@ -90,6 +92,12 @@ class ObPage extends StatelessWidget {
 
   /// false: no back arrow and no primary button at the bottom (the screen has its own buttons).
   final bool showActions;
+
+  /// false: no Skip in the header.
+  final bool showSkip;
+
+  /// false: no progress dots at the bottom.
+  final bool showDots;
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +128,7 @@ class ObPage extends StatelessWidget {
             child: Column(
               children: [
                 // Same header as the intro screens: theme switch and Skip.
-                FlowSwitch.content(context, OnboardingHeader(onSkip: scope?.onSkip, showSkip: scope?.onSkip != null)),
+                FlowSwitch.content(context, OnboardingHeader(onSkip: scope?.onSkip, showSkip: showSkip && scope?.onSkip != null)),
                 Expanded(
                   child: FlowSwitch.content(
                     context,
@@ -146,7 +154,7 @@ class ObPage extends StatelessWidget {
                       children: [
                         SizedBox(
                           height: 5,
-                          child: at == null
+                          child: at == null || !showDots
                               ? null
                               : FlowSwitch.dots(context, FlowDotsGlide(from: (scope!.dotsFrom + dotsStep).toDouble(), to: (at + dotsStep).toDouble())),
                         ),

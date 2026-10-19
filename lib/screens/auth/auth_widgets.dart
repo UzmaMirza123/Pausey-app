@@ -342,3 +342,17 @@ class SocialCircle extends StatelessWidget {
     );
   }
 }
+
+/// Fade + small rise, used between the auth screens (log in ↔ sign up).
+Route<T> authRoute<T>(Widget page) => PageRouteBuilder<T>(
+      transitionDuration: const Duration(milliseconds: 450),
+      reverseTransitionDuration: const Duration(milliseconds: 350),
+      pageBuilder: (_, _, _) => page,
+      transitionsBuilder: (_, a, _, child) {
+        final curved = CurvedAnimation(parent: a, curve: Curves.easeOutCubic);
+        return FadeTransition(
+          opacity: curved,
+          child: SlideTransition(position: Tween(begin: const Offset(0, 0.06), end: Offset.zero).animate(curved), child: child),
+        );
+      },
+    );
