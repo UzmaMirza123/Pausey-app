@@ -33,16 +33,16 @@ class OnboardingPageScope extends InheritedWidget {
   bool updateShouldNotify(OnboardingPageScope old) => old.canBack != canBack || old.dotsAt != dotsAt || old.dotsFrom != dotsFrom;
 }
 
-/// The page change in the conversational flow. Pages read it so that, like the
-/// first 4 screens, the content slides while the footer stays still: the dots
-/// glide to the next step and the buttons cross-fade.
+/// The page change in the onboarding flow: the screen turns like a book page
+/// (hinged on the start edge) while the footer stays still: the dots glide to
+/// the next step and the buttons cross-fade.
 class FlowSwitchScope extends InheritedWidget {
-  const FlowSwitchScope({super.key, required this.animation, required this.slide, required this.incoming, required super.child});
+  const FlowSwitchScope({super.key, required this.animation, required this.forward, required this.incoming, required super.child});
 
   final Animation<double> animation;
 
-  /// Where the content slides in from (fraction of its size).
-  final Offset slide;
+  /// true when moving to the next screen, false when going back.
+  final bool forward;
 
   /// false for the page that is leaving.
   final bool incoming;
@@ -50,7 +50,7 @@ class FlowSwitchScope extends InheritedWidget {
   static FlowSwitchScope? maybeOf(BuildContext context) => context.dependOnInheritedWidgetOfExactType<FlowSwitchScope>();
 
   @override
-  bool updateShouldNotify(FlowSwitchScope old) => old.animation != animation || old.slide != slide || old.incoming != incoming;
+  bool updateShouldNotify(FlowSwitchScope old) => old.animation != animation || old.forward != forward || old.incoming != incoming;
 }
 
 /// Helpers for the parts of a page during a [FlowSwitchScope] change. Outside the
@@ -58,20 +58,59 @@ class FlowSwitchScope extends InheritedWidget {
 class FlowSwitch {
   const FlowSwitch._();
 
-  /// Content: fades and slides.
+  /// Content: turns like a book page.
+  /// Next: the leaving page (on top) turns away over its spine, the new one is underneath.
+  /// Back: the previous page turns back in over the spine, on top of the leaving one.
   static Widget content(BuildContext context, Widget child) {
     final s = FlowSwitchScope.maybeOf(context);
     if (s == null) return child;
-    return FadeTransition(
-      opacity: s.animation,
-      child: SlideTransition(
-        position: Tween(begin: s.slide, end: Offset.zero).animate(s.animation),
+    final turning = s.forward ? !s.incoming : s.incoming;
+    if (!turning) {
+      // The page underneath: gently settles in (or out).
+      return AnimatedBuilder(
+        animation: s.animation,
+        builder: (context, c) {
+          final v = s.animation.value;
+          return Opacity(
+            opacity: s.incoming ? Curves.easeOut.transform(((v - 0.25) / 0.75).clamp(0.0, 1.0)) : v,
+            child: Transform.scale(scale: 0.97 + 0.03 * v, child: c),
+          );
+        },
         child: child,
-      ),
+      );
+    }
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    return AnimatedBuilder(
+      animation: s.animation,
+      builder: (context, c) {
+        // 0 = flat on screen, 1 = turned edge-on over the spine.
+        final turn = 1 - s.animation.value;
+        final angle = turn * math.pi / 2 * (rtl ? 1 : -1);
+        return Opacity(
+          opacity: (1 - turn * turn * 0.6).clamp(0.0, 1.0),
+          child: Transform(
+            alignment: rtl ? Alignment.centerRight : Alignment.centerLeft,
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.0011) // perspective
+              ..rotateY(angle),
+            child: c,
+          ),
+        );
+      },
+      child: child,
     );
   }
 
-  /// Background and buttons: fade only (they stay in place).
+  /// Background: stays put (the screens share it); the page on top lets the one
+  /// underneath show while it turns.
+  static Widget background(BuildContext context, Widget child) {
+    final s = FlowSwitchScope.maybeOf(context);
+    if (s == null) return child;
+    if (s.forward) return s.incoming ? child : const SizedBox.shrink();
+    return s.incoming ? FadeTransition(opacity: CurvedAnimation(parent: s.animation, curve: const Interval(0.35, 1)), child: child) : child;
+  }
+
+  /// Buttons: fade only (they stay in place).
   static Widget fade(BuildContext context, Widget child) {
     final s = FlowSwitchScope.maybeOf(context);
     return s == null ? child : FadeTransition(opacity: s.animation, child: child);

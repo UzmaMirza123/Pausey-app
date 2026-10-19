@@ -13,10 +13,10 @@ import '../../../utils/l10n.dart';
 
 const _tau = math.pi * 2;
 
-// Soft lavender-purple tones (lighter than the brand purple), like the other illustrations.
-const _ink = Color(0xFF9B82F5);
-const _lilac = Color(0xFFC9B8FF);
-const _deep = Color(0xFFA48BFA);
+// The same purples as the clock ring on "Lose track of time?" (light lilac → violet → brand purple).
+const _ink = AppPalette.accent;
+const _lilac = Color(0xFFB7A6FF);
+const _deep = AppPalette.accent;
 
 class ObHourglassHero extends StatefulWidget {
   const ObHourglassHero({super.key});
@@ -155,7 +155,7 @@ class _Badge extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: filled ? null : (dark ? const Color(0xFF241F48) : Colors.white),
-          gradient: filled ? const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [_lilac, _deep]) : null,
+          gradient: filled ? const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [_lilac, AppPalette.violet, _deep]) : null,
           border: filled ? null : Border.all(color: AppPalette.violet.withValues(alpha: dark ? 0.25 : 0.18)),
           boxShadow: [
             BoxShadow(color: _deep.withValues(alpha: filled ? 0.50 : (dark ? 0.30 : 0.22)), blurRadius: s * (filled ? 0.55 : 0.4), spreadRadius: s * 0.02),
@@ -318,7 +318,7 @@ class _HourglassPainter extends CustomPainter {
     canvas.save();
     canvas.clipPath(glass);
     final sand = Paint()
-      ..shader = const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [_lilac, _deep]).createShader(Rect.fromLTWH(0, top, w, g));
+      ..shader = const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [_lilac, AppPalette.violet, _deep]).createShader(Rect.fromLTWH(0, top, w, g));
     final wobble = math.sin(t * _tau / 2.2) * g * 0.006;
     final topLevel = top + (mid - top) * 0.42;
     canvas.drawPath(
@@ -397,7 +397,7 @@ class _HourglassPainter extends CustomPainter {
           ..color = _deep.withValues(alpha: dark ? 0.50 : 0.32)
           ..maskFilter = MaskFilter.blur(BlurStyle.normal, 5 * k),
       );
-      canvas.drawRRect(rr, Paint()..shader = const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color(0xFFCDBEFF), Color(0xFF9C84F5)]).createShader(rr.outerRect));
+      canvas.drawRRect(rr, Paint()..shader = const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [_lilac, AppPalette.violet, _deep]).createShader(rr.outerRect));
       canvas.drawRRect(
         RRect.fromRectAndRadius(Rect.fromLTWH(w * 0.10, y + cap * 0.2, w * 0.8, cap * 0.28), Radius.circular(cap)),
         Paint()..color = Colors.white.withValues(alpha: 0.35),

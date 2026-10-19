@@ -65,6 +65,9 @@ class OnboardingFlow extends StatefulWidget {
 }
 
 class _OnboardingFlowState extends State<OnboardingFlow> {
+  /// How long a page turn takes (smooth, like turning a book page).
+  static const _pageTurn = Duration(milliseconds: 650);
+
   final _s = OnboardingState.instance;
   final _gate = ObBackGate();
   bool _forward = true;
@@ -143,14 +146,22 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         if (!didPop) _back();
       },
       child: AnimatedSwitcher(
-        duration: reduced ? Duration.zero : ObMotion.page,
-        switchInCurve: Curves.easeOutCubic,
-        switchOutCurve: Curves.easeInCubic,
-        // Each page fades/slides its own content and keeps its footer still (FlowSwitchScope).
+        duration: reduced ? Duration.zero : _pageTurn,
+        switchInCurve: Curves.easeInOutCubic,
+        switchOutCurve: Curves.easeInOutCubic,
+        // Next: the leaving page stays on top while it turns away; back: the returning page turns in on top.
+        layoutBuilder: (current, previous) => Stack(
+          alignment: Alignment.center,
+          children: _forward ? [?current, ...previous] : [...previous, ?current],
+        ),
+        // Each page turns its own content like a book page and keeps its footer still (FlowSwitchScope).
+        // The leaving page takes no taps, so a quick second tap can't skip a screen.
         transitionBuilder: (child, a) {
           final incoming = child.key == ValueKey(i);
-          final dir = (_forward ? 1 : -1) * (incoming ? 1 : -1);
-          return FlowSwitchScope(animation: a, slide: Offset(0.06 * dir, 0), incoming: incoming, child: child);
+          return IgnorePointer(
+            ignoring: !incoming,
+            child: FlowSwitchScope(animation: a, forward: _forward, incoming: incoming, child: child),
+          );
         },
         child: KeyedSubtree(
           key: ValueKey(i),
