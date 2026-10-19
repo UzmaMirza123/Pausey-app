@@ -670,6 +670,18 @@ abstract class AppLocalizations {
   /// **'Focus Builds\na Better You'**
   String get ob3RingTagline;
 
+  /// No description provided for @ob4ArtScore.
+  ///
+  /// In en, this message translates to:
+  /// **'score'**
+  String get ob4ArtScore;
+
+  /// No description provided for @ob4ArtProductivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Productivity'**
+  String get ob4ArtProductivity;
+
   /// No description provided for @ob5Title.
   ///
   /// In en, this message translates to:

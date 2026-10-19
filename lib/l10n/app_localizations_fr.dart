@@ -316,6 +316,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get ob3RingTagline => 'La concentration\nvous fait grandir';
 
   @override
+  String get ob4ArtScore => 'score';
+
+  @override
+  String get ob4ArtProductivity => 'Productivité';
+
+  @override
   String get ob5Title => 'Quel est votre temps d\'écran quotidien moyen ?';
 
   @override

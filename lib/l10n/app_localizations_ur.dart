@@ -314,6 +314,12 @@ class AppLocalizationsUr extends AppLocalizations {
   String get ob3RingTagline => 'فوکس سے بنتا ہے\nایک بہتر آپ';
 
   @override
+  String get ob4ArtScore => 'اسکور';
+
+  @override
+  String get ob4ArtProductivity => 'پیداواری';
+
+  @override
   String get ob5Title => 'آپ کا روزانہ اوسط اسکرین ٹائم کتنا ہے؟';
 
   @override

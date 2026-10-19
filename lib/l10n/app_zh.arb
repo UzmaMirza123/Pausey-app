@@ -91,6 +91,8 @@
   "ob3RingStreak": "天连续",
   "ob3RingSessions": "第 {done}/{total} 个时段",
   "ob3RingTagline": "专注\n成就更好的你",
+  "ob4ArtScore": "得分",
+  "ob4ArtProductivity": "效率",
   "ob5Title": "你每天平均屏幕时间是多少？",
   "ob5Subtitle": "仅限手机。大概估计即可。",
   "ob5More7": "超过 7 小时",

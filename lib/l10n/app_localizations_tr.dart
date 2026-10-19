@@ -314,6 +314,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get ob3RingTagline => 'Odak seni\ndaha iyi yapar';
 
   @override
+  String get ob4ArtScore => 'puan';
+
+  @override
+  String get ob4ArtProductivity => 'Verimlilik';
+
+  @override
   String get ob5Title => 'Günlük ortalama ekran süren ne kadar?';
 
   @override

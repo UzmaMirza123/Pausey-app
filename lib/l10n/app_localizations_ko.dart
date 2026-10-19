@@ -309,6 +309,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get ob3RingTagline => '집중이\n더 나은 나를 만든다';
 
   @override
+  String get ob4ArtScore => '점수';
+
+  @override
+  String get ob4ArtProductivity => '생산성';
+
+  @override
   String get ob5Title => '하루 평균 스크린 타임은 얼마인가요?';
 
   @override

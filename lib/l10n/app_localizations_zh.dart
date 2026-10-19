@@ -309,6 +309,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ob3RingTagline => '专注\n成就更好的你';
 
   @override
+  String get ob4ArtScore => '得分';
+
+  @override
+  String get ob4ArtProductivity => '效率';
+
+  @override
   String get ob5Title => '你每天平均屏幕时间是多少？';
 
   @override

@@ -315,6 +315,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get ob3RingTagline => 'Fokus macht\ndich besser';
 
   @override
+  String get ob4ArtScore => 'Punkte';
+
+  @override
+  String get ob4ArtProductivity => 'Produktivität';
+
+  @override
   String get ob5Title => 'Wie hoch ist deine tägliche Bildschirmzeit?';
 
   @override

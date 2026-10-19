@@ -315,6 +315,12 @@ class AppLocalizationsIt extends AppLocalizations {
   String get ob3RingTagline => 'La concentrazione\nti rende migliore';
 
   @override
+  String get ob4ArtScore => 'punteggio';
+
+  @override
+  String get ob4ArtProductivity => 'Produttività';
+
+  @override
   String get ob5Title => 'Qual è il tuo tempo di utilizzo medio giornaliero?';
 
   @override

@@ -1,11 +1,11 @@
 import 'dart:math' as math;
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../utils/app_theme.dart';
 import '../../widgets/common.dart';
+import 'widgets/ob4_progress_hero.dart';
 import 'widgets/ob_text_motion.dart';
 import 'widgets/intro_motion.dart';
 import '../../widgets/glow_background.dart';
@@ -53,8 +53,18 @@ class Onboarding4Screen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
         child: Column(
           children: [
-            const SizedBox(height: 8),
-            const IntroEnter(scale: true, child: _Illustration()),
+            // Hero spans a little past the side margins, like the other intro screens.
+            LayoutBuilder(builder: (context, box) {
+              final w = math.min(box.maxWidth + 32, 400.0);
+              return SizedBox(
+                height: Ob4ProgressHero.heightFor(w) + 16,
+                child: OverflowBox(
+                  maxWidth: w,
+                  alignment: Alignment.topCenter,
+                  child: IntroEnter(scale: true, child: Ob4ProgressHero(width: w)),
+                ),
+              );
+            }),
             IntroEnter(
               index: 1,
               child: ObRevealText(context.l10n.ob4Title, style: AppText.h1.copyWith(color: c.textPrimary)),
@@ -132,71 +142,6 @@ class Onboarding4Screen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// 320×320 analytics hero (phone, chart, score cards and three progress rings),
-/// exported from Figma as one SVG. It fades/rises in and then floats gently.
-class _Illustration extends StatefulWidget {
-  const _Illustration();
-
-  @override
-  State<_Illustration> createState() => _IllustrationState();
-}
-
-class _IllustrationState extends State<_Illustration> with TickerProviderStateMixin {
-  late final AnimationController _intro = AnimationController(vsync: this, duration: const Duration(milliseconds: 700))..forward();
-  late final AnimationController _float = AnimationController(vsync: this, duration: const Duration(seconds: 4))..repeat();
-
-  @override
-  void dispose() {
-    _intro.dispose();
-    _float.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final intro = CurvedAnimation(parent: _intro, curve: Curves.easeOutCubic);
-    return SizedBox(
-      width: 320,
-      height: 320,
-      child: OverflowBox(
-        maxWidth: 320,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            AnimatedBuilder(
-              animation: Listenable.merge([intro, _float]),
-              builder: (context, child) => Opacity(
-                opacity: intro.value,
-                child: Transform.translate(offset: Offset(0, 14 * (1 - intro.value) + 2.5 * math.sin(_float.value * 2 * math.pi)), child: child),
-              ),
-              child: Image.asset('assets/onboarding/ob_intro4.png', width: 320, height: 320, fit: BoxFit.contain, filterQuality: FilterQuality.medium),
-            ),
-            // Figma "Gradient+Blur" (270×240, blur 21) centred over the hero.
-            IgnorePointer(
-              child: ImageFiltered(
-                imageFilter: ImageFilter.blur(sigmaX: 10.5, sigmaY: 10.5),
-                child: Container(
-                  width: 270,
-                  height: 240,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(127.5),
-                    gradient: RadialGradient(
-                      center: const Alignment(0, 0.04),
-                      radius: 0.8,
-                      colors: [AppPalette.blue.withValues(alpha: 0.22), AppPalette.blue.withValues(alpha: 0)],
-                      stops: const [0, 0.72],
-                    ),
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),

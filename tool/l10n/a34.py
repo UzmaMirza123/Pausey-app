@@ -25,6 +25,8 @@ S = {
  "ob3RingStreak": ["day streak", "دن کا اسٹریک", "أيام متتالية", "दिन की स्ट्रीक", "días de racha", "jours de série", "Tage in Folge", "dias seguidos", "hari beruntun", "дней подряд", "日連続", "일 연속", "günlük seri", "giorni di fila", "天连续"],
  "ob3RingSessions": ["{done} of {total} sessions", "{total} میں سے {done} سیشن", "{done} من {total} جلسات", "{total} में से {done} सेशन", "{done} de {total} sesiones", "{done} sur {total} sessions", "{done} von {total} Sitzungen", "{done} de {total} sessões", "{done} dari {total} sesi", "{done} из {total} сессий", "{total}回中{done}回", "{total}회 중 {done}회", "{total} seanstan {done}", "{done} di {total} sessioni", "第 {done}/{total} 个时段"],
  "ob3RingTagline": ["Focus Builds\na Better You", "فوکس سے بنتا ہے\nایک بہتر آپ", "التركيز يصنع\nنسخة أفضل منك", "फ़ोकस बनाता है\nएक बेहतर आप", "El foco crea\nun mejor tú", "La concentration\nvous fait grandir", "Fokus macht\ndich besser", "O foco cria\num você melhor", "Fokus Membentuk\nDirimu Lebih Baik", "Фокус делает\nвас лучше", "集中が\nより良い自分をつくる", "집중이\n더 나은 나를 만든다", "Odak seni\ndaha iyi yapar", "La concentrazione\nti rende migliore", "专注\n成就更好的你"],
+ "ob4ArtScore": ["score", "اسکور", "النتيجة", "स्कोर", "puntuación", "score", "Punkte", "pontuação", "skor", "баллы", "スコア", "점수", "puan", "punteggio", "得分"],
+ "ob4ArtProductivity": ["Productivity", "پیداواری", "الإنتاجية", "उत्पादकता", "Productividad", "Productivité", "Produktivität", "Produtividade", "Produktivitas", "Продуктивность", "生産性", "생산성", "Verimlilik", "Produttività", "效率"],
 }
 META = {
  "ob3RingSessions": {"placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},

@@ -67,8 +67,9 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
             // Hero spans a little past the side margins (like before).
             LayoutBuilder(builder: (context, box) {
               final w = math.min(box.maxWidth + 40, 440.0);
+              // The hero's empty top edge may run under the header, so it sits closer to the top.
               return SizedBox(
-                height: Ob3TimerRing.heightFor(w) - 10,
+                height: Ob3TimerRing.heightFor(w) - 34,
                 child: OverflowBox(
                   maxWidth: w,
                   maxHeight: Ob3TimerRing.heightFor(w),
@@ -184,7 +185,7 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
                 ),
               ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 26),
           ],
         ),
       ),

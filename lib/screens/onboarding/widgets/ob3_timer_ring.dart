@@ -349,10 +349,13 @@ class _Card extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: dark ? const [Color(0xFF26214F), Color(0xFF1B1740)] : const [Colors.white, Color(0xFFF3F0FF)],
+          // See-through, so the dial and glow show softly behind (like the earlier cards).
+          colors: dark
+              ? [const Color(0xFF26214F).withValues(alpha: 0.58), const Color(0xFF1B1740).withValues(alpha: 0.42)]
+              : [Colors.white.withValues(alpha: 0.62), const Color(0xFFF3F0FF).withValues(alpha: 0.42)],
         ),
-        border: Border.all(color: dark ? Colors.white.withValues(alpha: 0.08) : Colors.white),
-        boxShadow: [BoxShadow(color: AppPalette.accent.withValues(alpha: dark ? 0.30 : 0.16), blurRadius: 16, offset: const Offset(0, 6))],
+        border: Border.all(color: dark ? Colors.white.withValues(alpha: 0.10) : Colors.white.withValues(alpha: 0.85)),
+        boxShadow: [BoxShadow(color: AppPalette.accent.withValues(alpha: dark ? 0.18 : 0.08), blurRadius: 16, offset: const Offset(0, 6))],
       ),
       child: child,
     );

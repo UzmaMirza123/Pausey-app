@@ -314,6 +314,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ob3RingTagline => 'Фокус делает\nвас лучше';
 
   @override
+  String get ob4ArtScore => 'баллы';
+
+  @override
+  String get ob4ArtProductivity => 'Продуктивность';
+
+  @override
   String get ob5Title => 'Сколько в среднем экранного времени у вас в день?';
 
   @override

@@ -315,6 +315,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get ob3RingTagline => 'Fokus Membentuk\nDirimu Lebih Baik';
 
   @override
+  String get ob4ArtScore => 'skor';
+
+  @override
+  String get ob4ArtProductivity => 'Produktivitas';
+
+  @override
   String get ob5Title => 'Berapa rata-rata waktu layar harianmu?';
 
   @override

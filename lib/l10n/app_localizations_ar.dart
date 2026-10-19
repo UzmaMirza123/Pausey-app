@@ -313,6 +313,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ob3RingTagline => 'التركيز يصنع\nنسخة أفضل منك';
 
   @override
+  String get ob4ArtScore => 'النتيجة';
+
+  @override
+  String get ob4ArtProductivity => 'الإنتاجية';
+
+  @override
   String get ob5Title => 'ما متوسط وقت الشاشة اليومي لديك؟';
 
   @override

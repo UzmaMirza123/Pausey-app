@@ -314,6 +314,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get ob3RingTagline => 'O foco cria\num você melhor';
 
   @override
+  String get ob4ArtScore => 'pontuação';
+
+  @override
+  String get ob4ArtProductivity => 'Produtividade';
+
+  @override
   String get ob5Title => 'Qual é seu tempo de tela médio por dia?';
 
   @override

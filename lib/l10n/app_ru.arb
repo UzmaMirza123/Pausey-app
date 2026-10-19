@@ -91,6 +91,8 @@
   "ob3RingStreak": "дней подряд",
   "ob3RingSessions": "{done} из {total} сессий",
   "ob3RingTagline": "Фокус делает\nвас лучше",
+  "ob4ArtScore": "баллы",
+  "ob4ArtProductivity": "Продуктивность",
   "ob5Title": "Сколько в среднем экранного времени у вас в день?",
   "ob5Subtitle": "Только на телефоне. Можно примерно.",
   "ob5More7": "Более 7 часов",

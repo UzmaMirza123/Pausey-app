@@ -64,14 +64,14 @@ class Onboarding1Screen extends StatelessWidget {
                     Expanded(
                       child: IntroEnter(
                         index: 3,
-                        child: _StatCard(to: 252, format: (v) => '${v ~/ 60}h ${(v % 60).floor()}m', caption: l.ob1StatAvg, color: AppPalette.accent),
+                        child: _StatCard(to: 252, format: (v) => '${v ~/ 60}h ${(v % 60).floor()}m', caption: l.ob1StatAvg, color: AppPalette.accent, icon: Icons.bar_chart_rounded),
                       ),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: IntroEnter(
                         index: 4,
-                        child: _StatCard(to: 73, format: (v) => '${v.round()}%', caption: l.ob1StatSocial, color: AppPalette.gold, delay: 0.1),
+                        child: _StatCard(to: 73, format: (v) => '${v.round()}%', caption: l.ob1StatSocial, color: const Color(0xFFF5A524), icon: Icons.pie_chart_rounded, delay: 0.1),
                       ),
                     ),
                   ],
@@ -305,7 +305,10 @@ class _CountUp extends StatelessWidget {
 }
 
 class _StatCard extends StatelessWidget {
-  const _StatCard({required this.to, required this.format, required this.caption, required this.color, this.delay = 0});
+  const _StatCard({required this.to, required this.format, required this.caption, required this.color, required this.icon, this.delay = 0});
+
+  /// Small icon above the number.
+  final IconData icon;
 
   final double to;
   final String Function(double v) format;
@@ -322,6 +325,8 @@ class _StatCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Icon(icon, size: 18, color: color),
+          const SizedBox(height: 3),
           FittedBox(
             fit: BoxFit.scaleDown,
             child: Semantics(label: format(to), child: ExcludeSemantics(child: _CountUp(to: to, format: format, delay: delay, style: AppText.stat.copyWith(color: color)))),

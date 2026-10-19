@@ -314,6 +314,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get ob3RingTagline => 'फ़ोकस बनाता है\nएक बेहतर आप';
 
   @override
+  String get ob4ArtScore => 'स्कोर';
+
+  @override
+  String get ob4ArtProductivity => 'उत्पादकता';
+
+  @override
   String get ob5Title => 'आपका रोज़ का औसत स्क्रीन टाइम कितना है?';
 
   @override
