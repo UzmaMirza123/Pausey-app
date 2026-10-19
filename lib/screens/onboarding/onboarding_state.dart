@@ -81,7 +81,11 @@ class OnboardingState extends ChangeNotifier {
     if (raw == null) return;
     try {
       final j = jsonDecode(raw) as Map<String, dynamic>;
-      stage = j['stage'] as int? ?? 0;
+      // 'step' counts every screen of the one flow; older saves had 'stage', which
+      // left out the 4 intro screens (1 = first question).
+      final step = j['step'] as int?;
+      final old = j['stage'] as int? ?? 0;
+      stage = step ?? (old >= 1 ? old + 3 : 0);
       relate = _enum(ObRelate.values, j['relate']);
       goal = _enum(ObGoal.values, j['goal']);
       goalOther = j['goalOther'] as String? ?? '';
@@ -160,7 +164,7 @@ class OnboardingState extends ChangeNotifier {
   Future<void> _save() => LocalStore.instance.setRaw(
         _key,
         jsonEncode({
-          'stage': stage,
+          'step': stage,
           'relate': relate?.name,
           'goal': goal?.name,
           'goalOther': goalOther,

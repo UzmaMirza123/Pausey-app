@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pausey/data/app_repo.dart';
 import 'package:pausey/data/restrictions/restriction_repo.dart';
 import 'package:pausey/main.dart';
-import 'package:pausey/screens/onboarding/intro_flow.dart';
 import 'package:pausey/screens/onboarding/onboarding_2_screen.dart';
 import 'package:pausey/screens/onboarding/onboarding_flow.dart';
 import 'package:pausey/screens/onboarding/onboarding_state.dart';
@@ -48,6 +47,8 @@ void main() {
     addTearDown(t.view.reset);
     ObFirstAction? result;
     var finished = false;
+    // Start at the first question (the 4 intro screens have their own test).
+    OnboardingState.instance.update((s) => s.stage = ObStep.relate.index);
     await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (a) {
       result = a;
       finished = true;
@@ -102,7 +103,7 @@ void main() {
     // Back steps to the previous beat first, not the previous stage.
     await t.tap(find.byType(BackCircleButton));
     await t.pump(const Duration(milliseconds: 600));
-    expect(OnboardingState.instance.stage, 7);
+    expect(OnboardingState.instance.stage, ObStep.story.index);
     // Tap Next by hand (few frames) to watch the half-second countdown.
     await t.tap(find.text('Next').last);
     await t.pump(const Duration(milliseconds: 200));
@@ -178,7 +179,7 @@ void main() {
 
   testWidgets('progress resumes on the saved stage and back goes one step', (t) async {
     OnboardingState.instance.update((s) {
-      s.stage = 3;
+      s.stage = ObStep.screenTime.index;
       s.goal = ObGoal.focus;
     });
     await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {})));
@@ -190,28 +191,30 @@ void main() {
     for (var i = 0; i < 10; i++) {
       await t.pump(const Duration(milliseconds: 200));
     }
-    expect(OnboardingState.instance.stage, 2);
+    expect(OnboardingState.instance.stage, ObStep.goal.index);
   }, variant: notAndroid);
 
-  testWidgets('back on the first question returns to the intro screens', (t) async {
-    var back = false;
-    await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {}, onBackFromStart: () => back = true)));
+  testWidgets('back on the first question returns to the last intro screen (one flow)', (t) async {
+    OnboardingState.instance.update((s) => s.stage = ObStep.relate.index);
+    await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {})));
     await t.pump(const Duration(seconds: 1));
     expect(find.bySemanticsLabel('Lose track of time?'), findsOneWidget);
     await t.tap(find.byType(BackCircleButton));
-    await t.pump(const Duration(milliseconds: 500));
-    expect(back, isTrue);
+    for (var i = 0; i < 6; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
+    expect(OnboardingState.instance.stage, ObStep.trackProgress.index);
+    expect(find.bySemanticsLabel('Track Your Progress'), findsOneWidget);
   }, variant: notAndroid);
 
   testWidgets('Skip on an intro screen skips only that screen', (t) async {
-    var finished = false;
-    await t.pumpWidget(PauseyApp(home: IntroFlow(onFinished: () => finished = true)));
+    await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {})));
     await t.pump(const Duration(seconds: 1));
     await t.tap(find.text('Skip'));
     for (var i = 0; i < 6; i++) {
       await t.pump(const Duration(milliseconds: 200));
     }
-    expect(finished, isFalse);
+    expect(OnboardingState.instance.stage, ObStep.lockApps.index);
     expect(find.byType(Onboarding2Screen), findsOneWidget);
   }, variant: notAndroid);
 
@@ -219,7 +222,7 @@ void main() {
     t.view.physicalSize = const Size(412 * 3, 915 * 3);
     t.view.devicePixelRatio = 3;
     addTearDown(t.view.reset);
-    OnboardingState.instance.update((s) => s.stage = 10);
+    OnboardingState.instance.update((s) => s.stage = ObStep.account.index);
     await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {})));
     for (var i = 0; i < 10; i++) {
       await t.pump(const Duration(milliseconds: 200));
@@ -237,20 +240,18 @@ void main() {
     t.view.physicalSize = const Size(412 * 3, 915 * 3);
     t.view.devicePixelRatio = 3;
     addTearDown(t.view.reset);
-    var finished = false;
-    await t.pumpWidget(PauseyApp(home: IntroFlow(onFinished: () => finished = true)));
+    await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {})));
     await t.pump(const Duration(seconds: 1));
-    // Intro: swipe left → screen 2, swipe right → back to screen 1.
-    await t.fling(find.byType(PageView), const Offset(-300, 0), 1200);
+    // Intro screens swipe the same way as the questions.
+    await t.flingFrom(const Offset(380, 500), const Offset(-300, 0), 1200);
     for (var i = 0; i < 10; i++) {
       await t.pump(const Duration(milliseconds: 200));
     }
     expect(find.byType(Onboarding2Screen), findsOneWidget);
-    expect(finished, isFalse);
 
     // Questions: swipe left = Next, swipe right = back.
-    OnboardingState.instance.update((s) => s.stage = 1);
-    await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {})));
+    OnboardingState.instance.update((s) => s.stage = ObStep.relate.index);
+    await t.pumpWidget(PauseyApp(home: OnboardingFlow(key: UniqueKey(), onFinished: (_) {})));
     for (var i = 0; i < 10; i++) {
       await t.pump(const Duration(milliseconds: 200));
     }
@@ -259,15 +260,15 @@ void main() {
     for (var i = 0; i < 10; i++) {
       await t.pump(const Duration(milliseconds: 200));
     }
-    expect(OnboardingState.instance.stage, 2);
+    expect(OnboardingState.instance.stage, ObStep.goal.index);
     await t.flingFrom(const Offset(30, 500), const Offset(300, 0), 1200);
     for (var i = 0; i < 10; i++) {
       await t.pump(const Duration(milliseconds: 200));
     }
-    expect(OnboardingState.instance.stage, 1);
+    expect(OnboardingState.instance.stage, ObStep.relate.index);
 
     // "Start your Pausey journey" has no Continue: a left swipe does nothing there.
-    OnboardingState.instance.update((s) => s.stage = 10);
+    OnboardingState.instance.update((s) => s.stage = ObStep.account.index);
     await t.pumpWidget(PauseyApp(home: OnboardingFlow(key: UniqueKey(), onFinished: (_) {})));
     for (var i = 0; i < 10; i++) {
       await t.pump(const Duration(milliseconds: 200));
@@ -276,6 +277,6 @@ void main() {
     for (var i = 0; i < 10; i++) {
       await t.pump(const Duration(milliseconds: 200));
     }
-    expect(OnboardingState.instance.stage, 10);
+    expect(OnboardingState.instance.stage, ObStep.account.index);
   }, variant: notAndroid);
 }

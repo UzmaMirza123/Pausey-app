@@ -5,36 +5,15 @@ import '../utils/app_theme.dart';
 /// Soft, out-of-focus leaves along the bottom-left and bottom-right edges
 /// (onboarding screens), mostly off-screen like a blurred photo backdrop.
 /// Purely decorative: behind the content and the buttons, never takes touches.
-///
-/// Inside the intro PageView pass the page's [controller] and [index]: the leaves
-/// then cancel the page's slide (and stay clipped to the page), so while pages
-/// change they stand still on screen, like the footer.
+/// They sit outside the sliding content, so they stay still while screens change.
 class CornerLeaves extends StatelessWidget {
-  const CornerLeaves({super.key, this.controller, this.index = 0});
-
-  final PageController? controller;
-  final int index;
+  const CornerLeaves({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Widget layer = CustomPaint(painter: _CornerLeavesPainter(dark: context.isDark), size: Size.infinite);
-    final c = controller;
-    final width = MediaQuery.sizeOf(context).width;
     return IgnorePointer(
       child: ExcludeSemantics(
-        child: c == null
-            ? layer
-            : ClipRect(
-                child: AnimatedBuilder(
-                  animation: c,
-                  builder: (context, child) {
-                    final paged = c.hasClients && c.position.haveDimensions;
-                    final delta = paged ? (c.page ?? index.toDouble()) - index : 0.0;
-                    return Transform.translate(offset: Offset(delta * width, 0), child: child);
-                  },
-                  child: layer,
-                ),
-              ),
+        child: CustomPaint(painter: _CornerLeavesPainter(dark: context.isDark), size: Size.infinite),
       ),
     );
   }

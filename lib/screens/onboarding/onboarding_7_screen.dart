@@ -8,6 +8,7 @@ import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
 import '../../widgets/glow_background.dart';
+import 'widgets/ob_hourglass_hero.dart';
 import 'widgets/ob_text_motion.dart';
 
 /// Lavender-grey used for body copy on this screen in dark mode (#7B749E).
@@ -81,10 +82,13 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 32, AppSpacing.gutter, 32),
+        padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 4, AppSpacing.gutter, 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Animated hourglass on top (falling sand), like the other screens' illustrations.
+            const ObHourglassHero(),
+            const SizedBox(height: 8),
             ObRevealText(context.l10n.ob7Title, style: AppText.h1.copyWith(color: c.textPrimary, height: 32.5 / 30)),
             const SizedBox(height: 8),
             SizedBox(

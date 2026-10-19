@@ -333,13 +333,11 @@ class OnboardingScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scope = OnboardingPageScope.maybeOf(context);
-    // In the questions flow (not the intro PageView, which swipes by itself) a swipe
-    // does what the button / back arrow do.
-    final inFlow = scope != null && scope.dotsAt != null;
+    // In the flow a swipe does what the button / back arrow do.
     final b = button;
     return OnboardingSwipe(
-      onNext: inFlow && swipeForward && b is PrimaryButton ? b.onPressed : null,
-      onBack: inFlow ? scope.onBack : null,
+      onNext: scope != null && swipeForward && b is PrimaryButton ? b.onPressed : null,
+      onBack: scope != null && scope.canBack ? scope.onBack : null,
       child: _scaffold(context, scope),
     );
   }
@@ -354,7 +352,7 @@ class OnboardingScaffold extends StatelessWidget {
         children: [
           FlowSwitch.fade(context, GlowBackground(blobs: blobs, starsAsset: starsAsset, child: const SizedBox.shrink())),
           // Soft leaves in the bottom corners, behind the content and the buttons.
-          Positioned.fill(child: CornerLeaves(controller: scope?.controller, index: scope?.index ?? 0)),
+          const Positioned.fill(child: CornerLeaves()),
           SafeArea(
             child: Column(
               children: [
@@ -409,9 +407,9 @@ class OnboardingScaffold extends StatelessWidget {
       );
 }
 
-/// Footer inside the onboarding flow. While pages slide, it stays still on
+/// Footer inside the onboarding flow. While pages change it stays still on
 /// screen: the dots glide to the next step and the buttons cross-fade.
-/// From the second page on, a back arrow sits left of the main button.
+/// From the second screen on, a back arrow sits left of the main button.
 class _FlowFooter extends StatelessWidget {
   const _FlowFooter({required this.scope, required this.button, this.footerExtra});
 
@@ -421,76 +419,43 @@ class _FlowFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
-    // Button row uses the same side gutter as the screen content.
-    final rowWidth = width - 2 * AppSpacing.gutter;
-    return AnimatedBuilder(
-      animation: scope.controller,
-      builder: (context, _) {
-        final c = scope.controller;
-        final paged = c.hasClients && c.position.haveDimensions;
-        final pos = paged ? c.page ?? scope.index.toDouble() : scope.index.toDouble();
-        final delta = pos - scope.index;
-        final nearest = pos.round() == scope.index;
-        final fade = (1 - delta.abs() * 1.6).clamp(0.0, 1.0);
-        // Outside a PageView (the conversational flow) the dots glide in from the previous step.
-        final at = scope.dotsAt;
-        final Widget dots = !paged && at != null
-            ? FlowSwitch.dots(context, FlowDotsGlide(from: (scope.dotsFrom ?? at).toDouble(), to: at.toDouble()))
-            : FlowDots(position: pos);
-        return Transform.translate(
-          // cancel the page's slide so the footer stays in place
-          offset: Offset(delta * width, 0),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 16, AppSpacing.gutter, 6),
-            child: Column(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 16, AppSpacing.gutter, 6),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 5,
+            child: FlowSwitch.dots(context, FlowDotsGlide(from: scope.dotsFrom.toDouble(), to: scope.dotsAt.toDouble())),
+          ),
+          const SizedBox(height: 18),
+          FlowSwitch.fade(
+            context,
+            Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Only the nearest page draws the dots, so they never double up.
-                SizedBox(height: 5, child: nearest ? dots : null),
-                const SizedBox(height: 18),
-                IgnorePointer(
-                  ignoring: !nearest,
-                  child: Opacity(
-                    opacity: fade,
-                    child: FlowSwitch.fade(
-                      context,
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            width: rowWidth,
-                            child: Row(
-                              children: [
-                                if (scope.index > 0) ...[
-                                  BackCircleButton(onPressed: scope.onBack),
-                                  const SizedBox(width: 10),
-                                ],
-                                Expanded(child: button),
-                              ],
-                            ),
-                          ),
-                          // Same height on every page (text or not), so the dots
-                          // and buttons never jump while pages change.
-                          SizedBox(
-                            height: 36,
-                            child: footerExtra == null
-                                ? null
-                                : Padding(
-                                    padding: const EdgeInsets.only(top: 12),
-                                    child: Align(alignment: Alignment.topCenter, child: footerExtra),
-                                  ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                Row(
+                  children: [
+                    if (scope.canBack) ...[BackCircleButton(onPressed: scope.onBack), const SizedBox(width: 10)],
+                    Expanded(child: button),
+                  ],
+                ),
+                // Same height on every page (text or not), so the dots
+                // and buttons never jump while pages change.
+                SizedBox(
+                  height: 36,
+                  child: footerExtra == null
+                      ? null
+                      : Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: Align(alignment: Alignment.topCenter, child: footerExtra),
+                        ),
                 ),
               ],
             ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }

@@ -7,34 +7,30 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../utils/app_theme.dart';
 import '../utils/l10n.dart';
 
-/// Tells an onboarding page where it sits in the flow. The flow wraps every
-/// page in one of these so the shared footer can animate and go back.
+/// Tells an onboarding page where it sits in the flow (the same for every screen),
+/// so the shared footer can show the back arrow and glide the progress dots.
 class OnboardingPageScope extends InheritedWidget {
   const OnboardingPageScope({
     super.key,
-    required this.index,
-    required this.controller,
+    required this.canBack,
     required this.onBack,
-    this.dotsAt,
-    this.dotsFrom,
+    required this.dotsAt,
+    required this.dotsFrom,
     required super.child,
   });
 
-  final int index;
-  final PageController controller;
+  final bool canBack;
   final VoidCallback onBack;
 
-  /// Used when the page is not inside a PageView (the conversational flow): the
-  /// running step for the dots, and the step they glide in from.
-  final int? dotsAt;
-  final int? dotsFrom;
+  /// The running step for the dots, and the step they glide in from.
+  final int dotsAt;
+  final int dotsFrom;
 
   static OnboardingPageScope? maybeOf(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<OnboardingPageScope>();
 
   @override
-  bool updateShouldNotify(OnboardingPageScope old) =>
-      old.index != index || old.controller != controller || old.dotsAt != dotsAt || old.dotsFrom != dotsFrom;
+  bool updateShouldNotify(OnboardingPageScope old) => old.canBack != canBack || old.dotsAt != dotsAt || old.dotsFrom != dotsFrom;
 }
 
 /// The page change in the conversational flow. Pages read it so that, like the

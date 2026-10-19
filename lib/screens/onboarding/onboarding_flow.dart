@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../services/auth_service.dart';
 import '../../widgets/onboarding_nav.dart';
+import 'onboarding_1_screen.dart';
+import 'onboarding_2_screen.dart';
+import 'onboarding_3_screen.dart';
+import 'onboarding_4_screen.dart';
 import 'onboarding_7_screen.dart';
 import 'onboarding_9_screen.dart';
 import 'onboarding_state.dart';
@@ -12,38 +16,49 @@ import 'widgets/ob_kit.dart';
 
 export 'stages/set_up.dart' show ObFirstAction;
 
-/// The conversational onboarding: 11 stages in three chapters (the 3 dots).
+/// Every onboarding screen, in order. One flow for all of them: the same Next,
+/// back arrow, Skip, swipe, progress dots and page change everywhere.
+enum ObStep {
+  // The 4 intro screens.
+  reduceAddiction,
+  lockApps,
+  stayFocused,
+  trackProgress,
+  // Questions and set-up.
+  relate,
+  goal,
+  screenTime,
+  permissions,
+  apps,
+  reflection,
+  story,
+  dailyGoal,
+  accessibility,
+  account,
+  allSet,
+}
+
+/// The onboarding, from the first intro screen to "You're all set!".
 ///
 /// Progress is saved after every step, so closing the app resumes where the user
-/// left. The starter plan is applied only on the last stage.
+/// left. The starter plan is applied only on the last screen.
 class OnboardingFlow extends StatefulWidget {
-  const OnboardingFlow({super.key, this.onFinished, this.initialStage, this.onBackFromStart});
+  const OnboardingFlow({super.key, this.onFinished, this.initialStage});
 
   /// Called when done. `null` = a returning user signed in from the welcome screen.
   final void Function(ObFirstAction? action)? onFinished;
 
-  /// Back pressed on the first question (returns to the intro screens).
-  final VoidCallback? onBackFromStart;
-
-  /// First stage shown (the old "Your time is yours" welcome, stage 0, was removed).
-  static const firstStage = 1;
-
-  /// Preview/testing: start on this stage instead of the saved one.
+  /// Preview/testing: start on this screen (an [ObStep] index) instead of the saved one.
   final int? initialStage;
 
-  static const stageCount = 12;
-  static const _accountStage = 10;
-
-  /// Screens before the first stage (the 4 intro screens).
-  static const introScreens = 4;
+  static final stageCount = ObStep.values.length;
 
   /// Extra screens inside the "How it works" story (4 beats = 4 screens).
   static const _storyExtra = 3;
-  static const _storyStage = 7;
 
-  /// Running step for the progress dots, continuing from the intro screens: every
-  /// screen moves the active dot one step (1 → 2 → 3 → 1 …), like the first 4 screens.
-  static int dotsAt(int stage) => introScreens - 1 + stage + (stage > _storyStage ? _storyExtra : 0);
+  /// Running step for the progress dots: every screen moves the active dot one
+  /// step (1 → 2 → 3 → 1 …); the story's beats count as screens too.
+  static int dotsAt(int stage) => stage + (stage > ObStep.story.index ? _storyExtra : 0);
 
   @override
   State<OnboardingFlow> createState() => _OnboardingFlowState();
@@ -52,13 +67,9 @@ class OnboardingFlow extends StatefulWidget {
 class _OnboardingFlowState extends State<OnboardingFlow> {
   final _s = OnboardingState.instance;
   final _gate = ObBackGate();
-
-  /// Lets the original screen's footer show the back arrow and the middle progress dot.
-  final _dialPager = PageController();
   bool _forward = true;
 
-  /// Step the dots glide in from (the screen before). Coming from the intro, the
-  /// first question glides on from its last screen.
+  /// Step the dots glide in from (the screen before).
   late int _dotsFrom;
 
   @override
@@ -66,43 +77,33 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     super.initState();
     _s.load();
     if (widget.initialStage != null) _s.stage = widget.initialStage!;
-    _s.stage = _s.stage.clamp(OnboardingFlow.firstStage, OnboardingFlow.stageCount - 1);
+    _s.stage = _s.stage.clamp(0, OnboardingFlow.stageCount - 1);
     _s.selectDefaults();
-    final at = OnboardingFlow.dotsAt(_s.stage);
-    _dotsFrom = _s.stage == OnboardingFlow.firstStage ? at - 1 : at;
+    _dotsFrom = OnboardingFlow.dotsAt(_s.stage);
   }
 
   bool get _signedIn => AuthService.instance.value is! SignedOut;
 
   void _go(int to) {
-    // The account stage is skipped when the user is already signed in.
-    if (to == OnboardingFlow._accountStage && _signedIn) to += (to > _s.stage ? 1 : -1);
-    if (to < OnboardingFlow.firstStage) {
-      widget.onBackFromStart?.call();
-      return;
-    }
-    if (to >= OnboardingFlow.stageCount) return;
-    if (to == 8) _s.suggestPlan(); // fill the starter plan from the answers
+    // The account screen is skipped when the user is already signed in.
+    if (to == ObStep.account.index && _signedIn) to += (to > _s.stage ? 1 : -1);
+    if (to < 0 || to >= OnboardingFlow.stageCount) return;
+    if (to == ObStep.dailyGoal.index) _s.suggestPlan(); // fill the starter plan from the answers
     _gate.handler = null;
     setState(() {
       _forward = to > _s.stage;
-      // One step forward or back, as on the intro screens.
+      // One step forward or back.
       _dotsFrom = OnboardingFlow.dotsAt(to) + (_forward ? -1 : 1);
     });
     _s.update((s) => s.stage = to);
   }
 
   void _next() => _go(_s.stage + 1);
-  /// A stage's inner step first (story beats), then the previous stage.
+
+  /// A screen's inner step first (story beats), then the previous screen.
   void _back() {
     final inner = _gate.handler;
     inner != null ? inner() : _go(_s.stage - 1);
-  }
-
-  @override
-  void dispose() {
-    _dialPager.dispose();
-    super.dispose();
   }
 
   /// "Enter Pausey": apply the plan and open the app on Home.
@@ -112,43 +113,30 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     widget.onFinished?.call(null);
   }
 
-
-  Widget _stage(int i) => switch (i) {
-        1 => RelateStage(onNext: _next),
-        2 => GoalStage(onNext: _next),
-        3 => ScreenTimeStage(onNext: _next),
+  Widget _stage(ObStep step) => switch (step) {
+        ObStep.reduceAddiction => Onboarding1Screen(onNext: _next, onSkip: _next),
+        ObStep.lockApps => Onboarding2Screen(onNext: _next, onSkip: _next),
+        ObStep.stayFocused => Onboarding3Screen(onNext: _next, onSkip: _next),
+        ObStep.trackProgress => Onboarding4Screen(onNext: _next, onSkip: _next),
+        ObStep.relate => RelateStage(onNext: _next),
+        ObStep.goal => GoalStage(onNext: _next),
+        ObStep.screenTime => ScreenTimeStage(onNext: _next),
         // Usage access + display over other apps, so the next screen can show the most-used apps.
-        4 => PermissionsStage(onNext: _next),
-        5 => AppsStage(onNext: _next),
-        6 => ReflectionStage(onNext: _next),
-        7 => HowItHelpsStage(onNext: _next),
-        // "Set your daily screen-time goal" (the original onboarding screen) in place of the starter plan.
-        8 => OnboardingPageScope(
-            index: 1,
-            controller: _dialPager,
-            onBack: _back,
-            dotsAt: OnboardingFlow.dotsAt(i),
-            dotsFrom: _dotsFrom,
-            child: Onboarding7Screen(onNext: _next, onSkip: _next),
-          ),
-        // "One last thing": Accessibility, right after the daily goal.
-        9 => AccessibilityStage(onNext: _next),
-        10 => AccountStage(onNext: _next),
-        // "You're all set!" (the original last onboarding screen) in place of "Your first step starts here".
-        _ => OnboardingPageScope(
-            index: 2,
-            controller: _dialPager,
-            onBack: _back,
-            dotsAt: OnboardingFlow.dotsAt(i),
-            dotsFrom: _dotsFrom,
-            child: Onboarding9Screen(onNext: _enter, onSkip: () => _go(OnboardingFlow.firstStage)),
-          ),
+        ObStep.permissions => PermissionsStage(onNext: _next),
+        ObStep.apps => AppsStage(onNext: _next),
+        ObStep.reflection => ReflectionStage(onNext: _next),
+        ObStep.story => HowItHelpsStage(onNext: _next),
+        ObStep.dailyGoal => Onboarding7Screen(onNext: _next, onSkip: _next),
+        ObStep.accessibility => AccessibilityStage(onNext: _next),
+        ObStep.account => AccountStage(onNext: _next),
+        ObStep.allSet => Onboarding9Screen(onNext: _enter, onSkip: () => _go(0)),
       };
 
   @override
   Widget build(BuildContext context) {
     final i = _s.stage;
     final reduced = ObMotion.reduced(context);
+    final canBack = i > 0;
     return PopScope(
       canPop: i == 0,
       onPopInvokedWithResult: (didPop, _) {
@@ -166,7 +154,22 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         },
         child: KeyedSubtree(
           key: ValueKey(i),
-          child: ObFlowScope(dotsAt: OnboardingFlow.dotsAt(i), dotsFrom: _dotsFrom, onSkip: _next, canBack: i > OnboardingFlow.firstStage || widget.onBackFromStart != null, onBack: _back, backGate: _gate, child: _stage(i)),
+          // The same place-in-the-flow for both kinds of screens (question pages and the original designs).
+          child: ObFlowScope(
+            dotsAt: OnboardingFlow.dotsAt(i),
+            dotsFrom: _dotsFrom,
+            onSkip: _next,
+            canBack: canBack,
+            onBack: _back,
+            backGate: _gate,
+            child: OnboardingPageScope(
+              canBack: canBack,
+              onBack: _back,
+              dotsAt: OnboardingFlow.dotsAt(i),
+              dotsFrom: _dotsFrom,
+              child: _stage(ObStep.values[i]),
+            ),
+          ),
         ),
       ),
     );

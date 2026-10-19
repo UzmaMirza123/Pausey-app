@@ -3,18 +3,19 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:pausey/main.dart';
-import 'package:pausey/screens/onboarding/intro_flow.dart';
+import 'package:pausey/screens/onboarding/onboarding_flow.dart';
+import 'package:pausey/screens/onboarding/onboarding_state.dart';
 import 'package:pausey/services/local_store.dart';
 
 void main() {
-  testWidgets('the 4 intro screens run in order and then hand over to onboarding', (t) async {
+  testWidgets('the 4 intro screens run in order, then the questions follow in the same flow', (t) async {
     SharedPreferences.setMockInitialValues({});
     await LocalStore.init();
+    await OnboardingState.instance.reset();
     t.view.physicalSize = const Size(412 * 3, 915 * 3);
     t.view.devicePixelRatio = 3;
     addTearDown(t.view.reset);
-    var done = false;
-    await t.pumpWidget(PauseyApp(home: IntroFlow(onFinished: () => done = true)));
+    await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {})));
     await t.pump(const Duration(seconds: 1));
 
     Future<void> next(String label) async {
@@ -35,6 +36,7 @@ void main() {
     await next('Continue');
     expect(find.bySemanticsLabel('Track Your Progress'), findsOneWidget);
     await next('Continue');
-    expect(done, isTrue);
+    expect(find.bySemanticsLabel('Lose track of time?'), findsOneWidget);
+    expect(OnboardingState.instance.stage, ObStep.relate.index);
   });
 }
