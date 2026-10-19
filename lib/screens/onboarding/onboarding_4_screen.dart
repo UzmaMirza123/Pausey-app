@@ -10,7 +10,6 @@ import 'widgets/ob_text_motion.dart';
 import 'widgets/intro_motion.dart';
 import '../../widgets/glow_background.dart';
 import '../../utils/l10n.dart';
-import 'widgets/ob3_svg_light_mapper.dart';
 
 /// Figma: OnBoarding 4 — "Track Your Progress" (727:41995).
 class Onboarding4Screen extends StatelessWidget {
@@ -162,7 +161,6 @@ class _IllustrationState extends State<_Illustration> with TickerProviderStateMi
 
   @override
   Widget build(BuildContext context) {
-    final dark = context.isDark;
     final intro = CurvedAnimation(parent: _intro, curve: Curves.easeOutCubic);
     return SizedBox(
       width: 320,
@@ -178,7 +176,7 @@ class _IllustrationState extends State<_Illustration> with TickerProviderStateMi
                 opacity: intro.value,
                 child: Transform.translate(offset: Offset(0, 14 * (1 - intro.value) + 2.5 * math.sin(_float.value * 2 * math.pi)), child: child),
               ),
-              child: ob3ThemedSvg(context, 'assets/svg/ob4_illustration.svg', width: 320, height: 320, dark: dark),
+              child: Image.asset('assets/onboarding/ob_intro4.png', width: 320, height: 320, fit: BoxFit.contain, filterQuality: FilterQuality.medium),
             ),
             // Figma "Gradient+Blur" (270×240, blur 21) centred over the hero.
             IgnorePointer(
