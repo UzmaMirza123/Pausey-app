@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../utils/app_theme.dart';
 import '../utils/theme_controller.dart';
+import 'corner_leaves.dart';
 import 'glow_background.dart';
 import 'onboarding_nav.dart';
 import '../utils/l10n.dart';
@@ -336,6 +337,8 @@ class OnboardingScaffold extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           FlowSwitch.fade(context, GlowBackground(blobs: blobs, starsAsset: starsAsset, child: const SizedBox.shrink())),
+          // Soft leaves in the bottom corners, behind the content and the buttons.
+          const Positioned.fill(child: CornerLeaves()),
           SafeArea(
             child: Column(
               children: [

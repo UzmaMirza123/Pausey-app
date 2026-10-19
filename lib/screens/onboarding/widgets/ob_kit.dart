@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../utils/app_theme.dart';
 import '../../../widgets/common.dart';
+import '../../../widgets/corner_leaves.dart';
 import '../../../widgets/glow_background.dart';
 import '../../../widgets/onboarding_nav.dart';
 import 'ob_text_motion.dart';
@@ -104,6 +105,8 @@ class ObPage extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           FlowSwitch.fade(context, const GlowBackground(child: SizedBox.shrink())),
+          // Soft leaves in the bottom corners, behind the content and the buttons.
+          const Positioned.fill(child: CornerLeaves()),
           SafeArea(
             child: Column(
               children: [
