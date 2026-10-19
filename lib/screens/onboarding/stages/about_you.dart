@@ -11,6 +11,7 @@ import '../../../widgets/ui_kit.dart';
 import '../onboarding_state.dart';
 import '../widgets/ob_apps_orbit.dart';
 import '../widgets/ob_art.dart';
+import '../widgets/ob_clock_hero.dart';
 import '../widgets/ob_kit.dart';
 import '../widgets/ob_text_motion.dart';
 
@@ -60,7 +61,7 @@ class RelateStage extends StatelessWidget {
           primaryLabel: r == ObRelate.rarely ? l.cvNext : l.cvRelateCta,
           onPrimary: r == null ? null : onNext,
           children: [
-            _head(ObArtKind.relate, l.cvRelateTitle, l.cvRelateSub),
+            _headWith(ObClockHero(answer: r), l.cvRelateTitle, l.cvRelateSub),
             for (final (i, (v, label)) in [
               (ObRelate.often, l.cvRelateOften),
               (ObRelate.sometimes, l.cvRelateSometimes),
