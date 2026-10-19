@@ -82,7 +82,7 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
                 ),
               );
             }),
-            const SizedBox(height: 4),
+            const SizedBox(height: 24),
             IntroEnter(
               index: 1,
               child: ObRevealText(context.l10n.ob3Title, style: AppText.h1.copyWith(color: c.textPrimary)),
@@ -238,17 +238,17 @@ class _ModeTileState extends State<_ModeTile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: 34,
-                  height: 34,
+                  width: 42,
+                  height: 42,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: widget.color.withValues(alpha: 0.18),
-                    borderRadius: BorderRadius.circular(11),
+                    borderRadius: BorderRadius.circular(13),
                     border: Border.all(color: widget.color.withValues(alpha: 0.3)),
                   ),
-                  child: SvgPicture.asset(widget.icon, width: widget.iconSize.width, height: widget.iconSize.height),
+                  child: SvgPicture.asset(widget.icon, width: widget.iconSize.width * 1.3, height: widget.iconSize.height * 1.3),
                 ),
-                const SizedBox(height: 7),
+                const SizedBox(height: 10),
                 Text(
                   widget.title,
                   maxLines: 2,
@@ -293,7 +293,7 @@ class _StatTile extends StatelessWidget {
     final dark = context.isDark;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 9),
+      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 12),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(12),
@@ -302,13 +302,13 @@ class _StatTile extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            width: 14,
-            height: 14,
+            width: 20,
+            height: 20,
             child: Center(
-              child: SvgPicture.asset(icon, width: iconSize.width, height: iconSize.height),
+              child: SvgPicture.asset(icon, width: iconSize.width * 1.4, height: iconSize.height * 1.4),
             ),
           ),
-          const SizedBox(height: 2.5),
+          const SizedBox(height: 6),
           FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(

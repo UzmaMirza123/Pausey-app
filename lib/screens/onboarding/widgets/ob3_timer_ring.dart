@@ -287,7 +287,6 @@ class _Ob3TimerRingState extends State<Ob3TimerRing> with TickerProviderStateMix
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const _Bars(heights: [8, 12, 17, 26], colors: [Color(0xFFC9BCFF), Color(0xFFB3A2FF), Color(0xFF8B8BFF), AppPalette.blue]),
                         const SizedBox(height: 6),
@@ -296,9 +295,9 @@ class _Ob3TimerRingState extends State<Ob3TimerRing> with TickerProviderStateMix
                           height: 30,
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
-                            alignment: AlignmentDirectional.centerStart,
                             child: Text(
                               l.ob3RingTagline,
+                              textAlign: TextAlign.center,
                               style: TextStyle(fontFamily: AppText.fontFamily, fontSize: 9.5, fontWeight: FontWeight.w700, height: 1.15, color: dark ? const Color(0xFFC4BFE8) : const Color(0xFF4E4A7A)),
                             ),
                           ),

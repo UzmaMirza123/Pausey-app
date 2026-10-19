@@ -60,7 +60,7 @@ class Onboarding4Screen extends StatelessWidget {
               // Taller hero: a bit wider than the margins allow, up to 440.
               final w = math.min(box.maxWidth + 52, 440.0);
               return SizedBox(
-                height: Ob4ProgressHero.heightFor(w) + 30,
+                height: Ob4ProgressHero.heightFor(w) + 52,
                 child: OverflowBox(
                   maxWidth: w,
                   alignment: Alignment.topCenter,
@@ -166,7 +166,7 @@ class _FeatureTile extends StatelessWidget {
     final c = context.colors;
     final dark = context.isDark;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 11),
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 15),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(12),
@@ -175,13 +175,13 @@ class _FeatureTile extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            width: 15,
-            height: 15,
+            width: 22,
+            height: 22,
             child: Center(
-              child: SvgPicture.asset(icon, width: iconSize, height: iconSize),
+              child: SvgPicture.asset(icon, width: iconSize * 1.45, height: iconSize * 1.45),
             ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 9),
           FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
@@ -199,7 +199,7 @@ class _FeatureTile extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 7),
           Text(
             subtitle,
             maxLines: 2,

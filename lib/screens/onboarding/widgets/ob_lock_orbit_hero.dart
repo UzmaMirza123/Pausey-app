@@ -233,9 +233,9 @@ class _BackPainter extends CustomPainter {
     );
     final ringPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.8
-      ..color = (dark ? const Color(0xFFB7A6FF) : Colors.white).withValues(alpha: (dark ? 0.18 : 0.75) * rings);
-    // Three thin rings with wide gaps between them.
+      ..strokeWidth = 4.5
+      ..color = (dark ? const Color(0xFFB7A6FF) : Colors.white).withValues(alpha: (dark ? 0.18 : 0.80) * rings);
+    // Three wide white rings, so the purple bands between them are narrower.
     for (final r in [46.0, 67.0, 88.0]) {
       canvas.drawCircle(_c, r * (0.7 + 0.3 * rings), ringPaint);
     }
@@ -259,7 +259,8 @@ class _BackPainter extends CustomPainter {
     canvas.translate(_c.dx, _c.dy);
     canvas.rotate(-0.12);
     const rx = 164.0, ry = 114.0;
-    final bead = Paint()..color = (dark ? const Color(0xFFB7A6FF) : const Color(0xFFC9BEFF)).withValues(alpha: (dark ? 0.30 : 0.55) * orbit);
+    // Very light, so the orbit only hints at itself.
+    final bead = Paint()..color = (dark ? const Color(0xFFB7A6FF) : const Color(0xFFDCD4FF)).withValues(alpha: (dark ? 0.16 : 0.30) * orbit);
     const n = 120;
     final shift = t * 0.02;
     for (var j = 0; j < n; j++) {
