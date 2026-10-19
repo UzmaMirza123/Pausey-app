@@ -1,11 +1,10 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
+import 'widgets/ob_lock_orbit_hero.dart';
 import 'widgets/ob_text_motion.dart';
 import 'widgets/intro_motion.dart';
 
@@ -43,7 +42,7 @@ class Onboarding2Screen extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(height: 8),
-          const IntroEnter(scale: true, child: _OrbitIllustration()),
+          const IntroEnter(scale: true, child: ObLockOrbitHero()),
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
@@ -130,99 +129,6 @@ class Onboarding2Screen extends StatelessWidget {
 
 const _green = Color(0xFF34D399);
 const _sky = Color(0xFF60A5FA);
-
-/// 260×270 hero: dashed orbit with six app icons around a glowing lock.
-/// The app icons float gently up and down.
-class _OrbitIllustration extends StatefulWidget {
-  const _OrbitIllustration();
-
-  @override
-  State<_OrbitIllustration> createState() => _OrbitIllustrationState();
-}
-
-class _OrbitIllustrationState extends State<_OrbitIllustration> with SingleTickerProviderStateMixin {
-  late final AnimationController _float = AnimationController(vsync: this, duration: const Duration(seconds: 4))..repeat();
-
-  // (asset, left, top) in the 260×270 box, straight from Figma.
-  static const _icons = [
-    ('assets/svg/ob2_instagram.svg', 113.0, -2.0),
-    ('assets/svg/ob2_music.svg', 212.52, 52.0),
-    ('assets/svg/ob2_x.svg', 215.52, 169.0),
-    ('assets/svg/ob2_youtube.svg', 115.0, 223.0),
-    ('assets/svg/ob2_facebook.svg', 14.47, 163.0),
-    ('assets/svg/ob2_snapchat.svg', 14.47, 59.0),
-  ];
-
-  @override
-  void dispose() {
-    _float.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final dark = context.isDark;
-    return SizedBox(
-      width: 260,
-      height: 270,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          // Soft violet glow (340×340 "Gradient" layer behind the hero).
-          Positioned(
-            left: -40,
-            top: -24.66,
-            width: 340,
-            height: 340,
-            child: IgnorePointer(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [
-                      AppPalette.accent.withValues(alpha: dark ? 0.15 : 0.12),
-                      AppPalette.accent.withValues(alpha: 0),
-                    ],
-                    stops: const [0, 0.65],
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SvgPicture.asset('assets/svg/ob2_orbit.svg', width: 260, height: 260),
-          for (var i = 0; i < _icons.length; i++)
-            AnimatedBuilder(
-              animation: _float,
-              builder: (context, child) {
-                final dy = math.sin((_float.value + i / _icons.length) * 2 * math.pi) * 3;
-                return Positioned(left: _icons[i].$2, top: _icons[i].$3 + dy, child: child!);
-              },
-              child: SvgPicture.asset(_icons[i].$1, width: 32, height: 32),
-            ),
-          Positioned(
-            left: 96,
-            top: 94,
-            child: Container(
-              width: 68,
-              height: 68,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: dark ? const Color(0xB30A0A1E) : const Color(0xE6FFFFFF),
-                border: Border.all(color: const Color(0xFFC4A8FF).withValues(alpha: dark ? 0.25 : 0.5), width: 2),
-                boxShadow: [
-                  BoxShadow(color: AppPalette.accent.withValues(alpha: dark ? 0.53 : 0.35), blurRadius: 36),
-                  BoxShadow(color: AppPalette.violet.withValues(alpha: 0.27), blurRadius: 10),
-                ],
-              ),
-              child: Padding(padding: const EdgeInsets.only(bottom: 1.5), child: SvgPicture.asset('assets/svg/ob2_lock.svg', width: 30, height: 40.5)),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 /// One feature row: tinted round icon + text, on a dark-violet gradient card.
 class _FeatureRow extends StatelessWidget {
