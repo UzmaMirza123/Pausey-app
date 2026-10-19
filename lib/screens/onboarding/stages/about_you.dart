@@ -12,6 +12,7 @@ import '../onboarding_state.dart';
 import '../widgets/ob_apps_orbit.dart';
 import '../widgets/ob_art.dart';
 import '../widgets/ob_clock_hero.dart';
+import '../widgets/ob_hourglass_hero.dart';
 import '../widgets/ob_kit.dart';
 import '../widgets/ob_text_motion.dart';
 
@@ -127,7 +128,7 @@ class _GoalStageState extends State<GoalStage> {
           primaryLabel: l.cvNext,
           onPrimary: g == null ? null : widget.onNext,
           children: [
-            _head(ObArtKind.goal, l.cvGoalTitle, l.cvGoalSub),
+            _headWith(const ObHourglassHero(), l.cvGoalTitle, l.cvGoalSub),
             for (final (i, (v, icon, label)) in options.indexed)
               _answer(i, ObAnswer(icon: icon, label: label, selected: g == v, onTap: () => _s.update((s) => s.goal = v))),
             AnimatedSize(
