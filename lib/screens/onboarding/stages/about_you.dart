@@ -12,6 +12,7 @@ import '../onboarding_state.dart';
 import '../widgets/ob_apps_orbit.dart';
 import '../widgets/ob_art.dart';
 import '../widgets/ob_clock_hero.dart';
+import '../widgets/ob_hourglass_hero.dart';
 import '../widgets/ob_kit.dart';
 import '../widgets/ob_text_motion.dart';
 
@@ -497,7 +498,7 @@ class _ScreenTimeStageState extends State<ScreenTimeStage> {
           primaryLabel: v == null ? l.cvSkipForNow : l.cvNext,
           onPrimary: widget.onNext,
           children: [
-            _head(ObArtKind.screentime, l.cvStTitle, l.cvStSub),
+            _headWith(const ObHourglassHero(), l.cvStTitle, l.cvStSub),
             if (measured != null)
               ObFadeUp(
                 delay: _answersDelay,

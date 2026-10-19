@@ -65,8 +65,8 @@ class OnboardingFlow extends StatefulWidget {
 }
 
 class _OnboardingFlowState extends State<OnboardingFlow> {
-  /// How long a page turn takes (smooth, like turning a book page).
-  static const _pageTurn = Duration(milliseconds: 650);
+  /// How long a screen change takes (a soft glide and cross-fade).
+  static const _pageTurn = Duration(milliseconds: 460);
 
   final _s = OnboardingState.instance;
   final _gate = ObBackGate();
@@ -147,14 +147,14 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       },
       child: AnimatedSwitcher(
         duration: reduced ? Duration.zero : _pageTurn,
-        switchInCurve: Curves.easeInOutCubic,
-        switchOutCurve: Curves.easeInOutCubic,
-        // Next: the leaving page stays on top while it turns away; back: the returning page turns in on top.
+        switchInCurve: Curves.easeOutCubic,
+        switchOutCurve: Curves.easeOutCubic,
+        // The new screen (with the shared background) underneath, the leaving content fading out on top.
         layoutBuilder: (current, previous) => Stack(
           alignment: Alignment.center,
-          children: _forward ? [?current, ...previous] : [...previous, ?current],
+          children: [?current, ...previous],
         ),
-        // Each page turns its own content like a book page and keeps its footer still (FlowSwitchScope).
+        // Each page glides its own content and keeps its footer still (FlowSwitchScope).
         // The leaving page takes no taps, so a quick second tap can't skip a screen.
         transitionBuilder: (child, a) {
           final incoming = child.key == ValueKey(i);
