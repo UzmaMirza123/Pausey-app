@@ -298,6 +298,17 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ob4StreaksSub => '& 徽章';
 
   @override
+  String get ob3RingStreak => '天连续';
+
+  @override
+  String ob3RingSessions(int done, int total) {
+    return '第 $done/$total 个时段';
+  }
+
+  @override
+  String get ob3RingTagline => '专注\n成就更好的你';
+
+  @override
   String get ob5Title => '你每天平均屏幕时间是多少？';
 
   @override

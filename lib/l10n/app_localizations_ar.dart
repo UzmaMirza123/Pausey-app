@@ -302,6 +302,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ob4StreaksSub => 'والشارات';
 
   @override
+  String get ob3RingStreak => 'أيام متتالية';
+
+  @override
+  String ob3RingSessions(int done, int total) {
+    return '$done من $total جلسات';
+  }
+
+  @override
+  String get ob3RingTagline => 'التركيز يصنع\nنسخة أفضل منك';
+
+  @override
   String get ob5Title => 'ما متوسط وقت الشاشة اليومي لديك؟';
 
   @override

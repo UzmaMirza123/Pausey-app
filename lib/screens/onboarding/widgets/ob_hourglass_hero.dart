@@ -7,7 +7,7 @@ import '../../../utils/app_theme.dart';
 import '../../../utils/l10n.dart';
 
 // Top illustration of "More time for what?": an hourglass whose sand keeps
-// falling, inside a slowly turning dashed ring, with two orbit lines carrying
+// falling, with two orbit lines carrying
 // little dots, twinkling sparkles and six round icons floating on the sides
 // (alarm, target, chart · calendar, 2h, calm). Animations off: one still frame.
 
@@ -59,7 +59,7 @@ class _ObHourglassHeroState extends State<ObHourglassHero> with SingleTickerProv
   Widget build(BuildContext context) {
     final dark = context.isDark;
     final l = context.l10n;
-    final h = (MediaQuery.sizeOf(context).height * 0.30).clamp(200.0, 270.0);
+    final h = (MediaQuery.sizeOf(context).height * 0.24).clamp(170.0, 215.0);
     return ExcludeSemantics(
       child: LayoutBuilder(
         builder: (context, box) {
@@ -183,7 +183,7 @@ class _Badge extends StatelessWidget {
   }
 }
 
-/// Glow, turning dashed ring, two orbit lines with travelling dots, sparkles.
+/// Glow, two orbit lines with travelling dots, sparkles.
 class _BackdropPainter extends CustomPainter {
   _BackdropPainter({required this.center, required this.k, required this.t, required this.dark, required this.w, required this.h});
   final Offset center;
@@ -217,19 +217,6 @@ class _BackdropPainter extends CustomPainter {
           AppPalette.violet.withValues(alpha: 0),
         ]).createShader(Rect.fromCircle(center: center, radius: glowR)),
     );
-    // Dashed ring, slowly turning.
-    final ringR = h * 0.46;
-    final rect = Rect.fromCircle(center: center, radius: ringR);
-    final dash = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5 * k
-      ..strokeCap = StrokeCap.round
-      ..color = AppPalette.violet.withValues(alpha: dark ? 0.40 : 0.45);
-    const dashes = 64;
-    final rot = t * _tau / 60;
-    for (var i = 0; i < dashes; i++) {
-      canvas.drawArc(rect, rot + i * _tau / dashes, _tau / dashes * 0.45, false, dash);
-    }
     // Two orbit lines (tilted ellipses) with dots travelling along them.
     final orbits = [
       (rx: w * 0.47, ry: h * 0.24, tilt: -0.10, speed: 1 / 14.0, colors: const [Color(0xFF93AEFF), Color(0xFFC6A9FF)]),

@@ -298,6 +298,17 @@ class AppLocalizationsKo extends AppLocalizations {
   String get ob4StreaksSub => '& 배지';
 
   @override
+  String get ob3RingStreak => '일 연속';
+
+  @override
+  String ob3RingSessions(int done, int total) {
+    return '$total회 중 $done회';
+  }
+
+  @override
+  String get ob3RingTagline => '집중이\n더 나은 나를 만든다';
+
+  @override
   String get ob5Title => '하루 평균 스크린 타임은 얼마인가요?';
 
   @override

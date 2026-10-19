@@ -22,8 +22,12 @@ S = {
  "ob4InsightsSub": ["AI coach", "AI کوچ", "مدرب ذكي", "AI कोच", "coach IA", "coach IA", "KI-Coach", "coach IA", "pelatih AI", "ИИ-коуч", "AIコーチ", "AI 코치", "AI koç", "coach IA", "AI 教练"],
  "ob4Streaks": ["Streaks", "اسٹریکس", "السلاسل", "स्ट्रीक्स", "Rachas", "Séries", "Serien", "Sequências", "Streak", "Серии", "連続記録", "연속 기록", "Seriler", "Serie", "连续记录"],
  "ob4StreaksSub": ["& badges", "اور بیجز", "والشارات", "और बैज", "e insignias", "et badges", "& Abzeichen", "e medalhas", "& lencana", "и значки", "＆バッジ", "& 배지", "ve rozetler", "e badge", "& 徽章"],
+ "ob3RingStreak": ["day streak", "دن کا اسٹریک", "أيام متتالية", "दिन की स्ट्रीक", "días de racha", "jours de série", "Tage in Folge", "dias seguidos", "hari beruntun", "дней подряд", "日連続", "일 연속", "günlük seri", "giorni di fila", "天连续"],
+ "ob3RingSessions": ["{done} of {total} sessions", "{total} میں سے {done} سیشن", "{done} من {total} جلسات", "{total} में से {done} सेशन", "{done} de {total} sesiones", "{done} sur {total} sessions", "{done} von {total} Sitzungen", "{done} de {total} sessões", "{done} dari {total} sesi", "{done} из {total} сессий", "{total}回中{done}回", "{total}회 중 {done}회", "{total} seanstan {done}", "{done} di {total} sessioni", "第 {done}/{total} 个时段"],
+ "ob3RingTagline": ["Focus Builds\na Better You", "فوکس سے بنتا ہے\nایک بہتر آپ", "التركيز يصنع\nنسخة أفضل منك", "फ़ोकस बनाता है\nएक बेहतर आप", "El foco crea\nun mejor tú", "La concentration\nvous fait grandir", "Fokus macht\ndich besser", "O foco cria\num você melhor", "Fokus Membentuk\nDirimu Lebih Baik", "Фокус делает\nвас лучше", "集中が\nより良い自分をつくる", "집중이\n더 나은 나를 만든다", "Odak seni\ndaha iyi yapar", "La concentrazione\nti rende migliore", "专注\n成就更好的你"],
 }
 META = {
+ "ob3RingSessions": {"placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},
  "ob3PomodoroSub": {"placeholders": {"min": {"type": "int"}}},
  "ob3DeepFocusSub": {"placeholders": {"min": {"type": "int"}}},
  "ob3StatStreakValue": {"placeholders": {"days": {"type": "int"}}},

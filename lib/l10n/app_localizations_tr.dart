@@ -303,6 +303,17 @@ class AppLocalizationsTr extends AppLocalizations {
   String get ob4StreaksSub => 've rozetler';
 
   @override
+  String get ob3RingStreak => 'günlük seri';
+
+  @override
+  String ob3RingSessions(int done, int total) {
+    return '$total seanstan $done';
+  }
+
+  @override
+  String get ob3RingTagline => 'Odak seni\ndaha iyi yapar';
+
+  @override
   String get ob5Title => 'Günlük ortalama ekran süren ne kadar?';
 
   @override

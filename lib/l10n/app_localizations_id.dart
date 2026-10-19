@@ -304,6 +304,17 @@ class AppLocalizationsId extends AppLocalizations {
   String get ob4StreaksSub => '& lencana';
 
   @override
+  String get ob3RingStreak => 'hari beruntun';
+
+  @override
+  String ob3RingSessions(int done, int total) {
+    return '$done dari $total sesi';
+  }
+
+  @override
+  String get ob3RingTagline => 'Fokus Membentuk\nDirimu Lebih Baik';
+
+  @override
   String get ob5Title => 'Berapa rata-rata waktu layar harianmu?';
 
   @override

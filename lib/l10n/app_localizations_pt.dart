@@ -303,6 +303,17 @@ class AppLocalizationsPt extends AppLocalizations {
   String get ob4StreaksSub => 'e medalhas';
 
   @override
+  String get ob3RingStreak => 'dias seguidos';
+
+  @override
+  String ob3RingSessions(int done, int total) {
+    return '$done de $total sessões';
+  }
+
+  @override
+  String get ob3RingTagline => 'O foco cria\num você melhor';
+
+  @override
   String get ob5Title => 'Qual é seu tempo de tela médio por dia?';
 
   @override

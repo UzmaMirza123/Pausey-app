@@ -652,6 +652,24 @@ abstract class AppLocalizations {
   /// **'& badges'**
   String get ob4StreaksSub;
 
+  /// No description provided for @ob3RingStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'day streak'**
+  String get ob3RingStreak;
+
+  /// No description provided for @ob3RingSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} sessions'**
+  String ob3RingSessions(int done, int total);
+
+  /// No description provided for @ob3RingTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus Builds\na Better You'**
+  String get ob3RingTagline;
+
   /// No description provided for @ob5Title.
   ///
   /// In en, this message translates to:

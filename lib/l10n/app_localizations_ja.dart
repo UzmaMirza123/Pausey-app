@@ -298,6 +298,17 @@ class AppLocalizationsJa extends AppLocalizations {
   String get ob4StreaksSub => '＆バッジ';
 
   @override
+  String get ob3RingStreak => '日連続';
+
+  @override
+  String ob3RingSessions(int done, int total) {
+    return '$total回中$done回';
+  }
+
+  @override
+  String get ob3RingTagline => '集中が\nより良い自分をつくる';
+
+  @override
   String get ob5Title => '1日の平均スクリーンタイムは？';
 
   @override

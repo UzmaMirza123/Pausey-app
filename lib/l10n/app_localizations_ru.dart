@@ -303,6 +303,17 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ob4StreaksSub => 'и значки';
 
   @override
+  String get ob3RingStreak => 'дней подряд';
+
+  @override
+  String ob3RingSessions(int done, int total) {
+    return '$done из $total сессий';
+  }
+
+  @override
+  String get ob3RingTagline => 'Фокус делает\nвас лучше';
+
+  @override
   String get ob5Title => 'Сколько в среднем экранного времени у вас в день?';
 
   @override

@@ -178,6 +178,19 @@
   "ob4InsightsSub": "AI coach",
   "ob4Streaks": "Streaks",
   "ob4StreaksSub": "& badges",
+  "ob3RingStreak": "day streak",
+  "ob3RingSessions": "{done} of {total} sessions",
+  "@ob3RingSessions": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "ob3RingTagline": "Focus Builds\na Better You",
   "ob5Title": "What is your daily average Screen Time?",
   "ob5Subtitle": "On your phone only. Your best guess is okay.",
   "ob5More7": "More than 7 hours",

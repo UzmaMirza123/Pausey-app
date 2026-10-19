@@ -303,6 +303,17 @@ class AppLocalizationsHi extends AppLocalizations {
   String get ob4StreaksSub => 'और बैज';
 
   @override
+  String get ob3RingStreak => 'दिन की स्ट्रीक';
+
+  @override
+  String ob3RingSessions(int done, int total) {
+    return '$total में से $done सेशन';
+  }
+
+  @override
+  String get ob3RingTagline => 'फ़ोकस बनाता है\nएक बेहतर आप';
+
+  @override
   String get ob5Title => 'आपका रोज़ का औसत स्क्रीन टाइम कितना है?';
 
   @override

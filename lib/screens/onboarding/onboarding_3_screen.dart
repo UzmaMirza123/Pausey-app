@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -62,28 +64,22 @@ class _Onboarding3ScreenState extends State<Onboarding3Screen> {
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
         child: Column(
           children: [
-            // 298px slot in Figma; the 320px ring overflows it on both sides.
-            // Figma: the ring's 320px box starts 37px below the status bar; our
-            // header is 46px tall, so it sits 9px above the body's top edge.
-            SizedBox(
-              height: 285,
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Positioned(
-                    top: -9,
-                    left: -40,
-                    right: -40,
-                    child: Center(
-                      child: IntroEnter(
-                        scale: true,
-                        child: Ob3TimerRing(total: Duration(minutes: _deep ? 90 : 25)),
-                      ),
-                    ),
+            // Hero spans a little past the side margins (like before).
+            LayoutBuilder(builder: (context, box) {
+              final w = math.min(box.maxWidth + 40, 440.0);
+              return SizedBox(
+                height: Ob3TimerRing.heightFor(w) - 10,
+                child: OverflowBox(
+                  maxWidth: w,
+                  maxHeight: Ob3TimerRing.heightFor(w),
+                  alignment: Alignment.bottomCenter,
+                  child: IntroEnter(
+                    scale: true,
+                    child: Ob3TimerRing(total: Duration(minutes: _deep ? 90 : 25), width: w),
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            }),
             const SizedBox(height: 4),
             IntroEnter(
               index: 1,

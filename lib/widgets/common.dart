@@ -362,8 +362,8 @@ class OnboardingScaffold extends StatelessWidget {
                     Column(
                       children: [
                         OnboardingHeader(onSkip: onSkip, showSkip: showSkip, leading: headerLeading),
-                        // Body fits any screen: shrinks on short phones, centres on tall ones,
-                        // and stays a readable width on tablets.
+                        // Body centres on tall phones and stays a readable width on tablets;
+                        // when it doesn't fit, only this middle part scrolls (header and footer stay).
                         Expanded(
                           child: LayoutBuilder(
                             builder: (context, box) => SingleChildScrollView(
@@ -371,7 +371,7 @@ class OnboardingScaffold extends StatelessWidget {
                               child: Center(
                                 child: ConstrainedBox(
                                   constraints: const BoxConstraints(maxWidth: 480),
-                                  child: FitToViewport(viewportHeight: box.maxHeight, child: body),
+                                  child: FitToViewport(viewportHeight: box.maxHeight, minScale: 1, child: body),
                                 ),
                               ),
                             ),

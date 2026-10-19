@@ -305,6 +305,17 @@ class AppLocalizationsFr extends AppLocalizations {
   String get ob4StreaksSub => 'et badges';
 
   @override
+  String get ob3RingStreak => 'jours de série';
+
+  @override
+  String ob3RingSessions(int done, int total) {
+    return '$done sur $total sessions';
+  }
+
+  @override
+  String get ob3RingTagline => 'La concentration\nvous fait grandir';
+
+  @override
   String get ob5Title => 'Quel est votre temps d\'écran quotidien moyen ?';
 
   @override

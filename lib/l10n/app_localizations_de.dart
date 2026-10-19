@@ -304,6 +304,17 @@ class AppLocalizationsDe extends AppLocalizations {
   String get ob4StreaksSub => '& Abzeichen';
 
   @override
+  String get ob3RingStreak => 'Tage in Folge';
+
+  @override
+  String ob3RingSessions(int done, int total) {
+    return '$done von $total Sitzungen';
+  }
+
+  @override
+  String get ob3RingTagline => 'Fokus macht\ndich besser';
+
+  @override
   String get ob5Title => 'Wie hoch ist deine tägliche Bildschirmzeit?';
 
   @override
