@@ -92,19 +92,14 @@ class _CornerLeavesPainter extends CustomPainter {
       ..cubicTo(half * 1.35, -len * 0.18, half * 1.15, -len * 0.78, 0, -len)
       ..cubicTo(-half * 1.15, -len * 0.78, -half * 1.35, -len * 0.18, 0, 0)
       ..close();
-    final rect = Rect.fromLTWH(-half, -len, half * 2, len);
+    // One soft colour, halfway along the old base→tip shade. A mask blur on a
+    // gradient-filled path draws as thin, cut slivers on Android's renderer.
+    final tip = Color.lerp(color, dark ? const Color(0xFF8C7FE0) : Colors.white, 0.28)!;
     canvas.drawPath(
       path,
       Paint()
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, leaf.blur * k)
-        ..shader = LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-          colors: [
-            color.withValues(alpha: alpha),
-            Color.lerp(color, dark ? const Color(0xFF8C7FE0) : Colors.white, 0.28)!.withValues(alpha: alpha * 0.9),
-          ],
-        ).createShader(rect),
+        ..color = Color.lerp(color, tip, 0.4)!.withValues(alpha: alpha * 0.96)
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, leaf.blur * k),
     );
     canvas.restore();
   }
