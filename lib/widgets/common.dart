@@ -309,6 +309,7 @@ class OnboardingScaffold extends StatelessWidget {
     this.starsAsset = 'assets/svg/ob1_stars.svg',
     this.footerExtra,
     this.headerLeading,
+    this.swipeForward = true,
   });
 
   final Widget body;
@@ -326,9 +327,24 @@ class OnboardingScaffold extends StatelessWidget {
   /// Optional widget at the start of the header row.
   final Widget? headerLeading;
 
+  /// false: a left swipe does not run the button (last screen: it would open the app).
+  final bool swipeForward;
+
   @override
   Widget build(BuildContext context) {
     final scope = OnboardingPageScope.maybeOf(context);
+    // In the questions flow (not the intro PageView, which swipes by itself) a swipe
+    // does what the button / back arrow do.
+    final inFlow = scope != null && scope.dotsAt != null;
+    final b = button;
+    return OnboardingSwipe(
+      onNext: inFlow && swipeForward && b is PrimaryButton ? b.onPressed : null,
+      onBack: inFlow ? scope.onBack : null,
+      child: _scaffold(context, scope),
+    );
+  }
+
+  Widget _scaffold(BuildContext context, OnboardingPageScope? scope) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       // Inside the conversational flow the background fades and the content slides,
@@ -475,6 +491,35 @@ class _FlowFooter extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+/// Swipe left / right on an onboarding screen = the same as its primary button
+/// ([onNext]) / back arrow ([onBack]); mirrored for right-to-left languages.
+/// A null action does nothing (e.g. Continue is still off), so swipes never skip a rule.
+class OnboardingSwipe extends StatelessWidget {
+  const OnboardingSwipe({super.key, required this.child, this.onNext, this.onBack});
+  final Widget child;
+  final VoidCallback? onNext, onBack;
+
+  @override
+  Widget build(BuildContext context) {
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    // Nothing to do: no drag handler, so the drag goes on to others (the intro
+    // PageView needs it to swipe pages). The widget stays, so no state is lost.
+    final active = onNext != null || onBack != null;
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onHorizontalDragEnd: !active
+          ? null
+          : (d) {
+              final v = d.primaryVelocity ?? 0;
+              if (v.abs() < 250) return; // a real swipe, not a small drift
+              final forward = rtl ? v > 0 : v < 0;
+              (forward ? onNext : onBack)?.call();
+            },
+      child: child,
     );
   }
 }

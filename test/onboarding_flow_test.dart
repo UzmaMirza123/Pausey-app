@@ -232,4 +232,50 @@ void main() {
     expect(find.text('Log into your account'), findsOneWidget);
     expect(find.text('Continue as guest'), findsOneWidget);
   }, variant: notAndroid);
+
+  testWidgets('swiping left / right moves through the onboarding like the buttons', (t) async {
+    t.view.physicalSize = const Size(412 * 3, 915 * 3);
+    t.view.devicePixelRatio = 3;
+    addTearDown(t.view.reset);
+    var finished = false;
+    await t.pumpWidget(PauseyApp(home: IntroFlow(onFinished: () => finished = true)));
+    await t.pump(const Duration(seconds: 1));
+    // Intro: swipe left → screen 2, swipe right → back to screen 1.
+    await t.fling(find.byType(PageView), const Offset(-300, 0), 1200);
+    for (var i = 0; i < 10; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
+    expect(find.byType(Onboarding2Screen), findsOneWidget);
+    expect(finished, isFalse);
+
+    // Questions: swipe left = Next, swipe right = back.
+    OnboardingState.instance.update((s) => s.stage = 1);
+    await t.pumpWidget(PauseyApp(home: OnboardingFlow(onFinished: (_) {})));
+    for (var i = 0; i < 10; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
+    expect(find.bySemanticsLabel('Lose track of time?'), findsOneWidget);
+    await t.flingFrom(const Offset(380, 500), const Offset(-300, 0), 1200);
+    for (var i = 0; i < 10; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
+    expect(OnboardingState.instance.stage, 2);
+    await t.flingFrom(const Offset(30, 500), const Offset(300, 0), 1200);
+    for (var i = 0; i < 10; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
+    expect(OnboardingState.instance.stage, 1);
+
+    // "Start your Pausey journey" has no Continue: a left swipe does nothing there.
+    OnboardingState.instance.update((s) => s.stage = 10);
+    await t.pumpWidget(PauseyApp(home: OnboardingFlow(key: UniqueKey(), onFinished: (_) {})));
+    for (var i = 0; i < 10; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
+    await t.flingFrom(const Offset(380, 300), const Offset(-300, 0), 1200);
+    for (var i = 0; i < 10; i++) {
+      await t.pump(const Duration(milliseconds: 200));
+    }
+    expect(OnboardingState.instance.stage, 10);
+  }, variant: notAndroid);
 }

@@ -38,6 +38,25 @@ class _IntroFlowState extends State<IntroFlow> {
     }
   }
 
+  bool _leaving = false;
+
+  /// A drag past the end of the last screen (Android: overscroll, iOS: bounce).
+  bool _onScroll(ScrollNotification n) {
+    if (n.depth != 0) return false;
+    if (n is ScrollStartNotification) _leaving = false; // a new drag
+    if (_leaving) return false;
+    final m = n.metrics;
+    final atEnd = m.pixels >= m.maxScrollExtent - 1;
+    final pushedOn =
+        (n is OverscrollNotification && n.overscroll > 6 && n.dragDetails != null) ||
+        (n is ScrollUpdateNotification && n.dragDetails != null && m.pixels > m.maxScrollExtent + 40);
+    if (atEnd && pushedOn) {
+      _leaving = true;
+      widget.onFinished();
+    }
+    return false;
+  }
+
   @override
   void dispose() {
     _pager.dispose();
@@ -51,18 +70,22 @@ class _IntroFlowState extends State<IntroFlow> {
       onPopInvokedWithResult: (didPop, _) {
         if (!didPop) _back();
       },
-      child: PageView(
-        controller: _pager,
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          for (final (i, page) in [
-            Onboarding1Screen(onNext: _next, onSkip: _next),
-            Onboarding2Screen(onNext: _next, onSkip: _next),
-            Onboarding3Screen(onNext: _next, onSkip: _next),
-            Onboarding4Screen(onNext: _next, onSkip: _next),
-          ].indexed)
-            OnboardingPageScope(index: i, controller: _pager, onBack: _back, child: page),
-        ],
+      // Swipe left / right moves between the intro screens; swiping on past the last
+      // one goes on to the questions (same as its Continue).
+      child: NotificationListener<ScrollNotification>(
+        onNotification: _onScroll,
+        child: PageView(
+          controller: _pager,
+          children: [
+            for (final (i, page) in [
+              Onboarding1Screen(onNext: _next, onSkip: _next),
+              Onboarding2Screen(onNext: _next, onSkip: _next),
+              Onboarding3Screen(onNext: _next, onSkip: _next),
+              Onboarding4Screen(onNext: _next, onSkip: _next),
+            ].indexed)
+              OnboardingPageScope(index: i, controller: _pager, onBack: _back, child: page),
+          ],
+        ),
       ),
     );
   }

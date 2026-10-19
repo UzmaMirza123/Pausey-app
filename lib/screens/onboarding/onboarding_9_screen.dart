@@ -57,6 +57,8 @@ class _Onboarding9ScreenState extends State<Onboarding9Screen> with SingleTicker
     final c = context.colors;
     final dark = context.isDark;
     return OnboardingScaffold(
+      // A swipe must not open the app by accident; only "Enter Pausey" does.
+      swipeForward: false,
       showSkip: false,
       onSkip: widget.onSkip,
       starsAsset: 'assets/svg/ob9_stars.svg',

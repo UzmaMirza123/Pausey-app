@@ -99,6 +99,15 @@ class ObPage extends StatelessWidget {
     // Same layout and motion as the intro screens' footer: while stages change the
     // content slides, the footer stays still, the dots glide and the buttons cross-fade.
     final at = scope?.dotsAt;
+    // Swipe left = the primary button (only when it's shown and on), right = back.
+    return OnboardingSwipe(
+      onNext: showActions ? onPrimary : null,
+      onBack: (scope?.canBack ?? false) ? scope!.onBack : null,
+      child: _page(context, scope, c, content, at),
+    );
+  }
+
+  Widget _page(BuildContext context, ObFlowScope? scope, AppColors c, Widget content, int? at) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
