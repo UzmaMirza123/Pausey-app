@@ -338,7 +338,7 @@ class OnboardingScaffold extends StatelessWidget {
         children: [
           FlowSwitch.fade(context, GlowBackground(blobs: blobs, starsAsset: starsAsset, child: const SizedBox.shrink())),
           // Soft leaves in the bottom corners, behind the content and the buttons.
-          const Positioned.fill(child: CornerLeaves()),
+          Positioned.fill(child: CornerLeaves(controller: scope?.controller, index: scope?.index ?? 0)),
           SafeArea(
             child: Column(
               children: [
