@@ -186,11 +186,9 @@ class _HowItHelpsStageState extends State<HowItHelpsStage> {
     final st = RestrictionRepo.instance.status;
     if (!st.supported || st.notifications) return;
     _askedNotifications = true;
-    final allow = await showDialog<bool>(context: context, builder: (_) => const _NotificationAsk());
-    if (allow == true) {
-      await NativeBridge.instance.requestNotifications();
-      await RestrictionRepo.instance.refresh();
-    }
+    // Straight to the phone's own permission popup (no extra Pausey popup first).
+    await NativeBridge.instance.requestNotifications();
+    await RestrictionRepo.instance.refresh();
   }
 
   void _stepBack() => setState(() {
@@ -445,36 +443,3 @@ class _TimeButton extends StatelessWidget {
   }
 }
 
-/// Popup on the "nudges" story beat: allow notifications so Pausey can nudge
-/// before a limit runs out.
-class _NotificationAsk extends StatelessWidget {
-  const _NotificationAsk();
-
-  @override
-  Widget build(BuildContext context) {
-    final l = context.l10n;
-    final c = context.colors;
-    return AlertDialog(
-      backgroundColor: context.isDark ? const Color(0xFF17142F) : Colors.white,
-      surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.card)),
-      icon: const Center(child: IconBadge(icon: Icons.notifications_active_rounded, color: Tone.violet, size: 52)),
-      title: Text(l.cvNotifAskTitle, textAlign: TextAlign.center, style: AppText.cardTitle.copyWith(fontSize: 20, color: c.textPrimary)),
-      content: Text(l.stPermNotifWhy, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(fontSize: 14, height: 1.5, color: c.textSecondary)),
-      actionsAlignment: MainAxisAlignment.center,
-      actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context, false),
-          style: TextButton.styleFrom(foregroundColor: c.textSecondary, minimumSize: const Size(64, 44)),
-          child: Text(l.cvNotNow),
-        ),
-        FilledButton(
-          onPressed: () => Navigator.pop(context, true),
-          style: FilledButton.styleFrom(backgroundColor: AppPalette.accent, foregroundColor: Colors.white, minimumSize: const Size(110, 44), shape: const StadiumBorder()),
-          child: Text(l.alAllow),
-        ),
-      ],
-    );
-  }
-}

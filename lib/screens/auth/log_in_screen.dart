@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../services/auth_service.dart';
 import '../../utils/app_theme.dart';
@@ -221,10 +222,33 @@ class LogInFormState extends State<LogInForm> {
                 ],
               ),
             ),
+            // Round Google / Apple buttons between "Sign up" and "Continue as guest".
+            ObReveal(
+              index: 9,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _RoundSocial(
+                    kind: SocialKind.google,
+                    label: l.continueWithGoogle,
+                    loading: _busy == 'google',
+                    onPressed: _busy == null ? () => run('google', AuthService.instance.signInWithGoogle) : null,
+                  ),
+                  const SizedBox(width: 18),
+                  _RoundSocial(
+                    kind: SocialKind.apple,
+                    label: l.continueWithApple,
+                    loading: _busy == 'apple',
+                    onPressed: _busy == null ? () => run('apple', AuthService.instance.signInWithApple) : null,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 4),
             // "Continue as guest" as a plain text link under "Don't have an account? Sign up".
             if (widget.onGuest != null)
               ObReveal(
-                index: 9,
+                index: 10,
                 child: Center(
                   child: TextButton(
                     onPressed: _busy == null ? widget.onGuest : null,
@@ -237,6 +261,44 @@ class LogInFormState extends State<LogInForm> {
                 ),
               ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Soft round button with the Google or Apple logo.
+class _RoundSocial extends StatelessWidget {
+  const _RoundSocial({required this.kind, required this.label, required this.onPressed, this.loading = false});
+
+  final SocialKind kind;
+  final String label;
+  final VoidCallback? onPressed;
+  final bool loading;
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = context.isDark;
+    final fg = dark ? Colors.white : Colors.black;
+    return Semantics(
+      button: true,
+      label: label,
+      child: Material(
+        color: dark ? const Color(0x14FFFFFF) : const Color(0xFFF1F0F5),
+        shape: CircleBorder(side: BorderSide(color: dark ? const Color(0x22FFFFFF) : const Color(0x0F1B1838))),
+        child: InkWell(
+          customBorder: const CircleBorder(),
+          onTap: loading ? null : onPressed,
+          child: SizedBox.square(
+            dimension: 54,
+            child: Center(
+              child: loading
+                  ? SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2.2, color: fg))
+                  : kind == SocialKind.apple
+                      ? Icon(Icons.apple, size: 24, color: fg)
+                      : SvgPicture.asset('assets/svg/google_g.svg', width: 20, height: 20),
+            ),
+          ),
         ),
       ),
     );

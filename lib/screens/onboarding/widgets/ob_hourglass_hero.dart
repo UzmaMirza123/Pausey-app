@@ -94,7 +94,7 @@ class _ObHourglassHeroState extends State<ObHourglassHero> with SingleTickerProv
                           width: hw,
                           height: hh,
                           child: Transform.rotate(
-                            angle: -0.2 + math.sin(t * _tau / 7) * 0.03,
+                            angle: 0.2 + math.sin(t * _tau / 7) * 0.03,
                             child: CustomPaint(painter: _HourglassPainter(t: t, dark: dark, k: k)),
                           ),
                         ),

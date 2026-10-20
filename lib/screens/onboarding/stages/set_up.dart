@@ -8,7 +8,7 @@ import '../../../utils/l10n.dart';
 import '../../../widgets/common.dart';
 import '../../../widgets/ui_kit.dart';
 import '../../auth/auth_widgets.dart';
-import '../../auth/log_in_screen.dart' show LogInScreen;
+import '../../auth/log_in_screen.dart' show LogInForm;
 import '../../auth/sign_up_screen.dart';
 import '../onboarding_state.dart';
 import '../widgets/ob_art.dart';
@@ -267,8 +267,8 @@ class _PermToggleCard extends StatelessWidget {
 // Stage 10 — Log in (email), sign up, Google / Apple, or continue as guest
 // -----------------------------------------------------------------------------
 
-/// "Start your Pausey journey": Google, Apple or guest, plus links to log in or
-/// sign up (each opens its own screen and comes back here when done).
+/// The account step: the log-in screen (email, Google, Apple), "Sign up" (opens its
+/// own screen and comes back here when done) and "Continue as guest".
 class AccountStage extends StatefulWidget {
   const AccountStage({super.key, required this.onNext});
   final VoidCallback onNext;
@@ -311,71 +311,20 @@ class _AccountStageState extends State<AccountStage> {
 
   @override
   Widget build(BuildContext context) {
-    final l = context.l10n;
-    final c = context.colors;
-    final auth = AuthService.instance;
-    final free = _busy == null;
-    Widget link(String text, VoidCallback onTap) => TextButton(
-          onPressed: free ? onTap : null,
-          style: TextButton.styleFrom(minimumSize: const Size(48, 44), padding: const EdgeInsets.symmetric(horizontal: 10)),
-          child: Text(text, style: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet)),
-        );
     return ObPage(
       center: true,
-      // Google / Apple / guest and the Log in | Sign up links are the actions here.
+      // The log-in form has its own buttons; the only way on is to log in, sign up or continue as guest.
       showActions: false,
-      // The only way on is to sign in, sign up or continue as guest: no Skip, no dots.
       showSkip: false,
       showDots: false,
-      primaryLabel: l.continueLabel,
-      onPrimary: free ? _guest : null,
+      primaryLabel: context.l10n.continueLabel,
+      onPrimary: _busy == null ? _guest : null,
       children: [
-        const ObArt(ObArtKind.journey),
-        const SizedBox(height: 10),
-        ObTitle(l.cvJourneyTitle, align: TextAlign.center),
-        ObFadeUp(delay: const Duration(milliseconds: 400), child: ObSubtitle(l.cvJourneySub, align: TextAlign.center)),
-        const SizedBox(height: 20),
         AuthErrorBanner(message: _error),
-        ObFadeUp(
-          delay: const Duration(milliseconds: 500),
-          child: SocialButton(kind: SocialKind.google, label: l.continueWithGoogle, loading: _busy == 'google', onPressed: free ? () => _run('google', auth.signInWithGoogle) : null),
-        ),
-        const SizedBox(height: 12),
-        ObFadeUp(
-          delay: const Duration(milliseconds: 500),
-          index: 1,
-          child: SocialButton(kind: SocialKind.apple, label: l.continueWithApple, loading: _busy == 'apple', onPressed: free ? () => _run('apple', auth.signInWithApple) : null),
-        ),
-        const SizedBox(height: 12),
-        ObFadeUp(
-          delay: const Duration(milliseconds: 500),
-          index: 2,
-          child: OutlinedButton.icon(
-            onPressed: free ? _guest : null,
-            icon: _busy == 'guest'
-                ? const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2.2))
-                : const Icon(Icons.person_rounded, size: 20, color: AppPalette.accent),
-            label: Text(l.cvContinueGuest, style: AppText.button.copyWith(color: AppPalette.accent)),
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size.fromHeight(54),
-              backgroundColor: AppPalette.accent.withValues(alpha: context.isDark ? 0.14 : 0.07),
-              side: BorderSide(color: AppPalette.accent.withValues(alpha: 0.45)),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.tile)),
-            ),
-          ),
-        ),
-        const SizedBox(height: 14),
-        ObFadeUp(
-          delay: const Duration(milliseconds: 500),
-          index: 3,
-          child: Column(children: [
-            Text(l.haveAccount, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(fontSize: 14, color: c.textSecondary)),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              link(l.logIn, () => _open(LogInScreen(onGuest: _guest))),
-              Text('|', style: AppText.rowSub.copyWith(color: c.textMuted)),
-              link(l.signUp, () => _open(SignUpScreen(onGuest: _guest))),
-            ]),
-          ]),
+        LogInForm(
+          onSignedIn: widget.onNext,
+          onSignUp: () => _open(SignUpScreen(onGuest: _guest)),
+          onGuest: _busy == null ? _guest : null,
         ),
       ],
     );

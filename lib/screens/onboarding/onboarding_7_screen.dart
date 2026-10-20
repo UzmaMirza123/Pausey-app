@@ -139,7 +139,7 @@ class _Onboarding7ScreenState extends State<Onboarding7Screen> {
 }
 
 /// "2h / per day" dial: dark track, violet progress arc and a draggable handle
-/// dot that orbits just outside the ring at the arc's leading end.
+/// dot that sits on the ring at the arc's leading end.
 class _GoalDial extends StatelessWidget {
   const _GoalDial({
     required this.hours,
@@ -164,8 +164,9 @@ class _GoalDial extends StatelessWidget {
   static const double startDeg = 204;
   static const double degPerHour = 66;
 
-  /// Distance of the handle dot from the dial centre (Figma: 116).
-  static const double handleRadius = 116;
+  /// Distance of the handle dot from the dial centre: on the ring's centre line,
+  /// so the dot sits inside the ring at the arc's end.
+  static const double handleRadius = (156 - _RingPainter.thickness) / 2;
 
   void _update(Offset local) {
     final d = local - const Offset(size / 2, size / 2);
@@ -224,7 +225,7 @@ class _GoalDial extends StatelessWidget {
                       track: dark ? const Color(0xFF2A2450) : AppPalette.accent.withValues(alpha: 0.12),
                     ),
                   ),
-                  Positioned(left: handle.dx - 7, top: handle.dy - 7, child: const _HandleDot()),
+                  Positioned(left: handle.dx - 9, top: handle.dy - 9, child: const _HandleDot()),
                   child!,
                 ],
               );
@@ -322,17 +323,18 @@ class _RingPainter extends CustomPainter {
   bool shouldRepaint(_RingPainter old) => old.sweepDeg != sweepDeg || old.startDeg != startDeg || old.track != track;
 }
 
-/// 14px violet dot that marks (and drags) the end of the goal arc.
+/// 18px violet dot with a white rim that marks (and drags) the end of the goal arc.
 class _HandleDot extends StatelessWidget {
   const _HandleDot();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 14,
-      height: 14,
+      width: 18,
+      height: 18,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
+        border: Border.all(color: Colors.white, width: 3),
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,

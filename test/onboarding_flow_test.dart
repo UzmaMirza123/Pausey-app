@@ -139,18 +139,16 @@ void main() {
     expect(find.text('App names'), findsOneWidget);
     await _tap(t, 'Continue');
 
-    // "Start your Pausey journey": Google, Apple, guest, and links to log in / sign up.
-    expect(find.bySemanticsLabel('Start your Pausey journey'), findsOneWidget);
-    expect(find.text('Continue with Google'), findsOneWidget);
-    expect(find.text('Continue with Apple'), findsOneWidget);
-    // No Continue / back arrow at the bottom of this screen.
-    expect(find.byType(PrimaryButton), findsNothing);
+    // The account step is the log-in screen: email, round Google / Apple, Sign up, guest.
+    expect(find.text('Log into your account'), findsOneWidget);
+    expect(find.bySemanticsLabel('Continue with Google'), findsOneWidget);
+    expect(find.bySemanticsLabel('Continue with Apple'), findsOneWidget);
+    // No back arrow at the bottom of this screen.
     expect(find.byType(BackCircleButton), findsNothing);
-    // Sign up → Log in still offers "Continue as guest" (no Google/Apple there).
+    // Sign up → Log in still offers "Continue as guest".
     await _tap(t, 'Sign up');
     await _tap(t, 'Log in');
     expect(find.text('Log into your account'), findsOneWidget);
-    expect(find.text('Continue with Google'), findsNothing);
     // Guest from the log-in screen closes it and asks for a name.
     await _tap(t, 'Continue as guest');
     // Guest is asked what to call them ("Your name" field, no "optional").
@@ -227,7 +225,7 @@ void main() {
     for (var i = 0; i < 10; i++) {
       await t.pump(const Duration(milliseconds: 200));
     }
-    await _tap(t, 'Log in');
+    // The account step is the log-in screen itself.
     expect(find.text('Log into your account'), findsOneWidget);
     expect(find.text('Continue as guest'), findsOneWidget);
     await _tap(t, 'Sign up');
@@ -267,7 +265,7 @@ void main() {
     }
     expect(OnboardingState.instance.stage, ObStep.relate.index);
 
-    // "Start your Pausey journey" has no Continue: a left swipe does nothing there.
+    // The account (log-in) step has no Continue: a left swipe does nothing there.
     OnboardingState.instance.update((s) => s.stage = ObStep.account.index);
     await t.pumpWidget(PauseyApp(home: OnboardingFlow(key: UniqueKey(), onFinished: (_) {})));
     for (var i = 0; i < 10; i++) {
