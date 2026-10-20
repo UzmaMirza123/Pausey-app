@@ -7,11 +7,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../utils/app_theme.dart';
 
-// "Lock Distracting Apps" hero: a soft purple lock-box. The distracting apps
-// float around it, fly in one by one (each gets a red "blocked" badge), sink
-// inside, the lid shuts and the lock clicks. After a moment the lid opens and
-// the apps float back out, and it plays again. A ribbon wraps around the box
-// and faded tiles (games, time, chat, more) sit in the background.
+// "Lock Distracting Apps" hero: an open purple box. The distracting apps fly
+// in one by one (each gets a red "blocked" badge) and sink inside; a lid drops
+// from the top onto the box with a little squash and bounce; a padlock swings
+// in from the left, hooks onto the hasp, clicks shut and sways like a real one.
+// Then it unlocks, the lid lifts away, the apps float out and it plays again.
+// Timings follow Material motion durations and squash/stretch principles.
 
 const _tau = math.pi * 2;
 
@@ -21,11 +22,11 @@ const _w = 360.0, _h = 290.0;
 /// Box geometry: a box turned a little (three-quarter view). Top rim corners:
 /// left, back (behind the apps), right, front; then the bottom corners.
 const _pL = Offset(82, 130), _pB = Offset(134, 86), _pR = Offset(284, 116), _pF = Offset(232, 162);
-const _bL = Offset(102, 232), _bF = Offset(224, 264), _bR = Offset(272, 214);
+const _bL = Offset(98, 204), _bF = Offset(226, 236), _bR = Offset(274, 188); // shorter box
 const _tile = 38.0;
 
 /// One loop of the story, in seconds.
-const _loop = 7.4;
+const _loop = 8.3;
 
 /// Apps: asset (or built-in id), where they float outside, and where they peek out of the box.
 const _apps = <(String, Offset, Offset, double)>[
@@ -51,24 +52,71 @@ double _ease(double t, double from, double len, [Curve curve = Curves.easeInOutC
 /// Where we are in the loop for app [i]: 0 = floating outside, 1 = peeking in the box,
 /// plus how far it has sunk inside (0…1).
 ({double fly, double sink}) _appState(int i, double t) {
-  final arrive = 0.6 + i * 0.3; // fly in, one after another
-  final fly = _ease(t, arrive, 0.8, Curves.easeInOutCubic);
-  final sink = _ease(t, 3.3, 0.45, Curves.easeInCubic);
-  final rise = _ease(t, 6.15, 0.35, Curves.easeOutCubic); // pop back up when the lid opens
-  final out = _ease(t, 6.45 + i * 0.05, 0.75, Curves.easeInOutCubic); // fly back out
+  final fly = _ease(t, _arrive(i), 0.6, Curves.easeInOutCubic); // one after another
+  final sink = _ease(t, 2.1, 0.3, Curves.easeIn);
+  final rise = _ease(t, 7.0, 0.25, Curves.easeOutCubic); // pop back up once the lid is gone
+  final out = _ease(t, 7.1 + i * 0.04, 0.6, Curves.easeInOutCubic); // fly back out
   return (fly: fly * (1 - out), sink: sink * (1 - rise));
 }
 
-/// Lid openness: 1 = open, 0 = shut.
-double _lid(double t) {
-  final close = _ease(t, 3.8, 0.5, Curves.easeOutBack);
-  final open = _ease(t, 5.9, 0.45, Curves.easeOutCubic);
-  return (1 - close + open).clamp(0.0, 1.0);
+double _arrive(int i) => 0.3 + i * 0.22;
+
+/// The lid: vertical offset from its place on the box, tilt, scale (x, y) and how far it has fallen (0…1).
+({double dy, double tilt, double sx, double sy, double fall}) _lidState(double t) {
+  const off = -210.0; // above the top of the hero
+  if (t < 2.5) return (dy: off, tilt: 0.07, sx: 1, sy: 1, fall: 0);
+  if (t < 2.95) {
+    // Falls like a dropped object, straightening as it comes, stretched a touch by the speed.
+    final p = Curves.easeInQuad.transform((t - 2.5) / 0.45);
+    final stretch = math.sin(p * math.pi * 0.9) * 0.06;
+    return (dy: off * (1 - p), tilt: 0.07 * (1 - Curves.easeOutCubic.transform(p)), sx: 1 - stretch * 0.66, sy: 1 + stretch, fall: p);
+  }
+  if (t < 6.7) {
+    // Impact squash, a small hop, then settle with a slight overshoot.
+    final squash = 1 - _ease(t, 2.95, 0.08, Curves.linear);
+    final hop = t < 3.15 ? -10 * _ease(t, 3.03, 0.12, Curves.easeOut) : -10 * (1 - _ease(t, 3.15, 0.12, Curves.easeIn));
+    final settle = t < 3.03 ? 0.0 : Curves.easeOutBack.transform(_ease(t, 3.27, 0.22, Curves.linear));
+    final k = t < 3.03 ? 1 - squash : 1 - settle; // 1 = fully squashed
+    return (dy: t < 3.03 ? 0 : hop, tilt: 0, sx: 1 + 0.12 * k, sy: 1 - 0.12 * k, fall: 1);
+  }
+  // Lifts away and fades.
+  final p = Curves.easeInOutCubic.transform(_ease(t, 6.7, 0.4, Curves.linear));
+  return (dy: off * p, tilt: -0.05 * p, sx: 1, sy: 1, fall: 1 - p);
 }
 
-/// The lock's click (0 = open shackle, 1 = shut) and a glow pulse right after.
-double _lockShut(double t) => _ease(t, 4.25, 0.18, Curves.easeOutBack) * (1 - _ease(t, 5.75, 0.2));
-double _pulse(double t) => math.sin(_ease(t, 4.3, 0.8, Curves.linear) * math.pi);
+/// How much the box itself squashes when the lid lands (0…1).
+double _boxSquash(double t) => t < 2.95 ? 0 : math.sin(_ease(t, 2.95, 0.2, Curves.linear) * math.pi);
+
+/// The padlock: where it is along its path (0 = off to the left, 1 = on the hasp), its rotation,
+/// how shut the shackle is (0 open … 1 shut, with a little spring), a body pulse and the swing.
+({double along, double angle, double shut, double pulse, double glow}) _lockState(double t) {
+  if (t < 3.6) return (along: 0, angle: -0.35, shut: 0, pulse: 0, glow: 0);
+  final inP = Curves.easeOutCubic.transform(_ease(t, 3.6, 0.55, Curves.linear));
+  final outP = Curves.easeInCubic.transform(_ease(t, 6.25, 0.35, Curves.linear));
+  final along = inP * (1 - outP);
+  // Arrives turned −20°, overshoots a hair and straightens.
+  var angle = -0.35 * (1 - Curves.easeOutBack.transform(_ease(t, 3.6, 0.55, Curves.linear)));
+  // Then sways on the hasp: θ = A·e^(−u/τ)·cos(2π·f·u), A = 10°, τ = 0.35 s, f = 1.6 Hz.
+  if (t >= 4.15 && t < 6.25) {
+    final u = t - 4.15;
+    angle += 0.1745 * math.exp(-u / 0.35) * math.cos(_tau * 1.6 * u);
+  }
+  angle -= 0.26 * outP; // tips away as it leaves
+  // Shackle: drops 7 px in 90 ms, springs back 2 px over 60 ms; pops up again to unlock.
+  double shut;
+  if (t < 4.25) {
+    shut = 0;
+  } else if (t < 4.34) {
+    shut = Curves.easeIn.transform((t - 4.25) / 0.09) * 1.0;
+  } else if (t < 4.40) {
+    shut = 1 - 0.28 * math.sin((t - 4.34) / 0.06 * math.pi / 2);
+  } else {
+    shut = (1 - 0.28 * (1 - _ease(t, 4.40, 0.06, Curves.easeOut))) * (1 - Curves.easeOutBack.transform(_ease(t, 6.0, 0.15, Curves.linear)).clamp(0.0, 1.0));
+  }
+  final pulse = math.sin(_ease(t, 4.34, 0.15, Curves.linear) * math.pi) * 0.05;
+  final glow = math.sin(_ease(t, 4.3, 0.7, Curves.linear) * math.pi);
+  return (along: along, angle: angle, shut: shut, pulse: pulse, glow: glow);
+}
 
 class ObLockBoxHero extends StatefulWidget {
   const ObLockBoxHero({super.key});
@@ -95,7 +143,7 @@ class _ObLockBoxHeroState extends State<ObLockBoxHero> with SingleTickerProvider
     super.didChangeDependencies();
     if (MediaQuery.maybeDisableAnimationsOf(context) ?? false) {
       if (_ticker.isActive) _ticker.stop();
-      _clock.value = 3.0; // still frame: apps sitting in the open box
+      _clock.value = 5.6; // still frame: the box locked
     } else if (!_ticker.isActive) {
       _last = Duration.zero;
       _ticker.start();
@@ -127,7 +175,9 @@ class _ObLockBoxHeroState extends State<ObLockBoxHero> with SingleTickerProvider
                 builder: (context, total, _) {
                   final t = total % _loop; // where we are in the story
                   final appear = _ease(total, 0, 0.6, Curves.easeOutCubic); // first entrance only
-                  final lid = _lid(t);
+                  final lid = _lidState(t);
+                  final lock = _lockState(t);
+                  final squash = _boxSquash(t) * 0.04;
                   return Opacity(
                     opacity: appear,
                     child: Transform.translate(
@@ -137,11 +187,24 @@ class _ObLockBoxHeroState extends State<ObLockBoxHero> with SingleTickerProvider
                         children: [
                           Positioned.fill(child: CustomPaint(painter: _BackPainter(t: total, dark: dark))),
                           for (final (i, g) in _ghosts.indexed) _ghost(g, i, total, dark),
-                          Positioned.fill(child: CustomPaint(painter: _BoxBackPainter(dark: dark, glow: _pulse(t)))),
-                          Positioned.fill(child: CustomPaint(painter: _LidPainter(open: lid, dark: dark))),
-                          for (var i = 0; i < _apps.length; i++) _app(i, t, total, dark),
-                          Positioned.fill(child: CustomPaint(painter: _BoxFrontPainter(dark: dark, shut: _lockShut(t), pulse: _pulse(t)))),
+                          // The box squashes a touch (from its bottom) when the lid lands.
+                          Positioned.fill(
+                            child: Transform(
+                              alignment: const Alignment(0, 0.6),
+                              transform: Matrix4.diagonal3Values(1 + squash, 1 - squash, 1),
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Positioned.fill(child: CustomPaint(painter: _BoxBackPainter(dark: dark, glow: lock.glow, shade: lid.fall))),
+                                  for (var i = 0; i < _apps.length; i++) _app(i, t, total, dark),
+                                  Positioned.fill(child: CustomPaint(painter: _BoxFrontPainter(dark: dark))),
+                                ],
+                              ),
+                            ),
+                          ),
                           Positioned.fill(child: CustomPaint(painter: _RibbonPainter(t: total, dark: dark, front: true))),
+                          Positioned.fill(child: CustomPaint(painter: _LidPainter(dy: lid.dy, tilt: lid.tilt, sx: lid.sx, sy: lid.sy, dark: dark))),
+                          Positioned.fill(child: CustomPaint(painter: _PadlockPainter(along: lock.along, angle: lock.angle, shut: lock.shut, pulse: lock.pulse, glow: lock.glow, dark: dark))),
                         ],
                       ),
                     ),
@@ -189,12 +252,12 @@ class _ObLockBoxHeroState extends State<ObLockBoxHero> with SingleTickerProvider
     final ctrl = Offset((outer.dx + peek.dx) / 2, math.min(outer.dy, peek.dy) - 46);
     final p = _quad(outer, ctrl, peek, f);
     final bob = math.sin(total * _tau / 3.4 + i * 1.1) * 3 * (1 - f);
-    final sunk = st.sink * 96; // slide down inside the box
+    final sunk = st.sink * 44; // slide down inside the box
     final pos = p + Offset(0, bob + sunk);
     final angle = ui.lerpDouble(i.isEven ? -8 : 8, tilt, f)! * math.pi / 180;
-    final scale = ui.lerpDouble(1.0, 0.92, f)!;
+    final scale = ui.lerpDouble(1.0, 0.92, f)! * ui.lerpDouble(1.0, 0.6, st.sink)!; // shrink as it sinks
     // Red "blocked" badge pops on as the app lands.
-    final badge = _ease(t, 0.6 + i * 0.3 + 0.7, 0.4, Curves.elasticOut) * (1 - _ease(t, 6.4, 0.2)) * (1 - st.sink);
+    final badge = Curves.easeOutBack.transform(_ease(t, _arrive(i) + 0.5, 0.3, Curves.linear)) * (1 - _ease(t, 7.0, 0.2)) * (1 - st.sink);
     const s = _tile;
     return Positioned(
       left: pos.dx - s / 2,
@@ -319,14 +382,17 @@ void _soft(Canvas canvas, Path path, Paint fill, [double round = 8]) {
 
 /// Shadow under the box and the purple inside of the opening.
 class _BoxBackPainter extends CustomPainter {
-  _BoxBackPainter({required this.dark, required this.glow});
+  _BoxBackPainter({required this.dark, required this.glow, required this.shade});
   final bool dark;
   final double glow;
+
+  /// The falling lid's shadow on the opening (0 far … 1 landed).
+  final double shade;
 
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawOval(
-      Rect.fromCenter(center: const Offset(190, 262), width: 210, height: 28),
+      Rect.fromCenter(center: const Offset(190, 234), width: 210, height: 26),
       Paint()
         ..color = AppPalette.accent.withValues(alpha: dark ? 0.40 : 0.28)
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10),
@@ -353,71 +419,152 @@ class _BoxBackPainter extends CustomPainter {
       ..lineTo(_pL.dx + 12, _pL.dy + 4)
       ..close();
     canvas.drawPath(wall, Paint()..color = const Color(0xFF2E1F8F).withValues(alpha: dark ? 0.45 : 0.28));
+    if (shade > 0) {
+      canvas.drawPath(
+        inside,
+        Paint()
+          ..color = const Color(0xFF1E1466).withValues(alpha: 0.08 + 0.17 * shade)
+          ..maskFilter = MaskFilter.blur(BlurStyle.normal, 12 - 8 * shade),
+      );
+    }
     if (glow > 0) {
       canvas.drawPath(inside, Paint()..color = const Color(0xFFC9BEFF).withValues(alpha: 0.30 * glow));
     }
   }
 
   @override
-  bool shouldRepaint(_BoxBackPainter old) => old.dark != dark || old.glow != glow;
+  bool shouldRepaint(_BoxBackPainter old) => old.dark != dark || old.glow != glow || old.shade != shade;
 }
 
-/// The lid, hinged along the back edges. [open] 1 = tipped up behind the box, 0 = shut.
+/// The lid: the opening's shape plus a thick edge. It sits on the box at dy = 0 and
+/// is drawn above when it falls in or lifts away; squash/stretch from its bottom edge.
 class _LidPainter extends CustomPainter {
-  _LidPainter({required this.open, required this.dark});
-  final double open;
+  _LidPainter({required this.dy, required this.tilt, required this.sx, required this.sy, required this.dark});
+  final double dy, tilt, sx, sy;
   final bool dark;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final o = open.clamp(-0.08, 1.0); // a little overshoot when it shuts
-    // Hinge B→R stays put; the free edge (L→F) swings up and back as it opens.
-    const shut = Offset(-52, 44); // from the hinge to the free edge when shut (B→L)
-    const up = Offset(-10, -46); // the same when open (tipped up)
-    final d = Offset.lerp(shut, up, o)!;
-    final l = _pB + d, f = _pR + d;
-    final lid = _quadPath(l, _pB, _pR, f);
-    final top = dark ? const [Color(0xFFB3A6FF), Color(0xFF8E7CFF)] : const [Color(0xFFE4DCFF), Color(0xFFC3B5FF)];
-    final under = dark ? const [Color(0xFF5A48C8), Color(0xFF7462E8)] : const [Color(0xFFA897FF), Color(0xFFC0B2FF)];
-    final bounds = lid.getBounds();
+    // Slightly bigger than the opening, so it covers the rim.
+    final c = Offset((_pL.dx + _pR.dx) / 2, (_pB.dy + _pF.dy) / 2);
+    Offset grow(Offset p) => c + (p - c) * 1.06;
+    final l = grow(_pL), b = grow(_pB), r = grow(_pR), f = grow(_pF);
+    canvas.save();
+    final bottom = Offset(c.dx, f.dy);
+    canvas.translate(bottom.dx, bottom.dy + dy);
+    canvas.rotate(tilt);
+    canvas.scale(sx, sy);
+    canvas.translate(-bottom.dx, -bottom.dy);
+    // Thick edge (front and right), then the top.
+    const thick = 10.0;
+    final edge = Path()
+      ..moveTo(l.dx, l.dy)
+      ..lineTo(f.dx, f.dy)
+      ..lineTo(r.dx, r.dy)
+      ..lineTo(r.dx, r.dy + thick)
+      ..lineTo(f.dx, f.dy + thick)
+      ..lineTo(l.dx, l.dy + thick)
+      ..close();
+    _soft(canvas, edge, Paint()..color = dark ? const Color(0xFF6E5CE0) : const Color(0xFFA996FF), 8);
+    final top = _quadPath(l, b, r, f);
     _soft(
       canvas,
-      lid,
-      Paint()..shader = LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: o > 0.5 ? under : top).createShader(bounds),
+      top,
+      Paint()
+        ..shader = LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: dark ? const [Color(0xFFB3A6FF), Color(0xFF8E7CFF)] : const [Color(0xFFEDE7FF), Color(0xFFC6B8FF)],
+        ).createShader(top.getBounds()),
       10,
     );
-    // Thickness along the free edge when shut / nearly shut, and a little handle.
-    final k = 1 - o.clamp(0.0, 1.0);
-    if (k > 0.05) {
-      final edge = Path()
-        ..moveTo(l.dx, l.dy)
-        ..lineTo(f.dx, f.dy)
-        ..lineTo(f.dx, f.dy + 9 * k)
-        ..lineTo(l.dx, l.dy + 9 * k)
-        ..close();
-      _soft(canvas, edge, Paint()..color = dark ? const Color(0xFF7A68F0) : const Color(0xFFA996FF), 6);
-      final mid = Offset.lerp(Offset.lerp(l, f, 0.5)!, Offset.lerp(_pB, _pR, 0.5)!, 0.5)!;
-      canvas.save();
-      canvas.translate(mid.dx, mid.dy);
-      canvas.rotate(math.atan2(f.dy - l.dy, f.dx - l.dx));
-      canvas.drawRRect(
-        RRect.fromRectAndRadius(Rect.fromCenter(center: Offset.zero, width: 36, height: 7 * k), const Radius.circular(4)),
-        Paint()..color = Colors.white.withValues(alpha: dark ? 0.35 : 0.7),
-      );
-      canvas.restore();
-    }
+    // A little handle on top.
+    final mid = Offset.lerp(Offset.lerp(l, r, 0.5)!, Offset.lerp(b, f, 0.5)!, 0.5)!;
+    canvas.translate(mid.dx, mid.dy);
+    canvas.rotate(math.atan2(f.dy - l.dy, f.dx - l.dx));
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Rect.fromCenter(center: Offset.zero, width: 38, height: 8), const Radius.circular(4)),
+      Paint()..color = Colors.white.withValues(alpha: dark ? 0.35 : 0.75),
+    );
+    canvas.restore();
   }
 
   @override
-  bool shouldRepaint(_LidPainter old) => old.open != open || old.dark != dark;
+  bool shouldRepaint(_LidPainter old) => old.dy != dy || old.tilt != tilt || old.sx != sx || old.sy != sy || old.dark != dark;
+}
+
+/// Where the padlock hangs: the hasp on the front, just under the rim.
+final Offset _hasp = Offset.lerp(_pL, _pF, 0.5)! + const Offset(0, 18);
+
+/// The padlock: swings in from the left on an arc, hooks onto the hasp and clicks shut.
+class _PadlockPainter extends CustomPainter {
+  _PadlockPainter({required this.along, required this.angle, required this.shut, required this.pulse, required this.glow, required this.dark});
+  final double along, angle, shut, pulse, glow;
+  final bool dark;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (along <= 0.001) return;
+    // Quadratic arc from off-screen left, its top about 24 px above the hasp.
+    final start = _hasp + const Offset(-200, 10);
+    final ctrl = Offset((_hasp.dx + start.dx) / 2, _hasp.dy - 48);
+    final u = 1 - along;
+    final pivot = start * (u * u) + ctrl * (2 * u * along) + _hasp * (along * along);
+    canvas.save();
+    canvas.translate(pivot.dx, pivot.dy);
+    canvas.rotate(angle);
+    if (glow > 0) {
+      canvas.drawCircle(const Offset(0, 22), 26 + 8 * glow, Paint()..color = Colors.white.withValues(alpha: 0.45 * glow)..maskFilter = const MaskFilter.blur(BlurStyle.normal, 9));
+    }
+    // Shackle: hooked through the hasp at the pivot; raised and open on one side until it clicks.
+    final lift = (1 - shut) * 7;
+    final shackle = Path()
+      ..moveTo(-8, 13 - lift)
+      ..lineTo(-8, 2 - lift)
+      ..arcToPoint(Offset(8, 2 - lift), radius: const Radius.circular(8))
+      ..lineTo(8, 13 - lift * 0.4);
+    canvas.drawPath(
+      shackle,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 4.6
+        ..strokeCap = StrokeCap.round
+        ..color = dark ? const Color(0xFFE6E0FF) : const Color(0xFFD8D0FF),
+    );
+    canvas.drawPath(
+      shackle,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.4
+        ..strokeCap = StrokeCap.round
+        ..color = Colors.white.withValues(alpha: 0.8),
+    );
+    // Body (pulses a touch when it clicks).
+    canvas.save();
+    canvas.translate(0, 23);
+    canvas.scale(1 + pulse);
+    final body = RRect.fromRectAndRadius(Rect.fromCenter(center: Offset.zero, width: 30, height: 25), const Radius.circular(7));
+    canvas.drawRRect(body.shift(const Offset(0, 2)), Paint()..color = const Color(0xFF3A2C9E).withValues(alpha: 0.25)..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3));
+    canvas.drawRRect(body, Paint()..shader = ui.Gradient.linear(const Offset(0, -12), const Offset(0, 12), const [Color(0xFF9C88FF), Color(0xFF6B4EF0)]));
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(const Rect.fromLTWH(-12, -10, 24, 4), const Radius.circular(2)),
+      Paint()..color = Colors.white.withValues(alpha: 0.25),
+    );
+    canvas.drawCircle(const Offset(0, -1), 3.2, Paint()..color = Colors.white);
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromCenter(center: const Offset(0, 4), width: 2.8, height: 7), const Radius.circular(1.4)), Paint()..color = Colors.white);
+    canvas.restore();
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(_PadlockPainter old) =>
+      old.along != along || old.angle != angle || old.shut != shut || old.pulse != pulse || old.glow != glow || old.dark != dark;
 }
 
 /// The front and right sides of the box, its rim, and the lock (shackle clicks shut, glow pulse).
 class _BoxFrontPainter extends CustomPainter {
-  _BoxFrontPainter({required this.dark, required this.shut, required this.pulse});
+  _BoxFrontPainter({required this.dark});
   final bool dark;
-  final double shut;
-  final double pulse;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -463,56 +610,28 @@ class _BoxFrontPainter extends CustomPainter {
         ..color = dark ? const Color(0xFFC4B8FF) : const Color(0xFFF1EDFF),
     );
 
-    // Lock badge on the front side, turned with it.
-    final c = Offset.lerp(Offset.lerp(_pL, _pF, 0.5)!, Offset.lerp(_bL, _bF, 0.5)!, 0.52)!;
-    final tilt = math.atan2(_pF.dy - _pL.dy, _pF.dx - _pL.dx) * 0.6;
+    // Hasp: a small plate with a loop, where the padlock hooks on.
+    final slope = math.atan2(_pF.dy - _pL.dy, _pF.dx - _pL.dx);
     canvas.save();
-    canvas.translate(c.dx, c.dy);
-    canvas.rotate(tilt);
-    canvas.translate(-c.dx, -c.dy);
-    if (pulse > 0) {
-      canvas.drawCircle(c, 36 + 10 * pulse, Paint()..color = Colors.white.withValues(alpha: 0.40 * pulse)..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8));
-    }
-    canvas.drawCircle(c, 33, Paint()..color = Colors.white.withValues(alpha: dark ? 0.16 : 0.28));
-    canvas.drawCircle(c, 29, Paint()..color = (dark ? const Color(0xFFF1EDFF) : const Color(0xFFF7F4FF)));
-    const bodyW = 26.0, bodyH = 21.0;
-    final bodyTop = c.dy - 3;
-    final lift = (1 - shut) * 6;
-    final shackle = Path()
-      ..moveTo(c.dx - 8, bodyTop + 1 - lift)
-      ..lineTo(c.dx - 8, bodyTop - 7 - lift)
-      ..arcToPoint(Offset(c.dx + 8, bodyTop - 7 - lift), radius: const Radius.circular(8))
-      ..lineTo(c.dx + 8, bodyTop + 1 - lift);
-    canvas.drawPath(
-      shackle,
+    canvas.translate(_hasp.dx, _hasp.dy);
+    canvas.rotate(slope);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Rect.fromCenter(center: const Offset(0, -9), width: 26, height: 15), const Radius.circular(5)),
+      Paint()..color = dark ? const Color(0xFFC4B8FF) : const Color(0xFFEEE9FF),
+    );
+    canvas.drawCircle(
+      Offset.zero,
+      5,
       Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 5
-        ..strokeCap = StrokeCap.round
-        ..color = const Color(0xFF7C5CFF),
+        ..strokeWidth = 3
+        ..color = dark ? const Color(0xFFDCD4FF) : const Color(0xFFCFC4FF),
     );
-    final body = RRect.fromRectAndRadius(Rect.fromLTWH(c.dx - bodyW / 2, bodyTop, bodyW, bodyH), const Radius.circular(6));
-    canvas.drawRRect(body, Paint()..color = const Color(0xFF7C5CFF));
-    canvas.drawCircle(Offset(c.dx, bodyTop + 8), 3, Paint()..color = Colors.white);
-    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromCenter(center: Offset(c.dx, bodyTop + 12.5), width: 2.6, height: 6), const Radius.circular(1.3)), Paint()..color = Colors.white);
-
-    // Little sparkles when it clicks.
-    if (pulse > 0) {
-      final sp = Paint()
-        ..strokeWidth = 2
-        ..strokeCap = StrokeCap.round
-        ..color = (dark ? Colors.white : const Color(0xFF8F7BFF)).withValues(alpha: pulse);
-      for (final deg in [-140.0, -40.0, 180.0, 0.0]) {
-        final a = deg * math.pi / 180;
-        final d = Offset(math.cos(a), math.sin(a));
-        canvas.drawLine(c + d * (38 + 4 * pulse), c + d * (44 + 4 * pulse), sp);
-      }
-    }
     canvas.restore();
   }
 
   @override
-  bool shouldRepaint(_BoxFrontPainter old) => old.dark != dark || old.shut != shut || old.pulse != pulse;
+  bool shouldRepaint(_BoxFrontPainter old) => old.dark != dark;
 }
 
 /// One app tile (full-colour rounded square) with a soft coloured shadow.
