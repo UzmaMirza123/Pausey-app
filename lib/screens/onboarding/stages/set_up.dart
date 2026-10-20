@@ -72,8 +72,8 @@ class PermissionsStage extends StatelessWidget {
           onPrimary: (!st.supported && !bridge.isAndroid) || (st.usageAccess && st.overlay) ? onNext : null,
           children: [
             // Same order as the question screens: illustration → title → subtitle → content.
-            const ObArt(ObArtKind.permissions),
-            const SizedBox(height: 10),
+            const ObArt(ObArtKind.permissions, large: true),
+            const SizedBox(height: 30),
             ObTitle(l.stPermTitle, align: TextAlign.center),
             ObFadeUp(
               delay: const Duration(milliseconds: 420),
@@ -143,8 +143,8 @@ class AccessibilityStage extends StatelessWidget {
           // Continue only works once Accessibility is on (when the phone supports it).
           onPrimary: (!st.supported && !NativeBridge.instance.isAndroid) || st.accessibility ? onNext : null,
           children: [
-            const ObArt(ObArtKind.access),
-            const SizedBox(height: 10),
+            const ObArt(ObArtKind.access, large: true),
+            const SizedBox(height: 30),
             ObTitle(l.cvA11yTitle, align: TextAlign.center),
             ObFadeUp(delay: const Duration(milliseconds: 400), child: ObSubtitle(l.cvA11ySub, align: TextAlign.center)),
             const SizedBox(height: 20),

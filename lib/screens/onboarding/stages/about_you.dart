@@ -25,9 +25,9 @@ const _replyDelay = Duration(milliseconds: 900);
 
 Widget _head(ObArtKind art, String title, String sub) => _headWith(ObArt(art), title, sub);
 
-Widget _headWith(Widget art, String title, String sub) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+Widget _headWith(Widget art, String title, String sub, {double gap = 10}) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       art,
-      const SizedBox(height: 10),
+      SizedBox(height: gap),
       ObTitle(title, align: TextAlign.center),
       ObFadeUp(delay: const Duration(milliseconds: 400), child: ObSubtitle(sub, align: TextAlign.center)),
       const SizedBox(height: 18),
@@ -497,7 +497,7 @@ class _ScreenTimeStageState extends State<ScreenTimeStage> {
           primaryLabel: v == null ? l.cvSkipForNow : l.cvNext,
           onPrimary: widget.onNext,
           children: [
-            _headWith(const ObHourglassHero(), l.cvStTitle, l.cvStSub),
+            _headWith(const ObHourglassHero(), l.cvStTitle, l.cvStSub, gap: 34),
             for (final (i, (opt, label, icon)) in [
               (ObScreenTime.under2, l.cvStUnder2, Icons.hourglass_empty_rounded),
               (ObScreenTime.h2to4, l.cvSt2to4, Icons.schedule_rounded),

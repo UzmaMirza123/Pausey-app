@@ -10,19 +10,24 @@ enum ObArtKind { relate, moretime, apps, screentime, reflect, permissions, acces
 /// then floats gently. The art has a transparent background, so it sits on the
 /// light and dark themes alike. Decorative for screen readers.
 class ObArt extends StatelessWidget {
-  const ObArt(this.kind, {super.key, this.maxHeight = 200});
+  const ObArt(this.kind, {super.key, this.maxHeight = 200, this.large = false});
   final ObArtKind kind;
   final double maxHeight;
+
+  /// Bigger picture (taller, and allowed to run a little past the side margins).
+  final bool large;
 
   @override
   Widget build(BuildContext context) {
     // Smaller on short phones so the content below stays in view.
-    final h = (MediaQuery.sizeOf(context).height * 0.23).clamp(130.0, maxHeight);
-    final img = Image.asset('assets/onboarding/ob_${kind.name}.png', height: h, fit: BoxFit.contain, filterQuality: FilterQuality.medium);
+    final size = MediaQuery.sizeOf(context);
+    final h = large ? (size.height * 0.29).clamp(150.0, 270.0) : (size.height * 0.23).clamp(130.0, maxHeight);
+    final img = Image.asset('assets/onboarding/ob_${kind.name}.png', height: h, width: large ? size.width : null, fit: BoxFit.contain, filterQuality: FilterQuality.medium);
     return ExcludeSemantics(
       child: SizedBox(
         height: h,
-        child: Center(
+        child: OverflowBox(
+          maxWidth: large ? size.width : null,
           child: IntroEnter(scale: true, rise: 14, child: IntroFloat(amplitude: 5, period: const Duration(milliseconds: 3600), child: img)),
         ),
       ),
