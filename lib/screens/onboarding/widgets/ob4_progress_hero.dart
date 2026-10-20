@@ -14,7 +14,7 @@ import '../../../utils/l10n.dart';
 // Motion: everything rises in, the bars grow, the line draws itself and its
 // points pop, the rings fill; then the cards float gently.
 
-const _w = 400.0, _h = 340.0;
+const _w = 400.0, _h = 390.0;
 
 double _ease(double t, double from, double len, [Curve curve = Curves.easeOutCubic]) =>
     curve.transform(((t - from) / len).clamp(0.0, 1.0));
@@ -90,7 +90,7 @@ class _Ob4ProgressHeroState extends State<Ob4ProgressHero> with SingleTickerProv
                     // This week.
                     part(
                       0,
-                      const Rect.fromLTWH(88, 22, 120, 76),
+                      const Rect.fromLTWH(84, 0, 120, 76),
                       _Card(
                         dark: dark,
                         child: Padding(
@@ -125,7 +125,7 @@ class _Ob4ProgressHeroState extends State<Ob4ProgressHero> with SingleTickerProv
                     // Score.
                     part(
                       1,
-                      const Rect.fromLTWH(24, 134, 96, 58),
+                      const Rect.fromLTWH(20, 142, 98, 60),
                       _Card(
                         dark: dark,
                         child: Padding(
@@ -165,7 +165,7 @@ class _Ob4ProgressHeroState extends State<Ob4ProgressHero> with SingleTickerProv
                     // Day streak.
                     part(
                       2,
-                      const Rect.fromLTWH(44, 228, 80, 56),
+                      const Rect.fromLTWH(38, 262, 84, 58),
                       _Card(
                         dark: dark,
                         tint: const Color(0xFFFFB020),
@@ -202,14 +202,14 @@ class _Ob4ProgressHeroState extends State<Ob4ProgressHero> with SingleTickerProv
                     // Phone.
                     part(
                       3,
-                      const Rect.fromLTWH(136, 100, 128, 238),
+                      const Rect.fromLTWH(128, 92, 144, 294),
                       _Phone(t: t, dark: dark, days: days, ink: ink, muted: muted),
                       float: false,
                     ),
                     // "Keep going!"
                     part(
                       4,
-                      const Rect.fromLTWH(250, 8, 82, 26),
+                      const Rect.fromLTWH(252, 0, 82, 26),
                       Transform.scale(
                         scale: 0.6 + 0.4 * _ease(t, 1.4, 0.5, Curves.easeOutBack),
                         child: Container(
@@ -239,13 +239,13 @@ class _Ob4ProgressHeroState extends State<Ob4ProgressHero> with SingleTickerProv
                     ),
                     // Rings.
                     for (final (i, r) in [
-                      (85, l.ob1BookFocus, const [Color(0xFF8B7BFF), Color(0xFF5B6CFF)], Icons.psychology_rounded, 122.0),
-                      (72, l.ob4Goals, const [Color(0xFF2DD4BF), Color(0xFF14A3B8)], Icons.track_changes_rounded, 204.0),
-                      (94, l.ob4ArtProductivity, const [Color(0xFFFFB020), Color(0xFFFF8A00)], Icons.bar_chart_rounded, 286.0),
+                      (85, l.ob1BookFocus, const [Color(0xFF8B7BFF), Color(0xFF5B6CFF)], Icons.psychology_rounded, 138.0),
+                      (72, l.ob4Goals, const [Color(0xFF2DD4BF), Color(0xFF14A3B8)], Icons.track_changes_rounded, 240.0),
+                      (94, l.ob4ArtProductivity, const [Color(0xFFFFB020), Color(0xFFFF8A00)], Icons.bar_chart_rounded, 342.0),
                     ].indexed)
                       part(
                         5 + i,
-                        Rect.fromCenter(center: Offset(326, r.$5), width: 88, height: 80),
+                        Rect.fromCenter(center: Offset(330, r.$5), width: 88, height: 80),
                         _Ring(
                           value: r.$1,
                           label: r.$2,
@@ -275,7 +275,7 @@ class _BackPainter extends CustomPainter {
   final double t;
   final bool dark;
 
-  static const _points = [Offset(64, 134), Offset(78, 126), Offset(118, 110), Offset(176, 104), Offset(231, 75), Offset(258, 66), Offset(284, 50), Offset(320, 58), Offset(356, 72)];
+  static const _points = [Offset(60, 142), Offset(76, 132), Offset(116, 110), Offset(170, 96), Offset(226, 62), Offset(256, 48), Offset(288, 32), Offset(324, 40), Offset(360, 56)];
   static const _nodes = [1, 2, 4, 6];
 
   @override
@@ -304,7 +304,7 @@ class _BackPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.6
       ..strokeCap = StrokeCap.round
-      ..shader = const LinearGradient(colors: [Color(0xFF9F8CFF), Color(0xFF7C5CFF), Color(0xFFB9A8FF)]).createShader(const Rect.fromLTWH(60, 40, 300, 100));
+      ..shader = const LinearGradient(colors: [Color(0xFF9F8CFF), Color(0xFF7C5CFF), Color(0xFFB9A8FF)]).createShader(const Rect.fromLTWH(56, 20, 310, 130));
     for (final m in path.computeMetrics()) {
       canvas.drawPath(m.extractPath(0, m.length * draw), line);
     }
@@ -321,8 +321,8 @@ class _BackPainter extends CustomPainter {
       }
     }
 
-    dashed(const Offset(231, 79), const Offset(231, 100));
-    dashed(const Offset(284, 54), const Offset(284, 96));
+    dashed(const Offset(226, 66), const Offset(226, 92));
+    dashed(const Offset(288, 36), const Offset(288, 100));
 
     // Points pop in as the line reaches them.
     for (final (i, n) in _nodes.indexed) {
@@ -337,25 +337,25 @@ class _BackPainter extends CustomPainter {
     // Sparkles and dots.
     final tw = 0.6 + 0.4 * math.sin(t * 2.2);
     for (final (p, s, col) in const [
-      (Offset(58, 72), 7.0, Color(0xFFB9A8FF)),
-      (Offset(46, 210), 6.0, Color(0xFF9F8CFF)),
-      (Offset(124, 216), 5.0, Color(0xFFC6B8FF)),
-      (Offset(286, 248), 6.0, Color(0xFF2DD4BF)),
-      (Offset(276, 314), 5.0, Color(0xFFB9A8FF)),
+      (Offset(52, 64), 7.0, Color(0xFFB9A8FF)),
+      (Offset(40, 234), 6.0, Color(0xFF9F8CFF)),
+      (Offset(122, 240), 5.0, Color(0xFFC6B8FF)),
+      (Offset(290, 290), 6.0, Color(0xFF2DD4BF)),
+      (Offset(284, 372), 5.0, Color(0xFFB9A8FF)),
     ]) {
       _sparkle(canvas, p, s * (0.85 + 0.15 * tw), col.withValues(alpha: 0.75 * tw + 0.15));
     }
     for (final (p, r, col) in const [
-      (Offset(66, 40), 2.6, Color(0xFF8FA6FF)),
-      (Offset(228, 41), 3.4, Color(0xFFFFB020)),
-      (Offset(340, 50), 3.0, Color(0xFF2DD4BF)),
-      (Offset(130, 134), 3.0, Color(0xFF2DD4BF)),
-      (Offset(122, 204), 3.4, Color(0xFFFFB020)),
-      (Offset(75, 222), 2.6, Color(0xFFFFB020)),
-      (Offset(34, 282), 3.0, Color(0xFF2DD4BF)),
-      (Offset(116, 302), 3.0, Color(0xFF8FA6FF)),
-      (Offset(272, 274), 3.0, Color(0xFFFFB020)),
-      (Offset(275, 148), 3.0, Color(0xFF2DD4BF)),
+      (Offset(58, 30), 2.6, Color(0xFF8FA6FF)),
+      (Offset(224, 30), 3.4, Color(0xFFFFB020)),
+      (Offset(352, 30), 3.0, Color(0xFF2DD4BF)),
+      (Offset(122, 132), 3.0, Color(0xFF2DD4BF)),
+      (Offset(118, 226), 3.4, Color(0xFFFFB020)),
+      (Offset(70, 244), 2.6, Color(0xFFFFB020)),
+      (Offset(28, 334), 3.0, Color(0xFF2DD4BF)),
+      (Offset(114, 344), 3.0, Color(0xFF8FA6FF)),
+      (Offset(284, 300), 3.0, Color(0xFFFFB020)),
+      (Offset(284, 184), 3.0, Color(0xFF2DD4BF)),
     ]) {
       canvas.drawCircle(p, r, Paint()..color = col.withValues(alpha: dark ? 0.7 : 0.8));
     }
@@ -620,10 +620,10 @@ class _Phone extends StatelessWidget {
         TextStyle(fontFamily: AppText.fontFamily, fontSize: size, fontWeight: w, height: 1.1, color: color ?? ink);
 
     Widget row(IconData icon, Color color, String label, String value, double v, double delay) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
+          padding: const EdgeInsets.symmetric(vertical: 9),
           child: Row(
             children: [
-              Icon(icon, size: 13, color: color),
+              Icon(icon, size: 15, color: color),
               const SizedBox(width: 6),
               Expanded(
                 child: Column(
@@ -631,9 +631,9 @@ class _Phone extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Expanded(child: FittedBox(fit: BoxFit.scaleDown, alignment: AlignmentDirectional.centerStart, child: Text(label, style: s(6.5)))),
+                        Expanded(child: FittedBox(fit: BoxFit.scaleDown, alignment: AlignmentDirectional.centerStart, child: Text(label, style: s(7.5)))),
                         const SizedBox(width: 3),
-                        Text(value, style: s(6.5, w: FontWeight.w600)),
+                        Text(value, style: s(7.5, w: FontWeight.w600)),
                       ],
                     ),
                     const SizedBox(height: 3),
@@ -660,14 +660,14 @@ class _Phone extends StatelessWidget {
           const SizedBox(height: 8),
           Row(
             children: [
-              const Expanded(child: Text('Pausey', style: TextStyle(fontFamily: AppText.fontFamily, fontSize: 11, fontWeight: FontWeight.w900, color: Color(0xFF6D4FF2)))),
+              const Expanded(child: Text('Pausey', style: TextStyle(fontFamily: AppText.fontFamily, fontSize: 12.5, fontWeight: FontWeight.w900, color: Color(0xFF6D4FF2)))),
               Icon(Icons.more_vert_rounded, size: 11, color: ink),
             ],
           ),
           const SizedBox(height: 6),
           // Day / Week / Month.
           Container(
-            height: 15,
+            height: 17,
             padding: const EdgeInsets.all(1.5),
             decoration: BoxDecoration(color: (dark ? Colors.white : const Color(0xFF6E6A93)).withValues(alpha: 0.08), borderRadius: BorderRadius.circular(8)),
             child: Row(
@@ -687,13 +687,13 @@ class _Phone extends StatelessWidget {
           const SizedBox(height: 7),
           Row(
             children: [
-              Expanded(child: FittedBox(fit: BoxFit.scaleDown, alignment: AlignmentDirectional.centerStart, child: Text(l.insightsFocusHours, style: s(7)))),
+              Expanded(child: FittedBox(fit: BoxFit.scaleDown, alignment: AlignmentDirectional.centerStart, child: Text(l.insightsFocusHours, style: s(8)))),
               Text(l.insightsThisWeek, style: s(5.5, w: FontWeight.w500, color: muted)),
             ],
           ),
           const SizedBox(height: 4),
-          SizedBox(
-            height: 42,
+          // The chart takes whatever height is left, so the phone never overflows.
+          Expanded(
             child: _Bars(values: const [0.42, 0.66, 0.52, 0.8, 0.62, 0.76, 1], grow: _ease(t, 0.55, 0.9), days: days, muted: muted, dark: dark, barWidth: 8.5),
           ),
           const SizedBox(height: 5),
@@ -703,7 +703,7 @@ class _Phone extends StatelessWidget {
           row(Icons.track_changes_rounded, const Color(0xFF7C5CFF), l.insightsFocusHours, '5h 16m', 0.68, 0.8),
           Container(height: 1, color: line),
           row(Icons.flag_rounded, const Color(0xFF4F7BFF), l.insightsGoals, '3/4', 0.75, 0.9),
-          const Spacer(),
+          const SizedBox(height: 4),
           Container(height: 1, color: line),
           const SizedBox(height: 5),
           Row(

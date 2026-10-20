@@ -60,7 +60,7 @@ class Onboarding4Screen extends StatelessWidget {
               // Taller hero: a bit wider than the margins allow, up to 440.
               final w = math.min(box.maxWidth + 52, 440.0);
               return SizedBox(
-                height: Ob4ProgressHero.heightFor(w) + 52,
+                height: Ob4ProgressHero.heightFor(w) + 64,
                 child: OverflowBox(
                   maxWidth: w,
                   alignment: Alignment.topCenter,
