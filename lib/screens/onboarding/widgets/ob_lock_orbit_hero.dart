@@ -225,19 +225,15 @@ class _BackPainter extends CustomPainter {
         ], stops: const [0, 0.5, 1]).createShader(Rect.fromCircle(center: _c, radius: 168)),
     );
 
-    // Purple and white rings of the same width, with clear gaps between them
-    // (not touching); they open out on entrance.
+    // White rings only, with open gaps between them (where the light purple rings
+    // used to be); they open out on entrance.
     const band = 9.0;
-    final purple = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = band
-      ..color = (dark ? const Color(0xFF6C5CE0) : const Color(0xFFB9A8FF)).withValues(alpha: (dark ? 0.30 : 0.40) * rings);
     final white = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = band
       ..color = (dark ? const Color(0xFFB7A6FF) : Colors.white).withValues(alpha: (dark ? 0.18 : 0.90) * rings);
-    for (final (i, r) in [48.5, 63.5, 78.5, 93.5, 108.5].indexed) {
-      canvas.drawCircle(_c, r * (0.7 + 0.3 * rings), i.isEven ? purple : white);
+    for (final r in [63.5, 93.5]) {
+      canvas.drawCircle(_c, r * (0.7 + 0.3 * rings), white);
     }
 
     // A soft ripple leaving the lock every 3 seconds.
