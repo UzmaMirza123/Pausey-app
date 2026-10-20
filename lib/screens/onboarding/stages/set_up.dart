@@ -319,12 +319,15 @@ class _AccountStageState extends State<AccountStage> {
       showDots: false,
       primaryLabel: context.l10n.continueLabel,
       onPrimary: _busy == null ? _guest : null,
+      // "Continue as guest" sits at the bottom of the screen.
+      secondaryLabel: context.l10n.cvContinueGuest,
+      onSecondary: _busy == null ? _guest : null,
+      secondaryStyle: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet),
       children: [
         AuthErrorBanner(message: _error),
         LogInForm(
           onSignedIn: widget.onNext,
           onSignUp: () => _open(SignUpScreen(onGuest: _guest)),
-          onGuest: _busy == null ? _guest : null,
         ),
       ],
     );

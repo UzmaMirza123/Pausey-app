@@ -69,6 +69,7 @@ class ObPage extends StatelessWidget {
     required this.onPrimary,
     this.secondaryLabel,
     this.onSecondary,
+    this.secondaryStyle,
     this.showArrow = true,
     this.center = false,
     this.dotsStep = 0,
@@ -82,6 +83,9 @@ class ObPage extends StatelessWidget {
   final VoidCallback? onPrimary;
   final String? secondaryLabel;
   final VoidCallback? onSecondary;
+
+  /// Optional look for the secondary link (default: plain grey link).
+  final TextStyle? secondaryStyle;
   final bool showArrow;
 
   /// Vertically centre short content (welcome, reflection).
@@ -183,7 +187,7 @@ class ObPage extends StatelessWidget {
                                         child: TextButton(
                                           onPressed: onSecondary,
                                           style: TextButton.styleFrom(minimumSize: const Size(48, 32), tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-                                          child: Text(secondaryLabel!, style: AppText.link.copyWith(color: c.textSecondary)),
+                                          child: Text(secondaryLabel!, style: secondaryStyle ?? AppText.link.copyWith(color: c.textSecondary)),
                                         ),
                                       ),
                               ),

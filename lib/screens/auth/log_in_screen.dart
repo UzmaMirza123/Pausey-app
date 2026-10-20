@@ -32,15 +32,25 @@ class LogInScreen extends StatelessWidget {
                   child: LogInForm(
                     onSignedIn: () => Navigator.of(context).popUntil((r) => r.isFirst),
                     onSignUp: () => Navigator.of(context).pushReplacement(authRoute(SignUpScreen(onGuest: onGuest))),
-                    onGuest: onGuest == null
-                        ? null
-                        : () {
-                            Navigator.of(context).pop();
-                            onGuest!();
-                          },
                   ),
                 ),
               ),
+              // "Continue as guest" at the bottom of the screen.
+              if (onGuest != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      onGuest!();
+                    },
+                    style: TextButton.styleFrom(minimumSize: const Size(48, 44)),
+                    child: Text(
+                      context.l10n.cvContinueGuest,
+                      style: AppText.option.copyWith(fontWeight: FontWeight.w800, color: AppPalette.violet),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
@@ -279,13 +289,17 @@ class _RoundSocial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = context.isDark;
-    final fg = dark ? Colors.white : Colors.black;
+    final apple = kind == SocialKind.apple;
+    // Google: white circle; Apple: black circle with a white logo.
+    final fg = apple ? Colors.white : Colors.black;
     return Semantics(
       button: true,
       label: label,
       child: Material(
-        color: dark ? const Color(0x14FFFFFF) : const Color(0xFFF1F0F5),
-        shape: CircleBorder(side: BorderSide(color: dark ? const Color(0x22FFFFFF) : const Color(0x0F1B1838))),
+        color: apple ? Colors.black : Colors.white,
+        elevation: 0,
+        // In dark mode the black Apple circle gets a faint light rim so it stands out.
+        shape: CircleBorder(side: BorderSide(color: apple ? (dark ? const Color(0x40FFFFFF) : Colors.black) : (dark ? const Color(0x33FFFFFF) : const Color(0x1F1B1838)))),
         child: InkWell(
           customBorder: const CircleBorder(),
           onTap: loading ? null : onPressed,
@@ -294,7 +308,7 @@ class _RoundSocial extends StatelessWidget {
             child: Center(
               child: loading
                   ? SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2.2, color: fg))
-                  : kind == SocialKind.apple
+                  : apple
                       ? Icon(Icons.apple, size: 24, color: fg)
                       : SvgPicture.asset('assets/svg/google_g.svg', width: 20, height: 20),
             ),

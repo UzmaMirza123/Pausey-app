@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -193,15 +194,29 @@ class _GoalDial extends StatelessWidget {
       slider: true,
       label: context.l10n.ob7DialLabel,
       value: label,
-      child: GestureDetector(
+      // Claims the touch at once, so dragging the dot isn't taken over by the
+      // page's left/right swipe or the up/down scroll.
+      child: RawGestureDetector(
         behavior: HitTestBehavior.opaque,
-        onPanStart: (e) {
-          onDragStart();
-          _update(e.localPosition);
+        gestures: {
+          _EagerPan: GestureRecognizerFactoryWithHandlers<_EagerPan>(
+            _EagerPan.new,
+            (r) {
+              r
+                ..onStart = (e) {
+                  onDragStart();
+                  _update(e.localPosition);
+                }
+                ..onUpdate = (e) {
+                  _update(e.localPosition);
+                }
+                ..onEnd = (_) {
+                  onDragEnd();
+                }
+                ..onCancel = onDragEnd;
+            },
+          ),
         },
-        onPanUpdate: (e) => _update(e.localPosition),
-        onPanEnd: (_) => onDragEnd(),
-        onPanCancel: onDragEnd,
         child: SizedBox(
           width: size,
           height: size,
@@ -277,6 +292,17 @@ class _GoalDial extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+/// A pan that wins the touch as soon as the finger lands on the dial.
+class _EagerPan extends PanGestureRecognizer {
+  _EagerPan() : super(supportedDevices: null);
+
+  @override
+  void addAllowedPointer(PointerDownEvent event) {
+    super.addAllowedPointer(event);
+    resolve(GestureDisposition.accepted);
   }
 }
 
