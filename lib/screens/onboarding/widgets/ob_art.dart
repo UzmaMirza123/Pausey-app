@@ -4,7 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'intro_motion.dart';
 
 /// The onboarding illustrations (assets/onboarding/ob_NAME.png).
-enum ObArtKind { relate, goal, apps, screentime, reflect, perm, journey, login, signup }
+enum ObArtKind { relate, moretime, apps, screentime, reflect, permissions, access, journey, login, signup }
 
 /// Character illustration on top of an onboarding / auth screen. It rises in,
 /// then floats gently. The art has a transparent background, so it sits on the

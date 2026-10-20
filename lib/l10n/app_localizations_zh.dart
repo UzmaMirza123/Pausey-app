@@ -1006,10 +1006,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cvGoalOtherHint => '你想把更多时间留给什么？';
 
   @override
-  String get cvGoalReplyFocus => '那就专注吧。我们会为你守住深度工作的时间。';
+  String get cvGoalReplyFocus => '那就专注吧，我们帮你守住。';
 
   @override
-  String get cvGoalReplySleep => '好睡眠从睡前开始。我们会帮你让夜晚慢慢放松下来。';
+  String get cvGoalReplySleep => '好睡眠从安静的夜晚开始。';
 
   @override
   String get cvGoalReplyScrolling => '让刷手机成为一种选择，而不是习惯。';
@@ -1083,13 +1083,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cvStReply2to4 => '几个小改变，就能腾出不少时间。';
 
   @override
-  String get cvStReply4to6 => '这占了你一天中不小的部分。我们一起把一些时间拿回来。';
+  String get cvStReply4to6 => '挺多的，我们夺回一些吧。';
 
   @override
   String get cvStReplyOver6 => '这是一天中很大的一部分，我们就从小处开始。';
 
   @override
-  String get cvStReplyNotSure => '没关系。允许使用情况访问权限后，Pausey 就能测量。';
+  String get cvStReplyNotSure => '没关系，Pausey 可以帮你测量。';
 
   @override
   String get cvPhraseFocus => '更专注';

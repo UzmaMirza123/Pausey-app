@@ -1028,12 +1028,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get cvGoalOtherHint => 'На что вам хотелось бы больше времени?';
 
   @override
-  String get cvGoalReplyFocus =>
-      'Значит, фокус. Мы сбережём время для глубокой работы.';
+  String get cvGoalReplyFocus => 'Значит, фокус. Мы его сбережём.';
 
   @override
-  String get cvGoalReplySleep =>
-      'Хороший сон начинается до того, как вы ляжете. Мы поможем вечерам проходить спокойнее.';
+  String get cvGoalReplySleep => 'Хороший сон начинается со спокойного вечера.';
 
   @override
   String get cvGoalReplyScrolling =>
@@ -1112,16 +1110,14 @@ class AppLocalizationsRu extends AppLocalizations {
       'Пара небольших изменений может освободить немало времени.';
 
   @override
-  String get cvStReply4to6 =>
-      'Это заметная часть дня. Давайте вернём вам немного.';
+  String get cvStReply4to6 => 'Это немало. Вернём часть себе.';
 
   @override
   String get cvStReplyOver6 =>
       'Это большая часть дня, поэтому начнём с малого.';
 
   @override
-  String get cvStReplyNotSure =>
-      'Ничего страшного. Pausey сможет это измерить, когда вы разрешите доступ к истории использования.';
+  String get cvStReplyNotSure => 'Не страшно. Pausey может это измерить.';
 
   @override
   String get cvPhraseFocus => 'больше концентрации';

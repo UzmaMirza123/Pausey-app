@@ -1007,10 +1007,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cvGoalOtherHint => '何のための時間を増やしたいですか？';
 
   @override
-  String get cvGoalReplyFocus => '集中ですね。じっくり取り組む時間を守ります。';
+  String get cvGoalReplyFocus => '集中ですね。時間を守ります。';
 
   @override
-  String get cvGoalReplySleep => 'よい眠りは、寝る前から始まります。夜をゆったり過ごせるようお手伝いします。';
+  String get cvGoalReplySleep => '良い眠りは穏やかな夜から。';
 
   @override
   String get cvGoalReplyScrolling => 'スクロールを、習慣ではなく自分の選択にしましょう。';
@@ -1084,13 +1084,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cvStReply2to4 => '少しの工夫で、まとまった時間が生まれます。';
 
   @override
-  String get cvStReply4to6 => '1日のかなりの部分ですね。その一部を、あなたの手に取り戻しましょう。';
+  String get cvStReply4to6 => 'かなりですね。少し取り戻そう。';
 
   @override
   String get cvStReplyOver6 => '1日の大きな部分なので、小さく始めましょう。';
 
   @override
-  String get cvStReplyNotSure => '大丈夫です。使用状況へのアクセスを許可すれば、Pausey が計測できます。';
+  String get cvStReplyNotSure => '大丈夫。Pauseyが測れます。';
 
   @override
   String get cvPhraseFocus => 'もっと集中すること';

@@ -67,7 +67,7 @@ void main() {
     await _tap(t, "That's me");
 
     await _tap(t, 'Better sleep');
-    expect(find.textContaining('evenings wind down'), findsOneWidget);
+    expect(find.textContaining('calmer evenings'), findsOneWidget);
     await _tap(t, 'Next');
 
 

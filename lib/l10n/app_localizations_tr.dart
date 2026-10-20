@@ -1026,12 +1026,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get cvGoalOtherHint => 'Neye daha fazla zaman ayırmak istersiniz?';
 
   @override
-  String get cvGoalReplyFocus =>
-      'Odak olsun. Derin çalışma için gereken zamanı koruyacağız.';
+  String get cvGoalReplyFocus => 'Odak o zaman. Onu koruyacağız.';
 
   @override
-  String get cvGoalReplySleep =>
-      'İyi uyku yatmadan önce başlar. Akşamlarınızı sakinleştirmenize yardım edeceğiz.';
+  String get cvGoalReplySleep => 'İyi uyku sakin akşamlarla başlar.';
 
   @override
   String get cvGoalReplyScrolling =>
@@ -1112,16 +1110,14 @@ class AppLocalizationsTr extends AppLocalizations {
       'Birkaç küçük değişiklik gerçekten zaman kazandırabilir.';
 
   @override
-  String get cvStReply4to6 =>
-      'Bu, gününüzün epey bir kısmı. Bir kısmını yeniden size kazandıralım.';
+  String get cvStReply4to6 => 'Epey fazla. Birazını geri alalım.';
 
   @override
   String get cvStReplyOver6 =>
       'Bu, günün büyük bir kısmı; o yüzden küçük adımlarla başlayacağız.';
 
   @override
-  String get cvStReplyNotSure =>
-      'Sorun değil. Kullanım erişimine izin verdiğinizde Pausey bunu ölçebilir.';
+  String get cvStReplyNotSure => 'Sorun değil. Pausey bunu ölçebilir.';
 
   @override
   String get cvPhraseFocus => 'daha fazla odak';

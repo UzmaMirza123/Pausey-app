@@ -1987,13 +1987,13 @@ abstract class AppLocalizations {
   /// No description provided for @cvGoalReplyFocus.
   ///
   /// In en, this message translates to:
-  /// **'Focus it is. We\'ll protect the time you need for deep work.'**
+  /// **'Focus it is. We\'ll guard your deep work.'**
   String get cvGoalReplyFocus;
 
   /// No description provided for @cvGoalReplySleep.
   ///
   /// In en, this message translates to:
-  /// **'Good sleep starts before bed. We\'ll help your evenings wind down.'**
+  /// **'Better sleep starts with calmer evenings.'**
   String get cvGoalReplySleep;
 
   /// No description provided for @cvGoalReplyScrolling.
@@ -2125,7 +2125,7 @@ abstract class AppLocalizations {
   /// No description provided for @cvStReply4to6.
   ///
   /// In en, this message translates to:
-  /// **'That\'s a good part of your day. Let\'s make some of it yours again.'**
+  /// **'That\'s a lot. Let\'s win some of it back.'**
   String get cvStReply4to6;
 
   /// No description provided for @cvStReplyOver6.
@@ -2137,7 +2137,7 @@ abstract class AppLocalizations {
   /// No description provided for @cvStReplyNotSure.
   ///
   /// In en, this message translates to:
-  /// **'No problem. Pausey can measure it once you allow usage access.'**
+  /// **'No problem. Pausey can measure it for you.'**
   String get cvStReplyNotSure;
 
   /// No description provided for @cvPhraseFocus.

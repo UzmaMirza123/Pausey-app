@@ -1009,10 +1009,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get cvGoalOtherHint => '어떤 일에 시간을 더 쓰고 싶나요?';
 
   @override
-  String get cvGoalReplyFocus => '집중이군요. 깊이 몰입할 시간을 지켜 드릴게요.';
+  String get cvGoalReplyFocus => '집중이군요. 지켜 드릴게요.';
 
   @override
-  String get cvGoalReplySleep => '좋은 잠은 잠들기 전부터 시작돼요. 저녁을 차분하게 마무리하도록 도와드릴게요.';
+  String get cvGoalReplySleep => '좋은 잠은 차분한 저녁에서 시작돼요.';
 
   @override
   String get cvGoalReplyScrolling => '스크롤을 습관이 아닌 선택으로 만들어 봐요.';
@@ -1088,13 +1088,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get cvStReply2to4 => '작은 변화 몇 가지로도 꽤 많은 시간이 생겨요.';
 
   @override
-  String get cvStReply4to6 => '하루의 꽤 큰 부분이네요. 그중 일부를 다시 당신의 시간으로 만들어 봐요.';
+  String get cvStReply4to6 => '꽤 많네요. 조금 되찾아요.';
 
   @override
   String get cvStReplyOver6 => '하루의 큰 부분이니, 작은 것부터 시작해요.';
 
   @override
-  String get cvStReplyNotSure => '괜찮아요. 사용 정보 접근을 허용하면 Pausey가 측정할 수 있어요.';
+  String get cvStReplyNotSure => '괜찮아요. Pausey가 측정해 드려요.';
 
   @override
   String get cvPhraseFocus => '더 깊은 집중';

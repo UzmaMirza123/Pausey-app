@@ -128,7 +128,7 @@ class _GoalStageState extends State<GoalStage> {
           primaryLabel: l.cvNext,
           onPrimary: g == null ? null : widget.onNext,
           children: [
-            _head(ObArtKind.goal, l.cvGoalTitle, l.cvGoalSub),
+            _head(ObArtKind.moretime, l.cvGoalTitle, l.cvGoalSub),
             for (final (i, (v, icon, label)) in options.indexed)
               _answer(i, ObAnswer(icon: icon, label: label, selected: g == v, onTap: () => _s.update((s) => s.goal = v))),
             AnimatedSize(
@@ -492,29 +492,12 @@ class _ScreenTimeStageState extends State<ScreenTimeStage> {
           ObScreenTime.notSure => l.cvStReplyNotSure,
           null => null,
         };
-        final measured = _s.measuredMinutes;
         return ObPage(
           center: true,
           primaryLabel: v == null ? l.cvSkipForNow : l.cvNext,
           onPrimary: widget.onNext,
           children: [
             _headWith(const ObHourglassHero(), l.cvStTitle, l.cvStSub),
-            if (measured != null)
-              ObFadeUp(
-                delay: _answersDelay,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: PCard(
-                    child: Row(children: [
-                      const Icon(Icons.phone_android_rounded, color: AppPalette.accent),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(l.cvStMeasured(fmtMinutes(measured, h: l.unitH, m: l.unitM)), style: AppText.rowTitle.copyWith(color: context.colors.textPrimary)),
-                      ),
-                    ]),
-                  ),
-                ),
-              ),
             for (final (i, (opt, label, icon)) in [
               (ObScreenTime.under2, l.cvStUnder2, Icons.hourglass_empty_rounded),
               (ObScreenTime.h2to4, l.cvSt2to4, Icons.schedule_rounded),
@@ -523,7 +506,7 @@ class _ScreenTimeStageState extends State<ScreenTimeStage> {
               (ObScreenTime.notSure, l.cvStNotSure, Icons.help_outline_rounded),
             ].indexed)
               _answer(
-                i + (measured != null ? 1 : 0),
+                i,
                 ObAnswer(
                   icon: icon,
                   label: label,

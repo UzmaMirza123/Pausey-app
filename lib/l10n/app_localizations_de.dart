@@ -1039,12 +1039,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get cvGoalOtherHint => 'Wofür hättest du gern mehr Zeit?';
 
   @override
-  String get cvGoalReplyFocus =>
-      'Also Fokus. Wir schützen die Zeit, die du für konzentriertes Arbeiten brauchst.';
+  String get cvGoalReplyFocus => 'Also Fokus. Wir schützen ihn.';
 
   @override
-  String get cvGoalReplySleep =>
-      'Guter Schlaf beginnt vor dem Zubettgehen. Wir helfen dir, abends runterzukommen.';
+  String get cvGoalReplySleep => 'Guter Schlaf beginnt mit ruhigen Abenden.';
 
   @override
   String get cvGoalReplyScrolling =>
@@ -1125,16 +1123,14 @@ class AppLocalizationsDe extends AppLocalizations {
       'Ein paar kleine Änderungen können echt Zeit freimachen.';
 
   @override
-  String get cvStReply4to6 =>
-      'Das ist ein guter Teil deines Tages. Holen wir dir etwas davon zurück.';
+  String get cvStReply4to6 => 'Das ist viel. Holen wir uns etwas zurück.';
 
   @override
   String get cvStReplyOver6 =>
       'Das ist ein großer Teil des Tages, also fangen wir klein an.';
 
   @override
-  String get cvStReplyNotSure =>
-      'Kein Problem. Pausey kann es messen, sobald du den Nutzungszugriff erlaubst.';
+  String get cvStReplyNotSure => 'Kein Problem. Pausey kann es messen.';
 
   @override
   String get cvPhraseFocus => 'mehr Fokus';
