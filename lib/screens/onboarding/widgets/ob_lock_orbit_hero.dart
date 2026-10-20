@@ -19,7 +19,7 @@ import '../../../utils/app_theme.dart';
 const _tau = math.pi * 2;
 
 /// Design space: everything below is laid out on a 360×250 box and scaled.
-const _w = 360.0, _h = 272.0;
+const _w = 360.0, _h = 300.0;
 const _c = Offset(_w / 2, _h / 2);
 
 /// Apps around the lock: (asset, angle in degrees from straight up, clockwise).
@@ -34,13 +34,13 @@ const _apps = <(String, double)>[
 
 /// Faded background tiles: (icon, centre, rotation in degrees).
 const _ghosts = <(IconData, Offset, double)>[
-  (Icons.sports_esports_rounded, Offset(50, 42), -12),
-  (Icons.schedule_rounded, Offset(314, 50), 10),
-  (Icons.chat_bubble_rounded, Offset(36, 214), -10),
-  (Icons.more_horiz_rounded, Offset(326, 210), 8),
+  (Icons.sports_esports_rounded, Offset(40, 40), -12),
+  (Icons.schedule_rounded, Offset(322, 48), 10),
+  (Icons.chat_bubble_rounded, Offset(30, 250), -10),
+  (Icons.more_horiz_rounded, Offset(332, 246), 8),
 ];
 
-const _rApps = 106.0; // apps sit on this circle
+const _rApps = 124.0; // apps sit on this circle
 const _tile = 35.0; // app tile size
 const _disc = 36.0; // lock disc radius
 
@@ -95,7 +95,7 @@ class _ObLockOrbitHeroState extends State<ObLockOrbitHero> with SingleTickerProv
     final dark = context.isDark;
     return ExcludeSemantics(
       child: LayoutBuilder(builder: (context, box) {
-        final w = math.min(box.maxWidth, 420.0);
+        final w = math.min(box.maxWidth, 430.0);
         final k = w / _w;
         return SizedBox(
           width: w,
@@ -228,15 +228,15 @@ class _BackPainter extends CustomPainter {
     // Filled soft disc with three thin rings (they open out on entrance).
     canvas.drawCircle(
       _c,
-      94 * (0.7 + 0.3 * rings),
+      112 * (0.7 + 0.3 * rings),
       Paint()..color = (dark ? const Color(0xFF6C5CE0) : const Color(0xFFB9A8FF)).withValues(alpha: (dark ? 0.16 : 0.22) * rings),
     );
     final ringPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 4.5
+      ..strokeWidth = 19
       ..color = (dark ? const Color(0xFFB7A6FF) : Colors.white).withValues(alpha: (dark ? 0.18 : 0.80) * rings);
-    // Three wide white rings, so the purple bands between them are narrower.
-    for (final r in [46.0, 67.0, 88.0]) {
+    // Three wide white rings: only thin purple bands show between them.
+    for (final r in [52.0, 80.0, 108.0]) {
       canvas.drawCircle(_c, r * (0.7 + 0.3 * rings), ringPaint);
     }
 
@@ -245,7 +245,7 @@ class _BackPainter extends CustomPainter {
       final ph = ((t - 1.4) % 3.0) / 3.0;
       canvas.drawCircle(
         _c,
-        _disc + ph * 70,
+        _disc + ph * 84,
         Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 2 * (1 - ph) + 0.5
@@ -258,7 +258,7 @@ class _BackPainter extends CustomPainter {
     canvas.save();
     canvas.translate(_c.dx, _c.dy);
     canvas.rotate(-0.12);
-    const rx = 164.0, ry = 114.0;
+    const rx = 172.0, ry = 132.0;
     // Very light, so the orbit only hints at itself.
     final bead = Paint()..color = (dark ? const Color(0xFFB7A6FF) : const Color(0xFFDCD4FF)).withValues(alpha: (dark ? 0.16 : 0.30) * orbit);
     const n = 120;

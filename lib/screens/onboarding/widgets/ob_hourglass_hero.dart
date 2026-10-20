@@ -87,14 +87,14 @@ class _ObHourglassHeroState extends State<ObHourglassHero> with SingleTickerProv
                       clipBehavior: Clip.none,
                       children: [
                         Positioned.fill(child: CustomPaint(painter: _BackdropPainter(center: c, k: k, t: t, dark: dark, w: w, h: h))),
-                        // Hourglass, gently rocking.
+                        // Hourglass, tilted (like the reference) and gently rocking.
                         Positioned(
                           left: c.dx - hw / 2,
                           top: c.dy - hh / 2,
                           width: hw,
                           height: hh,
                           child: Transform.rotate(
-                            angle: math.sin(t * _tau / 7) * 0.03,
+                            angle: -0.2 + math.sin(t * _tau / 7) * 0.03,
                             child: CustomPaint(painter: _HourglassPainter(t: t, dark: dark, k: k)),
                           ),
                         ),
