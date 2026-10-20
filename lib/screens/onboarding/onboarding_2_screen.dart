@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
 import '../../widgets/common.dart';
-import 'widgets/ob_lock_box_hero.dart';
+import 'widgets/ob_lock_orbit_hero.dart';
 import 'widgets/ob_text_motion.dart';
 import 'widgets/intro_motion.dart';
 
@@ -44,7 +44,7 @@ class Onboarding2Screen extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(height: 8),
-          const IntroEnter(scale: true, child: ObLockBoxHero()),
+          const IntroEnter(scale: true, child: ObLockOrbitHero()),
           const SizedBox(height: 34),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
