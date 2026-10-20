@@ -3479,4 +3479,31 @@ class AppLocalizationsId extends AppLocalizations {
   String nudgeText(String used, String limit) {
     return '$used dari $limit terpakai hari ini';
   }
+
+  @override
+  String homeWaitFor(int s) {
+    return 'Tunggu $s dtk';
+  }
+
+  @override
+  String get homeWaitHint => 'Tarik napas. Benar-benar perlu sekarang?';
+
+  @override
+  String get homeUnblockAllFor => 'Buka semua aplikasi selama…';
+
+  @override
+  String get homeUnblock => 'Buka blokir';
+
+  @override
+  String get homeNevermind => 'Tidak jadi';
+
+  @override
+  String homeMinutesN(int n) {
+    return '$n menit';
+  }
+
+  @override
+  String homeUnblockedLeft(String time) {
+    return 'Terbuka · sisa $time';
+  }
 }

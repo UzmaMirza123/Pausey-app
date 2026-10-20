@@ -3395,4 +3395,31 @@ class AppLocalizationsJa extends AppLocalizations {
   String nudgeText(String used, String limit) {
     return '今日は$limit中$used使用';
   }
+
+  @override
+  String homeWaitFor(int s) {
+    return '$s秒待って';
+  }
+
+  @override
+  String get homeWaitHint => 'ひと呼吸。本当に今必要？';
+
+  @override
+  String get homeUnblockAllFor => 'すべてのアプリを解除する時間…';
+
+  @override
+  String get homeUnblock => '解除する';
+
+  @override
+  String get homeNevermind => 'やめておく';
+
+  @override
+  String homeMinutesN(int n) {
+    return '$n分';
+  }
+
+  @override
+  String homeUnblockedLeft(String time) {
+    return '解除中・残り$time';
+  }
 }

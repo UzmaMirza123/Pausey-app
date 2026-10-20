@@ -1031,5 +1031,12 @@
   "stPwFirstWeek": "첫 주가 지금 시작돼요",
   "stPwFocusWeek": "주간 집중 시간",
   "nudgeTitle": "{app} 한도가 거의 다 됐어요",
-  "nudgeText": "오늘 {limit} 중 {used} 사용"
+  "nudgeText": "오늘 {limit} 중 {used} 사용",
+  "homeWaitFor": "{s}초 기다리세요",
+  "homeWaitHint": "숨 한번 쉬어요. 지금 꼭 필요한가요?",
+  "homeUnblockAllFor": "모든 앱 차단 해제 시간…",
+  "homeUnblock": "차단 해제",
+  "homeNevermind": "그만둘게요",
+  "homeMinutesN": "{n}분",
+  "homeUnblockedLeft": "해제됨 · {time} 남음"
 }

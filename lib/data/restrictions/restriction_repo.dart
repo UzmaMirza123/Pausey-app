@@ -63,6 +63,7 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
 
   Timer? _tick;
   Timer? _syncDebounce;
+  Timer? _unlockEnd;
   bool _started = false;
 
   DateTime now() => AppRepo.instance.now();
@@ -91,6 +92,7 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
       }
     }
     notifyListeners();
+    _armUnlockEnd();
   }
 
   /// Starts listening for changes and keeps usage/permissions fresh. Call once after load().
@@ -114,6 +116,7 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
   void dispose() {
     _tick?.cancel();
     _syncDebounce?.cancel();
+    _unlockEnd?.cancel();
     super.dispose();
   }
 
@@ -228,9 +231,48 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
     return true;
   }
 
+  /// Home "Unblock apps": unblocks every app in [pkgs] for [d] at once (no Emergency
+  /// Override is used; the wait screen is the friction). Focus restrictions stay on.
+  /// When the time is up the apps are blocked again by themselves (here and natively).
+  Future<void> unlockAllFor(Iterable<String> pkgs, Duration d) async {
+    final until = DateTime.now().add(d);
+    for (final p in pkgs) {
+      _unlocks[p] = TemporaryUnlock(packageName: p, expiry: until);
+    }
+    await _save();
+    _armUnlockEnd();
+  }
+
+  /// Packages unblocked right now, and when the latest unblock ends (null = none).
+  List<String> get unlockedNow => [for (final u in _unlocks.values) if (u.activeAt(now())) u.packageName];
+  DateTime? get unlockEndsAt {
+    DateTime? end;
+    for (final u in _unlocks.values) {
+      if (u.activeAt(now()) && (end == null || u.expiry.isAfter(end))) end = u.expiry;
+    }
+    return end;
+  }
+
+  /// Re-blocks as soon as the next unblock runs out.
+  void _armUnlockEnd() {
+    _unlockEnd?.cancel();
+    DateTime? next;
+    for (final u in _unlocks.values) {
+      if (next == null || u.expiry.isBefore(next)) next = u.expiry;
+    }
+    if (next == null) return;
+    final wait = next.difference(DateTime.now());
+    _unlockEnd = Timer(wait.isNegative ? Duration.zero : wait + const Duration(milliseconds: 200), () async {
+      _dropExpiredUnlocks();
+      await _save();
+      _armUnlockEnd();
+    });
+  }
+
   Future<void> endUnlock(String pkg) async {
     _unlocks.remove(pkg);
     await _save();
+    _armUnlockEnd();
   }
 
   void _dropExpiredUnlocks() => _unlocks.removeWhere((_, u) => !u.activeAt(now()));

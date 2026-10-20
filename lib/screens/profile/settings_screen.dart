@@ -13,22 +13,23 @@ import '../../utils/theme_controller.dart';
 import '../../widgets/glow_background.dart';
 import '../../widgets/ui_kit.dart';
 import '../paywall/paywall_screen.dart';
+import 'profile_screen.dart';
 import 'widgets/profile_kit.dart';
 
-/// Settings (from Profile). Every switch persists through AppRepo.updateSettings.
+/// Settings: the bottom bar's last tab (and still opens as its own page when pushed).
+/// Every switch persists through AppRepo.updateSettings. Profile opens from here.
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
+  const SettingsScreen({super.key, this.inTab = false});
+
+  /// Shown as a tab: no back arrow, room for the bottom bar, the shell's background.
+  final bool inTab;
 
   static const textScales = [0.9, 1.0, 1.15, 1.3];
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: GlowBackground(
-        child: SafeArea(
-          child: ListenableBuilder(
+    final list = ListenableBuilder(
             listenable: Listenable.merge([AppRepo.instance, AuthService.instance, ThemeController.instance, LocaleController.instance]),
             builder: (context, _) {
               final r = AppRepo.instance;
@@ -39,9 +40,9 @@ class SettingsScreen extends StatelessWidget {
               final hasName = AuthService.instance.value.displayName.trim().isNotEmpty;
               final mins = l.profileMinutes;
               return ListView(
-                padding: const EdgeInsets.only(bottom: 40),
+                padding: EdgeInsets.only(bottom: inTab ? 120 : 40),
                 children: [
-                  ScreenHeader(title: l.profileSettings, onBack: () => Navigator.of(context).maybePop()),
+                  ScreenHeader(title: l.profileSettings, onBack: inTab ? null : () => Navigator.of(context).maybePop()),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 8, AppSpacing.gutter, 0),
                     child: Column(
@@ -71,19 +72,27 @@ class SettingsScreen extends StatelessWidget {
                             ),
                           ]),
                         ),
+                        // Profile opens from here (the bottom bar's last tab is Settings now).
+                        const SizedBox(height: 12),
+                        PGroup(children: [
+                          PListTile(
+                            icon: Icons.person_rounded,
+                            title: l.navProfile,
+                            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ProfileScreen(pushed: true))),
+                          ),
+                        ]),
                         SectionLabel(l.profileSecNotifications),
                         PGroup(children: [
                           _toggle(Icons.notifications_rounded, Tone.violet, l.profilePush, l.profilePushSub, s.push, (v) => r.updateSettings((x) => x.push = v)),
                           PListTile(
                             icon: Icons.bolt_rounded,
-                            color: Tone.amber,
                             title: l.profileReminder,
                             subtitle: s.focusReminder ? l.profileReminderSub(_time(context, s.reminderMinutes)) : l.profileOff,
                             onTap: () => _pickTime(context),
-                            trailing: PSwitch(value: s.focusReminder, color: Tone.amber, onChanged: (v) => r.updateSettings((x) => x.focusReminder = v)),
+                            trailing: PSwitch(value: s.focusReminder, color: AppPalette.accent, onChanged: (v) => r.updateSettings((x) => x.focusReminder = v)),
                           ),
-                          _toggle(Icons.local_fire_department_rounded, Tone.amber, l.profileStreakAlerts, l.profileStreakAlertsSub, s.streakAlerts, (v) => r.updateSettings((x) => x.streakAlerts = v)),
-                          _toggle(Icons.track_changes_rounded, Tone.green, l.profileGoalMilestones, l.profileGoalMilestonesSub, s.goalMilestones, (v) => r.updateSettings((x) => x.goalMilestones = v)),
+                          _toggle(Icons.local_fire_department_rounded, Tone.violet, l.profileStreakAlerts, l.profileStreakAlertsSub, s.streakAlerts, (v) => r.updateSettings((x) => x.streakAlerts = v)),
+                          _toggle(Icons.track_changes_rounded, Tone.violet, l.profileGoalMilestones, l.profileGoalMilestonesSub, s.goalMilestones, (v) => r.updateSettings((x) => x.goalMilestones = v)),
                         ]),
                         SectionLabel(l.profileSecAppearance),
                         PGroup(children: [
@@ -91,14 +100,12 @@ class SettingsScreen extends StatelessWidget {
                               (v) => ThemeController.instance.set(v ? ThemeMode.dark : ThemeMode.light)),
                           PListTile(
                             icon: Icons.text_fields_rounded,
-                            color: Tone.blue,
                             title: l.profileTextSize,
                             subtitle: _scaleName(l, s.textScale),
                             onTap: () => _pickTextSize(context),
                           ),
                           PListTile(
                             icon: Icons.language_rounded,
-                            color: Tone.indigo,
                             title: l.language,
                             subtitle: loc == null ? l.phoneLanguage : LocaleController.names[loc.languageCode],
                             onTap: () => _pickLanguage(context),
@@ -108,23 +115,22 @@ class SettingsScreen extends StatelessWidget {
                         PGroup(children: [
                           PListTile(icon: Icons.timer_rounded, title: l.profilePomodoroLen, subtitle: mins(s.pomodoroMinutes),
                               onTap: () => _pickNumber(context, l.profilePomodoroLen, const [15, 20, 25, 30, 45, 50, 60], s.pomodoroMinutes, mins, (v) => r.updateSettings((x) => x.pomodoroMinutes = v))),
-                          PListTile(icon: Icons.coffee_rounded, color: Tone.green, title: l.profileBreakLen, subtitle: mins(s.breakMinutes),
+                          PListTile(icon: Icons.coffee_rounded, title: l.profileBreakLen, subtitle: mins(s.breakMinutes),
                               onTap: () => _pickNumber(context, l.profileBreakLen, const [3, 5, 10, 15, 20], s.breakMinutes, mins, (v) => r.updateSettings((x) => x.breakMinutes = v))),
-                          _toggle(Icons.face_rounded, Tone.blue, l.profileFaceIdUnlock, l.profileFaceIdUnlockSub, r.faceIdProtection, (v) => r.setFaceIdProtection(v)),
+                          _toggle(Icons.face_rounded, Tone.violet, l.profileFaceIdUnlock, l.profileFaceIdUnlockSub, r.faceIdProtection, (v) => r.setFaceIdProtection(v)),
                           PListTile(
                             icon: Icons.emergency_rounded,
-                            color: Tone.red,
                             title: l.profileBypass,
                             subtitle: s.emergencyBypass ? l.profileBypassSub(s.bypassPerDay) : l.profileOff,
                             onTap: s.emergencyBypass
                                 ? () => _pickNumber(context, l.profileBypass, const [1, 2, 3, 4, 5], s.bypassPerDay, l.profileBypassSub, (v) => r.updateSettings((x) => x.bypassPerDay = v))
                                 : null,
-                            trailing: PSwitch(value: s.emergencyBypass, color: Tone.red, onChanged: (v) => r.updateSettings((x) => x.emergencyBypass = v)),
+                            trailing: PSwitch(value: s.emergencyBypass, color: AppPalette.accent, onChanged: (v) => r.updateSettings((x) => x.emergencyBypass = v)),
                           ),
                         ]),
                         SectionLabel(l.profileSecPrivacy),
                         PGroup(children: [
-                          _toggle(Icons.lock_rounded, Tone.green, l.profileAppLock, l.profileAppLockSub, s.biometricLock, (v) => r.updateSettings((x) => x.biometricLock = v), Tone.green),
+                          _toggle(Icons.lock_rounded, Tone.violet, l.profileAppLock, l.profileAppLockSub, s.biometricLock, (v) => r.updateSettings((x) => x.biometricLock = v)),
                           _toggle(Icons.visibility_off_rounded, Tone.violet, l.profileHideUsage, l.profileHideUsageSub, s.hideUsage, (v) => r.updateSettings((x) => x.hideUsage = v)),
                           PListTile(icon: Icons.delete_rounded, title: l.profileClearData, subtitle: l.profileClearDataSub, destructive: true, onTap: () => _clear(context)),
                         ]),
@@ -132,7 +138,6 @@ class SettingsScreen extends StatelessWidget {
                         PGroup(children: [
                           PListTile(
                             icon: Icons.credit_card_rounded,
-                            color: Tone.amber,
                             title: l.profileSubscription,
                             subtitle: r.premium ? l.profileProActive : l.profileFree,
                             onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PaywallScreen())),
@@ -149,9 +154,11 @@ class SettingsScreen extends StatelessWidget {
                 ],
               );
             },
-          ),
-        ),
-      ),
+          );
+    if (inTab) return list;
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: GlowBackground(child: SafeArea(child: list)),
     );
   }
 

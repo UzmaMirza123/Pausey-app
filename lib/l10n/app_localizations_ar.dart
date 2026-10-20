@@ -3456,4 +3456,39 @@ class AppLocalizationsAr extends AppLocalizations {
   String nudgeText(String used, String limit) {
     return 'استُخدم $used من $limit اليوم';
   }
+
+  @override
+  String homeWaitFor(int s) {
+    return 'انتظر $s ث';
+  }
+
+  @override
+  String get homeWaitHint => 'خذ نفسًا. هل تحتاجه الآن حقًا؟';
+
+  @override
+  String get homeUnblockAllFor => 'إلغاء حظر كل التطبيقات لمدة…';
+
+  @override
+  String get homeUnblock => 'إلغاء الحظر';
+
+  @override
+  String get homeNevermind => 'لا بأس';
+
+  @override
+  String homeMinutesN(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n دقيقة',
+      few: '$n دقائق',
+      two: 'دقيقتان',
+      one: 'دقيقة واحدة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeUnblockedLeft(String time) {
+    return 'غير محظورة · متبقٍ $time';
+  }
 }

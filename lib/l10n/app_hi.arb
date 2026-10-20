@@ -1031,5 +1031,12 @@
   "stPwFirstWeek": "आपका पहला हफ़्ता अभी से शुरू",
   "stPwFocusWeek": "हर हफ़्ते फ़ोकस का समय",
   "nudgeTitle": "{app} की सीमा लगभग पूरी",
-  "nudgeText": "आज {limit} में से {used} इस्तेमाल हुए"
+  "nudgeText": "आज {limit} में से {used} इस्तेमाल हुए",
+  "homeWaitFor": "{s} सेकंड रुकें",
+  "homeWaitHint": "एक साँस लें। क्या अभी सच में ज़रूरत है?",
+  "homeUnblockAllFor": "सभी ऐप्स कितनी देर के लिए खोलें…",
+  "homeUnblock": "अनब्लॉक करें",
+  "homeNevermind": "रहने दें",
+  "homeMinutesN": "{n} मिनट",
+  "homeUnblockedLeft": "अनब्लॉक · {time} बाकी"
 }

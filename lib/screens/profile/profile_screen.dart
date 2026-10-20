@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../../widgets/glow_background.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 import '../../data/app_repo.dart';
@@ -13,9 +15,12 @@ import 'settings_screen.dart';
 import 'streaks_screen.dart';
 import 'widgets/profile_kit.dart';
 
-/// Profile tab.
+/// Profile (opened from Settings).
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, this.pushed = false});
+
+  /// Opened as its own page (from Settings): back arrow, and "Settings" just goes back.
+  final bool pushed;
 
   void _push(BuildContext context, Widget w) => Navigator.of(context).push(MaterialPageRoute(builder: (_) => w));
 
@@ -28,10 +33,12 @@ class ProfileScreen extends StatelessWidget {
         final r = AppRepo.instance;
         final shell = AppShell.of(context);
         final goalsDone = r.goals.where(r.goalDone).length;
-        return PageList(
+        void settings() => pushed ? Navigator.of(context).maybePop() : _push(context, const SettingsScreen());
+        final page = PageList(
           header: ScreenHeader(
             title: l.navProfile,
-            trailing: RoundIconButton(icon: Icons.settings_rounded, tooltip: l.profileSettings, onTap: () => _push(context, const SettingsScreen())),
+            onBack: pushed ? () => Navigator.of(context).maybePop() : null,
+            trailing: RoundIconButton(icon: Icons.settings_rounded, tooltip: l.profileSettings, onTap: settings),
           ),
           children: [
             FadeIn(child: _IdentityCard(onPaywall: () => _push(context, const PaywallScreen()), onStreaks: () => _push(context, const StreaksScreen()))),
@@ -98,12 +105,14 @@ class ProfileScreen extends StatelessWidget {
                   subtitle: r.premium ? l.profileProActive : l.profileFree,
                   onTap: () => _push(context, const PaywallScreen()),
                 ),
-                PListTile(icon: Icons.settings_rounded, title: l.profileSettings, onTap: () => _push(context, const SettingsScreen())),
+                PListTile(icon: Icons.settings_rounded, title: l.profileSettings, onTap: settings),
               ]),
             ),
             SignOutCard(onTap: () => confirmSignOut(context)),
           ],
         );
+        if (!pushed) return page;
+        return Scaffold(backgroundColor: Colors.transparent, body: GlowBackground(child: SafeArea(child: page)));
       },
     );
   }

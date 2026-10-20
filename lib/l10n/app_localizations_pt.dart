@@ -3520,4 +3520,37 @@ class AppLocalizationsPt extends AppLocalizations {
   String nudgeText(String used, String limit) {
     return '$used de $limit usados hoje';
   }
+
+  @override
+  String homeWaitFor(int s) {
+    return 'Aguarde $s s';
+  }
+
+  @override
+  String get homeWaitHint => 'Respire. Você precisa mesmo agora?';
+
+  @override
+  String get homeUnblockAllFor => 'Desbloquear todos os apps por…';
+
+  @override
+  String get homeUnblock => 'Desbloquear';
+
+  @override
+  String get homeNevermind => 'Deixa pra lá';
+
+  @override
+  String homeMinutesN(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n minutos',
+      one: '1 minuto',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeUnblockedLeft(String time) {
+    return 'Liberados · faltam $time';
+  }
 }

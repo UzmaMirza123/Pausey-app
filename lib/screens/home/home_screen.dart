@@ -33,7 +33,11 @@ class HomeScreen extends StatelessWidget {
         ];
         return PageList(
           header: const _Header(),
-          children: [for (var i = 0; i < children.length; i++) _Entrance(index: i, child: children[i])],
+          children: [
+            for (var i = 0; i < children.length; i++) _Entrance(index: i, child: children[i]),
+            // Room so the last card can scroll up past the floating "Unblock apps" badge.
+            const SizedBox(height: 56),
+          ],
         );
       },
     );

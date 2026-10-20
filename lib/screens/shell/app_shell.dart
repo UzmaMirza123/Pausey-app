@@ -6,8 +6,9 @@ import '../../widgets/glow_background.dart';
 import '../block/block_screen.dart';
 import '../focus/focus_screen.dart';
 import '../home/home_screen.dart';
+import '../home/widgets/unblock_flow.dart';
 import '../insights/insights_screen.dart';
-import '../profile/profile_screen.dart';
+import '../profile/settings_screen.dart';
 
 /// Main app after sign-in: 5 tabs with the floating bottom bar.
 ///
@@ -47,7 +48,7 @@ class AppShellState extends State<AppShell> {
   }
 
   // Pages are built once and kept alive (timer keeps running when you switch tab).
-  final _pages = const [HomeScreen(), BlockScreen(), FocusScreen(), InsightsScreen(), ProfileScreen()];
+  final _pages = const [HomeScreen(), BlockScreen(), FocusScreen(), InsightsScreen(), SettingsScreen(inTab: true)];
 
   AppTab get tab => _tab;
 
@@ -68,9 +69,26 @@ class AppShellState extends State<AppShell> {
         backgroundColor: Colors.transparent,
         extendBody: true,
         body: GlowBackground(
-          child: SafeArea(
-            bottom: false,
-            child: IndexedStack(index: _tab.index, children: _pages),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: SafeArea(
+                  bottom: false,
+                  child: IndexedStack(index: _tab.index, children: _pages),
+                ),
+              ),
+              // Home: "Unblock apps" floats just above the bottom bar; the page scrolls under it.
+              // (Inside the Scaffold body, the bottom padding includes the bar's height.)
+              if (_tab == AppTab.home)
+                Builder(
+                  builder: (context) => Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: MediaQuery.paddingOf(context).bottom + 12,
+                    child: const Center(child: Padding(padding: EdgeInsets.symmetric(horizontal: AppSpacing.gutter), child: UnblockBadge())),
+                  ),
+                ),
+            ],
           ),
         ),
         bottomNavigationBar: _NavBar(current: _tab, onTap: goTab),
@@ -95,7 +113,7 @@ class _NavBar extends StatelessWidget {
       (AppTab.block, Icons.shield_outlined, l.navBlock),
       (AppTab.focus, Icons.bolt_rounded, l.navFocus),
       (AppTab.insights, Icons.bar_chart_rounded, l.navInsights),
-      (AppTab.profile, Icons.person_outline_rounded, l.navProfile),
+      (AppTab.profile, Icons.settings_rounded, l.profileSettings),
     ];
     return Container(
       decoration: BoxDecoration(

@@ -1031,5 +1031,12 @@
   "stPwFirstWeek": "Sua primeira semana começa agora",
   "stPwFocusWeek": "Tempo de foco por semana",
   "nudgeTitle": "Quase no limite do {app}",
-  "nudgeText": "{used} de {limit} usados hoje"
+  "nudgeText": "{used} de {limit} usados hoje",
+  "homeWaitFor": "Aguarde {s} s",
+  "homeWaitHint": "Respire. Você precisa mesmo agora?",
+  "homeUnblockAllFor": "Desbloquear todos os apps por…",
+  "homeUnblock": "Desbloquear",
+  "homeNevermind": "Deixa pra lá",
+  "homeMinutesN": "{n, plural, =1{1 minuto} other{{n} minutos}}",
+  "homeUnblockedLeft": "Liberados · faltam {time}"
 }

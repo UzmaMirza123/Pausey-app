@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:pausey/data/app_repo.dart';
+import 'package:pausey/data/restrictions/restriction_repo.dart';
 import 'package:pausey/main.dart';
 import 'package:pausey/screens/paywall/paywall_screen.dart';
 import 'package:pausey/screens/shell/app_shell.dart';
@@ -16,7 +17,7 @@ void main() {
     await AppRepo.instance.setPremium(false);
   });
 
-  testWidgets('My apps card lists locked apps; Manage apps opens App Lock; Unblock opens the sheet', (tester) async {
+  testWidgets('My apps card lists locked apps; Manage apps opens App Lock', (tester) async {
     tester.view.physicalSize = const Size(412 * 3, 1600 * 3);
     tester.view.devicePixelRatio = 3;
     addTearDown(tester.view.reset);
@@ -27,17 +28,52 @@ void main() {
     expect(find.text('${locked.length} apps locked'), findsOneWidget);
     expect(find.textContaining(locked.first.name), findsWidgets);
 
-    await tester.ensureVisible(find.byKey(const ValueKey('home_unblock')));
-    await tester.tap(find.byKey(const ValueKey('home_unblock')));
-    await tester.pump(const Duration(milliseconds: 600));
-    expect(find.text('Unblock apps'), findsNWidgets(2)); // pill + sheet title
-    Navigator.of(tester.element(find.text('Unblock apps').last)).pop();
-    await tester.pump(const Duration(milliseconds: 600));
-
     await tester.tap(find.text('Manage apps'));
     await tester.pump(const Duration(milliseconds: 600));
     expect(find.text('App Lock'), findsWidgets);
     await tester.pump(const Duration(seconds: 3));
+  });
+
+  testWidgets('Unblock apps: wait 5s, Continue, pick minutes, Unblock; the badge counts down', (tester) async {
+    tester.view.physicalSize = const Size(412 * 3, 915 * 3);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    const pkg = 'com.example.scrolly';
+    await AppRepo.instance.addInstalledApps([(packageName: pkg, label: 'Scrolly')]);
+    await tester.pumpWidget(const PauseyApp(home: AppShell()));
+    await tester.pump(const Duration(seconds: 1));
+
+    // Floating badge above the bottom bar.
+    expect(find.text('Unblock apps'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('home_unblock')));
+    await tester.pump(); // the new route's first frame is built offstage
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.text('Wait for 5s'), findsOneWidget);
+    expect(find.text('Continue'), findsNothing);
+    await tester.pump(const Duration(milliseconds: 5200));
+    expect(find.text('Continue'), findsOneWidget);
+    await tester.tap(find.text('Continue'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+    expect(find.text('Unblock all apps for…'), findsOneWidget);
+    expect(find.text('5 minutes'), findsOneWidget);
+    await tester.tap(find.text('Unblock'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 800));
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(RestrictionRepo.instance.unlockedNow, contains(pkg));
+    expect(find.textContaining('Unblocked'), findsOneWidget);
+    expect(find.textContaining('left'), findsOneWidget);
+
+    // End it (as the timer would) so nothing is left running.
+    for (final p in RestrictionRepo.instance.unlockedNow) {
+      await RestrictionRepo.instance.endUnlock(p);
+    }
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.text('Unblock apps'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump(const Duration(seconds: 1)); // let the native-sync debounce run
   });
 
   testWidgets('Paywall buy sets premium', (tester) async {

@@ -3403,4 +3403,31 @@ class AppLocalizationsKo extends AppLocalizations {
   String nudgeText(String used, String limit) {
     return '오늘 $limit 중 $used 사용';
   }
+
+  @override
+  String homeWaitFor(int s) {
+    return '$s초 기다리세요';
+  }
+
+  @override
+  String get homeWaitHint => '숨 한번 쉬어요. 지금 꼭 필요한가요?';
+
+  @override
+  String get homeUnblockAllFor => '모든 앱 차단 해제 시간…';
+
+  @override
+  String get homeUnblock => '차단 해제';
+
+  @override
+  String get homeNevermind => '그만둘게요';
+
+  @override
+  String homeMinutesN(int n) {
+    return '$n분';
+  }
+
+  @override
+  String homeUnblockedLeft(String time) {
+    return '해제됨 · $time 남음';
+  }
 }

@@ -1031,5 +1031,12 @@
   "stPwFirstWeek": "آپ کا پہلا ہفتہ ابھی سے شروع",
   "stPwFocusWeek": "ہر ہفتے فوکس کا وقت",
   "nudgeTitle": "{app} کی حد تقریباً پوری",
-  "nudgeText": "آج {limit} میں سے {used} استعمال ہو گئے"
+  "nudgeText": "آج {limit} میں سے {used} استعمال ہو گئے",
+  "homeWaitFor": "{s} سیکنڈ انتظار کریں",
+  "homeWaitHint": "ایک سانس لیں۔ کیا ابھی واقعی ضرورت ہے؟",
+  "homeUnblockAllFor": "تمام ایپس کتنی دیر کے لیے کھولیں…",
+  "homeUnblock": "کھولیں",
+  "homeNevermind": "رہنے دیں",
+  "homeMinutesN": "{n} منٹ",
+  "homeUnblockedLeft": "کھلی ہیں · {time} باقی"
 }

@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../../data/app_repo.dart';
 import '../../../data/models.dart';
-import '../../../data/restrictions/restriction_models.dart';
 import '../../../data/restrictions/restriction_repo.dart';
 import '../../../utils/app_theme.dart';
 import '../../../utils/l10n.dart';
 import '../../block/widgets/applock_ui.dart';
 import '../../shell/app_shell.dart';
 
-/// Home "My apps" card: the locked apps as ringed icons with a lock, a centred
-/// "Manage apps" pill, and an "Unblock apps" pill underneath (temporary unlock).
+/// Home "My apps" card: the locked apps as ringed icons with a lock and a centred
+/// "Manage apps" pill. ("Unblock apps" floats above the bottom bar: UnblockBadge.)
 class MyAppsSection extends StatelessWidget {
   const MyAppsSection({super.key});
 
@@ -19,29 +18,18 @@ class MyAppsSection extends StatelessWidget {
     return ListenableBuilder(
       listenable: Listenable.merge([AppRepo.instance, RestrictionRepo.instance, InstalledAppsCache.instance]),
       builder: (context, _) {
-        final l = context.l10n;
         final repo = AppRepo.instance;
-        final rr = RestrictionRepo.instance;
         final locked = [
           for (final a in repo.apps)
             if (a.locked) a,
-        ];
-        final restrictedNow = [
-          for (final a in locked)
-            if (rr.stateFor(a).locked) a,
         ];
         final shown = locked.take(3).toList();
         void manage() => AppShell.of(context)?.goTab(AppTab.block);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // "Unblock apps" now floats above the bottom bar (see UnblockBadge).
             _MyAppsCard(apps: shown, total: locked.length, onManage: manage),
-            if (locked.isNotEmpty) ...[
-              const SizedBox(height: 12),
-              Center(
-                child: _UnblockPill(label: l.homeUnblockApps, count: restrictedNow.length, onTap: () => _showUnblockSheet(context, locked)),
-              ),
-            ],
           ],
         );
       },
@@ -288,161 +276,4 @@ class _ManagePill extends StatelessWidget {
       ),
     );
   }
-}
-
-class _UnblockPill extends StatelessWidget {
-  const _UnblockPill({required this.label, required this.count, required this.onTap});
-  final String label;
-  final int count;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final dark = context.isDark;
-    return Material(
-      color: dark ? c.glassFill : Colors.white,
-      shape: StadiumBorder(side: BorderSide(color: c.glassBorder)),
-      child: InkWell(
-        key: const ValueKey('home_unblock'),
-        onTap: onTap,
-        customBorder: const StadiumBorder(),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 48),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.lock_rounded, size: 18, color: c.textPrimary),
-                if (count > 0) ...[
-                  const SizedBox(width: 6),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-                    decoration: BoxDecoration(color: AppPalette.accent, borderRadius: BorderRadius.circular(AppRadius.chip)),
-                    child: Text('$count', style: AppText.small.copyWith(letterSpacing: 0, color: Colors.white)),
-                  ),
-                ],
-                const SizedBox(width: 10),
-                Text(
-                  label,
-                  style: AppText.rowTitle.copyWith(fontWeight: FontWeight.w700, color: c.textPrimary),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Sheet listing locked apps; each one restricted right now can be unlocked for
-/// a short time with one Emergency Override (Focus sessions can't be lifted).
-Future<void> _showUnblockSheet(BuildContext context, List<ManagedApp> apps) {
-  return showModalBottomSheet<void>(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: context.isDark ? const Color(0xFF14122C) : Colors.white,
-    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.card))),
-    builder: (ctx) => ListenableBuilder(
-      listenable: Listenable.merge([AppRepo.instance, RestrictionRepo.instance]),
-      builder: (ctx, _) {
-        final l = ctx.l10n;
-        final c = ctx.colors;
-        final repo = AppRepo.instance;
-        final rr = RestrictionRepo.instance;
-        final left = repo.bypassLeftToday;
-        final enabled = repo.settings.emergencyBypass;
-        final mins = RestrictionRepo.unlockDuration.inMinutes;
-        return SafeArea(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(ctx).height * 0.8),
-            child: ListView(
-              shrinkWrap: true,
-              padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 20, AppSpacing.gutter, 16),
-              children: [
-                Text(l.homeUnblockApps, style: AppText.cardTitle.copyWith(color: c.textPrimary)),
-                const SizedBox(height: 4),
-                Text(
-                  !enabled ? l.blockEmergencyOff : (left > 0 ? l.alTempUnlockSub(left) : l.blockEmergencyNone),
-                  style: AppText.rowSub.copyWith(color: c.textSecondary),
-                ),
-                const SizedBox(height: 14),
-                for (final a in apps)
-                  Builder(
-                    builder: (_) {
-                      final s = rr.stateFor(a);
-                      final until = s.unlockExpiry;
-                      final focus = s.reasons.contains(RestrictionReason.focus);
-                      final canUnlock = s.locked && !focus && enabled && left > 0 && a.packageName != null;
-                      final sub = until != null
-                          ? l.alUnlockedUntil(MaterialLocalizations.of(ctx).formatTimeOfDay(TimeOfDay.fromDateTime(until)))
-                          : focus
-                          ? l.alTempUnlockFocus
-                          : (!s.locked ? l.alTempUnlockNotLocked : null);
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 6),
-                        child: Row(
-                          children: [
-                            AppIcon(a, size: 40),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    a.name,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: AppText.rowTitle.copyWith(color: c.textPrimary),
-                                  ),
-                                  if (sub != null)
-                                    Text(
-                                      sub,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: AppText.rowSub.copyWith(color: c.textMuted),
-                                    ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            FilledButton(
-                              onPressed: canUnlock
-                                  ? () async {
-                                      final ok = await showDialog<bool>(
-                                        context: ctx,
-                                        builder: (d) => AlertDialog(
-                                          title: Text(l.alTempUnlockQ(a.name, mins)),
-                                          content: Text(l.alTempUnlockSub(left)),
-                                          actions: [
-                                            TextButton(onPressed: () => Navigator.pop(d, false), child: Text(l.cancel)),
-                                            FilledButton(onPressed: () => Navigator.pop(d, true), child: Text(l.alUnlock)),
-                                          ],
-                                        ),
-                                      );
-                                      if (ok == true) await rr.temporaryUnlock(a.packageName!);
-                                    }
-                                  : null,
-                              style: FilledButton.styleFrom(
-                                backgroundColor: AppPalette.accent,
-                                foregroundColor: Colors.white,
-                                minimumSize: const Size(88, 40),
-                                shape: const StadiumBorder(),
-                              ),
-                              child: Text(l.alTempUnlock(mins), maxLines: 1),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-              ],
-            ),
-          ),
-        );
-      },
-    ),
-  );
 }

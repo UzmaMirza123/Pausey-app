@@ -3472,4 +3472,31 @@ class AppLocalizationsHi extends AppLocalizations {
   String nudgeText(String used, String limit) {
     return 'आज $limit में से $used इस्तेमाल हुए';
   }
+
+  @override
+  String homeWaitFor(int s) {
+    return '$s सेकंड रुकें';
+  }
+
+  @override
+  String get homeWaitHint => 'एक साँस लें। क्या अभी सच में ज़रूरत है?';
+
+  @override
+  String get homeUnblockAllFor => 'सभी ऐप्स कितनी देर के लिए खोलें…';
+
+  @override
+  String get homeUnblock => 'अनब्लॉक करें';
+
+  @override
+  String get homeNevermind => 'रहने दें';
+
+  @override
+  String homeMinutesN(int n) {
+    return '$n मिनट';
+  }
+
+  @override
+  String homeUnblockedLeft(String time) {
+    return 'अनब्लॉक · $time बाकी';
+  }
 }

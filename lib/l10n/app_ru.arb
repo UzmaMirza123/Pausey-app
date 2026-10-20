@@ -1031,5 +1031,12 @@
   "stPwFirstWeek": "Ваша первая неделя начинается сейчас",
   "stPwFocusWeek": "Время фокуса за неделю",
   "nudgeTitle": "Лимит {app} почти исчерпан",
-  "nudgeText": "Сегодня использовано {used} из {limit}"
+  "nudgeText": "Сегодня использовано {used} из {limit}",
+  "homeWaitFor": "Подождите {s} с",
+  "homeWaitHint": "Вдохните. Это правда нужно сейчас?",
+  "homeUnblockAllFor": "Разблокировать все приложения на…",
+  "homeUnblock": "Разблокировать",
+  "homeNevermind": "Не надо",
+  "homeMinutesN": "{n, plural, one{{n} минута} few{{n} минуты} other{{n} минут}}",
+  "homeUnblockedLeft": "Открыты · осталось {time}"
 }

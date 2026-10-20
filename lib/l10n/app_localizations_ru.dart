@@ -3491,4 +3491,38 @@ class AppLocalizationsRu extends AppLocalizations {
   String nudgeText(String used, String limit) {
     return 'Сегодня использовано $used из $limit';
   }
+
+  @override
+  String homeWaitFor(int s) {
+    return 'Подождите $s с';
+  }
+
+  @override
+  String get homeWaitHint => 'Вдохните. Это правда нужно сейчас?';
+
+  @override
+  String get homeUnblockAllFor => 'Разблокировать все приложения на…';
+
+  @override
+  String get homeUnblock => 'Разблокировать';
+
+  @override
+  String get homeNevermind => 'Не надо';
+
+  @override
+  String homeMinutesN(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n минут',
+      few: '$n минуты',
+      one: '$n минута',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeUnblockedLeft(String time) {
+    return 'Открыты · осталось $time';
+  }
 }

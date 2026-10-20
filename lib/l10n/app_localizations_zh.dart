@@ -3386,4 +3386,31 @@ class AppLocalizationsZh extends AppLocalizations {
   String nudgeText(String used, String limit) {
     return '今天已用 $used，共 $limit';
   }
+
+  @override
+  String homeWaitFor(int s) {
+    return '等待 $s 秒';
+  }
+
+  @override
+  String get homeWaitHint => '深呼吸。现在真的需要吗？';
+
+  @override
+  String get homeUnblockAllFor => '解除所有应用的时长…';
+
+  @override
+  String get homeUnblock => '解除';
+
+  @override
+  String get homeNevermind => '算了';
+
+  @override
+  String homeMinutesN(int n) {
+    return '$n 分钟';
+  }
+
+  @override
+  String homeUnblockedLeft(String time) {
+    return '已解除 · 剩余 $time';
+  }
 }
