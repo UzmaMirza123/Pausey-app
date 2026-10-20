@@ -18,27 +18,23 @@ const _tau = math.pi * 2;
 /// Design space; everything is laid out on this box and scaled to the width.
 const _w = 360.0, _h = 290.0;
 
-/// Box geometry: a wide, soft tray seen a little from above.
-const _boxL = 86.0, _boxR = 274.0; // front rim left/right
-const _rimY = 150.0; // front top edge of the box
-const _boxB = 252.0; // bottom of the front face
-const _bottomInset = 22.0; // the bottom is narrower than the rim
-const _backY = 110.0; // back edge of the opening
-const _backInset = 26.0; // the back edge is narrower (perspective)
-
-const _tile = 40.0;
+/// Box geometry: a box turned a little (three-quarter view). Top rim corners:
+/// left, back (behind the apps), right, front; then the bottom corners.
+const _pL = Offset(82, 130), _pB = Offset(134, 86), _pR = Offset(284, 116), _pF = Offset(232, 162);
+const _bL = Offset(102, 232), _bF = Offset(224, 264), _bR = Offset(272, 214);
+const _tile = 38.0;
 
 /// One loop of the story, in seconds.
 const _loop = 7.4;
 
 /// Apps: asset (or built-in id), where they float outside, and where they peek out of the box.
 const _apps = <(String, Offset, Offset, double)>[
-  ('assets/svg/ob2_instagram.svg', Offset(70, 70), Offset(136, 116), -12),
-  ('tiktok', Offset(118, 30), Offset(172, 102), -4),
-  ('assets/svg/ob2_youtube.svg', Offset(180, 16), Offset(214, 110), 10),
-  ('assets/svg/ob2_facebook.svg', Offset(242, 30), Offset(228, 138), 12),
-  ('assets/svg/ob2_snapchat.svg', Offset(290, 70), Offset(190, 134), 4),
-  ('x', Offset(312, 116), Offset(150, 140), -8),
+  ('assets/svg/ob2_instagram.svg', Offset(70, 70), Offset(132, 120), -12),
+  ('tiktok', Offset(118, 30), Offset(172, 98), -4),
+  ('assets/svg/ob2_youtube.svg', Offset(180, 16), Offset(214, 108), 10),
+  ('assets/svg/ob2_facebook.svg', Offset(242, 30), Offset(238, 132), 12),
+  ('assets/svg/ob2_snapchat.svg', Offset(290, 70), Offset(198, 138), 4),
+  ('x', Offset(312, 116), Offset(160, 142), -8),
 ];
 
 /// Faded background tiles: icon, centre, tilt (degrees).
@@ -193,7 +189,7 @@ class _ObLockBoxHeroState extends State<ObLockBoxHero> with SingleTickerProvider
     final ctrl = Offset((outer.dx + peek.dx) / 2, math.min(outer.dy, peek.dy) - 46);
     final p = _quad(outer, ctrl, peek, f);
     final bob = math.sin(total * _tau / 3.4 + i * 1.1) * 3 * (1 - f);
-    final sunk = st.sink * 82; // slide down inside the box
+    final sunk = st.sink * 96; // slide down inside the box
     final pos = p + Offset(0, bob + sunk);
     final angle = ui.lerpDouble(i.isEven ? -8 : 8, tilt, f)! * math.pi / 180;
     final scale = ui.lerpDouble(1.0, 0.92, f)!;
@@ -298,14 +294,30 @@ class _RibbonPainter extends CustomPainter {
   bool shouldRepaint(_RibbonPainter old) => old.t != t || old.dark != dark || old.front != front;
 }
 
-Path _opening() => Path()
-  ..moveTo(_boxL + _backInset, _backY)
-  ..lineTo(_boxR - _backInset, _backY)
-  ..lineTo(_boxR, _rimY)
-  ..lineTo(_boxL, _rimY)
+Path _quadPath(Offset a, Offset b, Offset c, Offset d) => Path()
+  ..moveTo(a.dx, a.dy)
+  ..lineTo(b.dx, b.dy)
+  ..lineTo(c.dx, c.dy)
+  ..lineTo(d.dx, d.dy)
   ..close();
 
-/// Shadow under the box and the dark inside of the opening.
+Path _opening() => _quadPath(_pL, _pB, _pR, _pF);
+
+/// Fills [path] and traces it with a thick round stroke of the same paint: soft, rounded corners.
+void _soft(Canvas canvas, Path path, Paint fill, [double round = 8]) {
+  canvas.drawPath(path, fill);
+  canvas.drawPath(
+    path,
+    Paint()
+      ..shader = fill.shader
+      ..color = fill.color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = round
+      ..strokeJoin = StrokeJoin.round,
+  );
+}
+
+/// Shadow under the box and the purple inside of the opening.
 class _BoxBackPainter extends CustomPainter {
   _BoxBackPainter({required this.dark, required this.glow});
   final bool dark;
@@ -313,34 +325,36 @@ class _BoxBackPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Soft floor shadow.
     canvas.drawOval(
-      Rect.fromCenter(center: const Offset(_w / 2, _boxB + 6), width: 190, height: 24),
+      Rect.fromCenter(center: const Offset(190, 262), width: 210, height: 28),
       Paint()
-        ..color = AppPalette.accent.withValues(alpha: dark ? 0.35 : 0.22)
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8),
+        ..color = AppPalette.accent.withValues(alpha: dark ? 0.40 : 0.28)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10),
     );
-    // Back wall rising a little above the opening (gives depth).
-    final back = RRect.fromRectAndCorners(
-      const Rect.fromLTRB(_boxL + _backInset, _backY - 6, _boxR - _backInset, _backY + 8),
-      topLeft: const Radius.circular(8),
-      topRight: const Radius.circular(8),
-    );
-    canvas.drawRRect(back, Paint()..color = dark ? const Color(0xFF6E5CE6) : const Color(0xFFE4DDFF));
-    // Inside of the box.
     final inside = _opening();
-    canvas.drawPath(
+    final bounds = inside.getBounds();
+    _soft(
+      canvas,
       inside,
       Paint()
-        ..shader = const LinearGradient(
+        ..shader = LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xFF6A54E8), Color(0xFF9C8BFF)],
-        ).createShader(const Rect.fromLTRB(_boxL, _backY, _boxR, _rimY)),
+          colors: dark ? const [Color(0xFF3B2C9E), Color(0xFF6A54E8)] : const [Color(0xFF5B43DC), Color(0xFF9580FF)],
+        ).createShader(bounds),
     );
-    // Light glowing up from inside when the lock clicks.
+    // The inner back walls, a touch darker.
+    final wall = Path()
+      ..moveTo(_pL.dx, _pL.dy)
+      ..lineTo(_pB.dx, _pB.dy)
+      ..lineTo(_pR.dx, _pR.dy)
+      ..lineTo(_pR.dx - 8, _pR.dy + 16)
+      ..lineTo(_pB.dx + 4, _pB.dy + 18)
+      ..lineTo(_pL.dx + 12, _pL.dy + 4)
+      ..close();
+    canvas.drawPath(wall, Paint()..color = const Color(0xFF2E1F8F).withValues(alpha: dark ? 0.45 : 0.28));
     if (glow > 0) {
-      canvas.drawPath(inside, Paint()..color = const Color(0xFFC9BEFF).withValues(alpha: 0.25 * glow));
+      canvas.drawPath(inside, Paint()..color = const Color(0xFFC9BEFF).withValues(alpha: 0.30 * glow));
     }
   }
 
@@ -348,7 +362,7 @@ class _BoxBackPainter extends CustomPainter {
   bool shouldRepaint(_BoxBackPainter old) => old.dark != dark || old.glow != glow;
 }
 
-/// The lid, hinged at the back edge. [open] 1 = standing up behind the box, 0 = shut.
+/// The lid, hinged along the back edges. [open] 1 = tipped up behind the box, 0 = shut.
 class _LidPainter extends CustomPainter {
   _LidPainter({required this.open, required this.dark});
   final double open;
@@ -357,57 +371,40 @@ class _LidPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final o = open.clamp(-0.08, 1.0); // a little overshoot when it shuts
-    // Front edge of the lid: on the rim when shut, high up behind when open.
-    final frontY = ui.lerpDouble(_rimY + 2, _backY - 50, o)!;
-    final narrow = ui.lerpDouble(-4, _backInset - 2, o)!; // narrower as it tips away
-    final backL = _boxL + _backInset - 4, backR = _boxR - _backInset + 4;
-    final frontL = _boxL + narrow, frontR = _boxR - narrow;
-    final lid = Path()
-      ..moveTo(backL, _backY - 2)
-      ..lineTo(backR, _backY - 2)
-      ..lineTo(frontR, frontY)
-      ..lineTo(frontL, frontY)
-      ..close();
-    // Seen from the top when shut, from underneath when open.
-    final top = dark ? const [Color(0xFFB3A6FF), Color(0xFF8E7CFF)] : const [Color(0xFFFFFFFF), Color(0xFFE2D9FF)];
-    final under = dark ? const [Color(0xFF5A48C8), Color(0xFF7462E8)] : const [Color(0xFFC9BDFF), Color(0xFFDCD3FF)];
-    final colors = o > 0.5 ? under : top;
-    final bounds = Rect.fromLTRB(_boxL, math.min(frontY, _backY), _boxR, math.max(frontY, _rimY));
-    final shader = LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: colors).createShader(bounds);
-    canvas.drawPath(lid, Paint()..shader = shader);
-    // Same colour traced with a thick round stroke: soft, rounded corners.
-    canvas.drawPath(
+    // Hinge B→R stays put; the free edge (L→F) swings up and back as it opens.
+    const shut = Offset(-52, 44); // from the hinge to the free edge when shut (B→L)
+    const up = Offset(-10, -46); // the same when open (tipped up)
+    final d = Offset.lerp(shut, up, o)!;
+    final l = _pB + d, f = _pR + d;
+    final lid = _quadPath(l, _pB, _pR, f);
+    final top = dark ? const [Color(0xFFB3A6FF), Color(0xFF8E7CFF)] : const [Color(0xFFE4DCFF), Color(0xFFC3B5FF)];
+    final under = dark ? const [Color(0xFF5A48C8), Color(0xFF7462E8)] : const [Color(0xFFA897FF), Color(0xFFC0B2FF)];
+    final bounds = lid.getBounds();
+    _soft(
+      canvas,
       lid,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 10
-        ..strokeJoin = StrokeJoin.round
-        ..shader = shader,
+      Paint()..shader = LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: o > 0.5 ? under : top).createShader(bounds),
+      10,
     );
-    // A light line across the open lid, like a soft edge catching the light.
-    if (o > 0.5) {
-      canvas.drawLine(
-        Offset(frontL + 10, frontY + 6),
-        Offset(frontR - 10, frontY + 6),
-        Paint()
-          ..strokeWidth = 3
-          ..strokeCap = StrokeCap.round
-          ..color = Colors.white.withValues(alpha: (dark ? 0.25 : 0.45) * (o - 0.5) * 2),
-      );
-    }
-    // Thickness along the front edge (visible when shut / nearly shut).
-    final thick = 9 * (1 - o.clamp(0.0, 1.0));
-    if (thick > 0.5) {
+    // Thickness along the free edge when shut / nearly shut, and a little handle.
+    final k = 1 - o.clamp(0.0, 1.0);
+    if (k > 0.05) {
+      final edge = Path()
+        ..moveTo(l.dx, l.dy)
+        ..lineTo(f.dx, f.dy)
+        ..lineTo(f.dx, f.dy + 9 * k)
+        ..lineTo(l.dx, l.dy + 9 * k)
+        ..close();
+      _soft(canvas, edge, Paint()..color = dark ? const Color(0xFF7A68F0) : const Color(0xFFA996FF), 6);
+      final mid = Offset.lerp(Offset.lerp(l, f, 0.5)!, Offset.lerp(_pB, _pR, 0.5)!, 0.5)!;
+      canvas.save();
+      canvas.translate(mid.dx, mid.dy);
+      canvas.rotate(math.atan2(f.dy - l.dy, f.dx - l.dx));
       canvas.drawRRect(
-        RRect.fromRectAndRadius(Rect.fromLTRB(frontL, frontY - 1, frontR, frontY + thick), const Radius.circular(5)),
-        Paint()..color = dark ? const Color(0xFF7A68F0) : const Color(0xFFCBBFFF),
+        RRect.fromRectAndRadius(Rect.fromCenter(center: Offset.zero, width: 36, height: 7 * k), const Radius.circular(4)),
+        Paint()..color = Colors.white.withValues(alpha: dark ? 0.35 : 0.7),
       );
-      // Little handle on top.
-      final hc = Offset(_w / 2, (frontY + _backY) / 2);
-      canvas.drawRRect(
-        RRect.fromRectAndRadius(Rect.fromCenter(center: hc, width: 34, height: 7 * (1 - o.clamp(0.0, 1.0)) + 1), const Radius.circular(4)),
-        Paint()..color = (dark ? Colors.white : const Color(0xFFB9A8FF)).withValues(alpha: dark ? 0.35 : 0.8),
-      );
+      canvas.restore();
     }
   }
 
@@ -415,7 +412,7 @@ class _LidPainter extends CustomPainter {
   bool shouldRepaint(_LidPainter old) => old.open != open || old.dark != dark;
 }
 
-/// Front of the box with its rim and the lock (shackle clicks shut, glow pulse).
+/// The front and right sides of the box, its rim, and the lock (shackle clicks shut, glow pulse).
 class _BoxFrontPainter extends CustomPainter {
   _BoxFrontPainter({required this.dark, required this.shut, required this.pulse});
   final bool dark;
@@ -424,59 +421,60 @@ class _BoxFrontPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    const face = Rect.fromLTRB(_boxL, _rimY, _boxR, _boxB);
-    const bl = _boxL + _bottomInset, br = _boxR - _bottomInset;
-    final front = Path()
-      ..moveTo(_boxL, _rimY)
-      ..lineTo(_boxR, _rimY)
-      ..lineTo(br + 2, _boxB - 22)
-      ..quadraticBezierTo(br - 2, _boxB, br - 24, _boxB)
-      ..lineTo(bl + 24, _boxB)
-      ..quadraticBezierTo(bl + 2, _boxB, bl - 2, _boxB - 22)
-      ..close();
-    canvas.drawPath(
+    // Front (wide) side.
+    final front = _quadPath(_pL, _pF, _bF, _bL);
+    final fb = front.getBounds();
+    _soft(
+      canvas,
       front,
+      Paint()
+        ..shader = LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: dark ? const [Color(0xFF8A78F5), Color(0xFF5B48D0)] : const [Color(0xFFD9CFFF), Color(0xFFA996FF)],
+        ).createShader(fb),
+      14,
+    );
+    // Right (narrow) side, a shade darker.
+    final right = _quadPath(_pF, _pR, _bR, _bF);
+    _soft(
+      canvas,
+      right,
       Paint()
         ..shader = LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: dark ? const [Color(0xFF7D6BEA), Color(0xFF4E3FB8)] : const [Color(0xFFF4F1FF), Color(0xFFD4C8FF)],
-        ).createShader(face),
+          colors: dark ? const [Color(0xFF6E5CE0), Color(0xFF4A39B4)] : const [Color(0xFFB8A8FF), Color(0xFF8C76F5)],
+        ).createShader(right.getBounds()),
+      14,
     );
-    // Gentle shading on the sides (rounded, 3D feel).
+    // Soft sheen along the front.
     canvas.drawPath(
-      front,
-      Paint()
-        ..shader = LinearGradient(colors: [
-          (dark ? Colors.black : const Color(0xFF8F7BFF)).withValues(alpha: dark ? 0.18 : 0.16),
-          Colors.transparent,
-          Colors.transparent,
-          (dark ? Colors.black : const Color(0xFF8F7BFF)).withValues(alpha: dark ? 0.22 : 0.20),
-        ], stops: const [0, 0.22, 0.78, 1]).createShader(face),
+      _quadPath(_pL + const Offset(14, 14), _pL + const Offset(30, 18), _bL + const Offset(22, -14), _bL + const Offset(8, -18)),
+      Paint()..color = Colors.white.withValues(alpha: dark ? 0.10 : 0.30),
     );
-    // Rim: a thick soft white edge all round the opening.
-    final rim = Path()
-      ..moveTo(_boxL + _backInset, _backY)
-      ..lineTo(_boxR - _backInset, _backY)
-      ..lineTo(_boxR, _rimY)
-      ..lineTo(_boxL, _rimY)
-      ..close();
+    // Rim all round the opening.
     canvas.drawPath(
-      rim,
+      _opening(),
       Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 7
         ..strokeJoin = StrokeJoin.round
-        ..color = dark ? const Color(0xFFB9ADFF) : const Color(0xFFFBFAFF),
+        ..color = dark ? const Color(0xFFC4B8FF) : const Color(0xFFF1EDFF),
     );
 
-    // Lock badge.
-    const c = Offset(_w / 2, 204);
+    // Lock badge on the front side, turned with it.
+    final c = Offset.lerp(Offset.lerp(_pL, _pF, 0.5)!, Offset.lerp(_bL, _bF, 0.5)!, 0.52)!;
+    final tilt = math.atan2(_pF.dy - _pL.dy, _pF.dx - _pL.dx) * 0.6;
+    canvas.save();
+    canvas.translate(c.dx, c.dy);
+    canvas.rotate(tilt);
+    canvas.translate(-c.dx, -c.dy);
     if (pulse > 0) {
-      canvas.drawCircle(c, 36 + 10 * pulse, Paint()..color = Colors.white.withValues(alpha: 0.35 * pulse)..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8));
+      canvas.drawCircle(c, 36 + 10 * pulse, Paint()..color = Colors.white.withValues(alpha: 0.40 * pulse)..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8));
     }
-    canvas.drawCircle(c, 33, Paint()..color = (dark ? Colors.white : const Color(0xFF8F7BFF)).withValues(alpha: dark ? 0.12 : 0.10));
-    canvas.drawCircle(c, 29, Paint()..color = Colors.white.withValues(alpha: dark ? 0.92 : 1));
+    canvas.drawCircle(c, 33, Paint()..color = Colors.white.withValues(alpha: dark ? 0.16 : 0.28));
+    canvas.drawCircle(c, 29, Paint()..color = (dark ? const Color(0xFFF1EDFF) : const Color(0xFFF7F4FF)));
     const bodyW = 26.0, bodyH = 21.0;
     final bodyTop = c.dy - 3;
     final lift = (1 - shut) * 6;
@@ -510,6 +508,7 @@ class _BoxFrontPainter extends CustomPainter {
         canvas.drawLine(c + d * (38 + 4 * pulse), c + d * (44 + 4 * pulse), sp);
       }
     }
+    canvas.restore();
   }
 
   @override
