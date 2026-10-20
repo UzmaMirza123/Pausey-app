@@ -3397,21 +3397,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String homeWaitFor(int s) {
-    return '$s秒待って';
-  }
-
-  @override
-  String get homeWaitHint => 'ひと呼吸。本当に今必要？';
-
-  @override
   String get homeUnblockAllFor => 'すべてのアプリを解除する時間…';
-
-  @override
-  String get homeUnblock => '解除する';
-
-  @override
-  String get homeNevermind => 'やめておく';
 
   @override
   String homeMinutesN(int n) {

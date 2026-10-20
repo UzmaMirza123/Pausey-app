@@ -3470,21 +3470,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String homeWaitFor(int s) {
-    return '$s sn bekle';
-  }
-
-  @override
-  String get homeWaitHint => 'Bir nefes al. Şimdi gerçekten gerekli mi?';
-
-  @override
   String get homeUnblockAllFor => 'Tüm uygulamaların kilidini aç…';
-
-  @override
-  String get homeUnblock => 'Kilidi aç';
-
-  @override
-  String get homeNevermind => 'Vazgeç';
 
   @override
   String homeMinutesN(int n) {

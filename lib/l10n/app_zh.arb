@@ -1032,11 +1032,7 @@
   "stPwFocusWeek": "每周专注时长",
   "nudgeTitle": "{app} 额度快用完了",
   "nudgeText": "今天已用 {used}，共 {limit}",
-  "homeWaitFor": "等待 {s} 秒",
-  "homeWaitHint": "深呼吸。现在真的需要吗？",
   "homeUnblockAllFor": "解除所有应用的时长…",
-  "homeUnblock": "解除",
-  "homeNevermind": "算了",
   "homeMinutesN": "{n} 分钟",
   "homeUnblockedLeft": "已解除 · 剩余 {time}"
 }

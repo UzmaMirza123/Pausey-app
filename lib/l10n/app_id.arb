@@ -1032,11 +1032,7 @@
   "stPwFocusWeek": "Waktu fokus per minggu",
   "nudgeTitle": "Hampir mencapai batas {app}",
   "nudgeText": "{used} dari {limit} terpakai hari ini",
-  "homeWaitFor": "Tunggu {s} dtk",
-  "homeWaitHint": "Tarik napas. Benar-benar perlu sekarang?",
   "homeUnblockAllFor": "Buka semua aplikasi selama…",
-  "homeUnblock": "Buka blokir",
-  "homeNevermind": "Tidak jadi",
   "homeMinutesN": "{n} menit",
   "homeUnblockedLeft": "Terbuka · sisa {time}"
 }

@@ -3405,21 +3405,7 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String homeWaitFor(int s) {
-    return '$s초 기다리세요';
-  }
-
-  @override
-  String get homeWaitHint => '숨 한번 쉬어요. 지금 꼭 필요한가요?';
-
-  @override
   String get homeUnblockAllFor => '모든 앱 차단 해제 시간…';
-
-  @override
-  String get homeUnblock => '차단 해제';
-
-  @override
-  String get homeNevermind => '그만둘게요';
 
   @override
   String homeMinutesN(int n) {

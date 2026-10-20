@@ -3522,21 +3522,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String homeWaitFor(int s) {
-    return 'Aguarde $s s';
-  }
-
-  @override
-  String get homeWaitHint => 'Respire. Você precisa mesmo agora?';
-
-  @override
   String get homeUnblockAllFor => 'Desbloquear todos os apps por…';
-
-  @override
-  String get homeUnblock => 'Desbloquear';
-
-  @override
-  String get homeNevermind => 'Deixa pra lá';
 
   @override
   String homeMinutesN(int n) {

@@ -3458,21 +3458,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String homeWaitFor(int s) {
-    return 'انتظر $s ث';
-  }
-
-  @override
-  String get homeWaitHint => 'خذ نفسًا. هل تحتاجه الآن حقًا؟';
-
-  @override
   String get homeUnblockAllFor => 'إلغاء حظر كل التطبيقات لمدة…';
-
-  @override
-  String get homeUnblock => 'إلغاء الحظر';
-
-  @override
-  String get homeNevermind => 'لا بأس';
 
   @override
   String homeMinutesN(int n) {

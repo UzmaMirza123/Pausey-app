@@ -1032,11 +1032,7 @@
   "stPwFocusWeek": "Haftalık odak süresi",
   "nudgeTitle": "{app} sınırına az kaldı",
   "nudgeText": "Bugün {limit} sürenin {used} kadarı kullanıldı",
-  "homeWaitFor": "{s} sn bekle",
-  "homeWaitHint": "Bir nefes al. Şimdi gerçekten gerekli mi?",
   "homeUnblockAllFor": "Tüm uygulamaların kilidini aç…",
-  "homeUnblock": "Kilidi aç",
-  "homeNevermind": "Vazgeç",
   "homeMinutesN": "{n} dakika",
   "homeUnblockedLeft": "Açık · {time} kaldı"
 }

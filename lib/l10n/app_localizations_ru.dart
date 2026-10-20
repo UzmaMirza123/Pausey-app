@@ -3493,21 +3493,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String homeWaitFor(int s) {
-    return 'Подождите $s с';
-  }
-
-  @override
-  String get homeWaitHint => 'Вдохните. Это правда нужно сейчас?';
-
-  @override
   String get homeUnblockAllFor => 'Разблокировать все приложения на…';
-
-  @override
-  String get homeUnblock => 'Разблокировать';
-
-  @override
-  String get homeNevermind => 'Не надо';
 
   @override
   String homeMinutesN(int n) {

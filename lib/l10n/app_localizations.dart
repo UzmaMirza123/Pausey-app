@@ -6316,35 +6316,11 @@ abstract class AppLocalizations {
   /// **'{used} of {limit} used today'**
   String nudgeText(String used, String limit);
 
-  /// No description provided for @homeWaitFor.
-  ///
-  /// In en, this message translates to:
-  /// **'Wait for {s}s'**
-  String homeWaitFor(int s);
-
-  /// No description provided for @homeWaitHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Take a breath. Do you really need it now?'**
-  String get homeWaitHint;
-
   /// No description provided for @homeUnblockAllFor.
   ///
   /// In en, this message translates to:
   /// **'Unblock all apps for…'**
   String get homeUnblockAllFor;
-
-  /// No description provided for @homeUnblock.
-  ///
-  /// In en, this message translates to:
-  /// **'Unblock'**
-  String get homeUnblock;
-
-  /// No description provided for @homeNevermind.
-  ///
-  /// In en, this message translates to:
-  /// **'Nevermind'**
-  String get homeNevermind;
 
   /// No description provided for @homeMinutesN.
   ///

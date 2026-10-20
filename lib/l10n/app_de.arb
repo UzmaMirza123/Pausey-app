@@ -1032,11 +1032,7 @@
   "stPwFocusWeek": "Fokuszeit pro Woche",
   "nudgeTitle": "Fast am {app}-Limit",
   "nudgeText": "Heute {used} von {limit} genutzt",
-  "homeWaitFor": "Warte {s} s",
-  "homeWaitHint": "Atme durch. Brauchst du es wirklich jetzt?",
   "homeUnblockAllFor": "Alle Apps freigeben für…",
-  "homeUnblock": "Freigeben",
-  "homeNevermind": "Doch nicht",
   "homeMinutesN": "{n, plural, =1{1 Minute} other{{n} Minuten}}",
   "homeUnblockedLeft": "Frei · noch {time}"
 }

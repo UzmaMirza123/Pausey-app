@@ -2023,18 +2023,7 @@
       }
     }
   },
-  "homeWaitFor": "Wait for {s}s",
-  "@homeWaitFor": {
-    "placeholders": {
-      "s": {
-        "type": "int"
-      }
-    }
-  },
-  "homeWaitHint": "Take a breath. Do you really need it now?",
   "homeUnblockAllFor": "Unblock all apps for…",
-  "homeUnblock": "Unblock",
-  "homeNevermind": "Nevermind",
   "homeMinutesN": "{n, plural, =1{1 minute} other{{n} minutes}}",
   "@homeMinutesN": {
     "placeholders": {

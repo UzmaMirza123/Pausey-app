@@ -3481,21 +3481,7 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String homeWaitFor(int s) {
-    return 'Tunggu $s dtk';
-  }
-
-  @override
-  String get homeWaitHint => 'Tarik napas. Benar-benar perlu sekarang?';
-
-  @override
   String get homeUnblockAllFor => 'Buka semua aplikasi selama…';
-
-  @override
-  String get homeUnblock => 'Buka blokir';
-
-  @override
-  String get homeNevermind => 'Tidak jadi';
 
   @override
   String homeMinutesN(int n) {

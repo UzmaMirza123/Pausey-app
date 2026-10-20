@@ -3474,21 +3474,7 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String homeWaitFor(int s) {
-    return '$s सेकंड रुकें';
-  }
-
-  @override
-  String get homeWaitHint => 'एक साँस लें। क्या अभी सच में ज़रूरत है?';
-
-  @override
   String get homeUnblockAllFor => 'सभी ऐप्स कितनी देर के लिए खोलें…';
-
-  @override
-  String get homeUnblock => 'अनब्लॉक करें';
-
-  @override
-  String get homeNevermind => 'रहने दें';
 
   @override
   String homeMinutesN(int n) {

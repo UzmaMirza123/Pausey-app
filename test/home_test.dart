@@ -34,7 +34,7 @@ void main() {
     await tester.pump(const Duration(seconds: 3));
   });
 
-  testWidgets('Unblock apps: wait 5s, Continue, pick minutes, Unblock; the badge counts down', (tester) async {
+  testWidgets('Unblock apps: sheet with 1-15 min, Skip closes, Continue unblocks; the badge counts down', (tester) async {
     tester.view.physicalSize = const Size(412 * 3, 915 * 3);
     tester.view.devicePixelRatio = 3;
     addTearDown(tester.view.reset);
@@ -43,25 +43,31 @@ void main() {
     await tester.pumpWidget(const PauseyApp(home: AppShell()));
     await tester.pump(const Duration(seconds: 1));
 
-    // Floating badge above the bottom bar.
+    // Floating badge above the bottom bar: 2 icons, then "+N" for the other locked apps.
+    final locked = AppRepo.instance.apps.where((a) => a.locked).length;
     expect(find.text('Unblock apps'), findsOneWidget);
+    expect(find.text('+${locked - 2}'), findsOneWidget);
+
+    // Skip just closes the sheet.
     await tester.tap(find.byKey(const ValueKey('home_unblock')));
-    await tester.pump(); // the new route's first frame is built offstage
-    await tester.pump(const Duration(milliseconds: 500));
-    expect(find.text('Wait for 5s'), findsOneWidget);
-    expect(find.text('Continue'), findsNothing);
-    await tester.pump(const Duration(milliseconds: 5200));
-    expect(find.text('Continue'), findsOneWidget);
-    await tester.tap(find.text('Continue'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
     expect(find.text('Unblock all apps for…'), findsOneWidget);
     expect(find.text('5 minutes'), findsOneWidget);
-    await tester.tap(find.text('Unblock'));
+    await tester.tap(find.text('Skip'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+    expect(find.text('Unblock all apps for…'), findsNothing);
+    expect(RestrictionRepo.instance.unlockedNow, isEmpty);
+
+    // Continue unblocks for the picked time.
+    await tester.tap(find.byKey(const ValueKey('home_unblock')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+    await tester.tap(find.text('Continue'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 800));
     await tester.pump(const Duration(milliseconds: 400));
-
     expect(RestrictionRepo.instance.unlockedNow, contains(pkg));
     expect(find.textContaining('Unblocked'), findsOneWidget);
     expect(find.textContaining('left'), findsOneWidget);

@@ -1032,11 +1032,7 @@
   "stPwFocusWeek": "週ごとの集中時間",
   "nudgeTitle": "{app}の制限まであと少し",
   "nudgeText": "今日は{limit}中{used}使用",
-  "homeWaitFor": "{s}秒待って",
-  "homeWaitHint": "ひと呼吸。本当に今必要？",
   "homeUnblockAllFor": "すべてのアプリを解除する時間…",
-  "homeUnblock": "解除する",
-  "homeNevermind": "やめておく",
   "homeMinutesN": "{n}分",
   "homeUnblockedLeft": "解除中・残り{time}"
 }

@@ -1032,11 +1032,7 @@
   "stPwFocusWeek": "وقت التركيز أسبوعيًا",
   "nudgeTitle": "اقتربت من حدّ {app}",
   "nudgeText": "استُخدم {used} من {limit} اليوم",
-  "homeWaitFor": "انتظر {s} ث",
-  "homeWaitHint": "خذ نفسًا. هل تحتاجه الآن حقًا؟",
   "homeUnblockAllFor": "إلغاء حظر كل التطبيقات لمدة…",
-  "homeUnblock": "إلغاء الحظر",
-  "homeNevermind": "لا بأس",
   "homeMinutesN": "{n, plural, =1{دقيقة واحدة} =2{دقيقتان} few{{n} دقائق} other{{n} دقيقة}}",
   "homeUnblockedLeft": "غير محظورة · متبقٍ {time}"
 }
