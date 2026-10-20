@@ -18,34 +18,35 @@ const _tau = math.pi * 2;
 /// Design space; everything is laid out on this box and scaled to the width.
 const _w = 360.0, _h = 290.0;
 
-/// Box geometry.
-const _boxL = 112.0, _boxR = 248.0; // front face left/right
-const _rimY = 152.0; // front top edge of the box
-const _boxB = 256.0; // bottom of the front face
-const _backY = 120.0; // back edge of the opening
-const _backInset = 13.0; // the back edge is a little narrower (perspective)
+/// Box geometry: a wide, soft tray seen a little from above.
+const _boxL = 86.0, _boxR = 274.0; // front rim left/right
+const _rimY = 150.0; // front top edge of the box
+const _boxB = 252.0; // bottom of the front face
+const _bottomInset = 22.0; // the bottom is narrower than the rim
+const _backY = 110.0; // back edge of the opening
+const _backInset = 26.0; // the back edge is narrower (perspective)
 
-const _tile = 36.0;
+const _tile = 40.0;
 
 /// One loop of the story, in seconds.
 const _loop = 7.4;
 
 /// Apps: asset (or built-in id), where they float outside, and where they peek out of the box.
 const _apps = <(String, Offset, Offset, double)>[
-  ('assets/svg/ob2_instagram.svg', Offset(62, 92), Offset(146, 118), -14),
-  ('tiktok', Offset(96, 40), Offset(176, 106), -3),
-  ('assets/svg/ob2_youtube.svg', Offset(154, 18), Offset(206, 114), 10),
-  ('assets/svg/ob2_facebook.svg', Offset(208, 18), Offset(160, 136), -6),
-  ('assets/svg/ob2_snapchat.svg', Offset(266, 40), Offset(192, 134), 6),
-  ('x', Offset(300, 92), Offset(222, 138), 15),
+  ('assets/svg/ob2_instagram.svg', Offset(70, 70), Offset(136, 116), -12),
+  ('tiktok', Offset(118, 30), Offset(172, 102), -4),
+  ('assets/svg/ob2_youtube.svg', Offset(180, 16), Offset(214, 110), 10),
+  ('assets/svg/ob2_facebook.svg', Offset(242, 30), Offset(228, 138), 12),
+  ('assets/svg/ob2_snapchat.svg', Offset(290, 70), Offset(190, 134), 4),
+  ('x', Offset(312, 116), Offset(150, 140), -8),
 ];
 
 /// Faded background tiles: icon, centre, tilt (degrees).
 const _ghosts = <(IconData, Offset, double)>[
-  (Icons.sports_esports_rounded, Offset(36, 178), -12),
-  (Icons.schedule_rounded, Offset(326, 176), 10),
-  (Icons.chat_bubble_rounded, Offset(52, 246), -8),
-  (Icons.more_horiz_rounded, Offset(310, 248), 8),
+  (Icons.sports_esports_rounded, Offset(36, 140), -10),
+  (Icons.schedule_rounded, Offset(326, 176), 8),
+  (Icons.chat_bubble_rounded, Offset(44, 236), -8),
+  (Icons.more_horiz_rounded, Offset(318, 248), 6),
 ];
 
 double _ease(double t, double from, double len, [Curve curve = Curves.easeInOutCubic]) =>
@@ -159,7 +160,7 @@ class _ObLockBoxHeroState extends State<ObLockBoxHero> with SingleTickerProvider
   }
 
   Widget _ghost((IconData, Offset, double) g, int i, double total, bool dark) {
-    const s = 42.0;
+    const s = 44.0;
     final p = g.$2 + Offset(math.sin(total * 0.8 + i) * 2, math.cos(total * 0.7 + i * 2) * 2.5);
     return Positioned(
       left: p.dx - s / 2,
@@ -167,17 +168,17 @@ class _ObLockBoxHeroState extends State<ObLockBoxHero> with SingleTickerProvider
       width: s,
       height: s,
       child: Opacity(
-        opacity: dark ? 0.4 : 0.85,
+        opacity: dark ? 0.55 : 0.95,
         child: Transform.rotate(
           angle: g.$3 * math.pi / 180,
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: dark ? const Color(0xFF2A2458) : const Color(0xFFE6E0FF),
-              boxShadow: [BoxShadow(color: AppPalette.violet.withValues(alpha: 0.12), blurRadius: 10, offset: const Offset(0, 4))],
+              borderRadius: BorderRadius.circular(13),
+              color: dark ? const Color(0xFF2E2860) : const Color(0xFFF7F5FF),
+              boxShadow: [BoxShadow(color: AppPalette.violet.withValues(alpha: dark ? 0.25 : 0.22), blurRadius: 14, offset: const Offset(0, 4))],
             ),
             alignment: Alignment.center,
-            child: Icon(g.$1, size: 21, color: AppPalette.violet.withValues(alpha: dark ? 0.7 : 0.6)),
+            child: Icon(g.$1, size: 23, color: dark ? const Color(0xFFB9A8FF) : const Color(0xFF7C5CFF)),
           ),
         ),
       ),
@@ -192,7 +193,7 @@ class _ObLockBoxHeroState extends State<ObLockBoxHero> with SingleTickerProvider
     final ctrl = Offset((outer.dx + peek.dx) / 2, math.min(outer.dy, peek.dy) - 46);
     final p = _quad(outer, ctrl, peek, f);
     final bob = math.sin(total * _tau / 3.4 + i * 1.1) * 3 * (1 - f);
-    final sunk = st.sink * 60; // slide down inside the box
+    final sunk = st.sink * 82; // slide down inside the box
     final pos = p + Offset(0, bob + sunk);
     final angle = ui.lerpDouble(i.isEven ? -8 : 8, tilt, f)! * math.pi / 180;
     final scale = ui.lerpDouble(1.0, 0.92, f)!;
@@ -240,8 +241,8 @@ class _BackPainter extends CustomPainter {
       170,
       Paint()
         ..shader = RadialGradient(colors: [
-          AppPalette.violet.withValues(alpha: dark ? 0.30 : 0.26),
-          AppPalette.violet.withValues(alpha: dark ? 0.10 : 0.08),
+          (dark ? const Color(0xFF8B7BFF) : const Color(0xFFB9A8FF)).withValues(alpha: dark ? 0.38 : 0.45),
+          AppPalette.violet.withValues(alpha: dark ? 0.12 : 0.12),
           AppPalette.violet.withValues(alpha: 0),
         ], stops: const [0, 0.5, 1]).createShader(Rect.fromCircle(center: c, radius: 170)),
     );
@@ -260,8 +261,8 @@ class _RibbonPainter extends CustomPainter {
   final bool dark;
   final bool front;
 
-  static const _c = Offset(_w / 2, 196);
-  static const _rx = 164.0, _ry = 44.0, _tilt = -0.14;
+  static const _c = Offset(_w / 2, 192);
+  static const _rx = 172.0, _ry = 52.0, _tilt = -0.26;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -274,11 +275,11 @@ class _RibbonPainter extends CustomPainter {
     final band = Paint()
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 11
+      ..strokeWidth = 15
       ..shader = LinearGradient(colors: [
-        (dark ? const Color(0xFF6C5CE0) : const Color(0xFFCFC4FF)).withValues(alpha: dark ? 0.35 : 0.55),
-        (dark ? const Color(0xFF9F8CFF) : Colors.white).withValues(alpha: dark ? 0.30 : 0.75),
-        (dark ? const Color(0xFF6C5CE0) : const Color(0xFFCFC4FF)).withValues(alpha: dark ? 0.35 : 0.55),
+        (dark ? const Color(0xFF6C5CE0) : const Color(0xFFDCD4FF)).withValues(alpha: dark ? 0.35 : 0.70),
+        (dark ? const Color(0xFFB7A6FF) : Colors.white).withValues(alpha: dark ? 0.32 : 0.90),
+        (dark ? const Color(0xFF6C5CE0) : const Color(0xFFDCD4FF)).withValues(alpha: dark ? 0.35 : 0.70),
       ]).createShader(rect);
     canvas.drawArc(rect, start, math.pi - 0.24, false, band);
     // Dots on this half.
@@ -314,7 +315,7 @@ class _BoxBackPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // Soft floor shadow.
     canvas.drawOval(
-      Rect.fromCenter(center: const Offset(_w / 2, _boxB + 6), width: 170, height: 22),
+      Rect.fromCenter(center: const Offset(_w / 2, _boxB + 6), width: 190, height: 24),
       Paint()
         ..color = AppPalette.accent.withValues(alpha: dark ? 0.35 : 0.22)
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8),
@@ -325,7 +326,7 @@ class _BoxBackPainter extends CustomPainter {
       topLeft: const Radius.circular(8),
       topRight: const Radius.circular(8),
     );
-    canvas.drawRRect(back, Paint()..color = dark ? const Color(0xFF6E5CE6) : const Color(0xFFB9ADFF));
+    canvas.drawRRect(back, Paint()..color = dark ? const Color(0xFF6E5CE6) : const Color(0xFFE4DDFF));
     // Inside of the box.
     final inside = _opening();
     canvas.drawPath(
@@ -334,7 +335,7 @@ class _BoxBackPainter extends CustomPainter {
         ..shader = const LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xFF3A2C9E), Color(0xFF5B46D8)],
+          colors: [Color(0xFF6A54E8), Color(0xFF9C8BFF)],
         ).createShader(const Rect.fromLTRB(_boxL, _backY, _boxR, _rimY)),
     );
     // Light glowing up from inside when the lock clicks.
@@ -368,8 +369,8 @@ class _LidPainter extends CustomPainter {
       ..lineTo(frontL, frontY)
       ..close();
     // Seen from the top when shut, from underneath when open.
-    final top = dark ? const [Color(0xFFB3A6FF), Color(0xFF8E7CFF)] : const [Color(0xFFD9D2FF), Color(0xFFB4A7FF)];
-    final under = dark ? const [Color(0xFF5A48C8), Color(0xFF7462E8)] : const [Color(0xFF8F7EF5), Color(0xFFA899FF)];
+    final top = dark ? const [Color(0xFFB3A6FF), Color(0xFF8E7CFF)] : const [Color(0xFFFFFFFF), Color(0xFFE2D9FF)];
+    final under = dark ? const [Color(0xFF5A48C8), Color(0xFF7462E8)] : const [Color(0xFFC9BDFF), Color(0xFFDCD3FF)];
     final colors = o > 0.5 ? under : top;
     final bounds = Rect.fromLTRB(_boxL, math.min(frontY, _backY), _boxR, math.max(frontY, _rimY));
     final shader = LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: colors).createShader(bounds);
@@ -399,13 +400,13 @@ class _LidPainter extends CustomPainter {
     if (thick > 0.5) {
       canvas.drawRRect(
         RRect.fromRectAndRadius(Rect.fromLTRB(frontL, frontY - 1, frontR, frontY + thick), const Radius.circular(5)),
-        Paint()..color = dark ? const Color(0xFF7A68F0) : const Color(0xFF9D8EFF),
+        Paint()..color = dark ? const Color(0xFF7A68F0) : const Color(0xFFCBBFFF),
       );
       // Little handle on top.
       final hc = Offset(_w / 2, (frontY + _backY) / 2);
       canvas.drawRRect(
         RRect.fromRectAndRadius(Rect.fromCenter(center: hc, width: 34, height: 7 * (1 - o.clamp(0.0, 1.0)) + 1), const Radius.circular(4)),
-        Paint()..color = Colors.white.withValues(alpha: dark ? 0.35 : 0.6),
+        Paint()..color = (dark ? Colors.white : const Color(0xFFB9A8FF)).withValues(alpha: dark ? 0.35 : 0.8),
       );
     }
   }
@@ -424,65 +425,89 @@ class _BoxFrontPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     const face = Rect.fromLTRB(_boxL, _rimY, _boxR, _boxB);
-    final rr = RRect.fromRectAndCorners(face, bottomLeft: const Radius.circular(22), bottomRight: const Radius.circular(22), topLeft: const Radius.circular(4), topRight: const Radius.circular(4));
-    canvas.drawRRect(
-      rr,
+    const bl = _boxL + _bottomInset, br = _boxR - _bottomInset;
+    final front = Path()
+      ..moveTo(_boxL, _rimY)
+      ..lineTo(_boxR, _rimY)
+      ..lineTo(br + 2, _boxB - 22)
+      ..quadraticBezierTo(br - 2, _boxB, br - 24, _boxB)
+      ..lineTo(bl + 24, _boxB)
+      ..quadraticBezierTo(bl + 2, _boxB, bl - 2, _boxB - 22)
+      ..close();
+    canvas.drawPath(
+      front,
       Paint()
         ..shader = LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: dark ? const [Color(0xFF9483FF), Color(0xFF5E47DC)] : const [Color(0xFFB7ACFF), Color(0xFF7A62F2)],
+          colors: dark ? const [Color(0xFF7D6BEA), Color(0xFF4E3FB8)] : const [Color(0xFFF4F1FF), Color(0xFFD4C8FF)],
         ).createShader(face),
     );
-    // Soft sheen down the left side.
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(const Rect.fromLTRB(_boxL + 10, _rimY + 12, _boxL + 22, _boxB - 18), const Radius.circular(6)),
-      Paint()..color = Colors.white.withValues(alpha: dark ? 0.10 : 0.22),
+    // Gentle shading on the sides (rounded, 3D feel).
+    canvas.drawPath(
+      front,
+      Paint()
+        ..shader = LinearGradient(colors: [
+          (dark ? Colors.black : const Color(0xFF8F7BFF)).withValues(alpha: dark ? 0.18 : 0.16),
+          Colors.transparent,
+          Colors.transparent,
+          (dark ? Colors.black : const Color(0xFF8F7BFF)).withValues(alpha: dark ? 0.22 : 0.20),
+        ], stops: const [0, 0.22, 0.78, 1]).createShader(face),
     );
-    // Rim.
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(const Rect.fromLTRB(_boxL - 3, _rimY - 4, _boxR + 3, _rimY + 7), const Radius.circular(6)),
-      Paint()..color = dark ? const Color(0xFFB9ADFF) : const Color(0xFFDCD5FF),
+    // Rim: a thick soft white edge all round the opening.
+    final rim = Path()
+      ..moveTo(_boxL + _backInset, _backY)
+      ..lineTo(_boxR - _backInset, _backY)
+      ..lineTo(_boxR, _rimY)
+      ..lineTo(_boxL, _rimY)
+      ..close();
+    canvas.drawPath(
+      rim,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 7
+        ..strokeJoin = StrokeJoin.round
+        ..color = dark ? const Color(0xFFB9ADFF) : const Color(0xFFFBFAFF),
     );
 
     // Lock badge.
-    const c = Offset(_w / 2, 208);
+    const c = Offset(_w / 2, 204);
     if (pulse > 0) {
-      canvas.drawCircle(c, 30 + 10 * pulse, Paint()..color = Colors.white.withValues(alpha: 0.28 * pulse)..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8));
+      canvas.drawCircle(c, 36 + 10 * pulse, Paint()..color = Colors.white.withValues(alpha: 0.35 * pulse)..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8));
     }
-    canvas.drawCircle(c, 27, Paint()..color = Colors.white.withValues(alpha: dark ? 0.22 : 0.38));
-    canvas.drawCircle(c, 21, Paint()..color = Colors.white.withValues(alpha: dark ? 0.85 : 0.95));
-    const bodyW = 18.0, bodyH = 14.0;
-    final bodyTop = c.dy - 2;
-    final lift = (1 - shut) * 5;
+    canvas.drawCircle(c, 33, Paint()..color = (dark ? Colors.white : const Color(0xFF8F7BFF)).withValues(alpha: dark ? 0.12 : 0.10));
+    canvas.drawCircle(c, 29, Paint()..color = Colors.white.withValues(alpha: dark ? 0.92 : 1));
+    const bodyW = 26.0, bodyH = 21.0;
+    final bodyTop = c.dy - 3;
+    final lift = (1 - shut) * 6;
     final shackle = Path()
-      ..moveTo(c.dx - 5.5, bodyTop + 1 - lift)
-      ..lineTo(c.dx - 5.5, bodyTop - 5 - lift)
-      ..arcToPoint(Offset(c.dx + 5.5, bodyTop - 5 - lift), radius: const Radius.circular(5.5))
-      ..lineTo(c.dx + 5.5, bodyTop + 1 - lift);
+      ..moveTo(c.dx - 8, bodyTop + 1 - lift)
+      ..lineTo(c.dx - 8, bodyTop - 7 - lift)
+      ..arcToPoint(Offset(c.dx + 8, bodyTop - 7 - lift), radius: const Radius.circular(8))
+      ..lineTo(c.dx + 8, bodyTop + 1 - lift);
     canvas.drawPath(
       shackle,
       Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 3.4
+        ..strokeWidth = 5
         ..strokeCap = StrokeCap.round
-        ..color = const Color(0xFF8F7DFF),
+        ..color = const Color(0xFF7C5CFF),
     );
-    final body = RRect.fromRectAndRadius(Rect.fromLTWH(c.dx - bodyW / 2, bodyTop, bodyW, bodyH), const Radius.circular(4.5));
-    canvas.drawRRect(body, Paint()..shader = ui.Gradient.linear(body.outerRect.topCenter, body.outerRect.bottomCenter, const [Color(0xFFA796FF), AppPalette.accent]));
-    canvas.drawCircle(Offset(c.dx, bodyTop + 5.5), 2, Paint()..color = Colors.white);
-    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromCenter(center: Offset(c.dx, bodyTop + 8.5), width: 1.8, height: 4), const Radius.circular(1)), Paint()..color = Colors.white);
+    final body = RRect.fromRectAndRadius(Rect.fromLTWH(c.dx - bodyW / 2, bodyTop, bodyW, bodyH), const Radius.circular(6));
+    canvas.drawRRect(body, Paint()..color = const Color(0xFF7C5CFF));
+    canvas.drawCircle(Offset(c.dx, bodyTop + 8), 3, Paint()..color = Colors.white);
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromCenter(center: Offset(c.dx, bodyTop + 12.5), width: 2.6, height: 6), const Radius.circular(1.3)), Paint()..color = Colors.white);
 
     // Little sparkles when it clicks.
     if (pulse > 0) {
       final sp = Paint()
         ..strokeWidth = 2
         ..strokeCap = StrokeCap.round
-        ..color = Colors.white.withValues(alpha: pulse);
+        ..color = (dark ? Colors.white : const Color(0xFF8F7BFF)).withValues(alpha: pulse);
       for (final deg in [-140.0, -40.0, 180.0, 0.0]) {
         final a = deg * math.pi / 180;
         final d = Offset(math.cos(a), math.sin(a));
-        canvas.drawLine(c + d * (30 + 4 * pulse), c + d * (36 + 4 * pulse), sp);
+        canvas.drawLine(c + d * (38 + 4 * pulse), c + d * (44 + 4 * pulse), sp);
       }
     }
   }
