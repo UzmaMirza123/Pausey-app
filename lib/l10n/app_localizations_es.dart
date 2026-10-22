@@ -955,6 +955,49 @@ class AppLocalizationsEs extends AppLocalizations {
   String get blockEmergencyNone => 'No te quedan hoy';
 
   @override
+  String get blkTabLocked => 'Apps bloqueadas';
+
+  @override
+  String get blkToday => 'Hoy';
+
+  @override
+  String get blkUnblocks => 'Desbloqueos';
+
+  @override
+  String get blkScreenTime => 'Tiempo de pantalla';
+
+  @override
+  String get blkOpens => 'Aperturas';
+
+  @override
+  String get blkBlock => 'Bloquear';
+
+  @override
+  String get blkUnblock => 'Desbloquear';
+
+  @override
+  String get blkBlocked => 'Bloqueada';
+
+  @override
+  String get blkNotBlocked => 'Sin bloquear';
+
+  @override
+  String get blkNoLocked => 'Aún no hay apps bloqueadas';
+
+  @override
+  String get blkNoScheduled => 'Aún no hay apps programadas';
+
+  @override
+  String blkBlockedSnack(String app) {
+    return '$app está bloqueada';
+  }
+
+  @override
+  String blkUnblockedSnack(String app) {
+    return '$app está desbloqueada';
+  }
+
+  @override
   String get cvNoAccount => '¿No tienes cuenta?';
 
   @override

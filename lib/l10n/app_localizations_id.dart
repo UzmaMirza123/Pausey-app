@@ -945,6 +945,49 @@ class AppLocalizationsId extends AppLocalizations {
   String get blockEmergencyNone => 'Tidak ada sisa hari ini';
 
   @override
+  String get blkTabLocked => 'Aplikasi terkunci';
+
+  @override
+  String get blkToday => 'Hari ini';
+
+  @override
+  String get blkUnblocks => 'Buka blokir';
+
+  @override
+  String get blkScreenTime => 'Waktu layar';
+
+  @override
+  String get blkOpens => 'Dibuka';
+
+  @override
+  String get blkBlock => 'Blokir';
+
+  @override
+  String get blkUnblock => 'Buka blokir';
+
+  @override
+  String get blkBlocked => 'Diblokir';
+
+  @override
+  String get blkNotBlocked => 'Tidak diblokir';
+
+  @override
+  String get blkNoLocked => 'Belum ada aplikasi terkunci';
+
+  @override
+  String get blkNoScheduled => 'Belum ada aplikasi terjadwal';
+
+  @override
+  String blkBlockedSnack(String app) {
+    return '$app diblokir';
+  }
+
+  @override
+  String blkUnblockedSnack(String app) {
+    return 'Blokir $app dibuka';
+  }
+
+  @override
   String get cvNoAccount => 'Belum punya akun?';
 
   @override

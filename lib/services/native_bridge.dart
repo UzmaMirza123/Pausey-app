@@ -115,6 +115,14 @@ class NativeBridge {
     return {for (final e in ms.entries) e.key: ((e.value as num) / 60000).floor()};
   }
 
+  /// How many times each app was opened since local midnight, or null when usage access is missing.
+  Future<Map<String, int>?> opensToday(Iterable<String> packages) async {
+    final m = await _call<Map>('opensToday', {'packages': packages.toList()});
+    if (m == null || m['granted'] != true) return null;
+    final ms = Map<String, dynamic>.from(m['opens'] as Map? ?? const {});
+    return {for (final e in ms.entries) e.key: (e.value as num).toInt()};
+  }
+
   /// Hands the full policy to the native enforcement service (it keeps working while Flutter is closed).
   Future<void> syncPolicy(Map<String, dynamic> policy) => _call<void>('syncPolicy', {'json': jsonEncode(policy)});
 }

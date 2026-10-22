@@ -941,6 +941,49 @@ class AppLocalizationsRu extends AppLocalizations {
   String get blockEmergencyNone => 'На сегодня не осталось';
 
   @override
+  String get blkTabLocked => 'Заблокированные';
+
+  @override
+  String get blkToday => 'Сегодня';
+
+  @override
+  String get blkUnblocks => 'Разблокировки';
+
+  @override
+  String get blkScreenTime => 'Экранное время';
+
+  @override
+  String get blkOpens => 'Открытия';
+
+  @override
+  String get blkBlock => 'Заблокировать';
+
+  @override
+  String get blkUnblock => 'Разблокировать';
+
+  @override
+  String get blkBlocked => 'Заблокировано';
+
+  @override
+  String get blkNotBlocked => 'Не заблокировано';
+
+  @override
+  String get blkNoLocked => 'Пока нет заблокированных приложений';
+
+  @override
+  String get blkNoScheduled => 'Пока нет приложений по расписанию';
+
+  @override
+  String blkBlockedSnack(String app) {
+    return '$app заблокировано';
+  }
+
+  @override
+  String blkUnblockedSnack(String app) {
+    return '$app разблокировано';
+  }
+
+  @override
   String get cvNoAccount => 'Нет аккаунта?';
 
   @override

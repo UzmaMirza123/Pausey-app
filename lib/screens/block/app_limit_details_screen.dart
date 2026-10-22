@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 
 import '../../data/app_repo.dart';
 import '../../data/models.dart';
@@ -8,11 +9,13 @@ import '../../services/native_bridge.dart';
 import '../../utils/app_theme.dart';
 import '../../utils/l10n.dart';
 import '../../widgets/glow_background.dart';
+import '../../widgets/common.dart' show PrimaryButton;
 import '../../widgets/time_picker.dart';
 import '../../widgets/ui_kit.dart';
 import 'widgets/applock_ui.dart';
 
-/// Per-app limits: master switch, daily limit, lock schedules, temporary unlock.
+/// Per-app page: big icon and state, today's numbers, then settings (schedule, daily limit,
+/// lock schedules, temporary unlock). A Block / Unblock button stays at the bottom.
 /// Every control saves straight away (RestrictionRepo / AppRepo).
 class AppLimitDetailsScreen extends StatefulWidget {
   const AppLimitDetailsScreen({super.key, required this.appId});
@@ -28,6 +31,19 @@ class _AppLimitDetailsScreenState extends State<AppLimitDetailsScreen> {
   /// Last seen app, so the page keeps its content while it closes after "Remove app".
   ManagedApp? _last;
 
+  /// The button's own label and the state chip change straight away, so no snack bar
+  /// (it would sit on top of the button); screen readers hear the new state.
+  Future<void> _toggleBlock(ManagedApp app) async {
+    final l = context.l10n;
+    final dir = Directionality.of(context);
+    final block = !app.locked;
+    await AppRepo.instance.setAppLocked(app.id, block);
+    if (!block && app.packageName != null) await RestrictionRepo.instance.recordUnblock(app.packageName!);
+    if (!mounted) return;
+    // ignore: deprecated_member_use
+    SemanticsService.announce(block ? l.blkBlockedSnack(app.name) : l.blkUnblockedSnack(app.name), dir);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
@@ -40,10 +56,20 @@ class _AppLimitDetailsScreenState extends State<AppLimitDetailsScreen> {
             builder: (context, _) {
               final app = AppRepo.instance.apps.where((a) => a.id == widget.appId).firstOrNull ?? _last;
               _last = app;
-              final header = ScreenHeader(title: l.alDetailsTitle, onBack: () => Navigator.of(context).maybePop());
+              final back = Padding(
+                padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 12, AppSpacing.gutter, 0),
+                child: Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: RoundIconButton(
+                    icon: Icons.arrow_back_rounded,
+                    onTap: () => Navigator.of(context).maybePop(),
+                    tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                  ),
+                ),
+              );
               if (app == null) {
                 return ListView(children: [
-                  header,
+                  back,
                   Padding(
                     padding: const EdgeInsets.all(AppSpacing.gutter),
                     child: StateMessage(
@@ -61,8 +87,8 @@ class _AppLimitDetailsScreenState extends State<AppLimitDetailsScreen> {
               final rr = RestrictionRepo.instance;
               final state = rr.stateFor(app);
               final pkg = app.packageName;
-              final sections = <Widget>[
-                _IdentityCard(app: app, state: state),
+              final settings = <Widget>[
+                _FollowCard(app: app),
                 if (pkg == null)
                   _NoteCard(icon: Icons.info_outline_rounded, text: l.alNoPackage)
                 else ...[
@@ -71,18 +97,39 @@ class _AppLimitDetailsScreenState extends State<AppLimitDetailsScreen> {
                 ],
                 _ActionsCard(app: app, state: state),
               ];
-              return ListView(
-                padding: const EdgeInsets.only(bottom: 40),
-                children: [
-                  header,
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 8, AppSpacing.gutter, 0),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                      for (var i = 0; i < sections.length; i++) ...[if (i > 0) const SizedBox(height: AppSpacing.section), sections[i]],
-                    ]),
+              return Column(children: [
+                back,
+                // Only the middle scrolls; the Block / Unblock button stays at the bottom.
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 4, AppSpacing.gutter, 24),
+                    children: [
+                      _IdentityCard(app: app, state: state),
+                      const SizedBox(height: 26),
+                      SectionLabel(l.blkToday),
+                      _TodayCard(
+                        unblocks: rr.unblocksToday(pkg),
+                        used: rr.usedMinutes(pkg),
+                        opens: rr.opensFor(pkg),
+                      ),
+                      const SizedBox(height: 22),
+                      SectionLabel(l.profileSettings),
+                      for (var i = 0; i < settings.length; i++) ...[if (i > 0) const SizedBox(height: 14), settings[i]],
+                    ],
                   ),
-                ],
-              );
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, 8, AppSpacing.gutter, 14),
+                  child: PrimaryButton(
+                    key: const Key('detailBlockButton'),
+                    label: app.locked ? l.blkUnblock : l.blkBlock,
+                    showArrow: false,
+                    height: 56,
+                    leading: Icon(app.locked ? Icons.lock_open_rounded : Icons.lock_rounded, size: 20, color: Colors.white),
+                    onPressed: () => _toggleBlock(app),
+                  ),
+                ),
+              ]);
             },
           ),
         ),
@@ -92,7 +139,7 @@ class _AppLimitDetailsScreenState extends State<AppLimitDetailsScreen> {
 }
 
 // ---------------------------------------------------------------------------
-// A. Identity + master switch
+// A. Identity (big round icon, name, state) + Today numbers
 // ---------------------------------------------------------------------------
 
 class _IdentityCard extends StatelessWidget {
@@ -104,90 +151,106 @@ class _IdentityCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l10n;
     final c = context.colors;
-    final repo = AppRepo.instance;
     final rr = RestrictionRepo.instance;
     final canEnforce = rr.status.canEnforce;
     final st = appLockStatus(app, state);
-    final hasRules = app.packageName != null && rr.hasOwnRules(app.packageName!);
-    final masterSub = !app.locked
-        ? l.alMasterOff
-        : hasRules
-            ? l.alMasterOnRules
-            : app.scheduled
-                ? l.alMasterOnGeneral
-                : l.alMasterOnAllDay;
-    String statusText;
+    String? statusText;
     if (state.unlockExpiry != null) {
       statusText = l.alUnlockedUntil(fmtClock(context, state.unlockExpiry!));
     } else if (st == AppLockStatus.locked) {
-      statusText = '${statusLabel(l, st, canEnforce: canEnforce)} · ${reasonText(l, app, state)}';
-    } else {
+      statusText = reasonText(l, app, state);
+    } else if (app.locked) {
       final next = nextLockFor(app, state);
-      statusText = next != null ? '${l.alStateAvailable} · ${l.alNextLock(fmtNextLock(context, next))}' : l.alStateAvailable;
+      if (next != null) statusText = l.alNextLock(fmtNextLock(context, next));
     }
-    final g = repo.schedule;
-    return PCard(
-      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Row(children: [
-          AppIcon(app, size: 56),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(app.name, style: AppText.cardTitle.copyWith(fontSize: 20, color: c.textPrimary), maxLines: 2, overflow: TextOverflow.ellipsis),
-              const SizedBox(height: 2),
-              Text(app.packageName ?? blockCategoryLabel(l, app.category),
-                  style: AppText.small.copyWith(color: c.textMuted), maxLines: 1, overflow: TextOverflow.ellipsis),
-            ]),
-          ),
+    final chip = !app.locked ? l.blkNotBlocked : (st == AppLockStatus.locked ? statusLabel(l, st, canEnforce: canEnforce) : l.blkBlocked);
+    return Column(children: [
+      LockAvatar(app: app, size: 104, locked: app.locked),
+      const SizedBox(height: 14),
+      Text(app.name, textAlign: TextAlign.center, style: AppText.cardTitle.copyWith(fontSize: 24, color: c.textPrimary), maxLines: 2, overflow: TextOverflow.ellipsis),
+      const SizedBox(height: 10),
+      Container(
+        key: const Key('detailStatus'),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+        decoration: BoxDecoration(
+          color: app.locked ? AppPalette.accent.withValues(alpha: context.isDark ? 0.22 : 0.10) : c.glassFill,
+          borderRadius: BorderRadius.circular(AppRadius.chip),
+          border: Border.all(color: app.locked ? AppPalette.accent.withValues(alpha: 0.35) : c.glassBorder),
+        ),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          Icon(app.locked ? Icons.lock_rounded : Icons.lock_open_rounded, size: 15, color: app.locked ? AppPalette.violet : c.textMuted),
+          const SizedBox(width: 6),
+          Flexible(child: Text(chip, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: app.locked ? AppPalette.violet : c.textSecondary))),
         ]),
-        const SizedBox(height: 14),
-        Container(
-          key: const Key('detailStatus'),
-          padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 12, 10),
-          decoration: BoxDecoration(color: c.glassFill, borderRadius: BorderRadius.circular(AppRadius.tile), border: Border.all(color: c.glassBorder)),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(children: [
-              Icon(st == AppLockStatus.locked ? Icons.lock_rounded : Icons.lock_open_rounded, size: 16, color: st == AppLockStatus.locked ? AppPalette.violet : c.textMuted),
-              const SizedBox(width: 8),
-              Expanded(child: Text(statusText, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: c.textSecondary))),
-            ]),
-            if (!canEnforce) ...[
-              const SizedBox(height: 4),
-              Text(l.alBlockingOff, style: AppText.small.copyWith(color: c.textMuted)),
-            ],
-            if (state.locked) ...[
-              const SizedBox(height: 4),
-              Text(l.alChangesApply, style: AppText.small.copyWith(color: c.textMuted)),
-            ],
+      ),
+      if (statusText != null) ...[
+        const SizedBox(height: 8),
+        Text(statusText, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(color: c.textMuted)),
+      ],
+      if (!canEnforce && app.locked) ...[
+        const SizedBox(height: 4),
+        Text(l.alBlockingOff, textAlign: TextAlign.center, style: AppText.small.copyWith(color: c.textMuted)),
+      ],
+    ]);
+  }
+}
+
+/// Unblocks · Screen time · Opens for today, in one card split by thin lines.
+class _TodayCard extends StatelessWidget {
+  const _TodayCard({required this.unblocks, required this.used, required this.opens});
+  final int unblocks;
+  final int? used, opens;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final c = context.colors;
+    Widget stat(String value, String label, Key key) => Expanded(
+          child: Column(key: key, children: [
+            FittedBox(fit: BoxFit.scaleDown, child: Text(value, style: AppText.tileValue.copyWith(fontSize: 26, color: c.textPrimary))),
+            const SizedBox(height: 4),
+            Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(color: c.textMuted)),
           ]),
-        ),
-        const SizedBox(height: 6),
-        _SwitchRow(
-          title: l.alRestrictApp,
-          sub: masterSub,
-          child: PSwitch(
-            key: const Key('masterSwitch'),
-            value: app.locked,
-            onChanged: (v) async {
-              await repo.setAppLocked(app.id, v);
-              if (context.mounted) showSavedSnack(context);
-            },
-          ),
-        ),
-        _SwitchRow(
-          title: l.alFollowGeneral,
-          sub: g.enabled ? l.alFollowGeneralSub(fmtMinuteOfDay(context, g.startMinutes), fmtMinuteOfDay(context, g.endMinutes)) : l.alGeneralOff,
-          child: PSwitch(
-            key: const Key('followGeneralSwitch'),
-            value: app.scheduled,
-            color: Tone.amber,
-            onChanged: (v) async {
-              await repo.setAppScheduled(app.id, v);
-              if (context.mounted) showSavedSnack(context);
-            },
-          ),
-        ),
+        );
+    Widget line() => Container(width: 1, height: 40, color: c.divider);
+    return PCard(
+      key: const Key('todayCard'),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 18),
+      child: Row(children: [
+        stat('$unblocks', l.blkUnblocks, const Key('todayUnblocks')),
+        line(),
+        stat(used == null ? '–' : fmtDur(l, used!), l.blkScreenTime, const Key('todayScreenTime')),
+        line(),
+        stat(opens == null ? '–' : '$opens', l.blkOpens, const Key('todayOpens')),
       ]),
+    );
+  }
+}
+
+/// "Follow general schedule" switch.
+class _FollowCard extends StatelessWidget {
+  const _FollowCard({required this.app});
+  final ManagedApp app;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final g = AppRepo.instance.schedule;
+    return PCard(
+      padding: const EdgeInsets.fromLTRB(AppSpacing.card, 8, AppSpacing.card, 8),
+      child: _SwitchRow(
+        title: l.alFollowGeneral,
+        sub: g.enabled ? l.alFollowGeneralSub(fmtMinuteOfDay(context, g.startMinutes), fmtMinuteOfDay(context, g.endMinutes)) : l.alGeneralOff,
+        child: PSwitch(
+          key: const Key('followGeneralSwitch'),
+          value: app.scheduled,
+          color: Tone.amber,
+          onChanged: (v) async {
+            await AppRepo.instance.setAppScheduled(app.id, v);
+            if (context.mounted) showSavedSnack(context);
+          },
+        ),
+      ),
     );
   }
 }

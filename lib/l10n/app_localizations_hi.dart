@@ -940,6 +940,49 @@ class AppLocalizationsHi extends AppLocalizations {
   String get blockEmergencyNone => 'आज कोई ओवरराइड बाकी नहीं';
 
   @override
+  String get blkTabLocked => 'लॉक ऐप्स';
+
+  @override
+  String get blkToday => 'आज';
+
+  @override
+  String get blkUnblocks => 'अनब्लॉक';
+
+  @override
+  String get blkScreenTime => 'स्क्रीन टाइम';
+
+  @override
+  String get blkOpens => 'खोला गया';
+
+  @override
+  String get blkBlock => 'ब्लॉक करें';
+
+  @override
+  String get blkUnblock => 'अनब्लॉक करें';
+
+  @override
+  String get blkBlocked => 'ब्लॉक है';
+
+  @override
+  String get blkNotBlocked => 'ब्लॉक नहीं';
+
+  @override
+  String get blkNoLocked => 'अभी कोई ऐप लॉक नहीं';
+
+  @override
+  String get blkNoScheduled => 'अभी कोई ऐप शेड्यूल नहीं';
+
+  @override
+  String blkBlockedSnack(String app) {
+    return '$app ब्लॉक हो गया';
+  }
+
+  @override
+  String blkUnblockedSnack(String app) {
+    return '$app अनब्लॉक हो गया';
+  }
+
+  @override
   String get cvNoAccount => 'अकाउंट नहीं है?';
 
   @override

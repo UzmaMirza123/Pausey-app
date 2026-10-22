@@ -925,6 +925,49 @@ class AppLocalizationsKo extends AppLocalizations {
   String get blockEmergencyNone => '오늘 남은 횟수가 없습니다';
 
   @override
+  String get blkTabLocked => '잠긴 앱';
+
+  @override
+  String get blkToday => '오늘';
+
+  @override
+  String get blkUnblocks => '차단 해제';
+
+  @override
+  String get blkScreenTime => '스크린 타임';
+
+  @override
+  String get blkOpens => '열기';
+
+  @override
+  String get blkBlock => '차단';
+
+  @override
+  String get blkUnblock => '차단 해제';
+
+  @override
+  String get blkBlocked => '차단됨';
+
+  @override
+  String get blkNotBlocked => '차단 안 됨';
+
+  @override
+  String get blkNoLocked => '아직 잠긴 앱이 없어요';
+
+  @override
+  String get blkNoScheduled => '아직 예약된 앱이 없어요';
+
+  @override
+  String blkBlockedSnack(String app) {
+    return '$app 차단됨';
+  }
+
+  @override
+  String blkUnblockedSnack(String app) {
+    return '$app 차단 해제됨';
+  }
+
+  @override
   String get cvNoAccount => '계정이 없으신가요?';
 
   @override

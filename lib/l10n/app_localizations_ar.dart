@@ -935,6 +935,49 @@ class AppLocalizationsAr extends AppLocalizations {
   String get blockEmergencyNone => 'لا يوجد المزيد اليوم';
 
   @override
+  String get blkTabLocked => 'التطبيقات المقفلة';
+
+  @override
+  String get blkToday => 'اليوم';
+
+  @override
+  String get blkUnblocks => 'مرات إلغاء الحظر';
+
+  @override
+  String get blkScreenTime => 'وقت الشاشة';
+
+  @override
+  String get blkOpens => 'مرات الفتح';
+
+  @override
+  String get blkBlock => 'حظر';
+
+  @override
+  String get blkUnblock => 'إلغاء الحظر';
+
+  @override
+  String get blkBlocked => 'محظور';
+
+  @override
+  String get blkNotBlocked => 'غير محظور';
+
+  @override
+  String get blkNoLocked => 'لا توجد تطبيقات مقفلة بعد';
+
+  @override
+  String get blkNoScheduled => 'لا توجد تطبيقات مجدولة بعد';
+
+  @override
+  String blkBlockedSnack(String app) {
+    return 'تم حظر $app';
+  }
+
+  @override
+  String blkUnblockedSnack(String app) {
+    return 'تم إلغاء حظر $app';
+  }
+
+  @override
   String get cvNoAccount => 'ليس لديك حساب؟';
 
   @override

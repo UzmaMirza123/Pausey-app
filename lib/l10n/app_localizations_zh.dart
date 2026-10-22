@@ -922,6 +922,49 @@ class AppLocalizationsZh extends AppLocalizations {
   String get blockEmergencyNone => '今天已用完';
 
   @override
+  String get blkTabLocked => '已锁定应用';
+
+  @override
+  String get blkToday => '今天';
+
+  @override
+  String get blkUnblocks => '解除次数';
+
+  @override
+  String get blkScreenTime => '屏幕时间';
+
+  @override
+  String get blkOpens => '打开次数';
+
+  @override
+  String get blkBlock => '屏蔽';
+
+  @override
+  String get blkUnblock => '解除屏蔽';
+
+  @override
+  String get blkBlocked => '已屏蔽';
+
+  @override
+  String get blkNotBlocked => '未屏蔽';
+
+  @override
+  String get blkNoLocked => '还没有已锁定的应用';
+
+  @override
+  String get blkNoScheduled => '还没有定时的应用';
+
+  @override
+  String blkBlockedSnack(String app) {
+    return '已屏蔽 $app';
+  }
+
+  @override
+  String blkUnblockedSnack(String app) {
+    return '已解除屏蔽 $app';
+  }
+
+  @override
   String get cvNoAccount => '还没有账号？';
 
   @override

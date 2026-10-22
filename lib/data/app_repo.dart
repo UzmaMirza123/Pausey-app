@@ -191,6 +191,16 @@ class AppRepo extends ChangeNotifier {
     await _save();
   }
 
+  /// An installed app opened from the Block tab's "All" list: adds it unblocked (so its page
+  /// can be shown) when it isn't managed yet. Returns its id.
+  Future<String> ensureInstalledApp(String packageName, String label) async {
+    final have = apps.where((a) => a.packageName == packageName).firstOrNull;
+    if (have != null) return have.id;
+    apps.add(ManagedApp(id: packageName, name: label, category: 'other', packageName: packageName, locked: false));
+    await _save();
+    return packageName;
+  }
+
   Future<void> removeApp(String id) async {
     apps.removeWhere((a) => a.id == id);
     await _save();

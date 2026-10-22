@@ -923,6 +923,49 @@ class AppLocalizationsJa extends AppLocalizations {
   String get blockEmergencyNone => '今日はもう使えません';
 
   @override
+  String get blkTabLocked => 'ロック中のアプリ';
+
+  @override
+  String get blkToday => '今日';
+
+  @override
+  String get blkUnblocks => '解除回数';
+
+  @override
+  String get blkScreenTime => '使用時間';
+
+  @override
+  String get blkOpens => '起動回数';
+
+  @override
+  String get blkBlock => 'ブロック';
+
+  @override
+  String get blkUnblock => 'ブロック解除';
+
+  @override
+  String get blkBlocked => 'ブロック中';
+
+  @override
+  String get blkNotBlocked => 'ブロックなし';
+
+  @override
+  String get blkNoLocked => 'ロック中のアプリはありません';
+
+  @override
+  String get blkNoScheduled => 'スケジュール中のアプリはありません';
+
+  @override
+  String blkBlockedSnack(String app) {
+    return '$appをブロックしました';
+  }
+
+  @override
+  String blkUnblockedSnack(String app) {
+    return '$appのブロックを解除しました';
+  }
+
+  @override
   String get cvNoAccount => 'アカウントをお持ちでない方';
 
   @override

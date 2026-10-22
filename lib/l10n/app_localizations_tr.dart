@@ -940,6 +940,49 @@ class AppLocalizationsTr extends AppLocalizations {
   String get blockEmergencyNone => 'Bugün hak kalmadı';
 
   @override
+  String get blkTabLocked => 'Kilitli uygulamalar';
+
+  @override
+  String get blkToday => 'Bugün';
+
+  @override
+  String get blkUnblocks => 'Kilit açma';
+
+  @override
+  String get blkScreenTime => 'Ekran süresi';
+
+  @override
+  String get blkOpens => 'Açılış';
+
+  @override
+  String get blkBlock => 'Engelle';
+
+  @override
+  String get blkUnblock => 'Engeli kaldır';
+
+  @override
+  String get blkBlocked => 'Engelli';
+
+  @override
+  String get blkNotBlocked => 'Engelli değil';
+
+  @override
+  String get blkNoLocked => 'Henüz kilitli uygulama yok';
+
+  @override
+  String get blkNoScheduled => 'Henüz planlı uygulama yok';
+
+  @override
+  String blkBlockedSnack(String app) {
+    return '$app engellendi';
+  }
+
+  @override
+  String blkUnblockedSnack(String app) {
+    return '$app engeli kaldırıldı';
+  }
+
+  @override
   String get cvNoAccount => 'Hesabınız yok mu?';
 
   @override

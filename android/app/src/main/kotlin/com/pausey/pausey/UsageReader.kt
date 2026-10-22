@@ -70,6 +70,27 @@ object UsageReader {
         return total
     }
 
+    /**
+     * How many times each app was opened since local midnight: a resumed activity counts as
+     * one open only when a different app was on screen before it (moving between screens
+     * inside the same app is not a new open).
+     */
+    fun opensToday(ctx: Context, packages: Set<String>?, nowMs: Long = System.currentTimeMillis()): Map<String, Int> {
+        val usm = ctx.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        val events = usm.queryEvents(startOfToday(nowMs), nowMs)
+        val opens = mutableMapOf<String, Int>()
+        var last: String? = null
+        val e = UsageEvents.Event()
+        while (events.hasNextEvent()) {
+            events.getNextEvent(e)
+            if (!isStart(e.eventType)) continue
+            val pkg = e.packageName ?: continue
+            if (pkg != last && (packages == null || pkg in packages)) opens[pkg] = (opens[pkg] ?: 0) + 1
+            last = pkg
+        }
+        return opens
+    }
+
     /** Package currently on screen (last resumed activity without a later pause), or null. */
     fun foregroundPackage(ctx: Context, nowMs: Long = System.currentTimeMillis()): String? {
         val usm = ctx.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager

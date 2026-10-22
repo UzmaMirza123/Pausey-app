@@ -33,6 +33,14 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
 
   /// Today's real usage (minutes) per package; null = not available (no permission / not Android).
   Map<String, int>? usage;
+
+  /// How many times each app was opened today; null = not available.
+  Map<String, int>? opens;
+
+  /// How many times each app was unblocked today (any way: the Home badge, a temporary
+  /// unlock or the Unblock button). Resets at midnight.
+  final Map<String, int> _unblocks = {};
+  String _unblocksDay = '';
   NativeStatus status = const NativeStatus();
 
   /// Translated texts for the native block screen / notification (set from the app's builder).
@@ -75,6 +83,8 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
   void load() {
     _configs.clear();
     _unlocks.clear();
+    _unblocks.clear();
+    _unblocksDay = '';
     final raw = LocalStore.instance.getRaw(_key);
     if (raw != null) {
       try {
@@ -86,6 +96,13 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
         for (final u in (j['unlocks'] as List? ?? const [])) {
           final t = TemporaryUnlock.fromJson(Map<String, dynamic>.from(u as Map));
           if (t.activeAt(now())) _unlocks[t.packageName] = t;
+        }
+        final ub = j['unblocks'];
+        if (ub is Map) {
+          _unblocksDay = ub['day'] as String? ?? '';
+          for (final e in Map<String, dynamic>.from(ub['counts'] as Map? ?? const {}).entries) {
+            _unblocks[e.key] = (e.value as num).toInt();
+          }
         }
       } catch (e) {
         debugPrint('RestrictionRepo: bad saved data, ignoring: $e');
@@ -125,6 +142,7 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
     status = await NativeBridge.instance.status();
     final pkgs = AppRepo.instance.apps.map((a) => a.packageName).whereType<String>().toSet();
     usage = status.usageAccess && pkgs.isNotEmpty ? await NativeBridge.instance.usageToday(pkgs) : (status.usageAccess ? {} : null);
+    opens = status.usageAccess && pkgs.isNotEmpty ? await NativeBridge.instance.opensToday(pkgs) : (status.usageAccess ? {} : null);
     _dropExpiredUnlocks();
     notifyListeners();
     _scheduleSync();
@@ -137,6 +155,7 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
       jsonEncode({
         'configs': [for (final c in _configs.values) c.toJson()],
         'unlocks': [for (final u in _unlocks.values) u.toJson()],
+        'unblocks': {'day': _unblocksDay, 'counts': _unblocks},
       }),
     );
     _scheduleSync();
@@ -157,6 +176,32 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
   TemporaryUnlock? unlockFor(String pkg) {
     final u = _unlocks[pkg];
     return u != null && u.activeAt(now()) ? u : null;
+  }
+
+  /// Times [pkg] was opened today, or null when it can't be read.
+  int? opensFor(String? pkg) => pkg == null ? null : (opens == null ? null : (opens![pkg] ?? 0));
+
+  static String _day(DateTime t) => '${t.year}-${t.month}-${t.day}';
+
+  /// Times [pkg] was unblocked today.
+  int unblocksToday(String? pkg) => pkg == null || _unblocksDay != _day(now()) ? 0 : (_unblocks[pkg] ?? 0);
+
+  /// Counts one unblock for each of [pkgs] (saved with the next write).
+  void countUnblock(Iterable<String> pkgs) {
+    final d = _day(now());
+    if (_unblocksDay != d) {
+      _unblocks.clear();
+      _unblocksDay = d;
+    }
+    for (final p in pkgs) {
+      _unblocks[p] = (_unblocks[p] ?? 0) + 1;
+    }
+  }
+
+  /// Counts an unblock for [pkg] and saves it.
+  Future<void> recordUnblock(String pkg) async {
+    countUnblock([pkg]);
+    await _save();
   }
 
   int? usedMinutes(String? pkg) => pkg == null ? null : (usage == null ? null : (usage![pkg] ?? 0));
@@ -227,6 +272,7 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
   Future<bool> temporaryUnlock(String pkg) async {
     if (!await AppRepo.instance.useBypass()) return false;
     _unlocks[pkg] = TemporaryUnlock(packageName: pkg, expiry: DateTime.now().add(unlockDuration));
+    countUnblock([pkg]);
     await _save();
     return true;
   }
@@ -239,6 +285,7 @@ class RestrictionRepo extends ChangeNotifier with WidgetsBindingObserver {
     for (final p in pkgs) {
       _unlocks[p] = TemporaryUnlock(packageName: p, expiry: until);
     }
+    countUnblock(pkgs);
     await _save();
     _armUnlockEnd();
   }

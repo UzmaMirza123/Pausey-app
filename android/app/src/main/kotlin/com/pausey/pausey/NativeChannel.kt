@@ -82,6 +82,13 @@ class NativeChannel(private val activity: ComponentActivity) {
                         mapOf("granted" to true, "usage" to UsageReader.usageToday(ctx, pkgs.ifEmpty { null }))
                     }
                 }
+                "opensToday" -> background(result) {
+                    if (!UsageReader.hasAccess(ctx)) mapOf("granted" to false)
+                    else {
+                        val pkgs = (call.argument<List<String>>("packages") ?: emptyList()).toSet()
+                        mapOf("granted" to true, "opens" to UsageReader.opensToday(ctx, pkgs.ifEmpty { null }))
+                    }
+                }
                 "syncPolicy" -> {
                     PolicyStore.save(ctx, call.argument<String>("json") ?: "{}")
                     EnforcementService.sync(ctx)

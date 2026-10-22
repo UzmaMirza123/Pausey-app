@@ -1816,6 +1816,84 @@ abstract class AppLocalizations {
   /// **'No overrides left today'**
   String get blockEmergencyNone;
 
+  /// No description provided for @blkTabLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked apps'**
+  String get blkTabLocked;
+
+  /// No description provided for @blkToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get blkToday;
+
+  /// No description provided for @blkUnblocks.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblocks'**
+  String get blkUnblocks;
+
+  /// No description provided for @blkScreenTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Screen time'**
+  String get blkScreenTime;
+
+  /// No description provided for @blkOpens.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens'**
+  String get blkOpens;
+
+  /// No description provided for @blkBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Block'**
+  String get blkBlock;
+
+  /// No description provided for @blkUnblock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock'**
+  String get blkUnblock;
+
+  /// No description provided for @blkBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked'**
+  String get blkBlocked;
+
+  /// No description provided for @blkNotBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Not blocked'**
+  String get blkNotBlocked;
+
+  /// No description provided for @blkNoLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'No locked apps yet'**
+  String get blkNoLocked;
+
+  /// No description provided for @blkNoScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'No scheduled apps yet'**
+  String get blkNoScheduled;
+
+  /// No description provided for @blkBlockedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'{app} is blocked'**
+  String blkBlockedSnack(String app);
+
+  /// No description provided for @blkUnblockedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'{app} is unblocked'**
+  String blkUnblockedSnack(String app);
+
   /// No description provided for @cvNoAccount.
   ///
   /// In en, this message translates to:

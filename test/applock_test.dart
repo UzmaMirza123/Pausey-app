@@ -74,19 +74,26 @@ void main() {
     expect(find.text('Sleep'), findsOneWidget);
     // intl puts a narrow no-break space before "PM".
     expect(find.text('10:00\u202fPM – 7:00\u202fAM · Ends next day'), findsOneWidget);
-    expect(find.text('Next lock: 10:00\u202fPM'), findsOneWidget);
+    expect(find.text('Next lock: 10:00\u202fPM'), findsWidgets);
     // YouTube has no schedules of its own.
     expect(RestrictionRepo.instance.configFor(_yt).schedules, isEmpty);
     await tester.binding.setSurfaceSize(null);
   });
 
-  testWidgets('master switch toggles AppRepo locked', (tester) async {
+  testWidgets('bottom Block / Unblock button toggles AppRepo locked and counts the unblock', (tester) async {
     await _pumpDetails(tester, 'Instagram');
     expect(AppRepo.instance.apps.firstWhere((a) => a.id == 'Instagram').locked, isTrue);
-    await tester.tap(find.byKey(const Key('masterSwitch')));
+    expect(find.text('Unblock'), findsOneWidget);
+    expect(find.byKey(const Key('todayCard')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('detailBlockButton')));
     await tester.pumpAndSettle();
     expect(AppRepo.instance.apps.firstWhere((a) => a.id == 'Instagram').locked, isFalse);
     expect(AppRepo.instance.apps.firstWhere((a) => a.id == 'YouTube').locked, isTrue);
+    expect(RestrictionRepo.instance.unblocksToday(_insta), 1);
+    expect(find.text('Block'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('detailBlockButton')));
+    await tester.pumpAndSettle();
+    expect(AppRepo.instance.apps.firstWhere((a) => a.id == 'Instagram').locked, isTrue);
     await tester.binding.setSurfaceSize(null);
   });
 

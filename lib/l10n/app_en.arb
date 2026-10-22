@@ -534,6 +534,33 @@
   },
   "blockEmergencyUsed": "Override used — apps are unlocked for now",
   "blockEmergencyNone": "No overrides left today",
+  "blkTabLocked": "Locked apps",
+  "blkToday": "Today",
+  "blkUnblocks": "Unblocks",
+  "blkScreenTime": "Screen time",
+  "blkOpens": "Opens",
+  "blkBlock": "Block",
+  "blkUnblock": "Unblock",
+  "blkBlocked": "Blocked",
+  "blkNotBlocked": "Not blocked",
+  "blkNoLocked": "No locked apps yet",
+  "blkNoScheduled": "No scheduled apps yet",
+  "blkBlockedSnack": "{app} is blocked",
+  "@blkBlockedSnack": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "blkUnblockedSnack": "{app} is unblocked",
+  "@blkUnblockedSnack": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
   "cvNoAccount": "Don't have an account?",
   "cvYourName": "Your name",
   "cvAppsLoadFailed": "Couldn't read the apps on this phone.",

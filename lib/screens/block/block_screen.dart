@@ -1,10 +1,9 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:local_auth/local_auth.dart';
 
 import '../../data/app_repo.dart';
 import '../../data/models.dart';
-import '../../data/restrictions/restriction_models.dart';
 import '../../data/restrictions/restriction_repo.dart';
 import '../../services/native_bridge.dart';
 import '../../utils/app_theme.dart';
@@ -18,25 +17,36 @@ import 'widgets/installed_apps_sheet.dart';
 
 export 'widgets/applock_ui.dart' show blockCategoryLabel;
 
-/// Which managed apps the filter chips show (matches the row state labels).
-enum BlockFilter { all, locked, scheduled, available }
+/// The three tabs under the search field.
+enum BlockTab { all, locked, scheduled }
 
-/// Block tab — App Lock (design 19362e6d): managed apps with real per-app state,
-/// permission status, and the general lock settings below.
+/// Block tab: search, then three tabs.
+/// - All: every app on the phone (managed apps off Android).
+/// - Locked apps: the apps the user locked (e.g. picked in onboarding), as round icons with a lock.
+/// - Scheduled: the general lock schedule and the apps locked on a schedule.
+/// Tapping an app opens its page, which has the Block / Unblock button.
 class BlockScreen extends StatefulWidget {
-  const BlockScreen({super.key, this.auth});
+  const BlockScreen({super.key, this.initialTab = BlockTab.all});
 
-  /// Injectable for tests.
-  final LocalAuthentication? auth;
+  /// Tab shown first (the preview opens the other tabs directly).
+  final BlockTab initialTab;
 
   @override
   State<BlockScreen> createState() => _BlockScreenState();
 }
 
+/// One row in a tab: a managed app, or an installed app that isn't managed yet.
+class _Entry {
+  _Entry({required this.id, required this.name, this.app, this.pkg, this.bytes});
+  final String id, name;
+  final ManagedApp? app;
+  final String? pkg;
+  final Uint8List? bytes;
+}
+
 class _BlockScreenState extends State<BlockScreen> {
-  BlockFilter _filter = BlockFilter.all;
+  late BlockTab _tab = widget.initialTab;
   String _query = '';
-  bool _authBusy = false;
 
   AppRepo get _repo => AppRepo.instance;
   RestrictionRepo get _rr => RestrictionRepo.instance;
@@ -61,48 +71,12 @@ class _BlockScreenState extends State<BlockScreen> {
     if (n != null && n > 0 && mounted) _snack(context.l10n.blockAppsUpdated);
   }
 
-  void _open(ManagedApp a) => Navigator.of(context).push(MaterialPageRoute(builder: (_) => AppLimitDetailsScreen(appId: a.id)));
-
-  Future<void> _toggleFaceId(bool v) async {
-    final l = context.l10n;
-    if (!v) {
-      await _repo.setFaceIdProtection(false);
-      return;
-    }
-    if (_authBusy) return;
-    setState(() => _authBusy = true);
-    try {
-      if (kIsWeb && widget.auth == null) {
-        _snack(l.blockFaceIdUnavailable);
-        return;
-      }
-      final auth = widget.auth ?? LocalAuthentication();
-      bool supported;
-      try {
-        supported = await auth.isDeviceSupported();
-      } catch (_) {
-        supported = false;
-      }
-      if (!mounted) return;
-      if (!supported) {
-        _snack(l.blockFaceIdUnavailable);
-        return;
-      }
-      bool ok;
-      try {
-        ok = await auth.authenticate(localizedReason: l.blockFaceIdReason);
-      } catch (_) {
-        ok = false;
-      }
-      if (!mounted) return;
-      if (ok) {
-        await _repo.setFaceIdProtection(true);
-      } else {
-        _snack(l.blockFaceIdFailed);
-      }
-    } finally {
-      if (mounted) setState(() => _authBusy = false);
-    }
+  Future<void> _open(_Entry e) async {
+    var id = e.app?.id;
+    // An installed app that isn't managed yet is added (unblocked) so its page can open.
+    id ??= await _repo.ensureInstalledApp(e.pkg!, e.name);
+    if (!mounted) return;
+    await Navigator.of(context).push(MaterialPageRoute(builder: (_) => AppLimitDetailsScreen(appId: id!)));
   }
 
   Future<void> _pickTime(bool start) async {
@@ -122,159 +96,192 @@ class _BlockScreenState extends State<BlockScreen> {
     await _repo.updateSchedule((x) => x.days.contains(d) ? x.days.remove(d) : x.days.add(d));
   }
 
-  Future<void> _emergency() async {
-    final l = context.l10n;
-    if (!_repo.settings.emergencyBypass) {
-      _snack(l.blockEmergencyOff);
-      return;
-    }
-    final left = _repo.bypassLeftToday;
-    if (left <= 0) {
-      _snack(l.blockEmergencyNone);
-      return;
-    }
-    final ok = await confirmAction(context,
-        title: l.blockEmergencyConfirmTitle, message: l.blockEmergencyConfirmMsg(left), confirm: l.blockEmergencyUse);
-    if (!ok || !mounted) return;
-    final used = await _repo.useBypass();
-    if (mounted) _snack(used ? l.blockEmergencyUsed : l.blockEmergencyNone);
+  /// Locked on a schedule: follows the general schedule, or has its own schedules on.
+  bool _isScheduled(ManagedApp a) {
+    if (!a.locked) return false;
+    if (a.scheduled) return true;
+    final p = a.packageName;
+    if (p == null) return false;
+    final c = _rr.configFor(p);
+    return c.schedulesEnabled && c.schedules.any((s) => s.enabled && s.isValid);
   }
 
   @override
   Widget build(BuildContext context) {
+    final cache = InstalledAppsCache.instance;
     return ListenableBuilder(
-      listenable: Listenable.merge([_repo, _rr]),
+      listenable: Listenable.merge([_repo, _rr, cache]),
       builder: (context, _) {
         final l = context.l10n;
         final status = _rr.status;
-        if (InstalledAppsCache.instance.supported && !InstalledAppsCache.instance.loaded) {
-          WidgetsBinding.instance.addPostFrameCallback((_) => InstalledAppsCache.instance.ensureLoaded());
+        if (cache.supported && !cache.loaded) {
+          WidgetsBinding.instance.addPostFrameCallback((_) => cache.ensureLoaded());
         }
         final apps = _repo.apps;
-        final states = {for (final a in apps) a.id: _rr.stateFor(a)};
-        final st = {for (final a in apps) a.id: appLockStatus(a, states[a.id]!)};
-        final restricted = st.values.where((s) => s == AppLockStatus.locked).length;
         final q = _query.trim().toLowerCase();
+        bool match(String name) => q.isEmpty || name.toLowerCase().contains(q);
+
+        // All: every installed app on Android (with its managed state), else the managed list.
+        final List<_Entry> all;
+        if (cache.supported && cache.loaded) {
+          final byPkg = {for (final a in apps) ?a.packageName: a};
+          all = [
+            for (final i in cache.apps)
+              _Entry(id: byPkg[i.packageName]?.id ?? i.packageName, name: byPkg[i.packageName]?.name ?? i.label, app: byPkg[i.packageName], pkg: i.packageName, bytes: i.icon),
+          ];
+        } else {
+          all = [for (final a in apps) _Entry(id: a.id, name: a.name, app: a, pkg: a.packageName)]
+            ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+        }
+        final locked = [for (final e in all) if (e.app?.locked == true) e];
+        final scheduled = [for (final e in all) if (e.app != null && _isScheduled(e.app!)) e];
         final shown = [
-          for (final a in apps)
-            if ((q.isEmpty || a.name.toLowerCase().contains(q)) &&
-                switch (_filter) {
-                  BlockFilter.all => true,
-                  BlockFilter.locked => st[a.id] == AppLockStatus.locked,
-                  BlockFilter.scheduled => st[a.id] == AppLockStatus.scheduled,
-                  BlockFilter.available => st[a.id] == AppLockStatus.available,
-                })
-              a,
+          for (final e in switch (_tab) { BlockTab.all => all, BlockTab.locked => locked, BlockTab.scheduled => scheduled })
+            if (match(e.name)) e,
         ];
+
         return PageList(
           header: ScreenHeader(
             title: l.blockTitle,
-            subtitle: apps.isEmpty ? null : (status.canEnforce ? l.alSummary(restricted, apps.length) : l.alSummaryOff(apps.length)),
+            subtitle: apps.isEmpty ? null : (status.canEnforce ? l.alSummary(locked.length, apps.length) : l.alSummaryOff(apps.length)),
             trailing: _AddButton(label: l.blockAddApp, onTap: _addApps),
           ),
           children: [
             if (!status.canEnforce) _FadeIn(delay: 0, child: _PermissionBanner(status: status)),
-            if (apps.isEmpty) ...[
-              StateMessage(
-                icon: Icons.shield_outlined,
-                color: Tone.violet,
-                badge: l.blockEmptyBadge,
-                title: l.blockEmptyTitle,
-                message: l.blockEmptyMsg,
-                primaryLabel: l.blockAddApp,
-                onPrimary: _addApps,
-              ),
-            ] else ...[
-              _SearchField(onChanged: (v) => setState(() => _query = v)),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                clipBehavior: Clip.none,
-                child: Row(children: [
-                  for (final f in BlockFilter.values) ...[
-                    if (f.index > 0) const SizedBox(width: 8),
-                    ChoiceChipP(
-                      key: Key('filter_${f.name}'),
-                      label: switch (f) {
-                        BlockFilter.all => l.alFilterAll,
-                        BlockFilter.locked => l.alFilterLocked,
-                        BlockFilter.scheduled => l.alFilterScheduled,
-                        BlockFilter.available => l.alFilterAvailable,
-                      },
-                      selected: _filter == f,
-                      onTap: () => setState(() => _filter = f),
-                    ),
-                  ],
-                ]),
-              ),
+            _SearchField(onChanged: (v) => setState(() => _query = v)),
+            _Tabs(
+              value: _tab,
+              labels: {BlockTab.all: l.alFilterAll, BlockTab.locked: l.blkTabLocked, BlockTab.scheduled: l.alFilterScheduled},
+              onChanged: (t) => setState(() => _tab = t),
+            ),
+            if (_tab == BlockTab.scheduled) _FadeIn(delay: 0, child: _ScheduleCard(onPickTime: _pickTime, onToggleDay: _toggleDay)),
+            // Until the phone's app list has been read, the managed apps are shown.
+            if (shown.isEmpty)
+              PCard(
+                key: const Key('tabEmpty'),
+                child: Text(
+                  q.isNotEmpty || _tab == BlockTab.all ? l.alNoMatches : (_tab == BlockTab.locked ? l.blkNoLocked : l.blkNoScheduled),
+                  textAlign: TextAlign.center,
+                  style: AppText.rowSub.copyWith(color: context.colors.textMuted),
+                ),
+              )
+            else if (_tab == BlockTab.locked)
+              _LockedGrid(entries: shown, onTap: _open)
+            else
               Column(
+                key: ValueKey(_tab),
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SectionLabel(l.blockManagedApps),
-                  if (shown.isEmpty)
-                    PCard(
-                      child: Text(l.alNoMatches, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(color: context.colors.textMuted)),
-                    ),
                   for (var i = 0; i < shown.length; i++) ...[
                     if (i > 0) const SizedBox(height: 10),
                     _FadeIn(
-                      key: ValueKey(shown[i].id),
-                      delay: 60 + i * 40,
-                      child: _AppRow(
-                        app: shown[i],
-                        state: states[shown[i].id]!,
-                        status: st[shown[i].id]!,
-                        canEnforce: status.canEnforce,
-                        onTap: () => _open(shown[i]),
-                        onLocked: (v) => _repo.setAppLocked(shown[i].id, v),
-                      ),
+                      key: ValueKey('${_tab.name}_${shown[i].id}'),
+                      delay: (i < 12 ? i : 12) * 30,
+                      child: _AppRow(entry: shown[i], canEnforce: status.canEnforce, scheduledTab: _tab == BlockTab.scheduled, onTap: () => _open(shown[i])),
                     ),
                   ],
                 ],
               ),
-            ],
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              SectionLabel(l.alGeneral),
-              _FadeIn(delay: 120, child: _ScheduleCard(onPickTime: _pickTime, onToggleDay: _toggleDay)),
-              const SizedBox(height: 12),
-              _FadeIn(
-                delay: 160,
-                child: PGroup(children: [
-                  PListTile(
-                    icon: Icons.face_retouching_natural_rounded,
-                    title: l.blockFaceIdTitle,
-                    subtitle: l.blockFaceIdSub,
-                    trailing: PSwitch(key: const Key('faceIdSwitch'), value: _repo.faceIdProtection, onChanged: _authBusy ? null : _toggleFaceId),
-                  ),
-                  PListTile(
-                    key: const Key('emergencyCard'),
-                    icon: Icons.shield_rounded,
-                    color: Tone.amber,
-                    title: l.blockEmergencyTitle,
-                    subtitle: _repo.settings.emergencyBypass ? l.blockEmergencySub(_repo.bypassLeftToday) : l.blockEmergencyOff,
-                    onTap: _emergency,
-                    trailing: Text(l.blockEmergencyUse,
-                        style: AppText.rowSub.copyWith(
-                            fontWeight: FontWeight.w800,
-                            color: AppPalette.violet.withValues(alpha: _repo.settings.emergencyBypass && _repo.bypassLeftToday > 0 ? 1 : 0.45))),
-                  ),
-                  if (apps.isNotEmpty)
-                    PListTile(
-                      key: const Key('lockAllRow'),
-                      icon: Icons.lock_rounded,
-                      title: l.blockLockAll,
-                      subtitle: l.alLockAllSub,
-                      onTap: () async {
-                        await _repo.lockAll();
-                        if (mounted) _snack(l.blockAllLocked);
-                      },
-                    ),
-                ]),
-              ),
-            ]),
           ],
         );
       },
     );
+  }
+}
+
+/// Three equal tabs in one rounded glass bar; the picked one is filled.
+class _Tabs extends StatelessWidget {
+  const _Tabs({required this.value, required this.labels, required this.onChanged});
+  final BlockTab value;
+  final Map<BlockTab, String> labels;
+  final ValueChanged<BlockTab> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return Container(
+      height: 48,
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(color: c.glassFill, borderRadius: BorderRadius.circular(AppRadius.chip), border: Border.all(color: c.glassBorder)),
+      child: Row(children: [
+        for (final t in BlockTab.values)
+          Expanded(
+            child: Semantics(
+              selected: t == value,
+              button: true,
+              child: GestureDetector(
+                key: Key('tab_${t.name}'),
+                behavior: HitTestBehavior.opaque,
+                onTap: () => onChanged(t),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 220),
+                  curve: Curves.easeOutCubic,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  decoration: BoxDecoration(
+                    color: t == value ? AppPalette.accent : Colors.transparent,
+                    borderRadius: BorderRadius.circular(AppRadius.chip),
+                    boxShadow: t == value ? [BoxShadow(color: AppPalette.accent.withValues(alpha: 0.28), blurRadius: 12, offset: const Offset(0, 4))] : null,
+                  ),
+                  child: Text(
+                    labels[t]!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppText.rowSub.copyWith(fontWeight: FontWeight.w700, color: t == value ? Colors.white : c.textSecondary),
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ]),
+    );
+  }
+}
+
+/// Locked apps as round icons with a lock, four to a row, the name and "Unblock" under each.
+class _LockedGrid extends StatelessWidget {
+  const _LockedGrid({required this.entries, required this.onTap});
+  final List<_Entry> entries;
+  final ValueChanged<_Entry> onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final c = context.colors;
+    return LayoutBuilder(builder: (context, box) {
+      const cols = 4;
+      final w = box.maxWidth / cols;
+      final icon = (w - 14).clamp(52.0, 76.0);
+      return Wrap(
+        runSpacing: 18,
+        children: [
+          for (var i = 0; i < entries.length; i++)
+            SizedBox(
+              width: w,
+              child: _FadeIn(
+                key: ValueKey('locked_${entries[i].id}'),
+                delay: (i < 12 ? i : 12) * 30,
+                child: InkWell(
+                  key: Key('row_${entries[i].id}'),
+                  borderRadius: BorderRadius.circular(AppRadius.tile),
+                  onTap: () => onTap(entries[i]),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Column(children: [
+                      LockAvatar(app: entries[i].app, bytes: entries[i].bytes, size: icon, locked: true),
+                      const SizedBox(height: 8),
+                      Text(entries[i].name,
+                          maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: AppText.rowSub.copyWith(fontWeight: FontWeight.w600, color: c.textPrimary)),
+                      Text(l.blkUnblock,
+                          maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, style: AppText.small.copyWith(fontWeight: FontWeight.w700, color: AppPalette.violet)),
+                    ]),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      );
+    });
   }
 }
 
@@ -475,58 +482,53 @@ class _ScheduleCard extends StatelessWidget {
 }
 
 class _AppRow extends StatelessWidget {
-  const _AppRow({required this.app, required this.state, required this.status, required this.canEnforce, required this.onTap, required this.onLocked});
-  final ManagedApp app;
-  final RestrictionState state;
-  final AppLockStatus status;
-  final bool canEnforce;
+  const _AppRow({required this.entry, required this.canEnforce, required this.scheduledTab, required this.onTap});
+  final _Entry entry;
+  final bool canEnforce, scheduledTab;
   final VoidCallback onTap;
-  final ValueChanged<bool> onLocked;
 
   @override
   Widget build(BuildContext context) {
     final l = context.l10n;
     final c = context.colors;
+    final app = entry.app;
+    final locked = app?.locked ?? false;
+    String label;
     String? line2;
-    if (state.unlockExpiry != null) {
-      line2 = l.alUnlockedUntil(fmtClock(context, state.unlockExpiry!));
-    } else if (status == AppLockStatus.locked) {
-      line2 = reasonText(l, app, state);
+    Color labelColor = c.textMuted;
+    if (app == null || !locked) {
+      label = l.blkNotBlocked;
     } else {
-      final next = nextLockFor(app, state);
-      if (next != null) line2 = l.alNextLock(fmtNextLock(context, next));
+      final state = RestrictionRepo.instance.stateFor(app);
+      final st = appLockStatus(app, state);
+      label = scheduledTab ? statusLabel(l, st, canEnforce: canEnforce) : l.blkBlocked;
+      labelColor = AppPalette.violet;
+      if (state.unlockExpiry != null) {
+        line2 = l.alUnlockedUntil(fmtClock(context, state.unlockExpiry!));
+      } else if (st == AppLockStatus.locked) {
+        line2 = reasonText(l, app, state);
+      } else {
+        final next = nextLockFor(app, state);
+        if (next != null) line2 = l.alNextLock(fmtNextLock(context, next));
+      }
     }
-    final label = statusLabel(l, status, canEnforce: canEnforce);
     return PCard(
-      key: Key('row_${app.id}'),
+      key: Key('row_${entry.id}'),
       onTap: onTap,
-      padding: const EdgeInsetsDirectional.fromSTEB(14, 12, 6, 12),
+      padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 8, 10),
       child: Row(children: [
-        AppIcon(app, size: 44),
+        LockAvatar(app: app, bytes: entry.bytes, size: 48, locked: locked),
         const SizedBox(width: 12),
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(crossAxisAlignment: CrossAxisAlignment.baseline, textBaseline: TextBaseline.alphabetic, children: [
-              Flexible(child: Text(app.name, style: AppText.rowTitle.copyWith(color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
-              const SizedBox(width: 8),
-              Text(
-                label,
-                key: Key('state_${app.id}'),
-                style: AppText.small.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: status == AppLockStatus.locked ? c.textSecondary : c.textMuted,
-                ),
-              ),
-            ]),
+            Text(entry.name, style: AppText.rowTitle.copyWith(color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis),
             const SizedBox(height: 2),
-            Text(usageLine(l, app, state), style: AppText.rowSub.copyWith(color: c.textMuted), maxLines: 1, overflow: TextOverflow.ellipsis),
-            if (line2 != null)
-              Text(line2, style: AppText.rowSub.copyWith(fontSize: 12, color: c.textMuted), maxLines: 1, overflow: TextOverflow.ellipsis),
+            Text(label, key: Key('state_${entry.id}'), style: AppText.small.copyWith(fontWeight: FontWeight.w700, color: labelColor)),
+            if (line2 != null) Text(line2, style: AppText.rowSub.copyWith(fontSize: 12, color: c.textMuted), maxLines: 1, overflow: TextOverflow.ellipsis),
           ]),
         ),
         const SizedBox(width: 4),
-        PSwitch(key: Key('lock_${app.id}'), value: app.locked, onChanged: onLocked),
-        Icon(Icons.chevron_right_rounded, color: c.textMuted, size: 22),
+        Icon(Icons.chevron_right_rounded, color: c.textMuted, size: 24),
       ]),
     );
   }

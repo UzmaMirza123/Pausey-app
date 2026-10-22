@@ -140,6 +140,54 @@ class InstalledIcon extends StatelessWidget {
   }
 }
 
+/// Round app icon. When [locked]: a brand-coloured ring around it, the icon dimmed and a
+/// white lock on top (like the blocked apps on the Block tab).
+class LockAvatar extends StatelessWidget {
+  const LockAvatar({super.key, this.app, this.bytes, required this.size, required this.locked});
+
+  /// Managed app (its real icon or brand glyph), or [bytes] for an installed app not managed yet.
+  final ManagedApp? app;
+  final Uint8List? bytes;
+  final double size;
+  final bool locked;
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = context.isDark;
+    final ring = locked ? (size * 0.055).clamp(2.0, 4.0) : 0.0;
+    final gap = locked ? (size * 0.05).clamp(2.0, 4.0) : 0.0;
+    final inner = size - 2 * (ring + gap);
+    final icon = app != null ? AppIcon(app!, size: inner) : InstalledIcon(bytes, size: inner);
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Container(
+        padding: EdgeInsets.all(ring + gap),
+        decoration: locked
+            ? BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: AppPalette.accent.withValues(alpha: dark ? 0.85 : 0.7), width: ring),
+                boxShadow: [BoxShadow(color: AppPalette.accent.withValues(alpha: dark ? 0.30 : 0.16), blurRadius: size * 0.22)],
+              )
+            : null,
+        child: ClipOval(
+          child: SizedBox(
+            width: inner,
+            height: inner,
+            child: Stack(fit: StackFit.expand, children: [
+              FittedBox(fit: BoxFit.cover, child: icon),
+              if (locked) ...[
+                ColoredBox(color: Colors.black.withValues(alpha: 0.42)),
+                Center(child: Icon(Icons.lock_rounded, size: inner * 0.38, color: Colors.white)),
+              ],
+            ]),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Small shared widgets
 // ---------------------------------------------------------------------------

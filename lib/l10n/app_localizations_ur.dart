@@ -941,6 +941,49 @@ class AppLocalizationsUr extends AppLocalizations {
   String get blockEmergencyNone => 'آج کوئی اوور رائیڈ باقی نہیں';
 
   @override
+  String get blkTabLocked => 'لاک ایپس';
+
+  @override
+  String get blkToday => 'آج';
+
+  @override
+  String get blkUnblocks => 'ان بلاک';
+
+  @override
+  String get blkScreenTime => 'اسکرین ٹائم';
+
+  @override
+  String get blkOpens => 'کھولی گئی';
+
+  @override
+  String get blkBlock => 'بلاک کریں';
+
+  @override
+  String get blkUnblock => 'ان بلاک کریں';
+
+  @override
+  String get blkBlocked => 'بلاک ہے';
+
+  @override
+  String get blkNotBlocked => 'بلاک نہیں';
+
+  @override
+  String get blkNoLocked => 'ابھی کوئی ایپ لاک نہیں';
+
+  @override
+  String get blkNoScheduled => 'ابھی کوئی ایپ شیڈول نہیں';
+
+  @override
+  String blkBlockedSnack(String app) {
+    return '$app بلاک ہو گئی';
+  }
+
+  @override
+  String blkUnblockedSnack(String app) {
+    return '$app ان بلاک ہو گئی';
+  }
+
+  @override
   String get cvNoAccount => 'اکاؤنٹ نہیں ہے؟';
 
   @override
